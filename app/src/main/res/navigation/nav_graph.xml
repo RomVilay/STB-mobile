@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/connexion">
+
+    <fragment
+        android:id="@+id/accueil"
+        android:name="com.example.applicationstb.ui.accueil.Accueil"
+        android:label="accueil_fragment"
+        tools:layout="@layout/accueil_fragment" >
+        <action
+            android:id="@+id/action_accueil_to_ficheDemontage"
+            app:destination="@id/ficheDemontage" />
+    </fragment>
+    <fragment
+        android:id="@+id/ficheDemontage"
+        android:name="com.example.applicationstb.ui.FicheDemontage.FicheDemontage"
+        android:label="fiche_demontage_fragment"
+        tools:layout="@layout/fiche_demontage_fragment" />
+    <fragment
+        android:id="@+id/connexion"
+        android:name="com.example.applicationstb.ui.connexion.Connexion"
+        android:label="connexion_fragment"
+        tools:layout="@layout/connexion_fragment" >
+        <action
+            android:id="@+id/versAccueil"
+            app:destination="@id/accueil" />
+    </fragment>
+</navigation>
