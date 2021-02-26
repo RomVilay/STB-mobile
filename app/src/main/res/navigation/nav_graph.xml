@@ -16,12 +16,25 @@
         <action
             android:id="@+id/versConnexion"
             app:destination="@id/connexion" />
+        <action
+            android:id="@+id/versFicheRemontage"
+            app:destination="@id/ficheRemontage" />
+        <action
+            android:id="@+id/versFicheBobinage"
+            app:destination="@id/ficheBobinage" />
+        <action
+            android:id="@+id/versFicheChantier"
+            app:destination="@id/ficheChantier" />
     </fragment>
     <fragment
         android:id="@+id/ficheDemontage"
         android:name="com.example.applicationstb.ui.FicheDemontage.FicheDemontage"
         android:label="fiche_demontage_fragment"
-        tools:layout="@layout/fiche_demontage_fragment" />
+        tools:layout="@layout/fiche_demontage_fragment" >
+        <action
+            android:id="@+id/deDemontageversAccueil"
+            app:destination="@id/accueil" />
+    </fragment>
     <fragment
         android:id="@+id/connexion"
         android:name="com.example.applicationstb.ui.connexion.Connexion"
@@ -29,6 +42,33 @@
         tools:layout="@layout/connexion_fragment" >
         <action
             android:id="@+id/versAccueil"
+            app:destination="@id/accueil" />
+    </fragment>
+    <fragment
+        android:id="@+id/ficheChantier"
+        android:name="com.example.applicationstb.ui.ficheChantier.FicheChantier"
+        android:label="fiche_chantier_fragment"
+        tools:layout="@layout/fiche_chantier_fragment" >
+        <action
+            android:id="@+id/deChantierversAccueil"
+            app:destination="@id/accueil" />
+    </fragment>
+    <fragment
+        android:id="@+id/ficheBobinage"
+        android:name="com.example.applicationstb.ui.ficheBobinage.FicheBobinage"
+        android:label="fiche_bobinage_fragment"
+        tools:layout="@layout/fiche_bobinage_fragment" >
+        <action
+            android:id="@+id/deBobinageverAccueil"
+            app:destination="@id/accueil" />
+    </fragment>
+    <fragment
+        android:id="@+id/ficheRemontage"
+        android:name="com.example.applicationstb.ui.ficheRemontage.FicheRemontage"
+        android:label="fiche_remontage_fragment"
+        tools:layout="@layout/fiche_remontage_fragment" >
+        <action
+            android:id="@+id/deRemontageverAccueil"
             app:destination="@id/accueil" />
     </fragment>
 </navigation>

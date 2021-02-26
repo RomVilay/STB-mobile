@@ -39,6 +39,15 @@ class Accueil : Fragment() {
         dm.setOnClickListener {
             viewModel.toFicheD(layout)
         }
+        cht.setOnClickListener {
+            viewModel.toChantier(layout)
+        }
+        rm.setOnClickListener {
+            viewModel.toFicheR(layout)
+        }
+        rb.setOnClickListener {
+            viewModel.toBobinage(layout)
+        }
         rep.setOnClickListener {
             if (list.visibility == View.GONE) {
                 list.visibility = View.VISIBLE
