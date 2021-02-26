@@ -7,11 +7,121 @@
     android:layout_height="match_parent"
     tools:context=".ui.ficheChantier.FicheChantier" >
 
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="242dp"
+        android:layout_height="148dp"
+        android:background="@drawable/round_textview"
+        android:text="Signature Client"
+        tools:layout_editor_absoluteX="433dp"
+        tools:layout_editor_absoluteY="841dp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="276dp"
+        android:layout_height="145dp"
+        android:background="@drawable/round_textview"
+        android:text="Signature Technicien"
+        tools:layout_editor_absoluteX="128dp"
+        tools:layout_editor_absoluteY="841dp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="506dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/round_textview"
+        android:text="Matériel Nécessaire"
+        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/contact"
+        android:layout_width="232dp"
+        android:layout_height="46dp"
+        android:background="@drawable/round_textview"
+        android:gravity="center"
+        android:text="Contact"
+        app:layout_constraintEnd_toStartOf="@+id/numero"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="340dp" />
+
+    <TextView
+        android:id="@+id/numero"
+        android:layout_width="232dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/round_textview"
+        android:gravity="center"
+        android:text="Numero"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.669"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adresse" />
+
+    <TextView
+        android:id="@+id/vehicule"
+        android:layout_width="232dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_textview"
+        android:gravity="center"
+        android:text="vehicule"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+        app:layout_constraintHorizontal_bias="0.277"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="309dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/round_textview"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adresse">
+
+        <EditText
+            android:id="@+id/DateArrivee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/DateDepart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="date" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/adresse"
+        android:layout_width="324dp"
+        android:layout_height="53dp"
+        android:background="@drawable/round_textview"
+        android:gravity="center"
+        android:text="Adresse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.779"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.281" />
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="293dp"
         android:layout_height="128dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="52dp"
         android:contentDescription="logoSTB"
         android:src="@drawable/logo_grand_format"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,11 +130,75 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="235dp"
-        android:layout_height="79dp"
-        android:text="Chantier"
-        android:textSize="36sp"
-        tools:layout_editor_absoluteX="257dp"
-        tools:layout_editor_absoluteY="310dp" />
+        android:id="@+id/textView6"
+        android:layout_width="232dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round_textview"
+        android:gravity="center"
+        android:text="Client"
+        app:layout_constraintEnd_toStartOf="@+id/adresse"
+        app:layout_constraintHorizontal_bias="0.554"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="286dp"
+        android:layout_height="46dp"
+        android:background="@drawable/round_textview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.207" />
+
+    <Button
+        android:id="@+id/select"
+        android:layout_width="46dp"
+        android:layout_height="52dp"
+        android:text="+"
+        app:backgroundTint="#939393"
+        app:cornerRadius="60px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toEndOf="@+id/spinner2"
+        tools:layout_editor_absoluteY="203dp" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="510dp"
+        android:layout_height="66dp"
+        android:background="@drawable/round_textview"
+        android:text="Objet de l'intervention"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="526dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round_textview"
+        android:text="Observations"
+        app:layout_constraintBottom_toTopOf="@+id/textView17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="540dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="192dp"
+        android:background="@drawable/round_textview"
+        android:text="Diagnostic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

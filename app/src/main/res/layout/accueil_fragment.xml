@@ -40,7 +40,7 @@
                 android:layout_width="259dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
-                android:background="@drawable/round_textview"
+                android:background="@drawable/round_textview_full_grey"
                 android:gravity="center"
                 android:padding="70px"
                 android:text="Réparations"
