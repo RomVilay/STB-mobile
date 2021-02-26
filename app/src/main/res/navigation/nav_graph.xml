@@ -11,8 +11,11 @@
         android:label="accueil_fragment"
         tools:layout="@layout/accueil_fragment" >
         <action
-            android:id="@+id/action_accueil_to_ficheDemontage"
+            android:id="@+id/versFicheD"
             app:destination="@id/ficheDemontage" />
+        <action
+            android:id="@+id/versConnexion"
+            app:destination="@id/connexion" />
     </fragment>
     <fragment
         android:id="@+id/ficheDemontage"

@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.example.applicationstb.R
 
 class Accueil : Fragment() {
@@ -20,12 +23,35 @@ class Accueil : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.accueil_fragment, container, false)
+        viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
+        val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
+        val deco = layout.findViewById<TextView>(R.id.btnDeco)
+        val cht = layout.findViewById<Button>(R.id.btnChantier)
+        val dm = layout.findViewById<TextView>(R.id.btnDemo)
+        val list = layout.findViewById<LinearLayout>(R.id.list)
+        val rep = layout.findViewById<TextView>(R.id.Reparations)
+        val rm = layout.findViewById<TextView>(R.id.btnRemo)
+        val rb = layout.findViewById<Button>(R.id.btnRebobinage)
+
+        deco.setOnClickListener{
+            viewModel.toDeconnexion(layout)
+        }
+        dm.setOnClickListener {
+            viewModel.toFicheD(layout)
+        }
+        rep.setOnClickListener {
+            if (list.visibility == View.GONE) {
+                list.visibility = View.VISIBLE
+            } else {
+                list.visibility = View.GONE
+            }
+        }
+        return layout
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
+
         // TODO: Use the ViewModel
     }
 
