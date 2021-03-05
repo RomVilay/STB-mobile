@@ -82,7 +82,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Client"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/adresse" />
 
@@ -96,7 +96,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="vehicule"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -110,7 +110,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Numero"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/contact"
                     app:layout_constraintTop_toBottomOf="@+id/adresse" />
 
@@ -125,7 +125,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Contact"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/vehicule"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/adresse"
@@ -141,7 +141,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Adresse"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/details" />
 
@@ -154,7 +154,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/round_textview_full_white"
                     android:orientation="horizontal"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
