@@ -31,147 +31,144 @@
                 android:contentDescription="logoSTB"
                 android:src="@drawable/logo_grand_format" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"
-                    android:text="details"
-                    android:textSize="22dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btnValider"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btnValider"
-                    android:layout_width="46dp"
-                    android:layout_height="52dp"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginLeft="48dp"
-                    android:text="+"
-                    app:backgroundTint="#939393"
-                    app:cornerRadius="60px"
-                    app:layout_constraintStart_toEndOf="@+id/numDevis"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/client"
-                    android:layout_width="232dp"
-                    android:layout_height="46dp"
-                    android:layout_marginEnd="172dp"
-                    android:layout_marginRight="172dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/round_textview"
-                    android:gravity="center"
-                    android:text="Client"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <Spinner
                     android:id="@+id/numDevis"
                     android:layout_width="286dp"
                     android:layout_height="46dp"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginLeft="64dp"
-                    android:background="@drawable/round_textview"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/round_textview" />
+
+                <Button
+                    android:id="@+id/btnValider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Démarrer un Chantier"
+                    app:backgroundTint="#939393"
+                    app:cornerRadius="60px" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="551dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14sp"
+                android:background="@drawable/round_textview_full_grey">
+
+                <TextView
+                    android:id="@+id/details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="afficher les details"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    tools:layout_editor_absoluteY="-4dp" />
+
+                <TextView
+                    android:id="@+id/client"
+                    android:layout_width="155dp"
+                    android:layout_height="51dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginRight="36dp"
+                    android:background="@drawable/round_textview_full_white"
+                    android:gravity="center"
+                    android:text="Client"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adresse" />
 
                 <TextView
                     android:id="@+id/vehicule"
                     android:layout_width="157dp"
                     android:layout_height="51dp"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginLeft="64dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/round_textview"
+                    android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="vehicule"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/numero"
-                    android:layout_width="158dp"
-                    android:layout_height="52dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/round_textview"
+                    android:layout_width="159dp"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Numero"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/vehicule" />
+                    android:visibility="visible"
+                    app:layout_constraintStart_toEndOf="@+id/contact"
+                    app:layout_constraintTop_toBottomOf="@+id/adresse" />
 
                 <TextView
                     android:id="@+id/contact"
-                    android:layout_width="232dp"
-                    android:layout_height="46dp"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginLeft="64dp"
+                    android:layout_width="151dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/round_textview"
+                    android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Contact"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@+id/vehicule"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adresse" />
+                    app:layout_constraintTop_toBottomOf="@+id/adresse"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/adresse"
                     android:layout_width="474dp"
                     android:layout_height="54dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="188dp"
-                    android:layout_marginRight="188dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/round_textview"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginRight="36dp"
+                    android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:text="Adresse"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/client"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/numDevis" />
+                    app:layout_constraintTop_toBottomOf="@+id/details" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout2"
+                    android:id="@+id/dates"
                     android:layout_width="308dp"
                     android:layout_height="47dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginRight="35dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/round_textview"
+                    android:background="@drawable/round_textview_full_white"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/numero">
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <EditText
                         android:id="@+id/DateArrivee"
-                        android:layout_width="136dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="date" />
 
                     <EditText
                         android:id="@+id/DateDepart"
-                        android:layout_width="165dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
@@ -179,7 +176,7 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/materiel"
                 android:layout_width="536dp"
                 android:layout_height="97dp"
@@ -188,7 +185,7 @@
                 android:gravity="center"
                 android:text="Matériel Nécessaire" />
 
-            <TextView
+            <EditText
                 android:id="@+id/objet"
                 android:layout_width="532dp"
                 android:layout_height="87dp"
@@ -198,7 +195,7 @@
                 android:gravity="center"
                 android:text="Objet de l'intervention" />
 
-            <TextView
+            <EditText
                 android:id="@+id/observation"
                 android:layout_width="543dp"
                 android:layout_height="119dp"
@@ -207,7 +204,7 @@
                 android:gravity="center"
                 android:text="Observations" />
 
-            <TextView
+            <EditText
                 android:id="@+id/diagnostic"
                 android:layout_width="532dp"
                 android:layout_height="100dp"

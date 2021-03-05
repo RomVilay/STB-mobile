@@ -15,12 +15,12 @@ class Chantier(
     telContact: Long,
     techniciens: Array<User>,
     resp: User,
-    vehicule: Vehicule,
-    adresse:String,
-    objet:String,
-    materiel:String,
-    diagnostic:String,
-    observations:String
+    var vehicule: Vehicule,
+    var adresse:String,
+    val objet:String,
+    val materiel:String,
+    val diagnostic:String,
+    val observations:String
 
 ) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
     lateinit var DateDebut: LocalDateTime;

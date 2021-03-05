@@ -2,6 +2,7 @@ package com.example.applicationstb.ui.ficheChantier
 
 import android.media.Image
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.applicationstb.model.Chantier
@@ -32,12 +33,13 @@ class FicheChantierViewModel : ViewModel() {
                 "Lorem ipsum",
                 "Lorem ipsum",
                 "Lorem ipsum",
-                ""
+                "Obs"
             )
-            listeChantiers.add(chantier)
-            i++
+            listeChantiers.add(chantier);
+            i++;
         }
 
     }
+
     // TODO: Implement the ViewModel
 }
