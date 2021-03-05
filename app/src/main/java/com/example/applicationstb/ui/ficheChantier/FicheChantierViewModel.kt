@@ -3,8 +3,11 @@ package com.example.applicationstb.ui.ficheChantier
 import android.media.Image
 import android.os.Build
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
+import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.User
@@ -40,6 +43,10 @@ class FicheChantierViewModel : ViewModel() {
         }
 
     }
+    fun back(view:View){
+        Navigation.findNavController(view).navigate(R.id.versAccueil)
+    }
+    fun save(){}
 
     // TODO: Implement the ViewModel
 }

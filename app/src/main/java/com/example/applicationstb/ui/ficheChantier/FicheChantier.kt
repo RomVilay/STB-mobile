@@ -50,6 +50,8 @@ class FicheChantier : Fragment() {
         val dateDebut = layout.findViewById<EditText>(R.id.DateArrivee)
         val dateFin = layout.findViewById<EditText>(R.id.DateDepart)
         val showDetails = layout.findViewById<TextView>(R.id.details)
+        val quit = layout.findViewById<Button>(R.id.quit)
+        val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numDevis })
         var visibility = View.VISIBLE
 
@@ -83,6 +85,12 @@ class FicheChantier : Fragment() {
             var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
             dateDebut.setText(LocalDateTime.now().format(format))
 
+        }
+        quit.setOnClickListener {
+            viewModel.back(layout)
+        }
+        enregistrer.setOnClickListener {
+            viewModel.back(layout)
         }
         /*spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
