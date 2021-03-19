@@ -22,15 +22,21 @@ class Bobinage( numDevis: String,
                 var courant:String,
                 val callage:Boolean) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp){
 
-                    var sectionsFils = mapOf<Long,Int>();
+                    var sectionsFils = arrayListOf<Any>();
                     var nbSpires = 0;
-                    var Resistance = mapOf<String,Long>()
-                    var Isolement1 = mapOf<String,Long>()
-                    var Isolement2 = mapOf<String,Long>()
+                    var Resistance = mutableMapOf<String,Long>()
+                    var Isolement1 = mutableMapOf<String,Long>()
+                    var Isolement2 = mutableMapOf<String,Long>()
                     @RequiresApi(Build.VERSION_CODES.O)
                     var date = LocalDateTime.now() ;
                     var Observation = ""
                     var schema = arrayOf<Image>()
+                fun addSection(brins: Int, longueur: Long){
+                    sectionsFils.add(brins,longueur)
+                }
+                fun getSectionFils(): ArrayList<Any> {
+                    return sectionsFils
+                }
 
 
 

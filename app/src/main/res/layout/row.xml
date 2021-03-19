@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/lg"
+        android:layout_width="338dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="longueur" />
+
+    <TextView
+        android:id="@+id/brin"
+        android:layout_width="338dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="brins" />
+</LinearLayout>
