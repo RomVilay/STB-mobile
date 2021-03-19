@@ -1,7 +1,6 @@
 package com.example.applicationstb.ui.ficheChantier
 
-import android.app.Activity
-import android.opengl.Visibility
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -9,16 +8,12 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Chantier
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.reflect.typeOf
 
 class FicheChantier : Fragment() {
 
@@ -41,10 +36,10 @@ class FicheChantier : Fragment() {
         val observation = layout.findViewById<EditText>(R.id.observation)
         val diagnostic = layout.findViewById<EditText>(R.id.diagnostic)
         val selectButton = layout.findViewById<Button>(R.id.btnValider)
-        val client = layout.findViewById<TextView>(R.id.client)
+        val client = layout.findViewById<TextView>(R.id.puissance)
         val vehicule = layout.findViewById<TextView>(R.id.vehicule)
-        val contact = layout.findViewById<TextView>(R.id.contact)
-        val numero = layout.findViewById<TextView>(R.id.numero)
+        val contact = layout.findViewById<TextView>(R.id.marque)
+        val numero = layout.findViewById<TextView>(R.id.type)
         val adresse = layout.findViewById<TextView>(R.id.adresse)
         val dates = layout.findViewById<LinearLayout>(R.id.dates)
         val dateDebut = layout.findViewById<EditText>(R.id.DateArrivee)
@@ -54,6 +49,10 @@ class FicheChantier : Fragment() {
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numDevis })
         var visibility = View.VISIBLE
+        val swiew = layout.findViewById<View>(R.id.signTech)
+        val sclient: Bitmap? = null;
+        val stech: Bitmap? = null;
+
 
         showDetails.setOnClickListener {
             if (visibility == View.GONE){
@@ -90,6 +89,7 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
+            swiew
             viewModel.back(layout)
         }
         /*spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{

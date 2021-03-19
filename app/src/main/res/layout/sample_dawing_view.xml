@@ -1,16 +1,30 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.example.applicationstb.ui.DawingView
+        android:id="@+id/dawingView"
         style="@style/Widget.Theme.ApplicationSTB.MyView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="281dp"
+        android:layout_height="203dp"
         android:background="@drawable/round_textview"
         android:paddingLeft="20dp"
         android:paddingBottom="40dp"
         app:exampleDimension="24sp"
-        app:exampleString="Hello, DawingView" />
+        app:exampleString="Hello, DawingView"
+        tools:layout_editor_absoluteX="-6dp"
+        tools:layout_editor_absoluteY="-4dp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="278dp"
+        android:layout_height="60dp"
+        android:text="enregistrer"
+        app:backgroundTint="#3F51B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dawingView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

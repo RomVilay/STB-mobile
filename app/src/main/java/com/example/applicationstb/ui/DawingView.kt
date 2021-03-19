@@ -6,8 +6,10 @@ import android.media.MediaScannerConnection
 import android.media.MediaScannerConnection.OnScanCompletedListener
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import com.example.applicationstb.ui.ficheChantier.FicheChantierViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -42,7 +44,7 @@ class DawingView : View {
     private fun init(attrs: AttributeSet?, defStyle: Int) {
 
     }
-    fun save (context: Context) {
+    open fun save(context: Context) {
         val b: Bitmap? = null
 
 //create directory if not exist
@@ -86,6 +88,7 @@ class DawingView : View {
         // Force a view to draw again
         // Force a view to draw again
         postInvalidate()
+        save(context)
         return true
     }
 }
