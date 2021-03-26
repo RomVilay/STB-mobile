@@ -9,6 +9,7 @@
         android:id="@+id/lg"
         android:layout_width="338dp"
         android:layout_height="50dp"
+        android:background="@drawable/cell"
         android:gravity="center"
         android:text="longueur" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/brin"
         android:layout_width="338dp"
         android:layout_height="50dp"
+        android:background="@drawable/cell"
         android:gravity="center"
         android:text="brins" />
 </LinearLayout>

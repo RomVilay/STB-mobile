@@ -1,6 +1,10 @@
 package com.example.applicationstb.ui.ficheChantier
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -11,9 +15,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.applicationstb.R
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class FicheChantier : Fragment() {
 
@@ -22,6 +32,36 @@ class FicheChantier : Fragment() {
     }
 
     private lateinit var viewModel: FicheChantierViewModel
+
+    fun generateBitmapFromView(view: View): Bitmap {
+        val specWidth = View.MeasureSpec.makeMeasureSpec(1324, View.MeasureSpec.AT_MOST)
+        val specHeight = View.MeasureSpec.makeMeasureSpec(521, View.MeasureSpec.AT_MOST)
+        view.measure(specWidth, specHeight)
+        val width = view.measuredWidth
+        val height = view.measuredHeight
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.layout(view.left, view.top, view.right, view.bottom)
+        view.draw(canvas)
+        return bitmap
+    }
+    private fun saveImageToInternalStorage(bitmap :Bitmap):Uri{
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(requireActivity().application)
+        // The bellow line return a directory in internal storage
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+        file = File(file, "${UUID.randomUUID()}.jpg")
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+        // Return the saved image uri
+        return Uri.parse(file.absolutePath)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -50,8 +90,8 @@ class FicheChantier : Fragment() {
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numDevis })
         var visibility = View.VISIBLE
         val swiew = layout.findViewById<View>(R.id.signTech)
-        val sclient: Bitmap? = null;
-        val stech: Bitmap? = null;
+        var stech: Bitmap? = null;
+
 
 
         showDetails.setOnClickListener {
@@ -86,10 +126,16 @@ class FicheChantier : Fragment() {
 
         }
         quit.setOnClickListener {
+            stech = generateBitmapFromView(swiew)
+
+            Log.i("INFO",stech?.let { it1 -> saveImageToInternalStorage(it1) }.toString())
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-            swiew
+            stech = generateBitmapFromView(swiew)
+            Log.i("INFO","vue convertie to bitmap")
+
+            //Log.i("INFO",stech?.let { it1 -> saveImageToInternalStorage(it1) }.toString())
             viewModel.back(layout)
         }
         /*spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{

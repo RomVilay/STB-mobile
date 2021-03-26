@@ -12,6 +12,7 @@ import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.User
 import com.example.applicationstb.model.Vehicule
+import com.example.applicationstb.ui.DawingView
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -44,10 +45,13 @@ class FicheChantierViewModel : ViewModel() {
         }
 
     }
+
     fun back(view:View){
-        Navigation.findNavController(view).navigate(R.id.versAccueil)
+        Navigation.findNavController(view).navigate(R.id.deChantierversAccueil)
     }
-    fun save(){}
+    fun save(){
+
+    }
 
     // TODO: Implement the ViewModel
 }

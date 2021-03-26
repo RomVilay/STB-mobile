@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import com.example.applicationstb.R
 import com.example.applicationstb.ui.ficheChantier.FicheChantierViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -20,16 +21,16 @@ import java.io.OutputStream
  */
 class DawingView : View {
     private val paintColor = Color.BLACK
-    private var drawPaint: Paint? = null
-    private val path: Path = Path()
+    var drawPaint: Paint? = null
+    val path: Path = Path()
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         init(attrs, 0)
         setFocusable(true);
         setFocusableInTouchMode(true);
         setupPaint();
-    }
 
+    }
     private fun setupPaint() {
         // Setup paint with color and stroke styles
         drawPaint = Paint()
@@ -88,7 +89,6 @@ class DawingView : View {
         // Force a view to draw again
         // Force a view to draw again
         postInvalidate()
-        save(context)
         return true
     }
 }

@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.Section
 
-class FillAdapter (private var list: ArrayList<Any>) :
+class FillAdapter (private var list: ArrayList<Section>) :
     RecyclerView.Adapter<FillAdapter.ViewHolder>() {
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var longueur: TextView
         var brins: TextView
-
         init {
             // Define click listener for the ViewHolder's View.
             longueur = view.findViewById(R.id.lg)
@@ -26,11 +27,14 @@ class FillAdapter (private var list: ArrayList<Any>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var i = list.iterator()
-
+        holder.longueur.text = list[position].longueur.toString()
+        holder.brins.text = list[position].brins.toString()
     }
 
+    fun update (sections: ArrayList<Section>){
+        this.list =sections
+    }
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return list.size
     }
 }

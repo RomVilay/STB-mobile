@@ -32,6 +32,14 @@
                 android:contentDescription="logoSTB"
                 android:src="@drawable/logo_grand_format" />
 
+            <TextView
+                android:id="@+id/titre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Fiche rebobinage"
+                android:textSize="24sp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -275,7 +283,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/titre"
+                    android:id="@+id/addsection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="76dp"
@@ -295,14 +303,14 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="nbfils"
+                    android:inputType="number"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titre" />
+                    app:layout_constraintTop_toBottomOf="@+id/addsection" />
 
                 <EditText
-                    android:id="@+id/longueur"
+                    android:id="@+id/inputlongueur"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="344dp"
@@ -310,11 +318,11 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="longueur"
+                    android:inputType="text"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titre" />
+                    app:layout_constraintTop_toBottomOf="@+id/addsection" />
 
                 <TextView
                     android:id="@+id/x"
@@ -323,7 +331,7 @@
                     android:layout_marginBottom="32dp"
                     android:text="x"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/longueur"
+                    app:layout_constraintEnd_toStartOf="@+id/inputlongueur"
                     app:layout_constraintHorizontal_bias="0.49"
                     app:layout_constraintStart_toEndOf="@+id/nbfils" />
 
@@ -336,7 +344,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.275"
-                    app:layout_constraintStart_toEndOf="@+id/longueur"
+                    app:layout_constraintStart_toEndOf="@+id/inputlongueur"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.75" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -366,21 +374,25 @@
                         android:layout_width="218dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="@drawable/cell"
                         android:gravity="center"
                         android:text="nombre de brins" />
 
                     <TextView
-                        android:id="@+id/longueur"
+                        android:id="@+id/textlongueur"
                         android:layout_width="208dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="@drawable/cell"
                         android:gravity="center"
                         android:text="longueur" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tab"
                     android:layout_width="428dp"
-                    android:layout_height="178dp" />
+                    android:layout_height="178dp"
+                    android:background="@drawable/cell" />
 
                 <LinearLayout
                     android:layout_width="429dp"
@@ -402,9 +414,275 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/cell"
+                        android:gravity="center"
                         android:text="0" />
                 </LinearLayout>
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="361dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:gravity="center|start"
+                    android:text="Nombre de Spires" />
+
+                <EditText
+                    android:id="@+id/spire"
+                    android:layout_width="10dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/titreR"
+                android:layout_width="615dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Résistances"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="518dp"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/Rtension"
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="U ="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/RU"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:text="10" />
+
+                <TextView
+                    android:id="@+id/Rintensité"
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="V"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/RV"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:text="10" />
+
+                <TextView
+                    android:id="@+id/Rpuissance"
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="W"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/RW"
+                    android:layout_width="99dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:text="10" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/titreI"
+                android:layout_width="619dp"
+                android:layout_height="26dp"
+                android:gravity="start"
+                android:text="Isolement"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="520dp"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/Itension"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="U/t.="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/IU"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/Iintensité"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="V/t. ="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/IV"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/Ipuissance"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="W/t.="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/IW"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/titreII"
+                android:layout_width="620dp"
+                android:layout_height="26dp"
+                android:gravity="start"
+                android:text="Isolement"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="521dp"
+                android:layout_height="41dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/IItension"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="U/V="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/IIU"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/IIintensité"
+                    android:layout_width="54dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="U/W ="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/IIV"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:id="@+id/IIpuissance"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="V/W ="
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/IIW"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/schema"
+                android:layout_width="308dp"
+                android:layout_height="45dp"
+                android:text="Schéma"
+                app:backgroundTint="#939393"
+                app:cornerRadius="60px" />
+
+            <EditText
+                android:id="@+id/dateRebobinage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_textview"
+                android:ems="10"
+                android:inputType="date" />
+
+            <EditText
+                android:id="@+id/observations"
+                android:layout_width="499dp"
+                android:layout_height="100dp"
+                android:background="@drawable/round_textview"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:text="Observations" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

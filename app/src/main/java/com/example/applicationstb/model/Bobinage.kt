@@ -5,6 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.LocalDateTime
 
+class Section (var brins:Int, var longueur: Double){
+}
+
 class Bobinage( numDevis: String,
                 numChantier: String,
                 client: Client,
@@ -21,8 +24,7 @@ class Bobinage( numDevis: String,
                 var frequence:String,
                 var courant:String,
                 val callage:Boolean) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp){
-
-                    var sectionsFils = arrayListOf<Any>();
+                    var sectionsFils = arrayListOf<Section>();
                     var nbSpires = 0;
                     var Resistance = mutableMapOf<String,Long>()
                     var Isolement1 = mutableMapOf<String,Long>()
@@ -31,10 +33,10 @@ class Bobinage( numDevis: String,
                     var date = LocalDateTime.now() ;
                     var Observation = ""
                     var schema = arrayOf<Image>()
-                fun addSection(brins: Int, longueur: Long){
-                    sectionsFils.add(brins,longueur)
+                fun addSection(brins: Int, longueur: Double){
+                    sectionsFils.add(Section(brins,longueur))
                 }
-                fun getSectionFils(): ArrayList<Any> {
+                fun getSectionFils(): ArrayList<Section> {
                     return sectionsFils
                 }
 
