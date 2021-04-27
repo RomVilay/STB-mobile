@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.ficheBobinage
 
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,8 @@ class FicheBobinageViewModel : ViewModel() {
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User(0,"Dumont","Toto",1,"toto","toto")
     var sections = MutableLiveData<MutableList<Section>>()
+    var schemas = MutableLiveData<MutableList<Uri>>()
+
     init {
         var i =0
         while (i<10)
@@ -44,6 +47,10 @@ class FicheBobinageViewModel : ViewModel() {
         sections.value = listeBobinage[0].sectionsFils
         //Log.i("INFO", "add section $brins - $longueur")
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
+    }
+    fun addSchema(schema: Uri) {
+        listeBobinage[0].addSchema(schema)
+        schemas.value=listeBobinage[0].schemas
     }
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { it.longueur }

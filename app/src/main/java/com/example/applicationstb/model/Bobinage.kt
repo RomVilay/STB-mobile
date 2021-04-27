@@ -1,6 +1,7 @@
 package com.example.applicationstb.model
 
 import android.media.Image
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.LocalDateTime
@@ -32,9 +33,12 @@ class Bobinage( numDevis: String,
                     @RequiresApi(Build.VERSION_CODES.O)
                     var date = LocalDateTime.now() ;
                     var Observation = ""
-                    var schema = arrayOf<Image>()
+                    var schemas : MutableList<Uri> = mutableListOf();
                 fun addSection(brins: Int, longueur: Double){
                     sectionsFils.add(Section(brins,longueur))
+                }
+                fun addSchema (uri: Uri){
+                    schemas.add(uri)
                 }
                 fun getSectionFils(): List<Section> {
                     return sectionsFils

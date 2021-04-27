@@ -667,11 +667,12 @@
                 app:backgroundTint="#939393"
                 app:cornerRadius="60px" />
 
-            <ImageView
-                android:id="@+id/photoSchema"
-                android:layout_width="420dp"
-                android:layout_height="137dp"
-                tools:src="@tools:sample/backgrounds/scenic" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/schemas"
+                android:layout_width="602dp"
+                android:layout_height="188dp"
+                android:layout_margin="10px"
+                android:background="@drawable/round_textview" />
 
             <EditText
                 android:id="@+id/dateRebobinage"
