@@ -1,7 +1,11 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.util.Log
+import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
+import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 
 class FicheBobinageViewModel : ViewModel() {
@@ -9,7 +13,7 @@ class FicheBobinageViewModel : ViewModel() {
     var listeBobinage = arrayListOf<Bobinage>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User(0,"Dumont","Toto",1,"toto","toto")
-    var sections = arrayListOf<Section>()
+    var sections = MutableLiveData<MutableList<Section>>()
     init {
         var i =0
         while (i<10)
@@ -34,19 +38,21 @@ class FicheBobinageViewModel : ViewModel() {
             listeBobinage.add(bobinage);
             i++;
         }
-        addSection(2,"2".toDouble())
     }
     fun addSection(brins:Int, longueur:Double){
         listeBobinage[0].addSection(brins, longueur)
-        Log.i("INFO", "section $brins - $longueur")
+        sections.value = listeBobinage[0].sectionsFils
+        //Log.i("INFO", "add section $brins - $longueur")
+        //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
-    fun setSections(index:Int){
-        sections = listeBobinage[index].sectionsFils
-    }
-    fun somme(): Double {
-        var tab = sections.map { it.longueur }
+    fun somme(list: MutableList<Section>): Double {
+        var tab = list.map { it.longueur }
+        Log.i("info", tab.toString())
         return tab.sum()
     }
-
+    fun back(view: View){
+        Navigation.findNavController(view).navigate(R.id.deBobinageverAccueil)
+    }
+    fun save(){}
     // TODO: Implement the ViewModel
 }

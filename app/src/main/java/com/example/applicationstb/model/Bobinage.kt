@@ -24,7 +24,7 @@ class Bobinage( numDevis: String,
                 var frequence:String,
                 var courant:String,
                 val callage:Boolean) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp){
-                    var sectionsFils = arrayListOf<Section>();
+                    var sectionsFils : MutableList<Section> = mutableListOf();
                     var nbSpires = 0;
                     var Resistance = mutableMapOf<String,Long>()
                     var Isolement1 = mutableMapOf<String,Long>()
@@ -36,8 +36,11 @@ class Bobinage( numDevis: String,
                 fun addSection(brins: Int, longueur: Double){
                     sectionsFils.add(Section(brins,longueur))
                 }
-                fun getSectionFils(): ArrayList<Section> {
+                fun getSectionFils(): List<Section> {
                     return sectionsFils
+                }
+                fun getSection(index: Int): String {
+                    return "nb brins:"+sectionsFils[index].brins+" - longueur: "+sectionsFils[index].longueur
                 }
 
 
