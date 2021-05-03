@@ -101,7 +101,7 @@ class FicheBobinage : Fragment() {
         })
 
         schemas = layout.findViewById(R.id.schemas)
-        schemas.layoutManager = LinearLayoutManager(context)
+        schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
         viewModel.schemas.observe(viewLifecycleOwner, {
             sAdapter.update(it)
@@ -177,14 +177,13 @@ class FicheBobinage : Fragment() {
             //imageView.setImageBitmap(photo)
             val uri = context?.let { photo.saveImage(it.applicationContext) }
             if (uri != null) {
-                //viewModel.addSchema(uri)
+                viewModel.addSchema(uri)
             }
             Log.i("INFO",uri.toString())
         }
     }
 
     fun Bitmap.saveImage(context: Context): Uri? {
-
             val values = ContentValues()
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
             values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)

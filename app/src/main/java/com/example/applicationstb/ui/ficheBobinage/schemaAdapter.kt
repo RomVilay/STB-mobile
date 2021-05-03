@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class schemaAdapter(var schemas: List<Uri>) :
     }
     fun update (list: MutableList<Uri>){
         this.schemas = list ///erreur du type sur l'objet transmis
+        Log.i("INFO",schemas.toString())
         notifyDataSetChanged()
     }
 

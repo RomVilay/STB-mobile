@@ -9,7 +9,7 @@ import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 
-abstract class FicheBobinageViewModel : ViewModel() {
+class FicheBobinageViewModel : ViewModel() {
 
     var listeBobinage = arrayListOf<Bobinage>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
@@ -42,6 +42,7 @@ abstract class FicheBobinageViewModel : ViewModel() {
             listeBobinage.add(bobinage);
             i++;
         }
+        bobinage.value = listeBobinage[0]
     }
     fun selectBobinage(index: Int){
         bobinage.value = listeBobinage[index];
@@ -60,7 +61,7 @@ abstract class FicheBobinageViewModel : ViewModel() {
     }
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { it.longueur }
-        Log.i("info", tab.toString())
+        //Log.i("info", tab.toString())
         return tab.sum()
     }
     fun back(view: View){
