@@ -660,7 +660,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/schema"
+                android:id="@+id/addschema"
                 android:layout_width="308dp"
                 android:layout_height="45dp"
                 android:text="Schéma"

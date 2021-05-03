@@ -9,13 +9,14 @@ import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 
-class FicheBobinageViewModel : ViewModel() {
+abstract class FicheBobinageViewModel : ViewModel() {
 
     var listeBobinage = arrayListOf<Bobinage>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User(0,"Dumont","Toto",1,"toto","toto")
     var sections = MutableLiveData<MutableList<Section>>()
     var schemas = MutableLiveData<MutableList<Uri>>()
+    var bobinage = MutableLiveData<Bobinage>()
 
     init {
         var i =0
@@ -41,6 +42,11 @@ class FicheBobinageViewModel : ViewModel() {
             listeBobinage.add(bobinage);
             i++;
         }
+    }
+    fun selectBobinage(index: Int){
+        bobinage.value = listeBobinage[index];
+        sections.value = bobinage.value!!.sectionsFils
+        schemas.value = bobinage.value!!.schemas
     }
     fun addSection(brins:Int, longueur:Double){
         listeBobinage[0].addSection(brins, longueur)

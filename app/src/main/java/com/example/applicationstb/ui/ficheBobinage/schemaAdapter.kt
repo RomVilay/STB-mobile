@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Section
 
 class schemaAdapter(var schemas: List<Uri>) :
     RecyclerView.Adapter<schemaAdapter.ViewHolder>() {

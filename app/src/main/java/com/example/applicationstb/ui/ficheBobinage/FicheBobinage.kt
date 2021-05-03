@@ -82,7 +82,7 @@ class FicheBobinage : Fragment() {
         var IIU = layout.findViewById<EditText>(R.id.IIU)
         var IIV = layout.findViewById<EditText>(R.id.IIV)
         var IIW = layout.findViewById<EditText>(R.id.IIW)
-        var schema = layout.findViewById<Button>(R.id.schema)
+        var addschema = layout.findViewById<Button>(R.id.addschema)
         var obs = layout.findViewById<EditText>(R.id.observations)
         var som = layout.findViewById<TextView>(R.id.somme)
         var spire = layout.findViewById<EditText>(R.id.spire)
@@ -106,9 +106,8 @@ class FicheBobinage : Fragment() {
         viewModel.schemas.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
-
-        btnSelect.setOnClickListener {
-            var bobinage = viewModel.listeBobinage.find{it.numDevis == spinner.selectedItem}
+        viewModel.bobinage.observe(viewLifecycleOwner,{
+            var bobinage = viewModel.bobinage.value
             marque.setText(bobinage?.marque)
             type.setText(bobinage?.type)
             vitesse.setText(bobinage?.vitesse.toString())
@@ -123,6 +122,10 @@ class FicheBobinage : Fragment() {
             }
             /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
             dateDebut.setText(LocalDateTime.now().format(format))*/
+        })
+
+        btnSelect.setOnClickListener {
+            viewModel.selectBobinage(spinner.selectedItemPosition)
         }
 
         details.setOnClickListener {
@@ -152,14 +155,13 @@ class FicheBobinage : Fragment() {
                 som.setText(viewModel.somme(bobinage.sectionsFils).toString())
             }
         }
-        schema.setOnClickListener {
+        addschema.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraIntent, PHOTO_RESULT)
         }
         quit.setOnClickListener {
             viewModel.back(layout)
         }
-
         return layout
     }
 
@@ -174,6 +176,9 @@ class FicheBobinage : Fragment() {
             val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
             val uri = context?.let { photo.saveImage(it.applicationContext) }
+            if (uri != null) {
+                //viewModel.addSchema(uri)
+            }
             Log.i("INFO",uri.toString())
         }
     }
