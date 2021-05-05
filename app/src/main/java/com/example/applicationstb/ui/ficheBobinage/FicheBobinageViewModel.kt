@@ -67,6 +67,10 @@ class FicheBobinageViewModel : ViewModel() {
     fun back(view: View){
         Navigation.findNavController(view).navigate(R.id.deBobinageverAccueil)
     }
+    fun fullScreen(view: View,uri:Uri) {
+        val action =
+        Navigation.findNavController(view).navigate(R.id.versFullScreen)
+    }
     fun save(){}
     // TODO: Implement the ViewModel
 }

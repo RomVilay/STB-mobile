@@ -61,6 +61,9 @@
         <action
             android:id="@+id/deBobinageverAccueil"
             app:destination="@id/accueil" />
+        <action
+            android:id="@+id/versFullScreen"
+            app:destination="@id/schema_fragment" />
     </fragment>
     <fragment
         android:id="@+id/ficheRemontage"
@@ -70,5 +73,17 @@
         <action
             android:id="@+id/deRemontageverAccueil"
             app:destination="@id/accueil" />
+    </fragment>
+    <fragment
+        android:id="@+id/schema_fragment"
+        android:name="com.example.applicationstb.schema_fragment"
+        android:label="fragment_schema_fragment"
+        tools:layout="@layout/schema_fragment" >
+        <action
+            android:id="@+id/action_schema_fragment_to_ficheBobinage"
+            app:destination="@id/ficheBobinage" />
+        <argument
+            android:name="schemaUri"
+            app:argType="string" />
     </fragment>
 </navigation>

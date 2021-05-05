@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ficheBobinage.Schema">
+    tools:context=".ui.ficheBobinage.schema_fragment" >
+    <data>
+        <android:variable name="uri" type="com.example.applicationstb.ui.ficheBobinage.SchemaViewModel" />
+    </data>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <ImageView
+        android:id="@+id/fond"
+        android:layout_width="762dp"
+        android:layout_height="1029dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/retour"
+        android:layout_width="190dp"
+        android:layout_height="78dp"
+        android:text="retour"
+        android:textSize="24sp"
+        app:backgroundTint="#808080"
+        tools:layout_editor_absoluteX="289dp"
+        tools:layout_editor_absoluteY="861dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

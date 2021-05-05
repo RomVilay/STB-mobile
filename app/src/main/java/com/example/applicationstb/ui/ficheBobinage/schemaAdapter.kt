@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 
-class schemaAdapter(var schemas: List<Uri>) :
+class schemaAdapter(var schemas: List<Uri>, ) :
     RecyclerView.Adapter<schemaAdapter.ViewHolder>() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             var schema: ImageView
@@ -20,6 +22,10 @@ class schemaAdapter(var schemas: List<Uri>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.schema, parent, false)
+        /*val binding = DataBindingUtil.inflate<SchemaBinding>(LayoutInflater.from())
+        view.setOnClickListener({
+            callback(view.adapterPosition)
+        })*/
         return ViewHolder(view)
     }
 
