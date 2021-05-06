@@ -90,7 +90,6 @@ class FicheBobinage : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.observations)
         var som = layout.findViewById<TextView>(R.id.somme)
         var spire = layout.findViewById<EditText>(R.id.spire)
-        //imageView = layout.findViewById(R.id.photoSchema)
         var enrg = layout.findViewById<Button>(R.id.enregistrer)
         var quit = layout.findViewById<Button>(R.id.quit)
         if (activity?.let { ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.CAMERA) }
@@ -109,6 +108,11 @@ class FicheBobinage : Fragment() {
         schemas.adapter = sAdapter
         viewModel.schemas.observe(viewLifecycleOwner, {
             sAdapter.update(it)
+            if ( viewModel.schemas.value?.size == 0){
+                schemas.visibility = View.GONE
+            } else {
+                schemas.visibility = View.VISIBLE
+            }
         })
         viewModel.bobinage.observe(viewLifecycleOwner,{
             var bobinage = viewModel.bobinage.value

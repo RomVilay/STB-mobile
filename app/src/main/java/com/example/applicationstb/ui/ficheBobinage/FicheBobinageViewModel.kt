@@ -72,7 +72,6 @@ class FicheBobinageViewModel : ViewModel() {
         Navigation.findNavController(view).navigate(R.id.de_fscreen_vers_fb)
     }
     fun setSchema(sch: Uri){
-        //schema.value = schemas.value!![index]
         schema.value = sch
         Log.i("INFO", sch.toString())
     }

@@ -11,9 +11,9 @@
         android:id="@+id/fond"
         android:layout_width="742dp"
         android:layout_height="910dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/backgrounds/scenic" />
@@ -24,10 +24,10 @@
         android:layout_height="78dp"
         android:layout_marginStart="288dp"
         android:layout_marginLeft="288dp"
-        android:layout_marginTop="896dp"
+        android:layout_marginTop="836dp"
         android:text="retour"
         android:textSize="24sp"
         app:backgroundTint="#808080"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fond" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

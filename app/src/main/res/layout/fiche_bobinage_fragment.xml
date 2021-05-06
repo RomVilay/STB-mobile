@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ficheChantier.FicheChantier" >
+    tools:context=".ui.ficheChantier.FicheChantier">
 
     <ScrollView
         android:layout_width="765dp"
@@ -454,13 +454,13 @@
                 android:textSize="18sp" />
 
             <LinearLayout
-                android:layout_width="518dp"
+                android:layout_width="520dp"
                 android:layout_height="40dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/Rtension"
-                    android:layout_width="32dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -475,16 +475,15 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName"
-                    android:text="10" />
+                    android:inputType="textPersonName" />
 
                 <TextView
                     android:id="@+id/Rintensité"
-                    android:layout_width="32dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="V"
+                    android:text="V ="
                     android:textSize="18sp" />
 
                 <EditText
@@ -495,28 +494,26 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName"
-                    android:text="10" />
+                    android:inputType="textPersonName" />
 
                 <TextView
                     android:id="@+id/Rpuissance"
-                    android:layout_width="32dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="W"
+                    android:text=" W = "
                     android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/RW"
-                    android:layout_width="99dp"
+                    android:layout_width="95dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName"
-                    android:text="10" />
+                    android:inputType="textPersonName" />
             </LinearLayout>
 
             <TextView
@@ -534,7 +531,7 @@
 
                 <TextView
                     android:id="@+id/Itension"
-                    android:layout_width="51dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -575,7 +572,8 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="W/t.="
+                    android:gravity="center"
+                    android:text=" W/t.="
                     android:textSize="18sp" />
 
                 <EditText
@@ -598,13 +596,13 @@
                 android:textSize="18sp" />
 
             <LinearLayout
-                android:layout_width="521dp"
-                android:layout_height="41dp"
+                android:layout_width="520dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/IItension"
-                    android:layout_width="51dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -623,7 +621,7 @@
 
                 <TextView
                     android:id="@+id/IIintensité"
-                    android:layout_width="54dp"
+                    android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -645,7 +643,8 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="V/W ="
+                    android:gravity="center"
+                    android:text=" V/W ="
                     android:textSize="18sp" />
 
                 <EditText
@@ -663,21 +662,24 @@
                 android:id="@+id/addschema"
                 android:layout_width="308dp"
                 android:layout_height="45dp"
-                android:text="Schéma"
+                android:text="Ajouter un Schéma"
                 app:backgroundTint="#939393"
                 app:cornerRadius="60px" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/schemas"
                 android:layout_width="602dp"
-                android:layout_height="188dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10px"
-                android:background="@drawable/round_textview" />
+                android:background="@drawable/round_textview"
+                android:padding="7dp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/dateRebobinage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="7dp"
                 android:background="@drawable/round_textview"
                 android:ems="10"
                 android:inputType="date" />
@@ -690,6 +692,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:padding="7dp"
                 android:text="Observations" />
 
             <LinearLayout
@@ -718,5 +721,19 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="359dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="299dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
