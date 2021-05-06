@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import java.io.OutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class FicheBobinage : Fragment() {
@@ -66,6 +68,8 @@ class FicheBobinage : Fragment() {
         var marque = layout.findViewById<EditText>(R.id.marque)
         var switch = layout.findViewById<Switch>(R.id.switch2)
         var dates = layout.findViewById<LinearLayout>(R.id.dates)
+        var dated = layout.findViewById<TextView>(R.id.DateDebut)
+        var datef = layout.findViewById<TextView>(R.id.DateFin)
         var details = layout.findViewById<TextView>(R.id.details)
         val adapter = FillAdapter(viewModel.listeBobinage[0].sectionsFils)
         val sAdapter = schemaAdapter(viewModel.listeBobinage[0].schemas,{ item ->
@@ -134,6 +138,8 @@ class FicheBobinage : Fragment() {
 
         btnSelect.setOnClickListener {
             viewModel.selectBobinage(spinner.selectedItemPosition)
+            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            dated.setText(LocalDateTime.now().format(format))
         }
 
         details.setOnClickListener {

@@ -37,7 +37,6 @@ class FicheChantierViewModel : ViewModel() {
                 "Lorem ipsum",
                 "Lorem ipsum",
                 "Lorem ipsum",
-                "Obs"
 
             )
             listeChantiers.add(chantier);

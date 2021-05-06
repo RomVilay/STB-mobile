@@ -19,7 +19,6 @@ class Chantier(
     var adresse:String,
     val objet:String,
     val materiel:String,
-    val diagnostic:String,
     val observations:String
 
 ) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
