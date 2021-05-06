@@ -63,7 +63,7 @@
             app:destination="@id/accueil" />
         <action
             android:id="@+id/versFullScreen"
-            app:destination="@id/schema_fragment" />
+            app:destination="@id/schemaFragment" />
     </fragment>
     <fragment
         android:id="@+id/ficheRemontage"
@@ -75,12 +75,12 @@
             app:destination="@id/accueil" />
     </fragment>
     <fragment
-        android:id="@+id/schema_fragment"
-        android:name="com.example.applicationstb.schema_fragment"
-        android:label="fragment_schema_fragment"
-        tools:layout="@layout/schema_fragment" >
+        android:id="@+id/schemaFragment"
+        android:name="com.example.applicationstb.ui.ficheBobinage.SchemaFragment"
+        android:label="fragment_schemaFragment"
+        tools:layout="@layout/schema_fragment">
         <action
-            android:id="@+id/action_schema_fragment_to_ficheBobinage"
+            android:id="@+id/de_fscreen_vers_fb"
             app:destination="@id/ficheBobinage" />
         <argument
             android:name="schemaUri"

@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +35,7 @@ class FicheBobinage : Fragment() {
         fun newInstance() = FicheBobinage()
     }
 
-    private lateinit var viewModel: FicheBobinageViewModel
+    private val viewModel: FicheBobinageViewModel by activityViewModels()
     private lateinit var recycler:RecyclerView
     private lateinit var schemas:RecyclerView
     private  val PHOTO_RESULT = 1888
@@ -46,7 +47,7 @@ class FicheBobinage : Fragment() {
     ): View? {
 
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
-        viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
 
         //champs détails
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
@@ -67,7 +68,10 @@ class FicheBobinage : Fragment() {
         var dates = layout.findViewById<LinearLayout>(R.id.dates)
         var details = layout.findViewById<TextView>(R.id.details)
         val adapter = FillAdapter(viewModel.listeBobinage[0].sectionsFils)
-        val sAdapter = schemaAdapter(viewModel.listeBobinage[0].schemas)
+        val sAdapter = schemaAdapter(viewModel.listeBobinage[0].schemas,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(layout)
+        })
         var visibility = View.VISIBLE
         //champs fils
         var btnfils = layout.findViewById<Button>(R.id.ajoutFil)

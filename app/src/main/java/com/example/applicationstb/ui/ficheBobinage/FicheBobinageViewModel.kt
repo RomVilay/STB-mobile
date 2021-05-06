@@ -17,6 +17,7 @@ class FicheBobinageViewModel : ViewModel() {
     var sections = MutableLiveData<MutableList<Section>>()
     var schemas = MutableLiveData<MutableList<Uri>>()
     var bobinage = MutableLiveData<Bobinage>()
+    var schema = MutableLiveData<Uri>()
 
     init {
         var i =0
@@ -67,8 +68,15 @@ class FicheBobinageViewModel : ViewModel() {
     fun back(view: View){
         Navigation.findNavController(view).navigate(R.id.deBobinageverAccueil)
     }
-    fun fullScreen(view: View,uri:Uri) {
-        val action =
+    fun backFs(view: View){
+        Navigation.findNavController(view).navigate(R.id.de_fscreen_vers_fb)
+    }
+    fun setSchema(sch: Uri){
+        //schema.value = schemas.value!![index]
+        schema.value = sch
+        Log.i("INFO", sch.toString())
+    }
+    fun fullScreen(view: View) {
         Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
     fun save(){}
