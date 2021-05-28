@@ -13,7 +13,7 @@ class FicheBobinageViewModel : ViewModel() {
 
     var listeBobinage = arrayListOf<Bobinage>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
-    var tech = User(0,"Dumont","Toto",1,"toto","toto")
+    var tech = User("0","Dumont","Toto",1,"toto","toto","0")
     var sections = MutableLiveData<MutableList<Section>>()
     var schemas = MutableLiveData<MutableList<Uri>>()
     var bobinage = MutableLiveData<Bobinage>()

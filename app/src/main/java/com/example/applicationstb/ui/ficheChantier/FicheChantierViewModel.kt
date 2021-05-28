@@ -1,10 +1,10 @@
 package com.example.applicationstb.ui.ficheChantier
 
-import android.media.Image
+import android.graphics.Bitmap
 import android.os.Build
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
@@ -12,15 +12,14 @@ import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.User
 import com.example.applicationstb.model.Vehicule
-import com.example.applicationstb.ui.DawingView
-import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class FicheChantierViewModel : ViewModel() {
     var listeChantiers = arrayListOf<Chantier>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
-    var listeTechs = arrayOf<User>(User(0,"Dumont","Toto",1,"toto","toto"),
-        User(0,"Dumont","Tom",1,"tom","tom"))
+    var signature = MutableLiveData<Bitmap>()
+    var listeTechs = arrayOf<User>(User("0","Dumont","Toto",1,"toto","toto","0"),
+        User("0","Dumont","Tom",1,"tom","tom","0"))
     init {
         var i =0
         while (i<10)
@@ -48,6 +47,10 @@ class FicheChantierViewModel : ViewModel() {
     fun back(view:View){
         Navigation.findNavController(view).navigate(R.id.deChantierversAccueil)
     }
+    fun setSignature(sign:Bitmap){
+        signature.value = sign
+    }
+
     fun save(){
 
     }

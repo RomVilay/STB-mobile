@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.applicationstb.ui.DawingView
+    <com.example.applicationstb.ui.ficheChantier.DawingView
         android:id="@+id/dawingView"
         style="@style/Widget.Theme.ApplicationSTB.MyView"
         android:layout_width="281dp"
@@ -17,13 +17,5 @@
         app:exampleString="Hello, DawingView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="254dp"
-        android:layout_height="55dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dawingView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

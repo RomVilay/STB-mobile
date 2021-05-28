@@ -1,4 +1,4 @@
-package com.example.applicationstb.ui
+package com.example.applicationstb.ui.ficheChantier
 
 import android.content.Context
 import android.graphics.*
@@ -6,11 +6,8 @@ import android.media.MediaScannerConnection
 import android.media.MediaScannerConnection.OnScanCompletedListener
 import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import com.example.applicationstb.R
-import com.example.applicationstb.ui.ficheChantier.FicheChantierViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -20,6 +17,7 @@ import java.io.OutputStream
  * TODO: document your custom view class.
  */
 class DawingView : View {
+
     private val paintColor = Color.BLACK
     var drawPaint: Paint? = null
     val path: Path = Path()
@@ -48,7 +46,7 @@ class DawingView : View {
     open fun save(context: Context) {
         val b: Bitmap? = null
 
-//create directory if not exist
+    //create directory if not exist
         val dir = File("/sdcard/tempfolder/")
         if (!dir.exists()) {
             dir.mkdirs()
@@ -65,7 +63,7 @@ class DawingView : View {
 
             //this code will scan the image so that it will appear in your gallery when you open next time
             MediaScannerConnection.scanFile(context, arrayOf(output.toString()), null,
-                    OnScanCompletedListener { path, uri -> Log.d("appname", "image is saved in gallery and gallery is refreshed.") }
+                    OnScanCompletedListener { path, uri -> Log.d("stbApp", "image is saved in gallery and gallery is refreshed.") }
             )
         } catch (e: Exception) {
         }

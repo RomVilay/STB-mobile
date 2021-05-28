@@ -90,10 +90,8 @@ class FicheChantier : Fragment() {
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numDevis })
         var visibility = View.VISIBLE
-        val swiew = layout.findViewById<View>(R.id.signTech)
+        val swiew = layout.findViewById<DawingView>(R.id.signTech)
         var stech: Bitmap? = null;
-
-
 
         showDetails.setOnClickListener {
             if (visibility == View.GONE){
@@ -132,9 +130,10 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-            stech = generateBitmapFromView(swiew)
-            Log.i("INFO","vue convertie to bitmap")
-            context?.let { it1 -> stech!!.saveImage(it1) }
+            //s = Bitmap.createBitmap(swiew.path)
+            //stech = generateBitmapFromView(swiew)
+            //Log.i("INFO","vue convertie to bitmap")
+            //context?.let { it1 -> stech!!.saveImage(it1) }
             viewModel.back(layout)
         }
         /*spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{

@@ -27,9 +27,9 @@
             android:id="@+id/cardView"
             android:layout_width="263dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="70px"
-            app:layout_constraintBottom_toTopOf="@+id/btnRebobinage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +43,11 @@
                 android:background="@drawable/round_textview_full_grey"
                 android:gravity="center"
                 android:padding="70px"
-                android:text="Réparations"
+                android:text="RÉPARATIONS"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/list"
@@ -82,44 +84,38 @@
             android:id="@+id/btnChantier"
             android:layout_width="253dp"
             android:layout_height="121dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="70dp"
             android:text="Chantiers"
             android:textSize="25sp"
             app:backgroundTint="#939393"
             app:cornerRadius="70px"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.038" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <Button
             android:id="@+id/btnRebobinage"
             android:layout_width="244dp"
             android:layout_height="104dp"
-            android:layout_marginBottom="160dp"
+            android:layout_marginTop="70dp"
             android:text="Rebobinage"
             android:textSize="25sp"
             app:backgroundTint="#939393"
             app:cornerRadius="70px"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.849" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
             android:id="@+id/btnDeco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="46dp"
             android:text="Déconnexion"
             android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRebobinage"
-            app:layout_constraintVertical_bias="0.273" />
+            app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

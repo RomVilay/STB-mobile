@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.ficheChantier.FicheChantier" >
+
 
     <ScrollView
         android:layout_width="765dp"
@@ -218,7 +220,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.example.applicationstb.ui.DawingView
+                <com.example.applicationstb.ui.ficheChantier.DawingView
                     android:id="@+id/signclient"
                     android:layout_width="242dp"
                     android:layout_height="105dp"
@@ -229,7 +231,7 @@
                     android:gravity="center"
                     android:text="Signature Client" />
 
-                <com.example.applicationstb.ui.DawingView
+                <com.example.applicationstb.ui.ficheChantier.DawingView
                     android:id="@+id/signTech"
                     android:layout_width="271dp"
                     android:layout_height="104dp"

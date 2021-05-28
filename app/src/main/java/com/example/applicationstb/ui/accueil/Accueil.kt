@@ -2,6 +2,7 @@ package com.example.applicationstb.ui.accueil
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,7 @@ class Accueil : Fragment() {
         val rep = layout.findViewById<TextView>(R.id.Reparations)
         val rm = layout.findViewById<TextView>(R.id.btnRemo)
         val rb = layout.findViewById<Button>(R.id.btnRebobinage)
-
+        val token = arguments?.let { AccueilArgs.fromBundle(it).token }
         deco.setOnClickListener{
             viewModel.toDeconnexion(layout)
         }
@@ -40,6 +41,7 @@ class Accueil : Fragment() {
             viewModel.toFicheD(layout)
         }
         cht.setOnClickListener {
+            Log.i("INFO",token)
             viewModel.toChantier(layout)
         }
         rm.setOnClickListener {

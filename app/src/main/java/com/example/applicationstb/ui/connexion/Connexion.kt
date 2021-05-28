@@ -10,7 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.example.applicationstb.R
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class Connexion : Fragment() {
     companion object {
@@ -30,11 +34,14 @@ class Connexion : Fragment() {
         val password = layout.findViewById<EditText>(R.id.psw)
         val button = layout.findViewById<Button>(R.id.button)
         button.setOnClickListener{
-            viewModel.toAccueil(layout)
-            Log.i("INFO","cliqué")
+
+                viewModel.login(username.text.toString(),password.text.toString(),it)
+             /*   val action = viewModel.user?.token?.let { it1 -> ConnexionDirections.versAccueil(it1) }
+            if (action != null) {
+                findNavController().navigate(action)
+            }
+                //viewModel.toAccueil(it)*/
         }
-        username.setText(user[0])
-        password.setText(user[1])
         Log.i("INFO","init")
         return layout
     }
