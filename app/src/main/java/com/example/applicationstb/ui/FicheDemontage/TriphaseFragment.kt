@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.applicationstb.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,8 +35,15 @@ class TriphaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        var layout = inflater.inflate(R.layout.fragment_triphase, container, false)
+        var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
+        val fmanager = childFragmentManager
+        fmanager.commit {
+            replace<MecaFragment>(R.id.partMeca)
+            setReorderingAllowed(true)
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_triphase, container, false)
+        return layout
     }
 
     companion object {

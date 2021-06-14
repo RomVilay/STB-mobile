@@ -32,22 +32,22 @@
                     android:layout_height="324dp">
 
                     <EditText
-                        android:id="@+id/v"
+                        android:id="@+id/vitesseM"
                         android:layout_width="90dp"
                         android:layout_height="44dp"
                         android:layout_marginStart="7dp"
                         android:layout_marginLeft="7dp"
                         android:layout_marginTop="11dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         app:layout_constraintStart_toEndOf="@+id/textView10"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+                        app:layout_constraintTop_toBottomOf="@+id/numSerie" />
 
                     <TextView
-                        android:id="@+id/titreMoteur"
+                        android:id="@+id/titreMono"
                         android:layout_width="647dp"
                         android:layout_height="66dp"
-                        android:background="#656464"
+                        android:background="#164081"
                         android:gravity="center"
                         android:text="Moteur Triphasé"
                         android:textColor="#FAF9F9"
@@ -64,14 +64,14 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="Marque"
-                        android:inputType="textPersonName"
+                        android:inputType="textShortMessage"
                         app:layout_constraintBottom_toBottomOf="@+id/nums"
                         app:layout_constraintStart_toEndOf="@+id/mark"
                         app:layout_constraintTop_toTopOf="@+id/nums"
                         app:layout_constraintVertical_bias="0.6" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName2"
+                        android:id="@+id/numSerie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="72dp"
@@ -79,7 +79,7 @@
                         android:layout_marginRight="16dp"
                         android:ems="10"
                         android:hint="numéro de série"
-                        android:inputType="textPersonName"
+                        android:inputType="textShortMessage"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,13 +100,13 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginLeft="32dp"
                         android:text="N° serie:"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName2"
+                        app:layout_constraintBottom_toBottomOf="@+id/numSerie"
                         app:layout_constraintStart_toEndOf="@+id/marc"
-                        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName2"
+                        app:layout_constraintTop_toTopOf="@+id/numSerie"
                         app:layout_constraintVertical_bias="0.518" />
 
                     <Spinner
-                        android:id="@+id/spinner"
+                        android:id="@+id/typeFluide"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
@@ -123,9 +123,9 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:text="Type : "
-                        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/typeFluide"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/spinner"
+                        app:layout_constraintTop_toTopOf="@+id/typeFluide"
                         app:layout_constraintVertical_bias="0.2" />
 
                     <TextView
@@ -135,19 +135,19 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:text="Puissance :"
-                        app:layout_constraintBottom_toBottomOf="@+id/puis"
-                        app:layout_constraintStart_toEndOf="@+id/spinner"
-                        app:layout_constraintTop_toTopOf="@+id/puis" />
+                        app:layout_constraintBottom_toBottomOf="@+id/pmoteur"
+                        app:layout_constraintStart_toEndOf="@+id/typeFluide"
+                        app:layout_constraintTop_toTopOf="@+id/pmoteur" />
 
                     <EditText
-                        android:id="@+id/puis"
+                        android:id="@+id/pmoteur"
                         android:layout_width="113dp"
                         android:layout_height="28dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         app:layout_constraintBottom_toBottomOf="@+id/textView9"
                         app:layout_constraintStart_toEndOf="@+id/textView8"
                         app:layout_constraintTop_toTopOf="@+id/textView9" />
@@ -159,7 +159,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         app:layout_constraintBottom_toBottomOf="@+id/textView10"
                         app:layout_constraintStart_toEndOf="@+id/textView9"
                         app:layout_constraintTop_toTopOf="@+id/textView10"
@@ -173,7 +173,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="Bride"
                         app:layout_constraintBottom_toBottomOf="@+id/bride"
-                        app:layout_constraintStart_toEndOf="@+id/puis"
+                        app:layout_constraintStart_toEndOf="@+id/pmoteur"
                         app:layout_constraintTop_toTopOf="@+id/bride" />
 
                     <TextView
@@ -181,9 +181,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Vitesse"
-                        app:layout_constraintBottom_toBottomOf="@+id/v"
+                        app:layout_constraintBottom_toBottomOf="@+id/vitesseM"
                         app:layout_constraintStart_toEndOf="@+id/bride"
-                        app:layout_constraintTop_toTopOf="@+id/v"
+                        app:layout_constraintTop_toTopOf="@+id/vitesseM"
                         app:layout_constraintVertical_bias="0.68" />
 
                     <CheckBox
@@ -194,8 +194,8 @@
                         android:layout_marginLeft="12dp"
                         android:layoutDirection="rtl"
                         android:text="Présence d'un accouplement"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName8"
-                        app:layout_constraintStart_toEndOf="@+id/switch3" />
+                        app:layout_constraintBottom_toBottomOf="@+id/cacc"
+                        app:layout_constraintStart_toEndOf="@+id/pclav" />
 
                     <TextView
                         android:id="@+id/textView13"
@@ -209,7 +209,7 @@
                         app:layout_constraintTop_toTopOf="@+id/etatArbre" />
 
                     <Switch
-                        android:id="@+id/switch3"
+                        android:id="@+id/pclav"
                         android:layout_width="136dp"
                         android:layout_height="47dp"
                         android:layout_marginStart="8dp"
@@ -217,7 +217,7 @@
                         android:layout_marginTop="16dp"
                         android:text="Présence d'une clavette"
                         app:layout_constraintStart_toEndOf="@+id/textView15"
-                        app:layout_constraintTop_toBottomOf="@+id/puis" />
+                        app:layout_constraintTop_toBottomOf="@+id/pmoteur" />
 
                     <Switch
                         android:id="@+id/etatArbre"
@@ -237,12 +237,12 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"
                         android:text="Arbre rentrant"
-                        app:layout_constraintBottom_toBottomOf="@+id/switch3"
+                        app:layout_constraintBottom_toBottomOf="@+id/pclav"
                         app:layout_constraintStart_toEndOf="@+id/etatArbre"
-                        app:layout_constraintTop_toTopOf="@+id/switch3" />
+                        app:layout_constraintTop_toTopOf="@+id/pclav" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView2"
+                        android:id="@+id/enumaspect"
                         android:layout_width="170dp"
                         android:layout_height="38dp"
                         android:layout_marginStart="16dp"
@@ -259,20 +259,20 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"
                         android:text="Aspect boite à bornes"
-                        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-                        app:layout_constraintStart_toEndOf="@+id/recyclerView2"
-                        app:layout_constraintTop_toTopOf="@+id/recyclerView"
+                        app:layout_constraintBottom_toBottomOf="@+id/enumboite"
+                        app:layout_constraintStart_toEndOf="@+id/enumaspect"
+                        app:layout_constraintTop_toTopOf="@+id/enumboite"
                         app:layout_constraintVertical_bias="1.0" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                        android:id="@+id/enumboite"
                         android:layout_width="170dp"
                         android:layout_height="38dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toEndOf="@+id/textView19"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName8" />
+                        app:layout_constraintTop_toBottomOf="@+id/cacc" />
 
                     <TextView
                         android:id="@+id/textView18"
@@ -281,13 +281,13 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         android:text="Aspect extérieur"
-                        app:layout_constraintBottom_toBottomOf="@+id/recyclerView2"
+                        app:layout_constraintBottom_toBottomOf="@+id/enumaspect"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/recyclerView2"
+                        app:layout_constraintTop_toTopOf="@+id/enumaspect"
                         app:layout_constraintVertical_bias="0.473" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName8"
+                        android:id="@+id/cacc"
                         android:layout_width="99dp"
                         android:layout_height="64dp"
                         android:layout_marginStart="7dp"
@@ -295,9 +295,9 @@
                         android:layout_marginTop="13dp"
                         android:ems="10"
                         android:hint="côte accouplement"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         app:layout_constraintStart_toEndOf="@+id/checkBox"
-                        app:layout_constraintTop_toBottomOf="@+id/v" />
+                        app:layout_constraintTop_toBottomOf="@+id/vitesseM" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -341,7 +341,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -364,7 +364,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -386,15 +386,15 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/titreMoteur2"
+                        android:id="@+id/titre2"
                         android:layout_width="647dp"
                         android:layout_height="66dp"
-                        android:background="#656464"
+                        android:background="#164081"
                         android:gravity="center"
                         android:text="Essais avant démontage"
                         android:textColor="#FAF9F9"
@@ -410,7 +410,7 @@
                         android:text="Essais Statiques"
                         android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreMoteur2" />
+                        app:layout_constraintTop_toBottomOf="@+id/titre2" />
 
                     <LinearLayout
                         android:id="@+id/linearPP"
@@ -439,7 +439,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -462,7 +462,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -484,7 +484,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -526,7 +526,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -549,7 +549,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -571,7 +571,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -603,7 +603,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -624,7 +624,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -647,7 +647,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -686,7 +686,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -707,7 +707,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -730,7 +730,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -758,7 +758,7 @@
                         android:background="@drawable/round_textview"
                         android:ems="10"
                         android:hint="val"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         android:padding="5dp"
                         app:layout_constraintStart_toEndOf="@+id/essaistitre"
                         app:layout_constraintTop_toBottomOf="@+id/intensité" />
@@ -804,7 +804,8 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="649dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -845,7 +846,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
                         <Spinner
-                            android:id="@+id/spinner5"
+                            android:id="@+id/spiFAr"
                             android:layout_width="118dp"
                             android:layout_height="32dp"
                             android:layout_marginEnd="28dp"
@@ -865,11 +866,11 @@
                             android:layout_marginBottom="24dp"
                             android:text="Flasque Arrière:"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/spinner5"
-                            app:layout_constraintStart_toEndOf="@+id/spinner6" />
+                            app:layout_constraintEnd_toStartOf="@+id/spiFAr"
+                            app:layout_constraintStart_toEndOf="@+id/spiFA" />
 
                         <Spinner
-                            android:id="@+id/spinner6"
+                            android:id="@+id/spiFA"
                             android:layout_width="88dp"
                             android:layout_height="29dp"
                             android:layout_marginStart="28dp"
@@ -884,7 +885,7 @@
                         android:id="@+id/titre3"
                         android:layout_width="647dp"
                         android:layout_height="66dp"
-                        android:background="#656464"
+                        android:background="#164081"
                         android:gravity="center"
                         android:text="Partie Mecanique"
                         android:textColor="#FAF9F9"
@@ -927,7 +928,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
                         <Spinner
-                            android:id="@+id/spinner3"
+                            android:id="@+id/spiRAv"
                             android:layout_width="118dp"
                             android:layout_height="32dp"
                             android:layout_marginStart="20dp"
@@ -945,10 +946,10 @@
                             android:layout_marginBottom="16dp"
                             android:text="Roulement Arrière:"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/spinner3" />
+                            app:layout_constraintStart_toEndOf="@+id/spiRAv" />
 
                         <Spinner
-                            android:id="@+id/spinner4"
+                            android:id="@+id/spiRAr"
                             android:layout_width="88dp"
                             android:layout_height="29dp"
                             android:layout_marginStart="28dp"
@@ -1036,7 +1037,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Spinner
-                            android:id="@+id/spinner7"
+                            android:id="@+id/spiRoul"
                             android:layout_width="181dp"
                             android:layout_height="31dp"
                             android:layout_marginStart="56dp"
@@ -1062,7 +1063,7 @@
                             android:layout_marginTop="4dp"
                             android:ems="10"
                             android:hint="référence"
-                            android:inputType="textPersonName"
+                            android:inputType="textShortMessage"
                             app:layout_constraintStart_toEndOf="@+id/textView27"
                             app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
@@ -1074,7 +1075,7 @@
                             android:layout_marginLeft="112dp"
                             android:layout_marginTop="12dp"
                             android:text="ref :"
-                            app:layout_constraintStart_toEndOf="@+id/spinner7"
+                            app:layout_constraintStart_toEndOf="@+id/spiRoul"
                             app:layout_constraintTop_toBottomOf="@+id/switch5" />
 
                         <TextView
@@ -1113,7 +1114,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Spinner
-                            android:id="@+id/spinner9"
+                            android:id="@+id/spiJoints"
                             android:layout_width="181dp"
                             android:layout_height="31dp"
                             android:layout_marginStart="48dp"
@@ -1141,7 +1142,7 @@
                             android:layout_marginTop="12dp"
                             android:ems="10"
                             android:hint="référence"
-                            android:inputType="textPersonName"
+                            android:inputType="textShortMessage"
                             app:layout_constraintStart_toEndOf="@+id/textView30"
                             app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
@@ -1153,7 +1154,7 @@
                             android:layout_marginLeft="104dp"
                             android:layout_marginTop="12dp"
                             android:text="ref :"
-                            app:layout_constraintStart_toEndOf="@+id/spinner9"
+                            app:layout_constraintStart_toEndOf="@+id/spiJoints"
                             app:layout_constraintTop_toBottomOf="@+id/switch6" />
 
                         <TextView
@@ -1193,7 +1194,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Spinner
-                            android:id="@+id/spinner2"
+                            android:id="@+id/spiCouplage"
                             android:layout_width="122dp"
                             android:layout_height="35dp"
                             android:layout_marginStart="12dp"
@@ -1211,7 +1212,7 @@
                             android:layout_marginTop="20dp"
                             android:text="autre:"
                             android:textSize="18sp"
-                            app:layout_constraintStart_toEndOf="@+id/spinner2"
+                            app:layout_constraintStart_toEndOf="@+id/spiCouplage"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
@@ -1224,7 +1225,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="autre type"
-                            android:inputType="textPersonName"
+                            android:inputType="textShortMessage|textPersonName"
                             android:padding="5dp"
                             app:layout_constraintStart_toEndOf="@+id/textView7"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1242,7 +1243,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/typejoints" />
 
                     <Spinner
-                        android:id="@+id/spinner8"
+                        android:id="@+id/spiCapot"
                         android:layout_width="89dp"
                         android:layout_height="23dp"
                         android:layout_marginStart="16dp"
@@ -1252,7 +1253,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/typejoints" />
 
                     <Spinner
-                        android:id="@+id/spinner10"
+                        android:id="@+id/spiVentilateur"
                         android:layout_width="92dp"
                         android:layout_height="25dp"
                         android:layout_marginStart="15dp"
@@ -1269,7 +1270,7 @@
                         android:layout_marginLeft="64dp"
                         android:layout_marginTop="10dp"
                         android:text="Etat Ventilateur:"
-                        app:layout_constraintStart_toEndOf="@+id/spinner8"
+                        app:layout_constraintStart_toEndOf="@+id/spiCapot"
                         app:layout_constraintTop_toBottomOf="@+id/typejoints" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -1317,7 +1318,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
                         <Spinner
-                            android:id="@+id/spinner11"
+                            android:id="@+id/spiSocle"
                             android:layout_width="151dp"
                             android:layout_height="20dp"
                             android:layout_marginStart="20dp"
@@ -1327,14 +1328,14 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Spinner
-                            android:id="@+id/spinner12"
+                            android:id="@+id/spiCap"
                             android:layout_width="150dp"
                             android:layout_height="21dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="4dp"
                             app:layout_constraintStart_toEndOf="@+id/textView35"
-                            app:layout_constraintTop_toBottomOf="@+id/spinner11" />
+                            app:layout_constraintTop_toBottomOf="@+id/spiSocle" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -1349,14 +1350,14 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
                     <Spinner
-                        android:id="@+id/spinner13"
+                        android:id="@+id/spiPla"
                         android:layout_width="85dp"
                         android:layout_height="22dp"
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="16dp"
                         app:layout_constraintStart_toEndOf="@+id/textView37"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner10" />
+                        app:layout_constraintTop_toBottomOf="@+id/spiVentilateur" />
 
                     <TextView
                         android:id="@+id/textView38"
@@ -1377,7 +1378,7 @@
                         android:layout_marginLeft="32dp"
                         android:layout_marginTop="16dp"
                         app:layout_constraintStart_toEndOf="@+id/textView38"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner13" />
+                        app:layout_constraintTop_toBottomOf="@+id/spiPla" />
 
                     <EditText
                         android:id="@+id/editTextTextPersonName6"
@@ -1388,7 +1389,7 @@
                         android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint=" type sonde"
-                        android:inputType="textPersonName"
+                        android:inputType="textShortMessage|textPersonName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/switch7" />
 
@@ -1433,7 +1434,7 @@
                         android:layout_marginBottom="20dp"
                         android:ems="10"
                         android:hint="ral"
-                        android:inputType="textPersonName"
+                        android:inputType="textShortMessage"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/switch8" />
 
@@ -1445,7 +1446,7 @@
                         android:layout_marginBottom="10dp"
                         android:ems="10"
                         android:hint="couleur"
-                        android:inputType="textPersonName"
+                        android:inputType="textShortMessage"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6"
@@ -1465,6 +1466,13 @@
 
             </androidx.cardview.widget.CardView>
 
+            <FrameLayout
+                android:id="@+id/partMeca"
+                android:layout_width="649dp"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="649dp"
                 android:layout_height="wrap_content">
@@ -1477,7 +1485,7 @@
                         android:id="@+id/titre4"
                         android:layout_width="647dp"
                         android:layout_height="66dp"
-                        android:background="#656464"
+                        android:background="#164081"
                         android:gravity="center"
                         android:text="Observations"
                         android:textColor="#FAF9F9"
@@ -1496,24 +1504,24 @@
                         app:layout_constraintTop_toBottomOf="@+id/titre4" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/enregistrerMono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="92dp"
                         android:layout_marginLeft="92dp"
                         android:text="Enregistrer"
-                        app:backgroundTint="#525151"
-                        app:layout_constraintStart_toEndOf="@+id/button3"
+                        app:backgroundTint="#164081"
+                        app:layout_constraintStart_toEndOf="@+id/retourMono"
                         app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/retourMono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="172dp"
                         android:layout_marginLeft="172dp"
                         android:text="Retour"
-                        app:backgroundTint="#525151"
+                        app:backgroundTint="#164081"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

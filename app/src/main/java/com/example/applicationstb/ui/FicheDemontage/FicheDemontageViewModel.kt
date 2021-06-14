@@ -1,8 +1,11 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
+import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 import org.json.JSONArray
 
@@ -16,7 +19,7 @@ class FicheDemontageViewModel : ViewModel() {
     init{
         var i = 0;
         var fiche: Fiche ? = null
-        while (i < 5){
+        while (i <= 5){
             when (i) {
                 0 -> listeDemontages.add(Monophase(
                     i.toString(),
@@ -81,6 +84,10 @@ class FicheDemontageViewModel : ViewModel() {
             is Alternateur -> Log.i("INFO","type alternateur")
             is DemontagePompe -> Log.i("Info", "type pompe")
         }
+    }
+    fun retour(view:View){
+        var action = FicheDemontageDirections.deDemontageversAccueil("Token")
+        Navigation.findNavController(view).navigate(action)
     }
 
 }

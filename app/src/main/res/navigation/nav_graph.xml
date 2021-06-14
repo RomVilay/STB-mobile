@@ -25,7 +25,7 @@
         <action
             android:id="@+id/versFicheChantier"
             app:destination="@id/ficheChantier" />
-        <argument android:name="Token" />
+        <argument android:name="Token"  />
     </fragment>
     <fragment
         android:id="@+id/ficheDemontage"

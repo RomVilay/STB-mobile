@@ -25,7 +25,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="263dp"
+            android:layout_width="287dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             app:cardBackgroundColor="@color/white"
@@ -37,10 +37,10 @@
 
             <TextView
                 android:id="@+id/Reparations"
-                android:layout_width="259dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
-                android:background="@drawable/round_textview_full_grey"
+                android:background="@color/bleu_stb"
                 android:gravity="center"
                 android:padding="70px"
                 android:text="RÉPARATIONS"
@@ -82,12 +82,12 @@
 
         <Button
             android:id="@+id/btnChantier"
-            android:layout_width="253dp"
-            android:layout_height="121dp"
+            android:layout_width="287dp"
+            android:layout_height="122dp"
             android:layout_marginTop="70dp"
             android:text="Chantiers"
             android:textSize="25sp"
-            app:backgroundTint="#939393"
+            app:backgroundTint="@color/bleu_stb"
             app:cornerRadius="70px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,12 +95,12 @@
 
         <Button
             android:id="@+id/btnRebobinage"
-            android:layout_width="244dp"
+            android:layout_width="287dp"
             android:layout_height="104dp"
             android:layout_marginTop="70dp"
             android:text="Rebobinage"
             android:textSize="25sp"
-            app:backgroundTint="#939393"
+            app:backgroundTint="@color/bleu_stb"
             app:cornerRadius="70px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

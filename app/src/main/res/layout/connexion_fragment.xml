@@ -69,7 +69,7 @@
             android:onClick="@{viewmodel.toAccueil}"
             android:text="Connexion"
             android:textSize="24sp"
-            app:backgroundTint="#939393"
+            app:backgroundTint="#164081"
             app:cornerRadius="50px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

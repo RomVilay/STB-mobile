@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.applicationstb.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,8 +36,14 @@ class RotorBobineFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        var layout = inflater.inflate(R.layout.fragment_rotor_bobine, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rotor_bobine, container, false)
+        val fmanager = childFragmentManager
+        fmanager.commit {
+            replace<MecaFragment>(R.id.partMeca)
+            setReorderingAllowed(true)
+        }
+        return layout
     }
 
     companion object {

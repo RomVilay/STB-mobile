@@ -43,7 +43,7 @@ class FicheBobinageViewModel : ViewModel() {
             listeBobinage.add(bobinage);
             i++;
         }
-        bobinage.value = listeBobinage[0]
+        //bobinage.value = listeBobinage[0]
     }
     fun selectBobinage(index: Int){
         bobinage.value = listeBobinage[index];
@@ -66,7 +66,8 @@ class FicheBobinageViewModel : ViewModel() {
         return tab.sum()
     }
     fun back(view: View){
-        Navigation.findNavController(view).navigate(R.id.deBobinageverAccueil)
+        val action = FicheBobinageDirections.deBobinageverAccueil("Token")
+        Navigation.findNavController(view).navigate(action)
     }
     fun backFs(view: View){
         Navigation.findNavController(view).navigate(R.id.de_fscreen_vers_fb)

@@ -123,7 +123,7 @@ class FicheBobinage : Fragment() {
             marque.setText(bobinage?.marque)
             type.setText(bobinage?.type)
             vitesse.setText(bobinage?.vitesse.toString())
-            client.setText(bobinage?.client.toString())
+            client.setText(bobinage?.client?.entreprise)
             tension.setText(bobinage?.tension.toString())
             phases.setText(bobinage?.phases)
             frequence.setText(bobinage?.frequence.toString())

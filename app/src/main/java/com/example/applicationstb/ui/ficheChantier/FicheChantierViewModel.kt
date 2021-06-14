@@ -45,7 +45,8 @@ class FicheChantierViewModel : ViewModel() {
     }
 
     fun back(view:View){
-        Navigation.findNavController(view).navigate(R.id.deChantierversAccueil)
+        val action = FicheChantierDirections.deChantierversAccueil("Token")
+        Navigation.findNavController(view).navigate(action)
     }
     fun setSignature(sign:Bitmap){
         signature.value = sign

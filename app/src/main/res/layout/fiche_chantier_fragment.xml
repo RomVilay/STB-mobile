@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ficheChantier.FicheChantier" >
+    tools:context=".ui.ficheChantier.FicheChantier">
 
 
     <ScrollView
@@ -61,15 +60,15 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:text="Démarrer un Chantier"
-                    app:backgroundTint="#939393"
+                    app:backgroundTint="#164081"
                     app:cornerRadius="60px" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="551dp"
+                android:layout_width="536dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14sp"
-                android:background="@drawable/round_textview_full_grey">
+                android:background="@drawable/round_textview_full_blue">
 
                 <TextView
                     android:id="@+id/details"
@@ -189,40 +188,40 @@
             <EditText
                 android:id="@+id/materiel"
                 android:layout_width="536dp"
-                android:layout_height="97dp"
+                android:layout_height="100dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/round_textview"
                 android:gravity="center"
-                android:text="Matériel Nécessaire" />
+                android:hint="matériel nécessaire" />
 
             <EditText
                 android:id="@+id/objet"
-                android:layout_width="532dp"
-                android:layout_height="87dp"
+                android:layout_width="536dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/round_textview"
                 android:gravity="center"
-                android:text="Objet de l'intervention" />
+                android:hint="Objet de l'intervention" />
 
             <EditText
                 android:id="@+id/observation"
-                android:layout_width="543dp"
-                android:layout_height="119dp"
+                android:layout_width="536dp"
+                android:layout_height="100dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/round_textview"
                 android:gravity="center"
-                android:text="Observations" />
+                android:hint="observation" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="536dp"
                 android:layout_height="147dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.example.applicationstb.ui.ficheChantier.DawingView
                     android:id="@+id/signclient"
-                    android:layout_width="242dp"
+                    android:layout_width="262dp"
                     android:layout_height="105dp"
                     android:layout_marginEnd="20px"
                     android:layout_marginRight="20px"
@@ -233,7 +232,7 @@
 
                 <com.example.applicationstb.ui.ficheChantier.DawingView
                     android:id="@+id/signTech"
-                    android:layout_width="271dp"
+                    android:layout_width="262dp"
                     android:layout_height="104dp"
                     android:layout_marginBottom="18dp"
                     android:background="@drawable/round_textview"
@@ -254,7 +253,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="quitter"
-                    app:backgroundTint="#939393" />
+                    app:backgroundTint="#164081" />
 
                 <Button
                     android:id="@+id/enregistrer"
@@ -262,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="enregistrer"
-                    app:backgroundTint="#939393" />
+                    app:backgroundTint="#164081" />
             </LinearLayout>
 
         </LinearLayout>

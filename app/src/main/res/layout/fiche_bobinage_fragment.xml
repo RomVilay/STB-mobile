@@ -61,7 +61,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:text="Démarrer un Chantier"
-                    app:backgroundTint="#939393"
+                    app:backgroundTint="@color/bleu_stb"
                     app:cornerRadius="60px" />
             </LinearLayout>
 
@@ -69,29 +69,30 @@
                 android:layout_width="551dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14sp"
-                android:background="@drawable/round_textview_full_grey">
+                android:background="@drawable/round_textview_full_blue">
 
                 <EditText
                     android:id="@+id/client"
                     android:layout_width="159dp"
                     android:layout_height="46dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="31dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="client"
+                    android:hint="client"
+                    android:inputType="textShortMessage"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/type"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/non"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="88dp"
                     android:layout_marginLeft="88dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="24dp"
                     android:text="non"
                     android:textColor="@color/white"
                     android:visibility="gone"
@@ -104,17 +105,14 @@
                     android:layout_height="46dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginLeft="25dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="fréquence"
+                    android:hint="frequence"
+                    android:inputType="textShortMessage"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@+id/tension"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/marque" />
+                    app:layout_constraintTop_toBottomOf="@+id/vitesse" />
 
                 <EditText
                     android:id="@+id/courant"
@@ -122,10 +120,10 @@
                     android:layout_height="46dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="courant"
+                    android:hint="courant"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/frequence"
                     app:layout_constraintTop_toBottomOf="@+id/tension" />
@@ -134,30 +132,30 @@
                     android:id="@+id/phase"
                     android:layout_width="159dp"
                     android:layout_height="46dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginBottom="60dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="phase"
+                    android:hint="phase"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/dates"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/tension"
+                    app:layout_constraintTop_toBottomOf="@+id/client" />
 
                 <EditText
                     android:id="@+id/tension"
                     android:layout_width="159dp"
                     android:layout_height="46dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="tension"
+                    android:hint="tension"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/dates"
-                    app:layout_constraintEnd_toStartOf="@+id/phase"
+                    app:layout_constraintStart_toEndOf="@+id/vitesse"
                     app:layout_constraintTop_toBottomOf="@+id/type"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -168,14 +166,10 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="vitesse"
+                    android:hint="vitesse"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@+id/tension"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/marque" />
 
@@ -196,13 +190,13 @@
                     android:layout_height="46dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="31dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="type"
+                    android:hint="type"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/marque"
-                    app:layout_constraintTop_toBottomOf="@+id/details" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/marque"
@@ -213,18 +207,18 @@
                     android:layout_marginTop="31dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:text="Marque"
+                    android:hint="marque"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/oui"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
                     android:text="oui"
                     android:textColor="@color/white"
                     android:visibility="gone"
@@ -248,14 +242,14 @@
                     app:layout_constraintVertical_bias="0.0">
 
                     <TextView
-                        android:padding="7dp"
                         android:id="@+id/DateDebut"
                         android:layout_width="wrap_content"
                         android:layout_height="34dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="date début"
-                        android:inputType="date" />
+                        android:inputType="date"
+                        android:padding="7dp" />
 
                     <TextView
                         android:id="@+id/DateFin"
@@ -323,7 +317,7 @@
                     android:layout_marginBottom="20dp"
                     android:ems="10"
                     android:hint="longueur"
-                    android:inputType="text"
+                    android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/addsection" />
@@ -344,7 +338,7 @@
                     android:layout_width="44dp"
                     android:layout_height="51dp"
                     android:text="+"
-                    app:backgroundTint="#818181"
+                    app:backgroundTint="@color/bleu_stb"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.275"
@@ -363,7 +357,7 @@
                     android:id="@+id/titretable"
                     android:layout_width="428dp"
                     android:layout_height="wrap_content"
-                    android:background="#818181"
+                    android:background="@drawable/round_top_full_grey"
                     android:gravity="center"
                     android:text="Sections de fils"
                     android:textColor="@color/white" />
@@ -408,7 +402,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="#6E6E6E"
+                        android:background="@color/gray_400"
                         android:gravity="center"
                         android:text="total"
                         android:textColor="@color/white" />
@@ -427,7 +421,8 @@
 
             <LinearLayout
                 android:layout_width="361dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -441,7 +436,7 @@
                 <EditText
                     android:id="@+id/spire"
                     android:layout_width="10dp"
-                    android:layout_height="36dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/round_textview"
                     android:ems="10"
@@ -666,7 +661,7 @@
                 android:layout_width="308dp"
                 android:layout_height="45dp"
                 android:text="Ajouter un Schéma"
-                app:backgroundTint="#939393"
+                app:backgroundTint="@color/bleu_stb"
                 app:cornerRadius="60px" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -702,7 +697,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="quitter"
-                    app:backgroundTint="#939393" />
+                    app:backgroundTint="@color/bleu_stb" />
 
                 <Button
                     android:id="@+id/enregistrer"
@@ -710,7 +705,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="enregistrer"
-                    app:backgroundTint="#939393" />
+                    app:backgroundTint="@color/bleu_stb" />
             </LinearLayout>
 
         </LinearLayout>

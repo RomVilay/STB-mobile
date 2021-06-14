@@ -1,59 +1,126 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.*
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MonophaseFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MonophaseFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    companion object {
+        fun newInstance() = MonophaseFragment()
     }
+    private val viewModel: FicheDemontageViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_monophase, container, false)
+        var titre1 = layout.findViewById<TextView>(R.id.titreMono)
+        var titre2 = layout.findViewById<TextView>(R.id.titre2)
+        var titre3 = layout.findViewById<TextView>(R.id.titre3)
+        var marque = layout.findViewById<EditText>(R.id.marc)
+        var numSerie = layout.findViewById<EditText>(R.id.numSerie)
+        var puissance = layout.findViewById<EditText>(R.id.pmoteur)
+        var bride = layout.findViewById<EditText>(R.id.bride)
+        var vitesse = layout.findViewById<EditText>(R.id.vitesseM)
+        var arbre = layout.findViewById<Switch>(R.id.etatArbre)
+        var clavette = layout.findViewById<Switch>(R.id.pclav)
+        var cote = layout.findViewById<EditText>(R.id.cacc)
+        var aspect = layout.findViewById<RecyclerView>(R.id.enumaspect)
+        var boite = layout.findViewById<RecyclerView>(R.id.enumboite)
+        var infos = layout.findViewById<CardView>(R.id.infoMoteur)
+        var essais = layout.findViewById<CardView>(R.id.essais)
+        var meca = layout.findViewById<CardView>(R.id.meca)
+        var retour = layout.findViewById<Button>(R.id.retourMono)
+        var aspectExt = layout.findViewById<Spinner>(R.id.extSpinner)
+        var aspectBte = layout.findViewById<Spinner>(R.id.spinnerBo)
+        var optionsAsp = arrayOf<String>("propre","sale","très sale")
+        var adaptExt = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
+        var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
+        couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Y","Δ","Autre"))
+        var etatFlasqueAvant = layout.findViewById<Spinner>(R.id.spiFA)
+        etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        var etatFlasqueArrière = layout.findViewById<Spinner>(R.id.spiFAr)
+        etatFlasqueArrière.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        var roulementAvant = layout.findViewById<Spinner>(R.id.spiRAv)
+        roulementAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        var roulementArriere = layout.findViewById<Spinner>(R.id.spiRAr)
+        roulementArriere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        aspectBte.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
+        aspectExt.adapter = adaptExt
+        var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
+        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M"))
+        var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
+        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("simple lèvre","double lèvre"))
+        var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
+        cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
+        var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
+        vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Absent"))
+        var socle = layout.findViewById<Spinner>(R.id.spiSocle)
+        socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
+        var capot = layout.findViewById<Spinner>(R.id.spiCap)
+        capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
+        var plaque = layout.findViewById<Spinner>(R.id.spiPla)
+        plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Sortie par câbles"))
+        var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
+        val fmanager = childFragmentManager
+        fmanager.commit {
+            replace<MecaFragment>(R.id.PartMeca)
+            setReorderingAllowed(true)
+        }
+        titre1.setOnClickListener {
+            var layout = infos.layoutParams
+            if (layout.height == 100){
+                layout.height = WRAP_CONTENT
+                Log.i("INFO","out")
+            } else{
+                layout.height = 100
+                Log.i("INFO","in")
+            }
+            infos.layoutParams = layout
+        }
+        titre2.setOnClickListener {
+            var layout = essais.layoutParams
+            if (layout.height == 130){
+                layout.height = WRAP_CONTENT
+                Log.i("INFO","out")
+            } else{
+                layout.height = 130
+                Log.i("INFO","in")
+            }
+            essais.layoutParams = layout
+        }
+        titre3.setOnClickListener {
+            var layout = meca.layoutParams
+            if (layout.height == 100){
+                layout.height = WRAP_CONTENT
+                Log.i("INFO","out")
+            } else{
+                layout.height = 100
+                Log.i("INFO","in")
+            }
+            meca.layoutParams = layout
+        }
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+
         return layout
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MonophaseFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                MonophaseFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
-    }
+
 }

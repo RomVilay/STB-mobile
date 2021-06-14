@@ -32,7 +32,7 @@ class FicheDemontage : Fragment() {
         viewModel = ViewModelProvider(this).get(FicheDemontageViewModel::class.java)
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
-        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.numDevis  })
+        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.javaClass.name.substring(33)  })
         spinner.adapter = adapterDemontages
         var btnDemontage = layout.findViewById<Button>(R.id.selectDemontage)
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
@@ -57,8 +57,14 @@ class FicheDemontage : Fragment() {
                     replace<CCFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is Alternateur -> Log.i("INFO","type alternateur")
-                is DemontagePompe -> Log.i("Info", "type pompe")
+                is Alternateur ->fragmentManager.commit {
+                    replace<AlternateurFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                is DemontagePompe -> fragmentManager.commit {
+                    replace<PompeFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
             }
         }
         return layout
