@@ -20,7 +20,10 @@ class FicheRemontage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
+        var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
+
+
+        return layout
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

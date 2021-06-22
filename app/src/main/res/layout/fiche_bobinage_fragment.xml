@@ -8,7 +8,7 @@
     tools:context=".ui.ficheChantier.FicheChantier">
 
     <ScrollView
-        android:layout_width="765dp"
+        android:layout_width="match_parent"
         android:layout_height="1023dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -284,8 +284,8 @@
                     android:id="@+id/addsection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="76dp"
-                    android:layout_marginLeft="76dp"
+                    android:layout_marginStart="104dp"
+                    android:layout_marginLeft="104dp"
                     android:layout_marginTop="16dp"
                     android:text="Ajout de section"
                     android:textSize="18sp"
@@ -294,28 +294,31 @@
 
                 <EditText
                     android:id="@+id/nbfils"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="76dp"
-                    android:layout_marginLeft="76dp"
+                    android:layout_marginStart="188dp"
+                    android:layout_marginLeft="188dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:ems="10"
+                    android:gravity="center"
                     android:hint="brins"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/addsection" />
+                    app:layout_constraintTop_toBottomOf="@+id/addsection"
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <EditText
                     android:id="@+id/inputlongueur"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="344dp"
                     android:layout_marginLeft="344dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:ems="10"
+                    android:gravity="center"
                     android:hint="longueur"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -337,14 +340,13 @@
                     android:id="@+id/ajoutFil"
                     android:layout_width="44dp"
                     android:layout_height="51dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="60dp"
                     android:text="+"
                     app:backgroundTint="@color/bleu_stb"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.275"
                     app:layout_constraintStart_toEndOf="@+id/inputlongueur"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.75" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -447,7 +449,7 @@
                 android:id="@+id/titreR"
                 android:layout_width="615dp"
                 android:layout_height="wrap_content"
-                android:gravity="start"
+                android:gravity="center"
                 android:text="Résistances"
                 android:textSize="18sp" />
 
@@ -518,7 +520,7 @@
                 android:id="@+id/titreI"
                 android:layout_width="619dp"
                 android:layout_height="26dp"
-                android:gravity="start"
+                android:gravity="center"
                 android:text="Isolement"
                 android:textSize="18sp" />
 
@@ -589,7 +591,7 @@
                 android:id="@+id/titreII"
                 android:layout_width="620dp"
                 android:layout_height="26dp"
-                android:gravity="start"
+                android:gravity="center"
                 android:text="Isolement"
                 android:textSize="18sp" />
 

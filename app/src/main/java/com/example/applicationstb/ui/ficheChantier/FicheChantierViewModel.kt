@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.graphics.Bitmap
+import android.graphics.Path
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -13,11 +14,11 @@ import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.User
 import com.example.applicationstb.model.Vehicule
 
-@RequiresApi(Build.VERSION_CODES.O)
 class FicheChantierViewModel : ViewModel() {
     var listeChantiers = arrayListOf<Chantier>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var signature = MutableLiveData<Bitmap>()
+    val path: Path = Path()
     var listeTechs = arrayOf<User>(User("0","Dumont","Toto",1,"toto","toto","0"),
         User("0","Dumont","Tom",1,"tom","tom","0"))
     init {

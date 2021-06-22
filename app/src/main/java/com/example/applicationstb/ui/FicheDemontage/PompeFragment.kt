@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.applicationstb.R
+import androidx.core.content.ContextCompat
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,6 +54,8 @@ class PompeFragment : Fragment() {
         epf.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_i4)
+                i4.setBackgroundResource(R.color.bleu_stb)
+                i4.setTextColor(R.color.white)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
             }
