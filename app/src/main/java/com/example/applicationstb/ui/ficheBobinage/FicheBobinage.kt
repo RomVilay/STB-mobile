@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,7 +54,7 @@ class FicheBobinage : Fragment() {
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
         val adapterDevis = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeBobinage.map { it.numDevis })
         spinner.adapter = adapterDevis
-        var btnSelect = layout.findViewById<Button>(R.id.btnValider)
+        var btnSelect = layout.findViewById<Button>(R.id.btnDemarrer)
         var non = layout.findViewById<TextView>(R.id.non)
         var oui = layout.findViewById<TextView>(R.id.oui)
         var frequence = layout.findViewById<EditText>(R.id.frequence)

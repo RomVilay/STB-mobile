@@ -27,6 +27,7 @@
                 android:contentDescription="logoSTB"
                 android:src="@drawable/logo_grand_format" />
 
+
             <TextView
                 android:id="@+id/titreRemontage"
                 android:layout_width="wrap_content"
@@ -35,277 +36,758 @@
                 android:text="Fiche de Remontage"
                 android:textSize="24sp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/numDevis"
+                    android:layout_width="286dp"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/round_textview" />
+
+                <Button
+                    android:id="@+id/btnDemarrer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Démarrer un Remontage"
+                    app:backgroundTint="@color/bleu_stb"
+                    app:cornerRadius="60px" />
+            </LinearLayout>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/infoMoteur"
-                android:layout_width="649dp"
-                android:layout_height="325dp">
+                android:layout_width="549dp"
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/vitesseM"
-                        android:layout_width="90dp"
-                        android:layout_height="38dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintStart_toEndOf="@+id/textView10"
-                        app:layout_constraintTop_toBottomOf="@+id/numSerie" />
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/titreMono"
-                        android:layout_width="647dp"
+                        android:id="@+id/titreInfo"
+                        android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:background="#164081"
                         android:gravity="center"
-                        android:text="Moteur Monophasé"
+                        android:text="Infos Moteur"
                         android:textColor="#FAF9F9"
-                        android:textSize="30sp"
+                        android:textSize="30sp" />
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+
+                    <Button
+                        android:id="@+id/btnFDemo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="80dp"
+                        android:text="Voir fiche Démontage"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.496"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <EditText
-                        android:id="@+id/marc"
+                    <TextView
+                        android:id="@+id/titreRR"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:hint="Marque"
-                        android:inputType="textPersonName"
-                        app:layout_constraintBottom_toBottomOf="@+id/nums"
-                        app:layout_constraintStart_toEndOf="@+id/mark"
-                        app:layout_constraintTop_toTopOf="@+id/nums"
-                        app:layout_constraintVertical_bias="0.6" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Roulements remontés:"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnFDemo" />
 
-                    <EditText
-                        android:id="@+id/numSerie"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:hint="numéro de série"
-                        android:inputType="textLongMessage"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreMono" />
+                    <Spinner
+                        android:id="@+id/spinnerMntRll"
+                        android:layout_width="203dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="76dp"
+                        android:layout_marginLeft="76dp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreRR"
+                        app:layout_constraintStart_toEndOf="@+id/titreRR"
+                        app:layout_constraintTop_toTopOf="@+id/titreRR"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCPA"
+                        android:layout_width="99dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="52dp"
+                        android:layout_marginLeft="52dp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreCPA"
+                        app:layout_constraintStart_toEndOf="@+id/titreCPA"
+                        app:layout_constraintTop_toTopOf="@+id/titreCPA"
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <TextView
-                        android:id="@+id/mark"
+                        android:id="@+id/titreCPA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="24dp"
+                        android:text="Collage du roullement sur la portée d'arbre :"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreRR" />
+
+                    <TextView
+                        android:id="@+id/titreCPA2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Collage du roullement à l'intérieur de la flasque :"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreCPA" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCIF"
+                        android:layout_width="98dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreCPA2"
+                        app:layout_constraintStart_toEndOf="@+id/titreCPA2"
+                        app:layout_constraintTop_toTopOf="@+id/titreCPA2"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/textView55"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="17dp"
+                        android:text="Vérifications:"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreCPA2" />
+
+                    <RadioButton
+                        android:id="@+id/fixCouronne"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
-                        android:text="Marque : "
+                        android:text="Fixation couronne"
                         android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="@+id/marc"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/marc"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView55"
+                        app:layout_constraintStart_toEndOf="@+id/textView55"
+                        app:layout_constraintTop_toTopOf="@+id/textView55" />
+
+                    <EditText
+                        android:id="@+id/isoPBV"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/isoPBRB"
+                        app:layout_constraintStart_toEndOf="@+id/isoPBRB"
+                        app:layout_constraintTop_toTopOf="@+id/isoPBRB" />
+
+                    <TextView
+                        android:id="@+id/textView60"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="V - valeurs:"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/isoPBV"
+                        app:layout_constraintStart_toEndOf="@+id/isoPBV"
+                        app:layout_constraintTop_toTopOf="@+id/isoPBV"
+                        app:layout_constraintVertical_bias="0.518" />
+
+                    <EditText
+                        android:id="@+id/RisoPBV"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView60"
+                        app:layout_constraintStart_toEndOf="@+id/textView60"
+                        app:layout_constraintTop_toTopOf="@+id/textView60"
                         app:layout_constraintVertical_bias="0.481" />
 
                     <TextView
-                        android:id="@+id/nums"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:text="N° serie:"
-                        app:layout_constraintBottom_toBottomOf="@+id/numSerie"
-                        app:layout_constraintStart_toEndOf="@+id/marc"
-                        app:layout_constraintTop_toTopOf="@+id/numSerie"
-                        app:layout_constraintVertical_bias="0.518" />
-
-                    <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/textView61"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
-                        android:text="Puissance :"
-                        app:layout_constraintBottom_toBottomOf="@+id/pmoteur"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/pmoteur" />
+                        android:text="Ω"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/RisoPBV"
+                        app:layout_constraintStart_toEndOf="@+id/RisoPBV"
+                        app:layout_constraintTop_toTopOf="@+id/RisoPBV" />
 
-                    <EditText
-                        android:id="@+id/pmoteur"
-                        android:layout_width="90dp"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-                        app:layout_constraintStart_toEndOf="@+id/textView8"
-                        app:layout_constraintTop_toTopOf="@+id/textView9" />
-
-                    <EditText
-                        android:id="@+id/bride"
-                        android:layout_width="90dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:inputType="number"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-                        app:layout_constraintStart_toEndOf="@+id/textView9"
-                        app:layout_constraintTop_toTopOf="@+id/textView10"
-                        app:layout_constraintVertical_bias="0.625" />
-
-                    <TextView
-                        android:id="@+id/textView9"
+                    <RadioButton
+                        android:id="@+id/isoPBRB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:text="Bride"
-                        app:layout_constraintBottom_toBottomOf="@+id/bride"
-                        app:layout_constraintStart_toEndOf="@+id/pmoteur"
-                        app:layout_constraintTop_toTopOf="@+id/bride"
-                        app:layout_constraintVertical_bias="0.75" />
-
-                    <TextView
-                        android:id="@+id/textView10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:text="Vitesse"
-                        app:layout_constraintBottom_toBottomOf="@+id/vitesseM"
-                        app:layout_constraintStart_toEndOf="@+id/bride"
-                        app:layout_constraintTop_toTopOf="@+id/vitesseM"
-                        app:layout_constraintVertical_bias="0.631" />
-
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:text="Arbre sortant"
-                        app:layout_constraintBottom_toBottomOf="@+id/etatArbre"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/etatArbre" />
-
-                    <Switch
-                        android:id="@+id/pclav"
-                        android:layout_width="136dp"
-                        android:layout_height="47dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:text="Présence d'une clavette"
-                        app:layout_constraintBottom_toBottomOf="@+id/vitesseM"
-                        app:layout_constraintStart_toEndOf="@+id/vitesseM"
-                        app:layout_constraintTop_toTopOf="@+id/vitesseM" />
-
-                    <Switch
-                        android:id="@+id/etatArbre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/pacc"
-                        app:layout_constraintStart_toEndOf="@+id/textView13"
-                        app:layout_constraintTop_toTopOf="@+id/pacc" />
-
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:text="Arbre rentrant"
-                        app:layout_constraintBottom_toBottomOf="@+id/etatArbre"
-                        app:layout_constraintStart_toEndOf="@+id/etatArbre"
-                        app:layout_constraintTop_toTopOf="@+id/etatArbre" />
-
-                    <TextView
-                        android:id="@+id/textView19"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="45dp"
-                        android:layout_marginLeft="45dp"
-                        android:text="Aspect boite à bornes"
-                        app:layout_constraintBottom_toBottomOf="@+id/spinnerBo"
-                        app:layout_constraintStart_toEndOf="@+id/extSpinner"
-                        app:layout_constraintTop_toTopOf="@+id/spinnerBo" />
-
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginTop="30dp"
-                        android:text="Aspect extérieur"
-                        app:layout_constraintBottom_toBottomOf="@+id/extSpinner"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-                    <EditText
-                        android:id="@+id/cacc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
                         android:layout_marginTop="12dp"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginRight="30dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:hint="côte accouplement"
-                        android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vitesseM" />
+                        android:text="Isolement porte balais sous"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView55" />
 
-                    <Switch
-                        android:id="@+id/pacc"
-                        android:layout_width="132dp"
-                        android:layout_height="46dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Présence d'un accouplement"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/cacc"
-                        app:layout_constraintEnd_toStartOf="@+id/cacc"
-                        app:layout_constraintTop_toTopOf="@+id/cacc"
-                        app:layout_constraintVertical_bias="0.181" />
-
-                    <Spinner
-                        android:id="@+id/extSpinner"
-                        android:layout_width="113dp"
-                        android:layout_height="38dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView19"
-                        app:layout_constraintStart_toEndOf="@+id/textView18"
-                        app:layout_constraintTop_toTopOf="@+id/textView19" />
-
-                    <Spinner
-                        android:id="@+id/spinnerBo"
-                        android:layout_width="170dp"
-                        android:layout_height="37dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView19"
-                        app:layout_constraintTop_toBottomOf="@+id/cacc" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <FrameLayout
+                android:layout_width="549dp"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/essaisDynamiques"
+                android:layout_width="549dp"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp">
+
+                    <TextView
+                        android:id="@+id/titreED"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Essais Dynamiques à vide"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp" />
+
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/titreTension"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="236dp"
+                        android:layout_marginLeft="236dp"
+                        android:layout_marginTop="80dp"
+                        android:text="Tension"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TableLayout
+                        android:id="@+id/Tinduct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintStart_toEndOf="@+id/TStat"
+                        app:layout_constraintTop_toBottomOf="@+id/titreTension">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/titreInduc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Inducteur"
+                                android:textSize="16sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/TIVU"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="U"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TIVV"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="V"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TIVW"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="W"
+                                android:inputType="number" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/TStat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreTension">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/titreStator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Stator"
+                                android:textSize="16sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/TSVU"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="U"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TSVV"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="V"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TSVW"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="W"
+                                android:inputType="number" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/Tinduct2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/TStat2"
+                        app:layout_constraintStart_toEndOf="@+id/TStat2"
+                        app:layout_constraintTop_toTopOf="@+id/TStat2">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/titreInduc2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Inducteur"
+                                android:textSize="16sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/IIVU"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="U"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/IIVV"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="V"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/IIVW"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="W"
+                                android:inputType="number" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/TStat2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreIntensité">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/titreStator2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Stator"
+                                android:textSize="16sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/ISVU"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="U"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/ISVV"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="V"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/ISVW"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="W"
+                                android:inputType="number" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TextView
+                        android:id="@+id/titreIntensité"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="236dp"
+                        android:layout_marginLeft="236dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Intensité"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TStat" />
+
+                    <TableLayout
+                        android:id="@+id/TIndV
+"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView68">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/titreInd2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Induit"
+                                android:textSize="16sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/TIU"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="U"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TIV"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="V"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TIW"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="W"
+                                android:inputType="number" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/TRotoV
+"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintStart_toEndOf="@+id/TIndV
+"
+                        app:layout_constraintTop_toBottomOf="@+id/textView68">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/titreRotor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Rotor (ouvert)"
+                                android:textSize="16sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/TRU"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="U"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TRV"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="V"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/TRW"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="W"
+                                android:inputType="number" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <TextView
+                        android:id="@+id/textView68"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="240dp"
+                        android:layout_marginLeft="240dp"
+                        android:layout_marginTop="100dp"
+                        android:text="Tension"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreIntensité" />
+
+                    <TextView
+                        android:id="@+id/textView69"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="28dp"
+                        android:text="Intensité induit: "
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TIndV
+" />
+
+                    <EditText
+                        android:id="@+id/editTextNumber6"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:inputType="number"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView69"
+                        app:layout_constraintStart_toEndOf="@+id/textView69"
+                        app:layout_constraintTop_toTopOf="@+id/textView69" />
+
+                    <TextView
+                        android:id="@+id/textView70"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:text="Vitesse"
+                        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber6"
+                        app:layout_constraintStart_toEndOf="@+id/editTextNumber6"
+                        app:layout_constraintTop_toTopOf="@+id/editTextNumber6" />
+
+                    <EditText
+                        android:id="@+id/editTextNumber7"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:inputType="number"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView70"
+                        app:layout_constraintStart_toEndOf="@+id/textView70"
+                        app:layout_constraintTop_toTopOf="@+id/textView70" />
+
+                    <TextView
+                        android:id="@+id/textView71"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:text="Puissance"
+                        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber7"
+                        app:layout_constraintStart_toEndOf="@+id/editTextNumber7"
+                        app:layout_constraintTop_toTopOf="@+id/editTextNumber7" />
+
+                    <EditText
+                        android:id="@+id/editTextNumber8"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:inputType="number"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView71"
+                        app:layout_constraintStart_toEndOf="@+id/textView71"
+                        app:layout_constraintTop_toTopOf="@+id/textView71" />
+
+                    <TextView
+                        android:id="@+id/textView72"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Durée de l'essai"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView69" />
+
+                    <EditText
+                        android:id="@+id/editTextTime"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:inputType="time"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView72"
+                        app:layout_constraintStart_toEndOf="@+id/textView72"
+                        app:layout_constraintTop_toTopOf="@+id/textView72" />
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="sensR"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView73"
+                        app:layout_constraintStart_toEndOf="@+id/textView73"
+                        app:layout_constraintTop_toTopOf="@+id/textView73"
+                        app:layout_constraintVertical_bias="0.586" />
+
+                    <TextView
+                        android:id="@+id/textView73"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:text="Sens de rotation vu depuis le bout d'arbre"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/editTextTime"
+                        app:layout_constraintStart_toEndOf="@+id/editTextTime"
+                        app:layout_constraintTop_toTopOf="@+id/editTextTime" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 

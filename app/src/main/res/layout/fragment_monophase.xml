@@ -47,7 +47,7 @@
 
                     <TextView
                         android:id="@+id/titreMono"
-                        android:layout_width="647dp"
+                        android:layout_width="match_parent"
                         android:layout_height="66dp"
                         android:background="#164081"
                         android:gravity="center"

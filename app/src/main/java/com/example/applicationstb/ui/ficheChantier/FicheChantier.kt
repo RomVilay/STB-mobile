@@ -2,7 +2,6 @@ package com.example.applicationstb.ui.ficheChantier
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.ContextWrapper
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
@@ -13,16 +12,11 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.activityViewModels
 import com.example.applicationstb.R
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.io.OutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -49,7 +43,7 @@ class FicheChantier : Fragment() {
         val materiel = layout.findViewById<EditText>(R.id.materiel)
         val objet = layout.findViewById<EditText>(R.id.objet)
         val observation = layout.findViewById<EditText>(R.id.observation)
-        val selectButton = layout.findViewById<Button>(R.id.btnValider)
+        val selectButton = layout.findViewById<Button>(R.id.btnDemarrer)
         val client = layout.findViewById<TextView>(R.id.puissance)
         val vehicule = layout.findViewById<TextView>(R.id.vehicule)
         val contact = layout.findViewById<TextView>(R.id.marque)
@@ -108,11 +102,14 @@ class FicheChantier : Fragment() {
         }
         enregistrer.setOnClickListener {
 
-            val uriTech = context?.let { stech.extraBitmap.saveImage(it.applicationContext) }
+            val uriTech = stech.extraBitmap.saveImage(context!!.applicationContext)
             Log.i("INFO",uriTech.toString())
-            val uriCli = context?.let { scli.extraBitmap.saveImage(it.applicationContext) }
+            val uriCli = scli.extraBitmap.saveImage(context!!.applicationContext)
             Log.i("INFO",uriCli.toString())
             //Log.i("INFO","vue convertie to bitmap")
+            viewModel.signatures.add(uriTech)
+            viewModel.signatures.add(uriCli)
+            Log.i("INFO",viewModel.signatures.toString())
             viewModel.back(layout)
         }
 
