@@ -68,6 +68,9 @@ class RemontageTriphase (
         var isoPRUV : Int? = null;
         var isoPRVW : Int? = null;
         var isoPRUW : Int? = null;
+        var ResU : Int? = null;
+        var ResV : Int? = null;
+        var ResW : Int? = null;
                  }
 class RemontageCourantC (
     numDevis: String,

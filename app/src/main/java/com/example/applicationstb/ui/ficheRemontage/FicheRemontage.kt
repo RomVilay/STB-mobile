@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.RadioButton
@@ -14,6 +15,10 @@ import android.widget.EditText
 import android.widget.TextView
 import com.example.applicationstb.R
 import android.util.Log
+import com.example.applicationstb.model.*
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontageViewModel
 
 class FicheRemontage : Fragment() {
@@ -36,9 +41,19 @@ class FicheRemontage : Fragment() {
         //var infoMoteur = layout.findViewById<CardView>(R.id.infoMoteur)
         var btnDemontage = layout.findViewById<Button>(R.id.btnDemarrer)
         //var essaisDynamiques = layout.findViewById<CardView>(R.id.essaisDynamiques)
+        var essaisStats = layout.findViewById<FrameLayout>(R.id.essaisStatiqueslayout)
+        val fragmentManager = childFragmentManager
         btnDemontage.setOnClickListener {
             //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
             viewModel.select(spinner.selectedItemPosition)
+            when (viewModel.selection.value){
+                is RemontageTriphase -> fragmentManager.commit {
+                    replace<essaisStatTriFragment>(R.id.essaisStatiqueslayout)
+                }
+                is RemontageCourantC -> fragmentManager.commit {
+                    replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
+                }
+            }
             Log.i("INFO",viewModel.selection.value?.javaClass.toString())
             //infoMoteur.visibility = View.VISIBLE
             //essaisDynamiques.visibility = View.VISIBLE
@@ -56,6 +71,7 @@ class FicheRemontage : Fragment() {
         titre.setOnClickListener{
 
         }
+
 
         return layout
     }

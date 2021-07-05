@@ -10,18 +10,17 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1023dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -74,6 +73,8 @@
                     android:id="@+id/details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:height="60dp"
+                    android:gravity="center"
                     android:text="afficher les details"
                     android:textColor="#FFFFFF"
                     android:textSize="22dp"
@@ -187,8 +188,8 @@
 
             <EditText
                 android:id="@+id/materiel"
-                android:layout_width="536dp"
-                android:layout_height="100dp"
+                android:layout_width="700dp"
+                android:layout_height="200dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/round_textview"
                 android:gravity="center"
@@ -196,7 +197,7 @@
 
             <EditText
                 android:id="@+id/objet"
-                android:layout_width="536dp"
+                android:layout_width="700dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="14dp"
@@ -206,25 +207,25 @@
 
             <EditText
                 android:id="@+id/observation"
-                android:layout_width="536dp"
-                android:layout_height="100dp"
+                android:layout_width="700dp"
+                android:layout_height="200dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/round_textview"
                 android:gravity="center"
                 android:hint="observation" />
 
             <LinearLayout
-                android:layout_width="536dp"
-                android:layout_height="147dp"
+                android:layout_width="700dp"
+                android:layout_height="200dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.example.applicationstb.ui.ficheChantier.DawingView
                     android:id="@+id/signclient"
-                    android:layout_width="262dp"
-                    android:layout_height="105dp"
-                    android:layout_marginEnd="20px"
-                    android:layout_marginRight="20px"
+                    android:layout_width="345dp"
+                    android:layout_height="150dp"
+                    android:layout_marginEnd="10px"
+                    android:layout_marginRight="10px"
                     android:layout_marginBottom="18dp"
                     android:background="@drawable/round_textview"
                     android:gravity="center"
@@ -232,8 +233,8 @@
 
                 <com.example.applicationstb.ui.ficheChantier.DawingView
                     android:id="@+id/signTech"
-                    android:layout_width="262dp"
-                    android:layout_height="104dp"
+                    android:layout_width="345dp"
+                    android:layout_height="150dp"
                     android:layout_marginBottom="18dp"
                     android:background="@drawable/round_textview"
                     android:gravity="center"

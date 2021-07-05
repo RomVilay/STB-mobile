@@ -55,7 +55,7 @@ class PompeFragment : Fragment() {
             if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_i4)
                 i4.setBackgroundResource(R.color.bleu_stb)
-                i4.setTextColor(R.color.white)
+                //i4.setTextColor(Color.WHITE)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
             }

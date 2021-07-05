@@ -56,9 +56,9 @@
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="758dp"
-        android:paddingBottom="100dp"
+        android:layout_width="765dp"
+        android:layout_height="800dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 

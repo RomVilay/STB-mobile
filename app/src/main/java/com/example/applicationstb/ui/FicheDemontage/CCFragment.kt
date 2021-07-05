@@ -44,6 +44,10 @@ class CCFragment : Fragment() {
             replace<MecaFragment>(R.id.partMeca)
             setReorderingAllowed(true)
         }
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infosLayout)
+            setReorderingAllowed(true)
+        }
         return layout
     }
 

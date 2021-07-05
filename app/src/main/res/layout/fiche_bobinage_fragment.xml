@@ -28,7 +28,7 @@
                 android:id="@+id/imageView4"
                 android:layout_width="293dp"
                 android:layout_height="128dp"
-                android:layout_marginTop="250dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginBottom="30dp"
                 android:contentDescription="logoSTB"
                 android:src="@drawable/logo_grand_format" />
@@ -351,7 +351,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -391,7 +391,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tab"
                     android:layout_width="428dp"
-                    android:layout_height="178dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/cell" />
 
                 <LinearLayout
@@ -401,7 +401,7 @@
 
                     <TextView
                         android:id="@+id/total"
-                        android:layout_width="wrap_content"
+                        android:layout_width="218dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/gray_400"
@@ -411,7 +411,7 @@
 
                     <TextView
                         android:id="@+id/somme"
-                        android:layout_width="wrap_content"
+                        android:layout_width="208dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/cell"
@@ -712,19 +712,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="359dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="299dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

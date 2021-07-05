@@ -16,14 +16,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/LogoSTB"
                 android:layout_width="293dp"
                 android:layout_height="128dp"
-                android:layout_marginTop="250dp"
+                android:layout_marginTop="50dp"
                 android:contentDescription="logoSTB"
                 android:src="@drawable/logo_grand_format" />
 
@@ -63,7 +63,8 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/infoMoteur"
                 android:layout_width="549dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -258,11 +259,19 @@
 
             </androidx.cardview.widget.CardView>
 
-            <FrameLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/essaisSats"
                 android:layout_width="549dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/essaisStatiqueslayout"
+                    android:layout_width="549dp"
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/essaisDynamiques"
@@ -310,7 +319,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
-                        app:layout_constraintStart_toEndOf="@+id/TStat"
+                        app:layout_constraintStart_toEndOf="@+id/Tisop"
                         app:layout_constraintTop_toBottomOf="@+id/titreTension">
 
                         <TableRow
@@ -324,6 +333,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Inducteur"
+                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </TableRow>
 
@@ -359,7 +369,7 @@
                     </TableLayout>
 
                     <TableLayout
-                        android:id="@+id/TStat"
+                        android:id="@+id/Tisop"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
@@ -380,6 +390,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="Stator"
+                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </TableRow>
 
@@ -435,6 +446,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Inducteur"
+                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </TableRow>
 
@@ -491,6 +503,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="Stator"
+                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </TableRow>
 
@@ -535,7 +548,7 @@
                         android:text="Intensité"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/TStat" />
+                        app:layout_constraintTop_toBottomOf="@+id/Tisop" />
 
                     <TableLayout
                         android:id="@+id/TIndV
@@ -560,6 +573,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="Induit"
+                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </TableRow>
 
@@ -618,6 +632,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="Rotor (ouvert)"
+                                android:textColor="@color/white"
                                 android:textSize="16sp" />
                         </TableRow>
 
@@ -787,6 +802,244 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/essaisVibratoires"
+                android:layout_width="549dp"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="549dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/titreEV"
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:background="@color/bleu_stb"
+                        android:gravity="center"
+                        android:text="Essais Vibratoires"
+                        android:textColor="@color/white"
+                        android:textSize="30sp" />
+
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="60dp">
+
+                    <TableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/textView65"
+                                android:layout_width="wrap_content"
+                                android:background="@drawable/round_top_left_full_grey"
+                                android:gravity="center"
+                                android:text="mm/s"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/textView64"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:background="#939393"
+                                android:gravity="center"
+                                android:text="1V"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/textView63"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:background="#939393"
+                                android:gravity="center"
+                                android:text="1H"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/textView62"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:background="#939393"
+                                android:gravity="center"
+                                android:text="2V"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/textView56"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:background="#939393"
+                                android:gravity="center"
+                                android:text="2H"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:id="@+id/textView51"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/round_top_right_full_grey"
+                                android:gravity="center"
+                                android:text="2A"
+                                android:textColor="@color/white" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/cell">
+
+                            <TextView
+                                android:id="@+id/textView66"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="vitesse" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber2"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber3"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber4"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber5"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/cell">
+
+                            <TextView
+                                android:id="@+id/textView67"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="accélération" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber9"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber10"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber11"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber12"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/editTextNumber13"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:inputType="number" />
+
+                        </TableRow>
+
+                    </TableLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <EditText
+                android:id="@+id/observations"
+                android:layout_width="499dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/round_textview"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Observations"
+                android:inputType="textMultiLine"
+                android:padding="7dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/quit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:text="quitter"
+                    app:backgroundTint="@color/bleu_stb" />
+
+                <Button
+                    android:id="@+id/enregistrer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="enregistrer"
+                    app:backgroundTint="@color/bleu_stb" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.FrameLayout
+import android.widget.Spinner
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.applicationstb.R
@@ -37,9 +39,14 @@ class TriphaseFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         var layout = inflater.inflate(R.layout.fragment_triphase, container, false)
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
+        var infos = layout.findViewById<FrameLayout>(R.id.infoLayout)
         val fmanager = childFragmentManager
         fmanager.commit {
             replace<MecaFragment>(R.id.partMeca)
+            setReorderingAllowed(true)
+        }
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infoLayout)
             setReorderingAllowed(true)
         }
         // Inflate the layout for this fragment

@@ -32,33 +32,23 @@ class MonophaseFragment : Fragment() {
         var titre1 = layout.findViewById<TextView>(R.id.titreMono)
         var titre2 = layout.findViewById<TextView>(R.id.titre2)
         var titre3 = layout.findViewById<TextView>(R.id.titre3)
-        //infos générales
-        var marque = layout.findViewById<EditText>(R.id.marc)
-        var numSerie = layout.findViewById<EditText>(R.id.numSerie)
-        var puissance = layout.findViewById<EditText>(R.id.pmoteur)
-        var bride = layout.findViewById<EditText>(R.id.bride)
-        var vitesse = layout.findViewById<EditText>(R.id.vitesseM)
-        var arbre = layout.findViewById<Switch>(R.id.etatArbre)
-        var clavette = layout.findViewById<Switch>(R.id.pclav)
-        var accouplement = layout.findViewById<Switch>(R.id.pacc)
-        var cote = layout.findViewById<EditText>(R.id.cacc)
-        var aspect = layout.findViewById<RecyclerView>(R.id.enumaspect)
-        var boite = layout.findViewById<RecyclerView>(R.id.enumboite)
+
         //
         var infos = layout.findViewById<CardView>(R.id.infoMoteur)
         var essais = layout.findViewById<CardView>(R.id.essais)
         var meca = layout.findViewById<CardView>(R.id.meca)
         var retour = layout.findViewById<Button>(R.id.retourMono)
-        var aspectExt = layout.findViewById<Spinner>(R.id.extSpinner)
-        var aspectBte = layout.findViewById<Spinner>(R.id.spinnerBo)
-        var optionsAsp = arrayOf<String>("propre","sale","très sale")
-        var adaptExt = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
+
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
 
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
         val fmanager = childFragmentManager
         fmanager.commit {
             replace<MecaFragment>(R.id.PartMeca)
+            setReorderingAllowed(true)
+        }
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infosLayout)
             setReorderingAllowed(true)
         }
         titre1.setOnClickListener {
