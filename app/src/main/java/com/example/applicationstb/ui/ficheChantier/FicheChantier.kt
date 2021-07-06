@@ -103,30 +103,28 @@ class FicheChantier : Fragment() {
             alert.show()
             alert.setOnDismissListener {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
-                v.showLog()
+                var uri = v.showLog()
+                viewModel.signatures.add(0,uri)
             }
         }
         btnTech.setOnClickListener{
             val dialogBuilder = AlertDialog.Builder(context)
-            // set message of alert dialog
-            dialogBuilder.setMessage("Signature")
-                // if the dialog is cancelable
-                .setCancelable(false)
-                // positive button text and action
-                .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+            val inflater = requireActivity().layoutInflater
+            dialogBuilder
+                .setCancelable(true)
+                .setView(inflater.inflate(R.layout.dawing_view, null))
+                .setPositiveButton("Enregistrer", DialogInterface.OnClickListener{
                         dialog, id ->
-                            dialog.cancel()})
-                // negative button text and action
-                .setNegativeButton("Cancel", DialogInterface.OnClickListener {
-                        dialog, id -> dialog.cancel()
+                    dialog.dismiss()
                 })
-
-            // create dialog box
             val alert = dialogBuilder.create()
-            // set title for alert dialog box
-            alert.setTitle("AlertDialogExample")
-                // show alert dialog
+            alert.setTitle("Signature Responsable")
             alert.show()
+            alert.setOnDismissListener {
+                var v = alert.findViewById<DawingView>(R.id.dawingView)
+                var uri = v.showLog()
+                viewModel.signatures.add(1,uri)
+            }
         }
         selectButton.setOnClickListener {
             chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
@@ -157,6 +155,7 @@ class FicheChantier : Fragment() {
             viewModel.signatures.add(uriTech)
             viewModel.signatures.add(uriCli)
             Log.i("INFO",viewModel.signatures.toString())*/
+            Log.i("info", viewModel.signatures.toString())
             viewModel.back(layout)
         }
 
