@@ -12,6 +12,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewConfiguration
 import com.example.applicationstb.ui.ficheBobinage.FicheBobinageViewModel
 import java.io.File
@@ -27,7 +28,6 @@ class DawingView : View {
     private val paintColor = Color.BLACK
     private lateinit var extraCanvas: Canvas
     lateinit var extraBitmap: Bitmap
-    var viewPlaceholder = "signature"
     private val STROKE_WIDTH = 5f
     private var motionTouchEventX = 0f
     private var motionTouchEventY = 0f
@@ -46,7 +46,6 @@ class DawingView : View {
     }
 
     val path: Path = Path()
-
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         /*init(attrs, 0)
         setFocusable(true);
@@ -75,15 +74,12 @@ class DawingView : View {
         val inset = 0
         frame = RectF(inset+0f, inset+0f, width - inset + 0f, height - inset +0f)
     }
-
     override fun onDraw(canvas: Canvas) {
         super .onDraw(canvas)
         //drawPaint?.let { canvas.drawPath(path, it) };
         canvas.drawBitmap(extraBitmap,0f,0f,null)
         canvas.drawRoundRect(frame, 20f, 20f, paint)
         paint.setTextSize(40f)
-        paint.setStyle(Paint.Style.FILL)
-        canvas.drawText(viewPlaceholder, 50f, 55f, paint)
         paint.setStyle(Paint.Style.STROKE)
     }
 
@@ -154,5 +150,10 @@ class DawingView : View {
                 e.printStackTrace()
             }
         }
+    }
+    fun showLog(): Uri? {
+        val uriTech = extraBitmap.saveImage(context!!.applicationContext)
+        Log.i("INFO",uriTech.toString())
+        return uriTech
     }
 }

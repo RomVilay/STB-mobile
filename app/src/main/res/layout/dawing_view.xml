@@ -8,13 +8,17 @@
     <com.example.applicationstb.ui.ficheChantier.DawingView
         android:id="@+id/dawingView"
         style="@style/Widget.Theme.ApplicationSTB.MyView"
-        android:layout_width="281dp"
-        android:layout_height="203dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
         android:background="@drawable/round_textview"
         android:paddingLeft="20dp"
         android:paddingBottom="40dp"
         app:exampleDimension="24sp"
         app:exampleString="Hello, DawingView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

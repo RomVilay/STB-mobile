@@ -21,6 +21,8 @@ import java.io.OutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import android.app.AlertDialog
+import android.content.DialogInterface
 
 class FicheChantier : Fragment() {
 
@@ -58,10 +60,12 @@ class FicheChantier : Fragment() {
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numDevis })
         var visibility = View.VISIBLE
         //define signature area
-        val stech = layout.findViewById<DawingView>(R.id.signTech)
-        val scli = layout.findViewById<DawingView>(R.id.signclient)
-        stech.viewPlaceholder = "signature technicien"
-        scli.viewPlaceholder = "signature client"
+        //val stech = layout.findViewById<DawingView>(R.id.signTech)
+        //val scli = layout.findViewById<DawingView>(R.id.signclient)
+        //stech.viewPlaceholder = "signature technicien"
+        //scli.viewPlaceholder = "signature client"
+        val btnTech = layout.findViewById<Button>(R.id.signTech)
+        val btnClient = layout.findViewById<Button>(R.id.signClient)
         //var stech: Bitmap? = sview.extraBitmap
 
         showDetails.setOnClickListener {
@@ -80,6 +84,50 @@ class FicheChantier : Fragment() {
         }
         spinner.adapter = adapter
         var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
+        btnClient.setOnClickListener{
+            val dialogBuilder = AlertDialog.Builder(context)
+            val inflater = requireActivity().layoutInflater
+            // set message of alert dialog
+            dialogBuilder
+                .setCancelable(true)
+                .setView(inflater.inflate(R.layout.dawing_view, null))
+                .setPositiveButton("Enregistrer", DialogInterface.OnClickListener{
+                    dialog, id ->
+                    dialog.dismiss()
+                })
+            // create dialog box
+            val alert = dialogBuilder.create()
+            // set title for alert dialog box
+            alert.setTitle("Signature Client")
+            // show alert dialog
+            alert.show()
+            alert.setOnDismissListener {
+                var v = alert.findViewById<DawingView>(R.id.dawingView)
+                v.showLog()
+            }
+        }
+        btnTech.setOnClickListener{
+            val dialogBuilder = AlertDialog.Builder(context)
+            // set message of alert dialog
+            dialogBuilder.setMessage("Signature")
+                // if the dialog is cancelable
+                .setCancelable(false)
+                // positive button text and action
+                .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+                        dialog, id ->
+                            dialog.cancel()})
+                // negative button text and action
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                        dialog, id -> dialog.cancel()
+                })
+
+            // create dialog box
+            val alert = dialogBuilder.create()
+            // set title for alert dialog box
+            alert.setTitle("AlertDialogExample")
+                // show alert dialog
+            alert.show()
+        }
         selectButton.setOnClickListener {
             chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
             materiel.setText(chantier?.materiel)
@@ -92,7 +140,6 @@ class FicheChantier : Fragment() {
             adresse.setText(chantier?.adresse)
             var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
             dateDebut.setText(LocalDateTime.now().format(format))
-
         }
         quit.setOnClickListener {
             //stech = generateBitmapFromView(sview)
@@ -102,14 +149,14 @@ class FicheChantier : Fragment() {
         }
         enregistrer.setOnClickListener {
 
-            val uriTech = stech.extraBitmap.saveImage(context!!.applicationContext)
+            /*val uriTech = stech.extraBitmap.saveImage(context!!.applicationContext)
             Log.i("INFO",uriTech.toString())
             val uriCli = scli.extraBitmap.saveImage(context!!.applicationContext)
             Log.i("INFO",uriCli.toString())
             //Log.i("INFO","vue convertie to bitmap")
             viewModel.signatures.add(uriTech)
             viewModel.signatures.add(uriCli)
-            Log.i("INFO",viewModel.signatures.toString())
+            Log.i("INFO",viewModel.signatures.toString())*/
             viewModel.back(layout)
         }
 

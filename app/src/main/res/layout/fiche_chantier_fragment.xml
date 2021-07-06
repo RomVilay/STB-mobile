@@ -216,29 +216,26 @@
 
             <LinearLayout
                 android:layout_width="700dp"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.example.applicationstb.ui.ficheChantier.DawingView
-                    android:id="@+id/signclient"
-                    android:layout_width="345dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="10px"
-                    android:layout_marginRight="10px"
-                    android:layout_marginBottom="18dp"
-                    android:background="@drawable/round_textview"
-                    android:gravity="center"
-                    android:text="Signature Client" />
+                <Button
+                    android:id="@+id/signClient"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_weight="1"
+                    android:text="singature Client" />
 
-                <com.example.applicationstb.ui.ficheChantier.DawingView
+                <Button
                     android:id="@+id/signTech"
-                    android:layout_width="345dp"
-                    android:layout_height="150dp"
-                    android:layout_marginBottom="18dp"
-                    android:background="@drawable/round_textview"
-                    android:gravity="center"
-                    android:text="Signature Technicien" />
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="singature Technicien" />
+
             </LinearLayout>
 
             <LinearLayout
