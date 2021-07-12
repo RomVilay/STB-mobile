@@ -538,7 +538,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Switch
-                            android:id="@+id/switch5"
+                            android:id="@+id/switchRoullements"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="240dp"
@@ -548,7 +548,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName5"
+                            android:id="@+id/refRoullement"
                             android:layout_width="183dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="4dp"
@@ -567,7 +567,7 @@
                             android:layout_marginTop="12dp"
                             android:text="ref :"
                             app:layout_constraintStart_toEndOf="@+id/spiRoul"
-                            app:layout_constraintTop_toBottomOf="@+id/switch5" />
+                            app:layout_constraintTop_toBottomOf="@+id/switchRoullements" />
 
                         <TextView
                             android:id="@+id/textView28"
@@ -577,9 +577,9 @@
                             android:layout_marginLeft="1dp"
                             android:text="Arrière"
                             android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="@+id/switch5"
-                            app:layout_constraintStart_toEndOf="@+id/switch5"
-                            app:layout_constraintTop_toTopOf="@+id/switch5" />
+                            app:layout_constraintBottom_toBottomOf="@+id/switchRoullements"
+                            app:layout_constraintStart_toEndOf="@+id/switchRoullements"
+                            app:layout_constraintTop_toTopOf="@+id/switchRoullements" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -615,7 +615,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Switch
-                            android:id="@+id/switch6"
+                            android:id="@+id/switchJoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="192dp"
@@ -625,7 +625,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName9"
+                            android:id="@+id/refJoints"
                             android:layout_width="183dp"
                             android:layout_height="30dp"
                             android:layout_marginStart="12dp"
@@ -646,7 +646,7 @@
                             android:layout_marginTop="12dp"
                             android:text="ref :"
                             app:layout_constraintStart_toEndOf="@+id/spiJoints"
-                            app:layout_constraintTop_toBottomOf="@+id/switch6" />
+                            app:layout_constraintTop_toBottomOf="@+id/switchJoints" />
 
                         <TextView
                             android:id="@+id/textView31"
@@ -657,7 +657,7 @@
                             android:layout_marginTop="4dp"
                             android:text="Arrière"
                             android:textColor="@color/black"
-                            app:layout_constraintStart_toEndOf="@+id/switch6"
+                            app:layout_constraintStart_toEndOf="@+id/switchJoints"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -707,7 +707,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName4"
+                            android:id="@+id/autreCpl"
                             android:layout_width="115dp"
                             android:layout_height="43dp"
                             android:layout_marginStart="20dp"

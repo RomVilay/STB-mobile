@@ -1,6 +1,5 @@
 package com.example.applicationstb.ui.FicheDemontage
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 import org.json.JSONArray
+import android.util.Log
 
 class FicheDemontageViewModel : ViewModel() {
     var listeDemontages = arrayListOf<Fiche>()
@@ -84,6 +84,44 @@ class FicheDemontageViewModel : ViewModel() {
             is Alternateur -> Log.i("INFO","type alternateur")
             is DemontagePompe -> Log.i("Info", "type pompe")
         }
+    }
+    fun setRoulAr(type:String){
+        var fichemot = selection.value as DemontageMoteur
+        fichemot.typeRoulementAr = type
+        selection.value = fichemot
+    }
+    fun setRoulAv(type:String){
+        var fichemot = selection.value as DemontageMoteur
+        fichemot.typeRoulementAv = type
+        selection.value = fichemot
+    }
+    fun setRefRoul(position:String,ref:String){
+        var fichemot = selection.value as DemontageMoteur
+        if (position == "av") {
+            fichemot.refRoulementAv = ref
+        } else {
+            fichemot.refRoulementAr = ref
+        }
+        selection.value = fichemot
+    }
+    fun setJointAr(type:String){
+        var fichemot = selection.value as DemontageMoteur
+        fichemot.typeJointAr = type
+        selection.value = fichemot
+    }
+    fun setJointAv(type:String){
+        var fichemot = selection.value as DemontageMoteur
+        fichemot.typeJointAvant = type
+        selection.value = fichemot
+    }
+    fun setRefJoint(position:String,ref:String){
+        var fichemot = selection.value as DemontageMoteur
+        if (position == "av") {
+            fichemot.refJointAvant = ref
+        } else {
+            fichemot.refJointAr = ref
+        }
+        selection.value = fichemot
     }
     fun retour(view:View){
         var action = FicheDemontageDirections.deDemontageversAccueil("Token")

@@ -3,7 +3,6 @@ package com.example.applicationstb.ui.FicheDemontage
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Spinner
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.fragment.app.*
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 
@@ -23,13 +20,12 @@ class FicheDemontage : Fragment() {
         fun newInstance() = FicheDemontage()
     }
 
-    private lateinit var viewModel: FicheDemontageViewModel
+    private val viewModel: FicheDemontageViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(FicheDemontageViewModel::class.java)
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
         val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.javaClass.name.substring(33)  })
@@ -72,7 +68,6 @@ class FicheDemontage : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FicheDemontageViewModel::class.java)
         // TODO: Use the ViewModel
     }
    /* private fun chargerFiche(){
