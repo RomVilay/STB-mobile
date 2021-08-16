@@ -785,7 +785,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/switchBA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="21dp"
@@ -801,7 +801,7 @@
                         android:layout_marginLeft="4dp"
                         android:layout_marginTop="20dp"
                         android:text="mauvais état"
-                        app:layout_constraintStart_toEndOf="@+id/switch1"
+                        app:layout_constraintStart_toEndOf="@+id/switchBA"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
                     <TextView
@@ -816,7 +816,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
                     <Switch
-                        android:id="@+id/switch4"
+                        android:id="@+id/switchPRE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -1293,11 +1293,34 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="649dp"
-                android:layout_height="wrap_content">
+                android:layout_height="400dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/photo5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="224dp"
+                        android:layout_marginLeft="224dp"
+                        android:layout_marginTop="12dp"
+                        android:text="ajouter une photo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerPhoto"
+                        android:layout_width="600dp"
+                        android:layout_height="116dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_textview"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photo5" />
 
                     <TextView
                         android:id="@+id/titre4"
@@ -1325,8 +1348,9 @@
                         android:id="@+id/enregistrerMono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="92dp"
-                        android:layout_marginLeft="92dp"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginTop="192dp"
                         android:text="Enregistrer"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toEndOf="@+id/retourMono"
@@ -1336,8 +1360,9 @@
                         android:id="@+id/retourMono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="172dp"
-                        android:layout_marginLeft="172dp"
+                        android:layout_marginStart="168dp"
+                        android:layout_marginLeft="168dp"
+                        android:layout_marginTop="192dp"
                         android:text="Retour"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toStartOf="parent"

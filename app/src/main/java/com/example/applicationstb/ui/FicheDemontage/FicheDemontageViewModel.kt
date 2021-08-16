@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.FicheDemontage
 
+import android.net.Uri
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ class FicheDemontageViewModel : ViewModel() {
     var listeDemontages = arrayListOf<Fiche>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
+    var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
     val selection : MutableLiveData<Fiche> by lazy {
         MutableLiveData<Fiche>()
     }
@@ -85,6 +87,34 @@ class FicheDemontageViewModel : ViewModel() {
             is DemontagePompe -> Log.i("Info", "type pompe")
         }
     }
+    fun setCouplage(type:String){
+        var fichemot = selection.value as DemontageMoteur
+        fichemot.couplage = type
+        selection.value = fichemot
+    }
+    fun setFlasques(etat:String, position: String){
+        var fichemot = selection.value as DemontageMoteur
+        if (position == "av") {
+            fichemot.flasqueAvant = etat
+        } else {
+            fichemot.flasqueArriere = etat
+        }
+        selection.value = fichemot
+    }
+    fun setPRoulements(position:String,etat:String){
+        var fichemot = selection.value as DemontageMoteur
+        if (position == "av") {
+            fichemot.porteeravt = etat
+        } else {
+            fichemot.porteerar = etat
+        }
+        selection.value = fichemot
+    }
+    fun setEtatBA(etat:Boolean){
+        var fichemot = selection.value as DemontageMoteur
+        fichemot.boutarbre = etat
+        selection.value = fichemot
+    }
     fun setRoulAr(type:String){
         var fichemot = selection.value as DemontageMoteur
         fichemot.typeRoulementAr = type
@@ -123,7 +153,16 @@ class FicheDemontageViewModel : ViewModel() {
         }
         selection.value = fichemot
     }
+
+    fun addPhoto(index:Int,photo: Uri) {
+        photos.value!!.add(photo)
+    }
     fun retour(view:View){
+        var action = FicheDemontageDirections.deDemontageversAccueil("Token")
+        Navigation.findNavController(view).navigate(action)
+    }
+    fun enregistrer(view:View){
+        Log.i("Info",selection.value.toString())
         var action = FicheDemontageDirections.deDemontageversAccueil("Token")
         Navigation.findNavController(view).navigate(action)
     }

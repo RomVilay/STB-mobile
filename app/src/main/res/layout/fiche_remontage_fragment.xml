@@ -64,7 +64,7 @@
                 android:id="@+id/infoMoteur"
                 android:layout_width="549dp"
                 android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -113,27 +113,27 @@
 
                     <Spinner
                         android:id="@+id/spinnerMntRll"
-                        android:layout_width="203dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="76dp"
                         android:layout_marginLeft="76dp"
+                        android:background="@drawable/round_textview"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/titreRR"
                         app:layout_constraintStart_toEndOf="@+id/titreRR"
-                        app:layout_constraintTop_toTopOf="@+id/titreRR"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toTopOf="@+id/titreRR" />
 
                     <Spinner
                         android:id="@+id/spinnerCPA"
-                        android:layout_width="99dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="52dp"
                         android:layout_marginLeft="52dp"
+                        android:background="@drawable/round_textview"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/titreCPA"
                         app:layout_constraintStart_toEndOf="@+id/titreCPA"
-                        app:layout_constraintTop_toTopOf="@+id/titreCPA"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintTop_toTopOf="@+id/titreCPA" />
 
                     <TextView
                         android:id="@+id/titreCPA"
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="68dp"
                         android:layout_marginLeft="68dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="35dp"
                         android:text="Collage du roullement sur la portée d'arbre :"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
@@ -153,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="68dp"
                         android:layout_marginLeft="68dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="35dp"
                         android:text="Collage du roullement à l'intérieur de la flasque :"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
@@ -161,15 +161,15 @@
 
                     <Spinner
                         android:id="@+id/spinnerCIF"
-                        android:layout_width="98dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginLeft="24dp"
+                        android:background="@drawable/round_textview"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/titreCPA2"
                         app:layout_constraintStart_toEndOf="@+id/titreCPA2"
-                        app:layout_constraintTop_toTopOf="@+id/titreCPA2"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toTopOf="@+id/titreCPA2" />
 
                     <TextView
                         android:id="@+id/textView55"
@@ -263,7 +263,7 @@
                 android:id="@+id/essaisSats"
                 android:layout_width="549dp"
                 android:layout_height="match_parent"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <FrameLayout
                     android:id="@+id/essaisStatiqueslayout"
@@ -277,7 +277,7 @@
                 android:id="@+id/essaisDynamiques"
                 android:layout_width="549dp"
                 android:layout_height="match_parent"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -339,7 +339,8 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cell">
 
                             <EditText
                                 android:id="@+id/TIVU"
@@ -396,7 +397,8 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cell">
 
                             <EditText
                                 android:id="@+id/TSVU"
@@ -452,7 +454,8 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cell">
 
                             <EditText
                                 android:id="@+id/IIVU"
@@ -509,7 +512,8 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cell">
 
                             <EditText
                                 android:id="@+id/ISVU"
@@ -579,7 +583,8 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cell">
 
                             <EditText
                                 android:id="@+id/TIU"
@@ -638,7 +643,8 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cell">
 
                             <EditText
                                 android:id="@+id/TRU"
@@ -683,9 +689,9 @@
                         android:id="@+id/textView69"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="24dp"
                         android:text="Intensité induit: "
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/TIndV
@@ -694,11 +700,12 @@
                     <EditText
                         android:id="@+id/editTextNumber6"
                         android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="number"
                         app:layout_constraintBottom_toBottomOf="@+id/textView69"
                         app:layout_constraintStart_toEndOf="@+id/textView69"
@@ -708,45 +715,52 @@
                         android:id="@+id/textView70"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginBottom="10dp"
                         android:text="Vitesse"
                         app:layout_constraintBottom_toBottomOf="@+id/editTextNumber6"
                         app:layout_constraintStart_toEndOf="@+id/editTextNumber6"
-                        app:layout_constraintTop_toTopOf="@+id/editTextNumber6" />
+                        app:layout_constraintTop_toTopOf="@+id/editTextNumber6"
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <EditText
                         android:id="@+id/editTextNumber7"
                         android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginLeft="28dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="number"
                         app:layout_constraintBottom_toBottomOf="@+id/textView70"
                         app:layout_constraintStart_toEndOf="@+id/textView70"
-                        app:layout_constraintTop_toTopOf="@+id/textView70" />
+                        app:layout_constraintTop_toTopOf="@+id/textView70"
+                        app:layout_constraintVertical_bias="0.523" />
 
                     <TextView
                         android:id="@+id/textView71"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginTop="6dp"
                         android:text="Puissance"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber7"
-                        app:layout_constraintStart_toEndOf="@+id/editTextNumber7"
-                        app:layout_constraintTop_toTopOf="@+id/editTextNumber7" />
+                        app:layout_constraintBottom_toBottomOf="@+id/editTextTime"
+                        app:layout_constraintStart_toEndOf="@+id/editTextTime"
+                        app:layout_constraintTop_toTopOf="@+id/editTextTime"
+                        app:layout_constraintVertical_bias="0.333" />
 
                     <EditText
                         android:id="@+id/editTextNumber8"
                         android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="number"
                         app:layout_constraintBottom_toBottomOf="@+id/textView71"
                         app:layout_constraintStart_toEndOf="@+id/textView71"
@@ -756,9 +770,9 @@
                         android:id="@+id/textView72"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="40dp"
                         android:text="Durée de l'essai"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView69" />
@@ -766,11 +780,12 @@
                     <EditText
                         android:id="@+id/editTextTime"
                         android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="time"
                         app:layout_constraintBottom_toBottomOf="@+id/textView72"
                         app:layout_constraintStart_toEndOf="@+id/textView72"
@@ -780,9 +795,11 @@
                         android:id="@+id/toggleButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
                         android:text="sensR"
+                        android:textOff="sens Horaire"
+                        android:textOn="sens Anti-Horaire"
                         app:layout_constraintBottom_toBottomOf="@+id/textView73"
                         app:layout_constraintStart_toEndOf="@+id/textView73"
                         app:layout_constraintTop_toTopOf="@+id/textView73"
@@ -792,13 +809,13 @@
                         android:id="@+id/textView73"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginTop="25dp"
                         android:text="Sens de rotation vu depuis le bout d'arbre"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextTime"
-                        app:layout_constraintStart_toEndOf="@+id/editTextTime"
-                        app:layout_constraintTop_toTopOf="@+id/editTextTime" />
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -1017,6 +1034,7 @@
                 android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/btns"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"

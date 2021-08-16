@@ -42,8 +42,8 @@
                     android:id="@+id/textView21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginLeft="48dp"
                     android:layout_marginTop="8dp"
                     android:text="Flasque Avant"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,37 +51,36 @@
 
                 <Spinner
                     android:id="@+id/spiFAr"
-                    android:layout_width="118dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:layout_marginEnd="28dp"
-                    android:layout_marginRight="28dp"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/dropdown_background"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView22"
+                    app:layout_constraintStart_toEndOf="@+id/textView22"
+                    app:layout_constraintTop_toTopOf="@+id/textView22" />
 
                 <TextView
                     android:id="@+id/textView22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginEnd="19dp"
-                    android:layout_marginRight="19dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
                     android:text="Flasque Arrière:"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/spiFAr"
-                    app:layout_constraintStart_toEndOf="@+id/spiFA" />
+                    app:layout_constraintBottom_toBottomOf="@+id/spiFA"
+                    app:layout_constraintStart_toEndOf="@+id/spiFA"
+                    app:layout_constraintTop_toTopOf="@+id/spiFA" />
 
                 <Spinner
                     android:id="@+id/spiFA"
-                    android:layout_width="88dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="29dp"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView20" />
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:background="@drawable/dropdown_background"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView21"
+                    app:layout_constraintStart_toEndOf="@+id/textView21"
+                    app:layout_constraintTop_toTopOf="@+id/textView21" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -124,8 +123,8 @@
                     android:id="@+id/textView16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginLeft="48dp"
                     android:layout_marginTop="8dp"
                     android:text="Roulement Avant"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,10 +132,11 @@
 
                 <Spinner
                     android:id="@+id/spiRAv"
-                    android:layout_width="118dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginLeft="20dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintBottom_toBottomOf="@+id/textView16"
                     app:layout_constraintStart_toEndOf="@+id/textView16"
                     app:layout_constraintTop_toTopOf="@+id/textView16" />
@@ -145,8 +145,8 @@
                     android:id="@+id/textView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginLeft="25dp"
                     android:text="Roulement Arrière:"
                     app:layout_constraintBottom_toBottomOf="@+id/spiRAv"
                     app:layout_constraintStart_toEndOf="@+id/spiRAv"
@@ -154,10 +154,11 @@
 
                 <Spinner
                     android:id="@+id/spiRAr"
-                    android:layout_width="88dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="29dp"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintBottom_toBottomOf="@+id/textView17"
                     app:layout_constraintStart_toEndOf="@+id/textView17"
                     app:layout_constraintTop_toTopOf="@+id/textView17" />
@@ -176,7 +177,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/switchBA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -194,9 +195,9 @@
                 android:layout_marginLeft="4dp"
                 android:text="mauvais état"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/switch1"
-                app:layout_constraintStart_toEndOf="@+id/switch1"
-                app:layout_constraintTop_toTopOf="@+id/switch1" />
+                app:layout_constraintBottom_toBottomOf="@+id/switchBA"
+                app:layout_constraintStart_toEndOf="@+id/switchBA"
+                app:layout_constraintTop_toTopOf="@+id/switchBA" />
 
             <TextView
                 android:id="@+id/textView26"
@@ -210,7 +211,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView25" />
 
             <Switch
-                android:id="@+id/switch4"
+                android:id="@+id/switchPRE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -250,6 +251,7 @@
                     android:layout_marginStart="56dp"
                     android:layout_marginLeft="56dp"
                     android:layout_marginTop="40dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -328,6 +330,7 @@
                     android:layout_marginStart="48dp"
                     android:layout_marginLeft="48dp"
                     android:layout_marginTop="44dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -409,6 +412,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintStart_toEndOf="@+id/textView5"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -443,20 +447,22 @@
 
             <Spinner
                 android:id="@+id/spiCapot"
-                android:layout_width="wrap_content"
+                android:layout_width="125dp"
                 android:layout_height="23dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/dropdown_background"
                 app:layout_constraintBottom_toBottomOf="@+id/textView32"
                 app:layout_constraintStart_toEndOf="@+id/textView32"
                 app:layout_constraintTop_toTopOf="@+id/textView32" />
 
             <Spinner
                 android:id="@+id/spiVentilateur"
-                android:layout_width="wrap_content"
+                android:layout_width="115dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
+                android:background="@drawable/dropdown_background"
                 app:layout_constraintBottom_toBottomOf="@+id/textView33"
                 app:layout_constraintStart_toEndOf="@+id/textView33"
                 app:layout_constraintTop_toTopOf="@+id/textView33" />
@@ -523,6 +529,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="36dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintStart_toEndOf="@+id/textView34"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -531,6 +538,7 @@
                     android:layout_width="150dp"
                     android:layout_height="21dp"
                     android:layout_marginTop="4dp"
+                    android:background="@drawable/dropdown_background"
                     app:layout_constraintEnd_toEndOf="@+id/spiSocle"
                     app:layout_constraintStart_toStartOf="@+id/spiSocle"
                     app:layout_constraintTop_toBottomOf="@+id/spiSocle" />
@@ -549,10 +557,11 @@
 
             <Spinner
                 android:id="@+id/spiPla"
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
+                android:background="@drawable/dropdown_background"
                 app:layout_constraintBottom_toBottomOf="@+id/textView37"
                 app:layout_constraintStart_toEndOf="@+id/textView37"
                 app:layout_constraintTop_toTopOf="@+id/textView37" />
@@ -665,9 +674,9 @@
                 android:layout_height="wrap_content"
                 android:text="Avant"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/switch4"
-                app:layout_constraintStart_toEndOf="@+id/switch4"
-                app:layout_constraintTop_toTopOf="@+id/switch4" />
+                app:layout_constraintBottom_toBottomOf="@+id/switchPRE"
+                app:layout_constraintStart_toEndOf="@+id/switchPRE"
+                app:layout_constraintTop_toTopOf="@+id/switchPRE" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

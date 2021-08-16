@@ -6,20 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.FrameLayout
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.RadioButton
-import android.widget.EditText
-import android.widget.TextView
 import com.example.applicationstb.R
 import android.util.Log
+import android.widget.*
 import com.example.applicationstb.model.*
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontageViewModel
+import androidx.cardview.widget.CardView
 
 class FicheRemontage : Fragment() {
 
@@ -50,26 +45,43 @@ class FicheRemontage : Fragment() {
                 is RemontageTriphase -> fragmentManager.commit {
                     replace<essaisStatTriFragment>(R.id.essaisStatiqueslayout)
                 }
-                is RemontageCourantC -> fragmentManager.commit {
+                is RemontageCourantC ->
+                {   fragmentManager.commit {
                     replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
+                    }
                 }
             }
-            Log.i("INFO",viewModel.selection.value?.javaClass.toString())
+            layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
+            layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
+            layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+            layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
+            layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
+            layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
             //infoMoteur.visibility = View.VISIBLE
             //essaisDynamiques.visibility = View.VISIBLE
-
         }
         //infos moteur
         var titre = layout.findViewById<TextView>(R.id.titreRemontage)
         var spinnerMnt = layout.findViewById<Spinner>(R.id.spinnerMntRll)
+        spinnerMnt.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","à la presse","douille de frappe","chauffe roulement"))
         var spinnerCPA = layout.findViewById<Spinner>(R.id.spinnerCPA)
+        spinnerCPA.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","avant","arrière","aucun"))
         var spinnerCIF = layout.findViewById<Spinner>(R.id.spinnerCIF)
+        spinnerCIF.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","avant","arrière","aucun"))
         var fixCouronne = layout.findViewById<RadioButton>(R.id.fixCouronne)
         var isoPBRB = layout.findViewById<RadioButton>(R.id.isoPBRB)
         var isoPBV = layout.findViewById<EditText>(R.id.isoPBV)
         //var risoPBV = layout.findViewById<EditText>(R.id.risoPBV)
         titre.setOnClickListener{
 
+        }
+        var btnquitter = layout.findViewById<Button>(R.id.quit)
+        var btnenregistrer = layout.findViewById<Button>(R.id.enregistrer)
+        btnquitter.setOnClickListener {
+            viewModel.retour(layout)
+        }
+        btnenregistrer.setOnClickListener {
+            viewModel.enregistrer(layout)
         }
 
 

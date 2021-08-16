@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.applicationstb.R
+import android.widget.*
 
 
 class essaisStatCCFragment : Fragment() {
@@ -21,7 +22,14 @@ class essaisStatCCFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_essais_stat_c_c, container, false)
+        var layout = inflater.inflate(R.layout.fragment_essais_stat_c_c, container, false)
+        val spiInductMasse = layout.findViewById<Spinner>(R.id.spinnerIsoInduMasse)
+        spiInductMasse.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","500","1000","2500","5000"))
+        val spiInduiMasse = layout.findViewById<Spinner>(R.id.spinnerIsoIndui)
+        spiInduiMasse.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","500","1000","2500","5000"))
+        val spiInduiInduc = layout.findViewById<Spinner>(R.id.spinnerIntuiInduc)
+        spiInduiInduc.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","500","1000","2500","5000"))
+        return layout
     }
 
     companion object {

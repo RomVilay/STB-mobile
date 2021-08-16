@@ -51,10 +51,10 @@ abstract class DemontageMoteur(
      * partie mecanique
      */
     var couplage:String? = null;
-    var flasqueAvant: Etat2? = null;
-    var flasqueArriere: Etat2? = null;
-    var porteerar: Etat2? = null;
-    var porteeravt: Etat2? = null;
+    var flasqueAvant: String ? = null;
+    var flasqueArriere: String ? = null;
+    var porteerar: String ? = null;
+    var porteeravt: String ? = null;
     var boutarbre: Boolean? = null;
     var rondelleE: Boolean? = null;
     var refRoulementAv: String? = null;
@@ -65,15 +65,23 @@ abstract class DemontageMoteur(
     var typeJointAvant: String ? = null;
     var refJointAr: String ? = null;
     var typeJointAr: String ? = null;
-    var capotV: Etat3 ? = null;
-    var ventilateur: Etat3 ? = null;
-    var socleBoiteABorne : Etat3? = null;
-    var capotBoiteABorne : Etat3 ? = null;
-    var plaqueABorne : Etat3 ? = null;
+    var capotV: String ? = null;
+    var ventilateur: String ? = null;
+    var socleBoiteABorne : String ? = null;
+    var capotBoiteABorne : String ? = null;
+    var plaqueABorne : String ? = null;
     var pesenceBorne: Boolean ? = null;
     var equilibrage: Boolean ? = null;
     var peinture : Boolean ? = null;
     var schema : Array<Uri> ? = null
+
+    override fun toString(): String {
+        var s = "couplage: "+couplage+" - flasqueAvant: "+flasqueAvant+" - flasqueArriere: "+flasqueArriere+" - porteerar: "+
+                porteerar+" - porteeravt: "+porteeravt+" - refRoulementAv: "+refRoulementAv+" - typeRoulementAv: "+typeRoulementAv+
+                " - refRoulementAr: "+refRoulementAr+" - typeRoulementAr: "+typeRoulementAr+" - refJointAvant: "+refJointAvant+
+                " - typeJointAvant: "+typeJointAvant+" - refJointAr: "+refJointAr+" - typeJointAr: "+typeJointAr+" - etat bout d'arbre: "+boutarbre+" - rondelle elastique: "+rondelleE+" "
+        return s
+    }
 }
 
 class DemontagePompe( numDevis: String,

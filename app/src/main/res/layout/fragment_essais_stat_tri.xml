@@ -8,17 +8,17 @@
     android:paddingBottom="60dp"
     tools:context=".ui.ficheRemontage.essaisStatTriFragment">
 
-        <TextView
-            android:id="@+id/textView74"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:background="@color/bleu_stb"
-            android:gravity="center"
-            android:text="Essais Statiques Après Démontage"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView74"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/bleu_stb"
+        android:gravity="center"
+        android:text="Essais Statiques Après Remontage"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView75"
@@ -32,14 +32,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView74" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerIsoPMT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView75"
         app:layout_constraintStart_toEndOf="@+id/textView75"
-        app:layout_constraintTop_toBottomOf="@+id/textView74" />
+        app:layout_constraintTop_toTopOf="@+id/textView75" />
 
     <TableLayout
             android:id="@+id/Tisopm
@@ -133,14 +133,15 @@
 
         </TableLayout>
 
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="88dp"
-            android:layout_marginLeft="88dp"
-            app:layout_constraintStart_toEndOf="@+id/textView76"
-            tools:layout_editor_absoluteY="247dp" />
+    <Spinner
+        android:id="@+id/spinnerIsoP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginLeft="88dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView76"
+        app:layout_constraintStart_toEndOf="@+id/textView76"
+        app:layout_constraintTop_toTopOf="@+id/textView76" />
 
         <TextView
             android:id="@+id/textView76"
