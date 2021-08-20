@@ -98,7 +98,6 @@ class FicheBobinage : Fragment() {
         if (activity?.let { ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.CAMERA) }
                 == PackageManager.PERMISSION_DENIED)
             this.activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.CAMERA), PHOTO_RESULT) }
-
         recycler = layout.findViewById(R.id.tab)
         recycler.layoutManager = GridLayoutManager(context, 1)
         recycler.adapter = adapter

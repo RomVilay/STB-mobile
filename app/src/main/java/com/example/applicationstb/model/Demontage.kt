@@ -73,7 +73,8 @@ abstract class DemontageMoteur(
     var pesenceBorne: Boolean ? = null;
     var equilibrage: Boolean ? = null;
     var peinture : Boolean ? = null;
-    var schema : Array<Uri> ? = null
+    var photos : Array<Uri> ? = null
+    var observations : String ? = null;
 
     override fun toString(): String {
         var s = "couplage: "+couplage+" - flasqueAvant: "+flasqueAvant+" - flasqueArriere: "+flasqueArriere+" - porteerar: "+

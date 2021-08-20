@@ -35,6 +35,9 @@
         <action
             android:id="@+id/deDemontageversAccueil"
             app:destination="@id/accueil" />
+        <action
+            android:id="@+id/versFullScreen"
+            app:destination="@id/schemaFragment" />
     </fragment>
     <fragment
         android:id="@+id/connexion"
@@ -53,6 +56,9 @@
         <action
             android:id="@+id/deChantierversAccueil"
             app:destination="@id/accueil" />
+        <action
+            android:id="@+id/versFullScreen"
+            app:destination="@id/schemaFragment" />
     </fragment>
     <fragment
         android:id="@+id/ficheBobinage"
@@ -74,6 +80,9 @@
         <action
             android:id="@+id/deRemontageverAccueil"
             app:destination="@id/accueil" />
+        <action
+            android:id="@+id/action_ficheRemontage_to_ficheDemontage"
+            app:destination="@id/ficheDemontage" />
     </fragment>
     <fragment
         android:id="@+id/schemaFragment"
@@ -86,5 +95,8 @@
         <argument
             android:name="schemaUri"
             app:argType="string" />
+        <action
+            android:id="@+id/action_schemaFragment_to_ficheDemontage"
+            app:destination="@id/ficheDemontage" />
     </fragment>
 </navigation>

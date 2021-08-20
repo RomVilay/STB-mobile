@@ -23,6 +23,10 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 
 class FicheChantier : Fragment() {
 
@@ -31,6 +35,7 @@ class FicheChantier : Fragment() {
     }
 
     private lateinit var viewModel: FicheChantierViewModel
+    private  val PHOTO_RESULT = 1888
     //
 
 
@@ -67,7 +72,21 @@ class FicheChantier : Fragment() {
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
         //var stech: Bitmap? = sview.extraBitmap
-
+        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(layout,viewModel.schema.value.toString())
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+        btnPhoto.setOnClickListener {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent, PHOTO_RESULT)
+        }
         showDetails.setOnClickListener {
             if (visibility == View.GONE){
                 visibility = View.VISIBLE
@@ -162,10 +181,17 @@ class FicheChantier : Fragment() {
         return layout
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        // TODO: Use the ViewModel
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PHOTO_RESULT) {
+            val photo: Bitmap = data?.extras?.get("data") as Bitmap
+            val uri = context?.let { photo.saveImage(it.applicationContext) }
+            if (uri != null) {
+                Log.i("INFO",uri.toString())
+                viewModel.addPhoto(0,uri)
+            }
+            Log.i("INFO",uri.toString())
+        }
     }
 
     fun Bitmap.saveImage(context: Context): Uri? {

@@ -34,7 +34,8 @@ class SchemaFragment : Fragment() {
             schema.setImageURI(it)
         })
         retour.setOnClickListener{
-            viewModel.backFs(layout)
+            activity?.onBackPressed()
+           // viewModel.backFs(layout)
         }
         // Inflate the layout for this fragment
         return layout

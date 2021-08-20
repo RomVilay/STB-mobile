@@ -14,11 +14,15 @@ import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.User
 import com.example.applicationstb.model.Vehicule
 import android.net.Uri
+import android.util.Log
+import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
 
 class FicheChantierViewModel : ViewModel() {
     var listeChantiers = arrayListOf<Chantier>()
     var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var signatures = arrayListOf<Uri?>()
+    var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
+    var schema = MutableLiveData<Uri>()
     var listeTechs = arrayOf<User>(User("0","Dumont","Toto",1,"toto","toto","0"),
         User("0","Dumont","Tom",1,"tom","tom","0"))
     init {
@@ -50,6 +54,18 @@ class FicheChantierViewModel : ViewModel() {
         val action = FicheChantierDirections.deChantierversAccueil("Token")
         Navigation.findNavController(view).navigate(action)
     }
+    fun addPhoto(index:Int,photo: Uri) {
+        photos.value!!.add(photo)
+    }
+    fun setSchema(sch: Uri){
+        schema.value = sch
+        Log.i("INFO", sch.toString())
+    }
+    fun fullScreen(view: View,uri: String) {
+        val action = FicheChantierDirections.versFullScreen(uri.toString())
+        Navigation.findNavController(view).navigate(action)
+    }
+
     /*fun setSignature(sign:Bitmap){
         signature.value = sign
     }*/

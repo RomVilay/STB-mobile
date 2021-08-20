@@ -19,8 +19,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.OutputStream
 
 
@@ -54,6 +56,23 @@ class MonophaseFragment : Fragment() {
 
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
         var btnPhoto = layout.findViewById<Button>(R.id.photo2)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto2)
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(layout,viewModel.schema.value.toString())
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+        enregistrer.setOnClickListener {
+            viewModel.enregistrer(layout)
+        }
         /*var listePhotos = layout.findViewById<Button>(R.id.recyclerPhoto2)
         listePhotos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         listePhotos.adapter = schemaAdapter(viewModel.photos.schemas,{ item ->
@@ -108,12 +127,7 @@ class MonophaseFragment : Fragment() {
         }
 
 
-        retour.setOnClickListener {
-            viewModel.retour(layout)
-        }
-        enregistrer.setOnClickListener {
-            viewModel.enregistrer(layout)
-        }
+
 
         return layout
     }
@@ -122,7 +136,6 @@ class MonophaseFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PHOTO_RESULT) {
             val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
             val uri = context?.let { photo.saveImage(it.applicationContext) }
             if (uri != null) {
                 Log.i("INFO",uri.toString())
