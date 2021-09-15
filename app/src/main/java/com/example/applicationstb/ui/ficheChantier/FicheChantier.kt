@@ -24,9 +24,14 @@ import java.util.*
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Environment
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 
 class FicheChantier : Fragment() {
 
@@ -36,6 +41,8 @@ class FicheChantier : Fragment() {
 
     private lateinit var viewModel: FicheChantierViewModel
     private  val PHOTO_RESULT = 1888
+    lateinit var currentPhotoPath: String
+    val REQUEST_IMAGE_CAPTURE = 1
     //
 
 
@@ -77,7 +84,7 @@ class FicheChantier : Fragment() {
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,viewModel.schema.value.toString())
+            viewModel.fullScreen(layout,item.toString())
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
@@ -85,7 +92,30 @@ class FicheChantier : Fragment() {
         })
         btnPhoto.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent, PHOTO_RESULT)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            context!!,
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                    }
+                }
+            }
         }
         showDetails.setOnClickListener {
             if (visibility == View.GONE){
@@ -191,6 +221,26 @@ class FicheChantier : Fragment() {
                 viewModel.addPhoto(0,uri)
             }
             Log.i("INFO",uri.toString())
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
+            //imageView.setImageBitmap(photo)
+            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = activity!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
         }
     }
 

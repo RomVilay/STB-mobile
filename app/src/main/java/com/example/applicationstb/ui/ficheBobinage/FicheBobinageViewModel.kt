@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
+import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
 
 class FicheBobinageViewModel : ViewModel() {
 
@@ -76,8 +77,10 @@ class FicheBobinageViewModel : ViewModel() {
         schema.value = sch
         Log.i("INFO", sch.toString())
     }
-    fun fullScreen(view: View) {
-        Navigation.findNavController(view).navigate(R.id.versFullScreen)
+    fun fullScreen(view: View,uri:String) {
+        val action = FicheChantierDirections.versFullScreen(uri.toString())
+        Navigation.findNavController(view).navigate(action)
+        //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
     fun save(){}
     // TODO: Implement the ViewModel
