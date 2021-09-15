@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.Manifest
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
@@ -19,15 +21,20 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import java.io.File
+import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class FicheBobinage : Fragment() {
@@ -40,6 +47,10 @@ class FicheBobinage : Fragment() {
     private lateinit var recycler:RecyclerView
     private lateinit var schemas:RecyclerView
     private  val PHOTO_RESULT = 1888
+    lateinit var currentPhotoPath: String
+    val REQUEST_IMAGE_CAPTURE = 1
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -169,7 +180,32 @@ class FicheBobinage : Fragment() {
         }
         addschema.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent, PHOTO_RESULT)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException ) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            context!!,
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                        Log.i("INFO",currentPhotoPath)
+                    }
+                }
+            }
+            //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
         }
         quit.setOnClickListener {
             viewModel.back(layout)
@@ -182,6 +218,21 @@ class FicheBobinage : Fragment() {
 
         // TODO: Use the ViewModel
     }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = activity!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PHOTO_RESULT) {
@@ -192,6 +243,11 @@ class FicheBobinage : Fragment() {
                 viewModel.addSchema(uri)
             }
             Log.i("INFO",uri.toString())
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
+            //imageView.setImageBitmap(photo)
+            viewModel.addSchema(Uri.parse(currentPhotoPath))
         }
     }
 
