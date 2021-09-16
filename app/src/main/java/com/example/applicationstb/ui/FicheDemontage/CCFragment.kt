@@ -11,14 +11,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.databinding.ActivityMainBinding
+import com.example.applicationstb.model.CourantContinu
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
@@ -47,6 +51,30 @@ class CCFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_c_c, container, false)
+        //isolement phase/masse
+        var isopmu = layout.findViewById<EditText>(R.id.isopmU) //induit
+        var isopmv = layout.findViewById<EditText>(R.id.isopmV) //pole principal
+        var isopmw = layout.findViewById<EditText>(R.id.isopmW) //pole auxilliare
+        var isoppU = layout.findViewById<EditText>(R.id.isoppU)// pôle compensatoire
+        var isoppV = layout.findViewById<EditText>(R.id.isoppV)// pôle porte balais
+        //resistances
+        var rU = layout.findViewById<EditText>(R.id.rU)     //résistance Induit
+        var rV =  layout.findViewById<EditText>(R.id.rV)    // résistance pôle principal
+        var rI = layout.findViewById<EditText>(R.id.RI)     //resistance pôle auxilliaire
+        var rPP = layout.findViewById<EditText>(R.id.RPP)   // resistance pôle compensatoire
+        // essais dynamiques
+        var vU = layout.findViewById<EditText>(R.id.vU)     //tension induit
+        var vV = layout.findViewById<EditText>(R.id.vV)     //tension excitation
+        var vUI = layout.findViewById<EditText>(R.id.vUI)   //intensité induit
+        var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
+       /* if (viewModel.selection.value.javaClass is CourantContinu){
+            var fiche: CourantContinu? = viewModel.selection.value as CourantContinu
+            isopmu.setText(fiche.isoMass[0])
+            isopmv.setText(fiche.isoMass[1])
+            isopmw.setText(fiche.isoMass[2])
+
+        }*/
+
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

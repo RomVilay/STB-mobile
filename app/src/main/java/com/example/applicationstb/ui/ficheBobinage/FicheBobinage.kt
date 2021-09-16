@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -50,6 +51,15 @@ class FicheBobinage : Fragment() {
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
 
+    /*private val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Log.i("Permission: ", "Granted")
+            } else {
+                Log.i("Permission: ", "Denied")
+            }
+        }*/
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -179,6 +189,13 @@ class FicheBobinage : Fragment() {
             }
         }
         addschema.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
@@ -188,7 +205,7 @@ class FicheBobinage : Fragment() {
                         createImageFile()
                     } catch (ex: IOException ) {
                         // Error occurred while creating the File
-                        Log.i("INFO","error while creating file")
+                        Log.i("INFO","error while creating file: "+ ex)
                         null
                     }
                     // Continue only if the File was successfully created
@@ -204,6 +221,54 @@ class FicheBobinage : Fragment() {
                         Log.i("INFO",currentPhotoPath)
                     }
                 }
+            }
+            /*if ()
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                        // Ensure that there's a camera activity to handle the intent
+                        cameraIntent.resolveActivity(activity!!.packageManager).also {
+                            // Create the File where the photo should go
+                            val photoFile: File? = try {
+                                createImageFile()
+                            } catch (ex: IOException ) {
+                                // Error occurred while creating the File
+                                Log.i("INFO","error while creating file: "+ ex)
+                                null
+                            }
+                            // Continue only if the File was successfully created
+                            photoFile?.also {
+                                val photoURI: Uri = FileProvider.getUriForFile(
+                                    context!!,
+                                    "com.example.applicationstb.fileprovider",
+                                    it
+                                )
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                                //viewModel.addSchema(photoURI)
+                                Log.i("INFO",currentPhotoPath)
+                            }
+                        } ()
+                }
+
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )  -> {
+                        //requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+
+                else -> {
+                        requestPermissionLauncher.launch(
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                }
+            }
+
+
             }
             //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
         }
@@ -223,7 +288,7 @@ class FicheBobinage : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = activity!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         return File.createTempFile(
             "JPEG_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */
@@ -231,8 +296,17 @@ class FicheBobinage : Fragment() {
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
+
         }
     }
+
+    /*private fun galleryAddPic() {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            val f = File(currentPhotoPath)
+            mediaScanIntent.data = Uri.fromFile(f)
+            sendBroad (mediaScanIntent)
+        }
+    }*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PHOTO_RESULT) {
@@ -248,6 +322,8 @@ class FicheBobinage : Fragment() {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
             viewModel.addSchema(Uri.parse(currentPhotoPath))
+            //galleryAddPic()
         }
     }
+
 }

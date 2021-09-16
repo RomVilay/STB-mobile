@@ -41,7 +41,7 @@ class Accueil : Fragment() {
             viewModel.toFicheD(layout)
         }
         cht.setOnClickListener {
-            Log.i("INFO",token)
+            Log.i("INFO",token!!)
             viewModel.toChantier(layout)
         }
         rm.setOnClickListener {
