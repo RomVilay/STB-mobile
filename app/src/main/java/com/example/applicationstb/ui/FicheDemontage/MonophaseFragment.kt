@@ -1,8 +1,10 @@
 package com.example.applicationstb.ui.FicheDemontage
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +18,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -130,6 +133,14 @@ class MonophaseFragment : Fragment() {
             meca.layoutParams = layout
         }
         btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent

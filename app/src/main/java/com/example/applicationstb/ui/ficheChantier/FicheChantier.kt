@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.ficheChantier
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.*
@@ -24,7 +25,9 @@ import java.util.*
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Environment
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -91,6 +94,14 @@ class FicheChantier : Fragment() {
             sAdapter.update(it)
         })
         btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent

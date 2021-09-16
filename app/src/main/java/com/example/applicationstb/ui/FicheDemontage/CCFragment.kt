@@ -1,6 +1,8 @@
 package com.example.applicationstb.ui.FicheDemontage
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -13,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -89,6 +92,14 @@ class CCFragment : Fragment() {
         })
 
         btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
