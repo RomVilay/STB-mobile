@@ -10,13 +10,13 @@ import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
 
 class FicheRemontageViewModel : ViewModel() {
     var listeRemontages = arrayListOf<Fiche>()
-    var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
     val selection : MutableLiveData<Fiche> by lazy {
         MutableLiveData<Fiche>()
     }
     init{
-        var i = 0;
+       /* var i = 0;
         var fiche: Fiche ? = null
         while (i <= 1){
             when (i) {
@@ -44,7 +44,7 @@ class FicheRemontageViewModel : ViewModel() {
             }
             Log.i("INFO", "fiche n°${listeRemontages[i].numFiche}")
             i=i+1;
-        }
+        }*/
     }
 
     fun select (i:Int){

@@ -190,12 +190,12 @@ class FicheChantier : Fragment() {
             chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
             materiel.setText(chantier?.materiel)
             objet.setText(chantier?.objet)
-            observation.setText(chantier?.observations)
+            //observation.setText(chantier?.observations)
             client.setText(chantier?.client?.entreprise)
             vehicule.setText(chantier?.vehicule?.nom)
             contact.setText(chantier?.contact)
             numero.setText(chantier?.telContact.toString())
-            adresse.setText(chantier?.adresse)
+            //adresse.setText(chantier?.adresse)
             var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
             dateDebut.setText(LocalDateTime.now().format(format))
         }
@@ -215,6 +215,7 @@ class FicheChantier : Fragment() {
             viewModel.signatures.add(uriTech)
             viewModel.signatures.add(uriCli)
             Log.i("INFO",viewModel.signatures.toString())*/
+
             Log.i("info", viewModel.signatures.toString())
             viewModel.back(layout)
         }
@@ -244,7 +245,7 @@ class FicheChantier : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = activity!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         return File.createTempFile(
             "JPEG_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */

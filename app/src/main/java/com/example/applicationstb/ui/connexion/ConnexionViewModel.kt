@@ -10,6 +10,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.User
 import com.example.applicationstb.repository.LoginResponse
 import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,8 +21,8 @@ class ConnexionViewModel : ViewModel() {
     var repository = Repository();
     fun toAccueil(view: View) {
         //Log.i("INFO","click vers Accueil - ${user?.username}")
-        Navigation.findNavController(view).navigate(R.id.versAccueil)
-
+        var action = ConnexionDirections.versAccueil(user!!.token!!)
+        Navigation.findNavController(view).navigate(action)
     }
     fun login(username: String,psw: String, view: View){
         val resp = repository.logUser(username,psw,object: Callback<LoginResponse> {

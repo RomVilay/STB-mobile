@@ -283,11 +283,11 @@
                     android:id="@+id/addsection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="104dp"
-                    android:layout_marginLeft="104dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="88dp"
+                    android:layout_marginLeft="88dp"
                     android:text="Ajout de section"
                     android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -295,57 +295,50 @@
                     android:id="@+id/nbfils"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="188dp"
-                    android:layout_marginLeft="188dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginLeft="60dp"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="brins"
+                    android:hint="diamètre "
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/addsection"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintStart_toEndOf="@+id/addsection"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/inputlongueur"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="344dp"
-                    android:layout_marginLeft="344dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="40dp"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="longueur"
                     android:inputType="number"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/addsection" />
+                    app:layout_constraintStart_toEndOf="@+id/x"
+                    tools:layout_editor_absoluteY="6dp" />
 
                 <TextView
                     android:id="@+id/x"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginBottom="16dp"
                     android:text="x"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/inputlongueur"
-                    app:layout_constraintHorizontal_bias="0.49"
                     app:layout_constraintStart_toEndOf="@+id/nbfils" />
 
                 <Button
                     android:id="@+id/ajoutFil"
                     android:layout_width="44dp"
                     android:layout_height="51dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginStart="52dp"
+                    android:layout_marginLeft="52dp"
                     android:text="+"
                     app:backgroundTint="@color/bleu_stb"
                     app:layout_constraintStart_toEndOf="@+id/inputlongueur"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    tools:layout_editor_absoluteY="6dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -361,7 +354,8 @@
                     android:background="@drawable/round_top_full_grey"
                     android:gravity="center"
                     android:text="Sections de fils"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="428dp"
@@ -375,7 +369,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/cell"
                         android:gravity="center"
-                        android:text="nombre de brins" />
+                        android:text="diamètre de section"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/textlongueur"
@@ -384,7 +379,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/cell"
                         android:gravity="center"
-                        android:text="longueur" />
+                        android:text="longueur"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -406,16 +402,18 @@
                         android:background="@color/gray_400"
                         android:gravity="center"
                         android:text="total"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/somme"
                         android:layout_width="208dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/cell"
                         android:gravity="center"
-                        android:text="0" />
+                        android:text="0"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -432,7 +430,8 @@
                     android:layout_height="36dp"
                     android:layout_weight="1"
                     android:gravity="center|start"
-                    android:text="Nombre de Spires" />
+                    android:text="Nombre de Spires"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/spire"
@@ -455,6 +454,8 @@
             <LinearLayout
                 android:layout_width="520dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -526,6 +527,8 @@
             <LinearLayout
                 android:layout_width="520dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -597,6 +600,8 @@
             <LinearLayout
                 android:layout_width="520dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:orientation="horizontal">
 
                 <TextView

@@ -139,15 +139,15 @@ class FicheBobinage : Fragment() {
         })
         viewModel.bobinage.observe(viewLifecycleOwner,{
             var bobinage = viewModel.bobinage.value
-            marque.setText(bobinage?.marque)
-            type.setText(bobinage?.type)
-            vitesse.setText(bobinage?.vitesse.toString())
-            client.setText(bobinage?.client?.entreprise)
-            tension.setText(bobinage?.tension.toString())
-            phases.setText(bobinage?.phases)
-            frequence.setText(bobinage?.frequence.toString())
-            courant.setText(bobinage?.courant)
             if (bobinage != null) {
+                marque.setText(bobinage?.marque)
+                //type.setText(bobinage?.type)
+                //vitesse.setText(bobinage.vitesse.toString())
+                client.setText(bobinage?.client?.entreprise)
+                tension.setText(bobinage?.tension.toString())
+                phases.setText(bobinage?.phases)
+                frequence.setText(bobinage?.frequence.toString())
+                courant.setText(bobinage?.courant)
                 switch.setChecked(bobinage.callage)
                 adapter.list = bobinage.sectionsFils
             }
@@ -273,6 +273,9 @@ class FicheBobinage : Fragment() {
             //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
         }
         quit.setOnClickListener {
+            viewModel.schemas!!.value!!.forEach {
+                Log.i("INFO",it.toString())
+            }
             viewModel.back(layout)
         }
         return layout

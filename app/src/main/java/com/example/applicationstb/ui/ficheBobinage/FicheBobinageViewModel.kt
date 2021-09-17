@@ -13,7 +13,7 @@ import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
 class FicheBobinageViewModel : ViewModel() {
 
     var listeBobinage = arrayListOf<Bobinage>()
-    var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
     var sections = MutableLiveData<MutableList<Section>>()
     var schemas = MutableLiveData<MutableList<Uri>>()
@@ -21,7 +21,7 @@ class FicheBobinageViewModel : ViewModel() {
     var schema = MutableLiveData<Uri>()
 
     init {
-        var i =0
+        /*var i =0
         while (i<10)
         {
             var bobinage = Bobinage (i.toString(),
@@ -43,7 +43,7 @@ class FicheBobinageViewModel : ViewModel() {
             )
             listeBobinage.add(bobinage);
             i++;
-        }
+        }*/
         //bobinage.value = listeBobinage[0]
     }
     fun selectBobinage(index: Int){
@@ -62,7 +62,7 @@ class FicheBobinageViewModel : ViewModel() {
         schemas.value=listeBobinage[0].schemas
     }
     fun somme(list: MutableList<Section>): Double {
-        var tab = list.map { it.longueur }
+        var tab = list.map { it.longueur * it.brins }
         //Log.i("info", tab.toString())
         return tab.sum()
     }

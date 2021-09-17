@@ -1,16 +1,24 @@
 package com.example.applicationstb.model
 
 import java.sql.Timestamp
+import java.util.*
 
 abstract class Remontage (
+    idFiche:String,
     numDevis: String,
-    numChantier: String,
+    numFiche: String,
+    type:Long,
+    statut: Long,
     client: Client,
-    contact: String,
-    telContact: Long,
-    techniciens: Array<User>,
-    resp: User
-        ) :Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp){
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?
+        ) :Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo){
             var remontage: Int? = null;
             var collageRPArbre : Int? = null;
             var collageRPFlasque : Int? = null;
@@ -44,13 +52,20 @@ abstract class Remontage (
 
 }
 class RemontageTriphase (
+    idFiche:String,
     numDevis: String,
-    numChantier: String,
+    numFiche: String,
+    type:Long,
+    statut: Long,
     client: Client,
-    contact: String,
-    telContact: Long,
-    techniciens: Array<User>,
-    resp: User) : Remontage(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?) : Remontage(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
         var isoPM : Int? = null;
         var isoP : Int? = null;
         var resStatorU : Int? = null;
@@ -73,13 +88,20 @@ class RemontageTriphase (
         var ResW : Int? = null;
                  }
 class RemontageCourantC (
+    idFiche:String,
     numDevis: String,
-    numChantier: String,
+    numFiche: String,
+    type:Long,
+    statut: Long,
     client: Client,
-    contact: String,
-    telContact: Long,
-    techniciens: Array<User>,
-    resp: User) : Remontage(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?) : Remontage(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
         var resInducst :Int? = null;
         var resIndui : Int? = null;
         var isoInducMasse : Int? = null;

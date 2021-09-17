@@ -19,14 +19,14 @@ import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
 
 class FicheChantierViewModel : ViewModel() {
     var listeChantiers = arrayListOf<Chantier>()
-    var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var signatures = arrayListOf<Uri?>()
     var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
     var schema = MutableLiveData<Uri>()
     var listeTechs = arrayOf<User>(User("0","Dumont","Toto",1,"toto","toto","0"),
         User("0","Dumont","Tom",1,"tom","tom","0"))
     init {
-        var i =0
+       /* var i =0
         while (i<10)
         {
             var chantier = Chantier (i.toString(),
@@ -45,7 +45,7 @@ class FicheChantierViewModel : ViewModel() {
             )
             listeChantiers.add(chantier);
             i++;
-        }
+        }*/
 
     }
 

@@ -12,7 +12,7 @@ import android.util.Log
 
 class FicheDemontageViewModel : ViewModel() {
     var listeDemontages = arrayListOf<Fiche>()
-    var client = Client(0,"Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
     var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
     var schema = MutableLiveData<Uri>()
@@ -20,7 +20,7 @@ class FicheDemontageViewModel : ViewModel() {
         MutableLiveData<Fiche>()
     }
     init{
-        var i = 0;
+        /*var i = 0;
         var fiche: Fiche ? = null
         while (i <= 5){
             when (i) {
@@ -72,7 +72,7 @@ class FicheDemontageViewModel : ViewModel() {
             }
             Log.i("INFO", "fiche n°${listeDemontages[i].numFiche}")
             i=i+1;
-        }
+        }*/
     }
     fun select (i:Int){
         selection.value =listeDemontages[i]

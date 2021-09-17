@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.accueil
 
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,8 @@ class Accueil : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
+        viewModel.token = arguments?.get("Token") as? String
+        Log.i("INFO",viewModel.token!!)
         val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
         val cht = layout.findViewById<Button>(R.id.btnChantier)

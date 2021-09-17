@@ -8,7 +8,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.User
 
 class AccueilViewModel : ViewModel() {
-    var user: User? = null
+    var token: String? = null
     fun toChantier(view: View){
         Navigation.findNavController(view).navigate(R.id.versFicheChantier)
     }

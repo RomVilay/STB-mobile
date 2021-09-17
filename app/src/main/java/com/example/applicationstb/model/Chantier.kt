@@ -8,34 +8,26 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class Chantier(
+    idFiche:String,
     numDevis: String,
-    numChantier: String,
+    numFiche: String,
+    type:Long,
+    statut: Long,
     client: Client,
-    contact: String,
-    telContact: Long,
-    techniciens: Array<User>,
-    resp: User,
-    var vehicule: Vehicule,
-    var adresse:String,
-    val objet:String,
-    val materiel:String,
-    val observations:String
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?,
+    var vehicule: Vehicule?,
+    var adresseChantier:String?,
+    var objet:String?,
+    var materiel:String?,
+    var diagnostic:String?,
+    var signatureTech:String?,
+    var signatureClient:String?
 
-) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
-    lateinit var DateDebut: LocalDateTime;
-    lateinit var DateFin: LocalDateTime;
-    lateinit var SignatureClient:String;
-    lateinit var SignatureTech:String;
-    init {
-        DateDebut = LocalDateTime.now()
-        DateFin = LocalDateTime.now()
-        SignatureClient = "./source"
-        SignatureTech = "./source"
-    }
-    fun setSC(s:String){
-        this.SignatureClient = s
-    }
-    fun setST(s:String){
-        this.SignatureTech = s
-    }
-}
+) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ) {}

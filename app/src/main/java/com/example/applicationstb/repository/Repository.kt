@@ -3,6 +3,7 @@ package com.example.applicationstb.repository
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
 import org.json.JSONArray
 import retrofit2.Call
@@ -37,15 +38,18 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
         }
     }
 }
+
 class LoginResponse(
     var token:String?,
     var user:User?,
     var error: String?
-
+)
+class FichesResponse(
+    var fiches:Array<Fiche>?
 )
 
 class Repository {
-    val url = "http://176.141.253.12:4000"
+    val url = "http://195.154.107.195:4000"
     val retrofit = Retrofit.Builder()
         .baseUrl(url)
         .addConverterFactory(MoshiConverterFactory.create())
@@ -55,6 +59,11 @@ class Repository {
         var body = BodyLogin(username,psw)
         var call = service.loginUser(body)
         var user: User? = null;
+        call.enqueue(callback)
+    }
+    fun getFiches(token:String, callback:Callback<FichesResponse>) {
+        var call = service.getFiches(token)
+        var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }
 }

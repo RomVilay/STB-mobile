@@ -22,21 +22,28 @@ enum class Matiere{
     ceramique,carbone_silicium,carbone,tugstène
 }
 abstract class DemontageMoteur(
-        numDevis: String,
-        numChantier: String,
-        client: Client,
-        contact: String,
-        telContact: Long,
-        techniciens: Array<User>,
-        resp: User,
-): Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+    idFiche:String,
+    numDevis: String,
+    numFiche: String,
+    type:Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?,
+): Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     /**
      * infos moteur
      */
     var marque: String? = null;
     var date: Date? = null;
     var numSerie: String ? = null;
-    var type: String ? = null;
+    var typeM: String ? = null;
     var puissance: Int ? = null;
     var bride: Int ? = null;
     var vitesse : Int ? = null;
@@ -73,8 +80,6 @@ abstract class DemontageMoteur(
     var pesenceBorne: Boolean ? = null;
     var equilibrage: Boolean ? = null;
     var peinture : Boolean ? = null;
-    var photos : Array<Uri> ? = null
-    var observations : String ? = null;
 
     override fun toString(): String {
         var s = "couplage: "+couplage+" - flasqueAvant: "+flasqueAvant+" - flasqueArriere: "+flasqueArriere+" - porteerar: "+
@@ -85,18 +90,25 @@ abstract class DemontageMoteur(
     }
 }
 
-class DemontagePompe( numDevis: String,
-                      numChantier: String,
+class DemontagePompe( idFiche:String,
+                      numDevis: String,
+                      numFiche: String,
+                      type:Long,
+                      statut: Long,
                       client: Client,
-                      contact: String,
-                      telContact: Long,
-                      techniciens: Array<User>,
-                      resp: User,
-): Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+                      contact: String?,
+                      telContact: String?,
+                      techniciens: Array<User>?,
+                      resp: User?,
+                      dateDebut: Date?,
+                      dureeTotale:Long?,
+                      observation: String?,
+                      photo:Array<String>?
+): Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     var numSerie: String ? = null;
     var fluide: String ? = null;
     var sensRotation: Rotation ? = null;
-    var type: TypePompe ? = null;
+    var typeP: TypePompe ? = null;
     var typeJoint: String ? = null;
     var matiere: Matiere ? = null;
     var diametreA: Int ? = null;
@@ -108,14 +120,21 @@ class DemontagePompe( numDevis: String,
     var epaisseurPF : Int ? = null;
 }
 class Monophase(
-        numDevis: String,
-        numChantier: String,
-        client: Client,
-        contact: String,
-        telContact: Long,
-        techniciens: Array<User>,
-        resp: User,
-):DemontageMoteur(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+    idFiche:String,
+    numDevis: String,
+    numFiche: String,
+    statut: Long,
+    type:Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?
+):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     var isoPM: Int ? = null; // isolement phase/masse
     var rt: Int ? = null;    // resistance travail
     var rd: Int ? = null;    //resistance démarrage
@@ -125,14 +144,21 @@ class Monophase(
 }
 
 class Triphase(
-        numDevis: String,
-        numChantier: String,
-        client: Client,
-        contact: String,
-        telContact: Long,
-        techniciens: Array<User>,
-        resp: User,
-):DemontageMoteur(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+    idFiche:String,
+    numDevis: String,
+    numFiche: String,
+    type:Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observation: String?,
+    photo:Array<String>?
+):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     var isoPM: Array<Int> ? = null; //iso phase/masse UM/VM/WM
     var isoPP: Array<Int> ? = null; //iso phase/phase UV/VW/UW
     var resistanceStator: Array<Int> ? = null; // resistance stator UVW
@@ -141,14 +167,21 @@ class Triphase(
     var dureeEssai: Int ? = null;
 }
 
-class RotorBobine (numDevis: String,
-numChantier: String,
-client: Client,
-contact: String,
-telContact: Long,
-techniciens: Array<User>,
-resp: User,
-):DemontageMoteur(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+class RotorBobine (idFiche:String,
+                   numDevis: String,
+                   numFiche: String,
+                   type:Long,
+                   statut: Long,
+                   client: Client,
+                   contact: String?,
+                   telContact: String?,
+                   techniciens: Array<User>?,
+                   resp: User?,
+                   dateDebut: Date?,
+                   dureeTotale:Long?,
+                   observation: String?,
+                   photo:Array<String>?
+):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     //partie statique
     var isoPMS : Array<Int> ? = null; //iso phase/masse stator UT VT WT
     var isoPMR: Array<Int> ? = null;  //iso phase/masse rotor B1T B2T B3T
@@ -161,14 +194,21 @@ resp: User,
     var intensité:Array<Int> ? = null; //intensité UVW rotor
     var dureeEssai:Int ? = null;
 }
-class CourantContinu (numDevis: String,
-                   numChantier: String,
-                   client: Client,
-                   contact: String,
-                   telContact: Long,
-                   techniciens: Array<User>,
-                   resp: User,
-):DemontageMoteur(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+class CourantContinu (idFiche:String,
+                      numDevis: String,
+                      numFiche: String,
+                      type:Long,
+                      statut: Long,
+                      client: Client,
+                      contact: String?,
+                      telContact: String?,
+                      techniciens: Array<User>?,
+                      resp: User?,
+                      dateDebut: Date?,
+                      dureeTotale:Long?,
+                      observation: String?,
+                      photo:Array<String>?
+):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     var isoMass :Array<Int> ? = null; // iso masse induit/poles principaux / poles auxilliaires / poles compensatoires / porte balais
     var resistances : Array<Int> ? = null; // resistance induit, poles principaux, poles aux, poles complémentaires
     var ti : Int ? = null;  //tension/induit
@@ -177,14 +217,21 @@ class CourantContinu (numDevis: String,
     var ie : Int ? = null;  //intensité exitation
 }
 
-class Alternateur (numDevis: String,
-                   numChantier: String,
+class Alternateur (idFiche:String,
+                   numDevis: String,
+                   numFiche: String,
+                   type:Long,
+                   statut: Long,
                    client: Client,
-                   contact: String,
-                   telContact: Long,
-                   techniciens: Array<User>,
-                   resp: User,
-):DemontageMoteur(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
+                   contact: String?,
+                   telContact: String?,
+                   techniciens: Array<User>?,
+                   resp: User?,
+                   dateDebut: Date?,
+                   dureeTotale:Long?,
+                   observation: String?,
+                   photo:Array<String>?
+):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
     var imsp :Array<Int> ? = null; //iso masse stator
     var imrp :Array<Int> ? = null; //iso masse rotor
     var imse : Int ? = null; //iso masse stator exitation
