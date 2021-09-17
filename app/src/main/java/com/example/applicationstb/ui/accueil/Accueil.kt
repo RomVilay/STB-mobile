@@ -27,7 +27,11 @@ class Accueil : Fragment() {
     ): View? {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
         viewModel.token = arguments?.get("Token") as? String
+        if (viewModel.token !== null) {
+            viewModel.listeFiches(viewModel.token.toString())
+        }
         Log.i("INFO",viewModel.token!!)
+
         val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
         val cht = layout.findViewById<Button>(R.id.btnChantier)
