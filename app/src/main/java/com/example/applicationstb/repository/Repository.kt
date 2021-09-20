@@ -5,9 +5,7 @@ import android.os.Parcelable
 import android.util.Log
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.*
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,11 +51,11 @@ class FichesResponse(
     var fiches:Array<Fiche>?
 )
 
-class CustomDateAdapter : JsonAdapter<Date>() {
+class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
     @FromJson
-    override fun fromJson(reader: JsonReader): Date? {
+    override fun fromJson(reader: JsonReader ): Date? {
         return try {
             val dateAsString = reader.nextString()
             synchronized(dateFormat) {
@@ -86,7 +84,6 @@ class Repository {
     val retrofit = Retrofit.Builder()
         .baseUrl(url)
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {

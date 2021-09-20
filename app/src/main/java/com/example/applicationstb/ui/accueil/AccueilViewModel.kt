@@ -24,7 +24,7 @@ class AccueilViewModel : ViewModel() {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
-                    Log.i("INFO","${resp}")
+                    Log.i("INFO","${resp!!.fiches!!.size}")
                     if (resp != null) {
                        fiches = resp.fiches
                         Log.i("INFO","fiches : ${resp.fiches}")
