@@ -40,12 +40,12 @@ class AccueilViewModel : ViewModel() {
         })
     }
     fun toChantier(view: View){
-        /*if (fiches !== null){
-            var tab = fiches.filter { it.type == 1 }
-            for (fiche in tab) {
-                Log.i("fiche n°: ${fiche.numFiche} - client: ${fiche.client} ")
+            var tab = fiches!!.filter { it.type == 1L }
+            if (tab !== null) {
+                for (fiche in tab) {
+                    Log.i("INFO","fiche n°: ${fiche.numFiche} - client: ${fiche.client.enterprise}")
+                }
             }
-        }*/
         //Navigation.findNavController(view).navigate(R.id.versFicheChantier)
     }
     fun toFicheD(view: View){

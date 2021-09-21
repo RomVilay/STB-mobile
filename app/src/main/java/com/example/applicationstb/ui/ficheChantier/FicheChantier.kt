@@ -191,7 +191,7 @@ class FicheChantier : Fragment() {
             materiel.setText(chantier?.materiel)
             objet.setText(chantier?.objet)
             //observation.setText(chantier?.observations)
-            client.setText(chantier?.client?.entreprise)
+            client.setText(chantier?.client?.enterprise)
             vehicule.setText(chantier?.vehicule?.nom)
             contact.setText(chantier?.contact)
             numero.setText(chantier?.telContact.toString())
