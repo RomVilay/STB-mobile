@@ -43,6 +43,7 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
 }
 
 class LoginResponse(
+    @field:Json(name = "auth-token")
     var token:String?,
     var user:User?,
     var error: String?
@@ -94,6 +95,11 @@ class Repository {
     }
     fun getFiches(token:String, callback:Callback<FichesResponse>) {
         var call = service.getFiches(token)
+        var fiches: Array<Fiche>? = null
+        call.enqueue(callback)
+    }
+    fun getFichesUser(token:String, userid:String, callback:Callback<FichesResponse>) {
+        var call = service.getFichesUser(token,userid)
         var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }

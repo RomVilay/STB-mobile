@@ -51,7 +51,7 @@ class FicheChantierViewModel : ViewModel() {
 
     fun back(view:View){
         //console.log(signatures)
-        val action = FicheChantierDirections.deChantierversAccueil("Token")
+        val action = FicheChantierDirections.deChantierversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
     fun addPhoto(index:Int,photo: Uri) {

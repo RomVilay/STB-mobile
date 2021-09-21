@@ -167,12 +167,12 @@ class FicheDemontageViewModel : ViewModel() {
         Navigation.findNavController(view).navigate(action)
     }
     fun retour(view:View){
-        var action = FicheDemontageDirections.deDemontageversAccueil("Token")
+        var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
     fun enregistrer(view:View){
         Log.i("Info",selection.value.toString())
-        var action = FicheDemontageDirections.deDemontageversAccueil("Token")
+        var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
 

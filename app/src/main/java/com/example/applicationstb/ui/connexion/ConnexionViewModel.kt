@@ -21,7 +21,7 @@ class ConnexionViewModel : ViewModel() {
     var repository = Repository();
     fun toAccueil(view: View) {
         //Log.i("INFO","click vers Accueil - ${user?.username}")
-        var action = ConnexionDirections.versAccueil(user!!.token!!)
+        var action = ConnexionDirections.versAccueil(user!!.token!!, user!!.username!!)
         Navigation.findNavController(view).navigate(action)
     }
     fun login(username: String,psw: String, view: View){
@@ -32,8 +32,9 @@ class ConnexionViewModel : ViewModel() {
                     if (resp != null) {
                         user = resp.user
                         user?.token = resp.token
-                        Log.i("INFO","connecté - token ${user?.token}")
-                        val action = user?.token?.let { it1 -> ConnexionDirections.versAccueil(it1) }
+                        //Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
+                        //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
+                        val action = user?.let { it1 -> ConnexionDirections.versAccueil(it1.token!!,it1.username) }
                         if (action != null) {
                             Navigation.findNavController(view).navigate(action)
                         }

@@ -18,9 +18,10 @@ import retrofit2.Response
 class AccueilViewModel : ViewModel() {
     var repository = Repository();
     var token: String? = null
+    var username: String? = null
     var fiches: Array<Fiche>? = null
-    fun listeFiches(token: String){
-        val resp = repository.getFiches(token, object: Callback<FichesResponse> {
+    fun listeFiches(token: String, userid: String){
+        val resp = repository.getFichesUser(token, userid, object: Callback<FichesResponse> {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
@@ -39,7 +40,13 @@ class AccueilViewModel : ViewModel() {
         })
     }
     fun toChantier(view: View){
-        Navigation.findNavController(view).navigate(R.id.versFicheChantier)
+        /*if (fiches !== null){
+            var tab = fiches.filter { it.type == 1 }
+            for (fiche in tab) {
+                Log.i("fiche n°: ${fiche.numFiche} - client: ${fiche.client} ")
+            }
+        }*/
+        //Navigation.findNavController(view).navigate(R.id.versFicheChantier)
     }
     fun toFicheD(view: View){
         Navigation.findNavController(view).navigate(R.id.versFicheD)

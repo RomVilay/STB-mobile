@@ -52,11 +52,11 @@ class FicheRemontageViewModel : ViewModel() {
         //selection.value?.let { afficherFiche(it) }
     }
     fun retour(view: View){
-        var action = FicheRemontageDirections.deRemontageverAccueil("Token")
+        var action = FicheRemontageDirections.deRemontageverAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
     fun enregistrer(view: View){
-        var action = FicheRemontageDirections.deRemontageverAccueil("Token")
+        var action = FicheRemontageDirections.deRemontageverAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
 }
