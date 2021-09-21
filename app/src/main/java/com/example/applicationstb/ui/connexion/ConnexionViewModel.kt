@@ -32,7 +32,7 @@ class ConnexionViewModel : ViewModel() {
                     if (resp != null) {
                         user = resp.user
                         user?.token = resp.token
-                        //Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
+                        Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
                         //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
                         val action = user?.let { it1 -> ConnexionDirections.versAccueil(it1.token!!,it1.username) }
                         if (action != null) {

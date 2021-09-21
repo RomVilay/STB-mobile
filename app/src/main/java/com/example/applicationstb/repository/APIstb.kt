@@ -16,4 +16,10 @@ interface APIstb  {
 
     @GET("/fiches/user/{userid}")
     fun getFichesUser( @Header("auth-token") token:String, @Path("userid") userid:String ): Call<FichesResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<ChantierResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<BobinageResponse>
 }

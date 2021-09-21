@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
+import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
 import com.example.applicationstb.repository.FichesResponse
@@ -28,7 +29,10 @@ class AccueilViewModel : ViewModel() {
                     Log.i("INFO","${resp!!.fiches!!.size}")
                     if (resp != null) {
                        fiches = resp.fiches
-                        Log.i("INFO","fiches : ${resp.fiches}")
+                       /* for(fiche in resp!!.fiches!!) {
+                            Log.i("info",fiche.type.toString())
+                        }*/
+                        //Log.i("INFO","fiches : ${resp.fiches}")
                     }
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
@@ -40,13 +44,16 @@ class AccueilViewModel : ViewModel() {
         })
     }
     fun toChantier(view: View){
-            var tab = fiches!!.filter { it.type == 1L }
-            if (tab !== null) {
-                for (fiche in tab) {
-                    Log.i("INFO","fiche n°: ${fiche.numFiche} - client: ${fiche.client.enterprise}")
+            var tab = mutableListOf<Fiche>()
+                for (fiche in fiches!!) {
+                    if (fiche.type == 1L) {
+                        //Log.i("INFO", "fiche n°: ${fiche.numFiche} - client: ${fiche.client.enterprise} - vehicule :${fiche.vehicule}")
+                        tab.add(fiche)
+                    }
                 }
-            }
-        //Navigation.findNavController(view).navigate(R.id.versFicheChantier)
+            var tab2 = tab.toTypedArray()
+        val action = AccueilDirections.versFicheChantier(tab2,token)
+        Navigation.findNavController(view).navigate(action)
     }
     fun toFicheD(view: View){
         Navigation.findNavController(view).navigate(R.id.versFicheD)

@@ -63,6 +63,14 @@
         <action
             android:id="@+id/versFullScreen"
             app:destination="@id/schemaFragment" />
+        <argument
+            android:name="listChantiers"
+            app:argType="com.example.applicationstb.model.Fiche[]"
+            app:nullable="true" />
+        <argument
+            android:name="Token"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/ficheBobinage"

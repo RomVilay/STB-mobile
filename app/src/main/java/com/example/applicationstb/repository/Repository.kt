@@ -3,6 +3,8 @@ package com.example.applicationstb.repository
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.example.applicationstb.model.Bobinage
+import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
 import com.squareup.moshi.*
@@ -50,6 +52,12 @@ class LoginResponse(
 )
 class FichesResponse(
     var fiches:Array<Fiche>?
+)
+class ChantierResponse(
+    var fiche:Chantier?
+)
+class BobinageResponse(
+    var fiche:Bobinage?
 )
 
 class CustomDateAdapter : JsonAdapter <Date>() {
@@ -101,6 +109,16 @@ class Repository {
     fun getFichesUser(token:String, userid:String, callback:Callback<FichesResponse>) {
         var call = service.getFichesUser(token,userid)
         var fiches: Array<Fiche>? = null
+        call.enqueue(callback)
+    }
+    fun getChantier(token:String,ficheId:String, callback:Callback<ChantierResponse>){
+        var call = service.getChantier(token,ficheId)
+        var fiche:Chantier? = null
+        call.enqueue(callback)
+    }
+    fun getBobinage(token:String,ficheId:String, callback:Callback<ChantierResponse>){
+        var call = service.getChantier(token,ficheId)
+        var fiche:Chantier? = null
         call.enqueue(callback)
     }
 }

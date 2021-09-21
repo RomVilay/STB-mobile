@@ -31,10 +31,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.model.Chantier
+import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import kotlin.collections.ArrayList
 
 class FicheChantier : Fragment() {
 
@@ -55,6 +58,9 @@ class FicheChantier : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
+        var list = arguments?.get("listChantiers") as Array<Fiche>
+        viewModel.token = arguments?.get("Token") as String
+        viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
         val materiel = layout.findViewById<EditText>(R.id.materiel)
@@ -72,7 +78,7 @@ class FicheChantier : Fragment() {
         val showDetails = layout.findViewById<TextView>(R.id.details)
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
-        val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numDevis })
+        val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
         var visibility = View.VISIBLE
         //define signature area
         //val stech = layout.findViewById<DawingView>(R.id.signTech)
@@ -93,6 +99,19 @@ class FicheChantier : Fragment() {
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
+        viewModel.chantier.observe(viewLifecycleOwner, {
+            materiel.setText(it.materiel)
+            objet.setText(it.objet)
+            //observation.setText(chantier?.observations)
+            client.setText(it.client.enterprise)
+            vehicule.setText(it.vehicule)
+            contact.setText(it.contact)
+            numero.setText(it.telContact)
+            adresse.setText(it.adresseChantier)
+            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            dateDebut.setText(LocalDateTime.now().format(format))
+        })
+
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(getContext()!!,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -143,7 +162,6 @@ class FicheChantier : Fragment() {
             Log.i("INFO","change")
         }
         spinner.adapter = adapter
-        var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
         btnClient.setOnClickListener{
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = requireActivity().layoutInflater
@@ -187,8 +205,11 @@ class FicheChantier : Fragment() {
             }
         }
         selectButton.setOnClickListener {
-            chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
-            materiel.setText(chantier?.materiel)
+            var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
+            viewModel.selectChantier(viewModel.token as String , chantier!!._id)
+            chantier = viewModel.chantier.value
+            //Log.i("INFO", "client: ${chantier!!.client} ")
+            /*materiel.setText(chantier?.materiel)
             objet.setText(chantier?.objet)
             //observation.setText(chantier?.observations)
             client.setText(chantier?.client?.enterprise)
@@ -197,7 +218,7 @@ class FicheChantier : Fragment() {
             numero.setText(chantier?.telContact.toString())
             //adresse.setText(chantier?.adresse)
             var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-            dateDebut.setText(LocalDateTime.now().format(format))
+            dateDebut.setText(LocalDateTime.now().format(format))*/
         }
         quit.setOnClickListener {
             //stech = generateBitmapFromView(sview)

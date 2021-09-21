@@ -9,22 +9,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Client
-import com.example.applicationstb.model.User
-import com.example.applicationstb.model.Vehicule
 import android.net.Uri
 import android.util.Log
+import com.example.applicationstb.model.*
+import com.example.applicationstb.repository.ChantierResponse
+import com.example.applicationstb.repository.FichesResponse
+import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FicheChantierViewModel : ViewModel() {
-    var listeChantiers = arrayListOf<Chantier>()
-    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var token: String? = null;
+    var repository = Repository();
+    var listeChantiers = arrayListOf<Fiche>()
+    var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<Uri?>()
     var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
     var schema = MutableLiveData<Uri>()
-    var listeTechs = arrayOf<User>(User("0","Dumont","Toto",1,"toto","toto","0"),
-        User("0","Dumont","Tom",1,"tom","tom","0"))
     init {
        /* var i =0
         while (i<10)
@@ -65,7 +68,24 @@ class FicheChantierViewModel : ViewModel() {
         val action = FicheChantierDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
     }
-
+    fun selectChantier(token: String,id: String){
+        val resp = repository.getChantier(token, id, object: Callback<ChantierResponse> {
+            override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
+                if ( response.code() == 200 ) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        //Log.i("INFO","${resp.fiche!!.client.enterprise}")
+                        chantier.value = resp.fiche
+                    }
+                } else {
+                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+    }
     /*fun setSignature(sign:Bitmap){
         signature.value = sign
     }*/

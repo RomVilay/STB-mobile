@@ -22,7 +22,7 @@ class Chantier(
     dureeTotale:Long?,
     observation: String?,
     photo:Array<String>?,
-    var vehicule: Vehicule?,
+    var vehicule: String?,
     var adresseChantier:String?,
     var objet:String?,
     var materiel:String?,
