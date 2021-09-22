@@ -59,7 +59,7 @@ class FicheBobinageViewModel : ViewModel() {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
                     if (resp != null) {
-                        //Log.i("INFO","${resp.fiche!!.client.enterprise}")
+                        Log.i("INFO","${resp.fiche!!._id}")
                         bobinage.value = resp.fiche
                         sections.value = bobinage.value!!.sectionsFils
                         schemas.value = bobinage.value!!.schemas
@@ -107,6 +107,23 @@ class FicheBobinageViewModel : ViewModel() {
         Navigation.findNavController(view).navigate(action)
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
-    fun save(){}
-    // TODO: Implement the ViewModel
+    fun save(){
+        Log.i("INFO", bobinage.value!!._id)
+        val resp = repository.patchBobinage(token!!,bobinage.value!!._id, bobinage.value!! , object: Callback<BobinageResponse> {
+            override fun onResponse(call: Call<BobinageResponse>, response: Response<BobinageResponse>) {
+                if ( response.code() == 200 ) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        Log.i("INFO","enregistré")
+                    }
+                } else {
+                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+
+    }
 }

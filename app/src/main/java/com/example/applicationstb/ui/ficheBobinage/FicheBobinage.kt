@@ -154,6 +154,17 @@ class FicheBobinage : Fragment() {
                 courant.setText(bobinage?.courant.toString())
                 switch.setChecked(bobinage.callage)
                 adapter.list = bobinage.sectionsFils
+
+                spire.setText(bobinage?.nbSpires.toString())
+                RU.setText(bobinage?.resistanceU.toString())
+                RV.setText(bobinage?.resistanceV.toString())
+                RW.setText(bobinage?.resistanceW.toString())
+                IU.setText(bobinage?.tensionUT.toString())
+                IV.setText(bobinage?.tensionVT.toString())
+                IW.setText(bobinage?.tensionWT.toString())
+                IIU.setText(bobinage?.tensionUV.toString())
+                IIV.setText(bobinage?.tensionUW.toString())
+                IIW.setText(bobinage?.tensionVW.toString())
             }
             /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
             dateDebut.setText(LocalDateTime.now().format(format))*/
@@ -279,6 +290,21 @@ class FicheBobinage : Fragment() {
                 Log.i("INFO",it.toString())
             }
             viewModel.back(layout)
+        }
+        enrg.setOnClickListener {
+            var bobi = viewModel.bobinage.value
+            bobi!!.nbSpires = spire.text.toString().toLong()
+            bobi!!.resistanceU = RU.text.toString().toLong()
+            bobi!!.resistanceV = RV.text.toString().toLong()
+            bobi!!.resistanceW = RW.text.toString().toLong()
+            bobi!!.tensionUT = IU.text.toString().toLong()
+            bobi!!.tensionVT = IV.text.toString().toLong()
+            bobi!!.tensionWT = IW.text.toString().toLong()
+            bobi!!.tensionUV =  IIU.text.toString().toLong()
+            bobi!!.tensionUW =  IIV.text.toString().toLong()
+            bobi!!.tensionVW = IIW.text.toString().toLong()
+            viewModel.bobinage.value = bobi
+            viewModel.save()
         }
         return layout
     }

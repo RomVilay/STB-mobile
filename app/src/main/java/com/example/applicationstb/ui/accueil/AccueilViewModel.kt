@@ -52,7 +52,7 @@ class AccueilViewModel : ViewModel() {
                     }
                 }
             var tab2 = tab.toTypedArray()
-        val action = AccueilDirections.versFicheChantier(tab2,token)
+        var action = AccueilDirections.versFicheChantier(tab2,token)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheD(view: View){

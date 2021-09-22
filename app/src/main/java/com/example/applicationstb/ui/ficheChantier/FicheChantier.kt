@@ -60,7 +60,7 @@ class FicheChantier : Fragment() {
     ): View? {
         viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
         var list = arguments?.get("listChantiers") as Array<Fiche>
-        viewModel.token = arguments?.get("token") as String
+        viewModel.token = arguments?.get("Token") as String
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)

@@ -72,6 +72,51 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
     }
 }
 
+class BodyBobinage(var nbSpires: Long?,
+                   var resistanceU: Long?,
+                   var resistanceV: Long,
+                   var resistanceW: Long,
+                   var tensionUT: Long,
+                   var tensionVT: Long,
+                   var tensionWT: Long,
+                   var tensionUV: Long,
+                   var tensionUW: Long,
+                   var tensionVW: Long,
+                  ): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(nbSpires!!)
+        parcel.writeLong(resistanceU!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyBobinage> {
+        override fun createFromParcel(parcel: Parcel): BodyBobinage {
+            return BodyBobinage(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyBobinage?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 class LoginResponse(
     @field:Json(name = "auth-token")
     var token:String?,
@@ -149,6 +194,13 @@ class Repository {
     }
     fun getBobinage(token:String,ficheId:String, callback:Callback<BobinageResponse>){
         var call = service.getBobinage(token,ficheId)
+        var fiche:Bobinage? = null
+        call.enqueue(callback)
+    }
+    fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
+        var body = BodyBobinage(bobinage.nbSpires, bobinage.resistanceU, bobinage.resistanceV, bobinage.resistanceW,
+            bobinage.tensionUT, bobinage.tensionVT, bobinage.tensionWT, bobinage.tensionUV, bobinage.tensionUW, bobinage.tensionVW )
+        var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
     }
