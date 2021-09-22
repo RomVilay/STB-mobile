@@ -15,6 +15,7 @@ import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.FichesResponse
 import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.repository.VehiculesResponse
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
 import retrofit2.Call
 import retrofit2.Callback
@@ -76,12 +77,33 @@ class FicheChantierViewModel : ViewModel() {
                     if (resp != null) {
                         //Log.i("INFO","${resp.fiche!!.client.enterprise}")
                         chantier.value = resp.fiche
+                        getVehicule(resp!!.fiche!!.vehicule!!)
                     }
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
                 }
             }
             override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+    }
+    fun getVehicule(id:String){
+        val resp = repository.getVehiculeById(token!!, id, object: Callback<VehiculesResponse> {
+            override fun onResponse(call: Call<VehiculesResponse>, response: Response<VehiculesResponse>) {
+                if ( response.code() == 200 ) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        Log.i("INFO","${resp.vehicule!!.nom}")
+                        var c = chantier.value!!
+                        c.vehicule = resp!!.vehicule!!.nom.toString()
+                        chantier.value = c
+                    }
+                } else {
+                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<VehiculesResponse>, t: Throwable) {
                 Log.e("Error","erreur ${t.message}")
             }
         })

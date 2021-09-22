@@ -27,4 +27,7 @@ interface APIstb  {
 
     @GET("/fiches/{ficheId}")
     fun getBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<BobinageResponse>
+
+    @GET("/vehicules/{vehiculesId}")
+    fun getVehiculeById(@Header("auth-token") token:String, @Path("vehiculesId") userid:String): Call<VehiculesResponse>
 }

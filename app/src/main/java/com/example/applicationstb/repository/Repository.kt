@@ -3,10 +3,7 @@ package com.example.applicationstb.repository
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.example.applicationstb.model.Bobinage
-import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Fiche
-import com.example.applicationstb.model.User
+import com.example.applicationstb.model.*
 import com.squareup.moshi.*
 import org.json.JSONArray
 import retrofit2.Call
@@ -90,6 +87,9 @@ class ChantierResponse(
 class BobinageResponse(
     var fiche:Bobinage?
 )
+class VehiculesResponse(
+    var vehicule:Vehicule?
+)
 
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
@@ -156,6 +156,11 @@ class Repository {
         var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status)
         var call = service.patchChantier(token,ficheId,body)
         var fiche:Chantier? = null
+        call.enqueue(callback)
+    }
+    fun getVehiculeById(token:String, vehiculeId:String, callback:Callback<VehiculesResponse>) {
+        var call = service.getVehiculeById(token,vehiculeId)
+        var vehicule: Vehicule? = null
         call.enqueue(callback)
     }
 }

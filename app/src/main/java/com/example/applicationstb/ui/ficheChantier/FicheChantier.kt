@@ -108,8 +108,8 @@ class FicheChantier : Fragment() {
             contact.setText(it.contact)
             numero.setText(it.telContact)
             adresse.setText(it.adresseChantier)
-            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-            dateDebut.setText(LocalDateTime.now().format(format))
+            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+            dateDebut.setText(it.dateDebut.toString())
         })
 
         btnPhoto.setOnClickListener {
