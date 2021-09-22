@@ -92,7 +92,7 @@ class FicheBobinageViewModel : ViewModel() {
         return tab.sum()
     }
     fun back(view: View){
-        val action = FicheBobinageDirections.deBobinageverAccueil("Token","username")
+        val action = FicheBobinageDirections.deBobinageverAccueil(token,"username")
         Navigation.findNavController(view).navigate(action)
     }
     fun backFs(view: View){

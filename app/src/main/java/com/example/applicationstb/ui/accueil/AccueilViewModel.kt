@@ -52,7 +52,7 @@ class AccueilViewModel : ViewModel() {
                     }
                 }
             var tab2 = tab.toTypedArray()
-        var action = AccueilDirections.versFicheChantier(tab2,token)
+        var action = AccueilDirections.versFicheChantier(tab2,token,username)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheD(view: View){
@@ -72,7 +72,7 @@ class AccueilViewModel : ViewModel() {
         var tab2 = tab.toTypedArray()
         if (tab2.size > 0){
             Log.i("INFO", "fiche n°: ${tab2[0].numFiche} - token: ${token} ")
-            var action = AccueilDirections.versFicheBobinage(tab2,token)
+            var action = AccueilDirections.versFicheBobinage(tab2,token,username)
             Navigation.findNavController(view).navigate(action)
         }
     }

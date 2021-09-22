@@ -44,7 +44,7 @@ class Bobinage(idFiche:String,
                var tensionUV : Long,
                var tensionUW : Long,
                var tensionVW : Long,
-                var schemas : MutableList<String>
+               var schemas : MutableList<String>
                 ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
