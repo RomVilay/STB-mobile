@@ -94,7 +94,7 @@ class FicheChantierViewModel : ViewModel() {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
                     if (resp != null) {
-                        Log.i("INFO","${resp.vehicule!!.nom}")
+                       // Log.i("INFO","${resp.vehicule!!.nom}")
                         var c = chantier.value!!
                         c.vehicule = resp!!.vehicule!!.nom.toString()
                         chantier.value = c
@@ -119,7 +119,7 @@ class FicheChantierViewModel : ViewModel() {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
                     if (resp != null) {
-                        Log.i("INFO","${resp.fiche!!.observations}")
+                       // Log.i("INFO","${resp.fiche!!.observations}")
                     }
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")

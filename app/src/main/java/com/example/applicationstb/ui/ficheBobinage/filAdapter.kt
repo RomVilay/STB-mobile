@@ -11,7 +11,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Section
 
-class FillAdapter (var list: List<Section>) :
+class FillAdapter (var list: MutableList<Section>) :
     RecyclerView.Adapter<FillAdapter.ViewHolder>() {
 
 
@@ -31,7 +31,7 @@ class FillAdapter (var list: List<Section>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.longueur.text = list[position].longueur.toString()
-        holder.brins.text = list[position].brins.toString()
+        holder.brins.text = list[position].nbBrins.toString()
     }
 
     fun update (sections: MutableList<Section>){

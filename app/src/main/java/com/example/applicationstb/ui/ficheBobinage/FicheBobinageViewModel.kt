@@ -8,19 +8,26 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
+import com.example.applicationstb.repository.BobinageResponse
+import com.example.applicationstb.repository.ChantierResponse
+import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FicheBobinageViewModel : ViewModel() {
 
-    var listeBobinage = arrayListOf<Bobinage>()
-    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
-    var tech = User("0","Dumont","Toto",1,"toto","toto","0")
-    var sections = MutableLiveData<MutableList<Section>>()
-    var schemas = MutableLiveData<MutableList<Uri>>()
+    var listeBobinage = arrayListOf<Fiche>()
+    var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
+    var schemas = MutableLiveData<MutableList<Uri>>(mutableListOf())
     var bobinage = MutableLiveData<Bobinage>()
     var schema = MutableLiveData<Uri>()
+    var token :String? = null;
+    var repository = Repository();
 
     init {
+
         /*var i =0
         while (i<10)
         {
@@ -46,23 +53,41 @@ class FicheBobinageViewModel : ViewModel() {
         }*/
         //bobinage.value = listeBobinage[0]
     }
-    fun selectBobinage(index: Int){
-        bobinage.value = listeBobinage[index];
-        sections.value = bobinage.value!!.sectionsFils
-        schemas.value = bobinage.value!!.schemas
+    fun selectBobinage(id: String){
+        val resp = repository.getBobinage(token!!, id, object: Callback<BobinageResponse> {
+            override fun onResponse(call: Call<BobinageResponse>, response: Response<BobinageResponse>) {
+                if ( response.code() == 200 ) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        //Log.i("INFO","${resp.fiche!!.client.enterprise}")
+                        bobinage.value = resp.fiche
+                        sections.value = bobinage.value!!.sectionsFils
+                        schemas.value = bobinage.value!!.schemas
+                    }
+                } else {
+                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
     }
-    fun addSection(brins:Int, longueur:Double){
-        listeBobinage[0].addSection(brins, longueur)
-        sections.value = listeBobinage[0].sectionsFils
+    fun addSection(diametre:Long, longueur:Double){
+        var list = sections.value
+        var section = Section(diametre,longueur,0)
+        list!!.add(section)
+        sections.value = list
         //Log.i("INFO", "add section $brins - $longueur")
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
     fun addSchema(schema: Uri) {
-        listeBobinage[0].addSchema(schema)
-        schemas.value=listeBobinage[0].schemas
+        var list = schemas.value
+        list!!.add(schema)
+        schemas.value=list
     }
     fun somme(list: MutableList<Section>): Double {
-        var tab = list.map { it.longueur * it.brins }
+        var tab = list.map { it.longueur * it.diametre }
         //Log.i("info", tab.toString())
         return tab.sum()
     }

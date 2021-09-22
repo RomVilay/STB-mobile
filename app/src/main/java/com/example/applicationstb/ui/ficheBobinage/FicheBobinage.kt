@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.Fiche
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -67,7 +68,10 @@ class FicheBobinage : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
+        Log.i("INFO", "fiche n°: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} ")
+        var list = arguments?.get("listBobinage") as Array<Fiche>
+        viewModel.token = arguments?.get("token") as String
+        viewModel.listeBobinage = list.toCollection(ArrayList())
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
         //viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
 
@@ -91,8 +95,8 @@ class FicheBobinage : Fragment() {
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
         var datef = layout.findViewById<TextView>(R.id.DateFin)
         var details = layout.findViewById<TextView>(R.id.details)
-        val adapter = FillAdapter(viewModel.listeBobinage[0].sectionsFils)
-        val sAdapter = schemaAdapter(viewModel.listeBobinage[0].schemas,{ item ->
+        val adapter = FillAdapter(viewModel.sections!!.value!!)
+        val sAdapter = schemaAdapter(viewModel.schemas.value!! ,{ item ->
             viewModel.setSchema(item)
             viewModel.fullScreen(layout,item.toString())
         })
@@ -140,14 +144,14 @@ class FicheBobinage : Fragment() {
         viewModel.bobinage.observe(viewLifecycleOwner,{
             var bobinage = viewModel.bobinage.value
             if (bobinage != null) {
-                marque.setText(bobinage?.marque)
+                marque.setText(bobinage?.marqueMoteur)
                 //type.setText(bobinage?.type)
                 //vitesse.setText(bobinage.vitesse.toString())
                 client.setText(bobinage?.client?.enterprise)
                 tension.setText(bobinage?.tension.toString())
-                phases.setText(bobinage?.phases)
+                phases.setText(bobinage?.phases.toString())
                 frequence.setText(bobinage?.frequence.toString())
-                courant.setText(bobinage?.courant)
+                courant.setText(bobinage?.courant.toString())
                 switch.setChecked(bobinage.callage)
                 adapter.list = bobinage.sectionsFils
             }
@@ -156,9 +160,11 @@ class FicheBobinage : Fragment() {
         })
 
         btnSelect.setOnClickListener {
-            viewModel.selectBobinage(spinner.selectedItemPosition)
-            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-            dated.setText(LocalDateTime.now().format(format))
+            var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
+            viewModel.selectBobinage(bobinage!!._id)
+
+            /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            dated.setText(LocalDateTime.now().format(format))*/
         }
 
         details.setOnClickListener {
@@ -182,11 +188,7 @@ class FicheBobinage : Fragment() {
             Log.i("INFO", "change")
         }
         btnfils.setOnClickListener {
-            viewModel.addSection(Integer.parseInt(nbfils.text.toString()), inLong.text.toString().toDouble())
-            var bobinage = viewModel.listeBobinage.find{it.numDevis == spinner.selectedItem}
-            if (bobinage != null) {
-                som.setText(viewModel.somme(bobinage.sectionsFils).toString())
-            }
+            viewModel.addSection(nbfils.text.toString().toLong(), inLong.text.toString().toDouble())
         }
         addschema.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(getContext()!!,

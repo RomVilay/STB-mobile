@@ -62,7 +62,19 @@ class AccueilViewModel : ViewModel() {
         Navigation.findNavController(view).navigate(R.id.versFicheRemontage)
     }
     fun toBobinage(view: View){
-        Navigation.findNavController(view).navigate(R.id.versFicheBobinage)
+        var tab = mutableListOf<Fiche>()
+        for (fiche in fiches!!) {
+            if (fiche.type == 4L) {
+                Log.i("INFO", "fiche n°: ${fiche.numFiche} - client: ${fiche.client.enterprise} ")
+                tab.add(fiche)
+            }
+        }
+        var tab2 = tab.toTypedArray()
+        if (tab2.size > 0){
+            Log.i("INFO", "fiche n°: ${tab2[0].numFiche} - token: ${token} ")
+            var action = AccueilDirections.versFicheBobinage(tab2,token)
+            Navigation.findNavController(view).navigate(action)
+        }
     }
     fun toDeconnexion(view: View){
         Navigation.findNavController(view).navigate(R.id.versConnexion)

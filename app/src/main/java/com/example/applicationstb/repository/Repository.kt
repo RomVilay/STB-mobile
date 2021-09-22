@@ -147,9 +147,9 @@ class Repository {
         var fiche:Chantier? = null
         call.enqueue(callback)
     }
-    fun getBobinage(token:String,ficheId:String, callback:Callback<ChantierResponse>){
-        var call = service.getChantier(token,ficheId)
-        var fiche:Chantier? = null
+    fun getBobinage(token:String,ficheId:String, callback:Callback<BobinageResponse>){
+        var call = service.getBobinage(token,ficheId)
+        var fiche:Bobinage? = null
         call.enqueue(callback)
     }
     fun patchChantier(token:String,ficheId:String, chantier:Chantier, callback:Callback<ChantierResponse>){

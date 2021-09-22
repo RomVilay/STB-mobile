@@ -37,6 +37,7 @@ import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.Instant
 import kotlin.collections.ArrayList
 
 class FicheChantier : Fragment() {
@@ -59,7 +60,7 @@ class FicheChantier : Fragment() {
     ): View? {
         viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
         var list = arguments?.get("listChantiers") as Array<Fiche>
-        viewModel.token = arguments?.get("Token") as String
+        viewModel.token = arguments?.get("token") as String
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
@@ -232,6 +233,7 @@ class FicheChantier : Fragment() {
             chantier.objet = objet.text.toString()
             chantier.observations = observation.text.toString()
             chantier.status = 2L
+            chantier.dureeTotale = chantier.dateDebut!!.getTime() - Date.from(Instant.now()).getTime()
             //chantier.dateDebut = Date.from(dateDebut.text.toString())
             viewModel.chantier.value = chantier
             var t = viewModel.chantier.value

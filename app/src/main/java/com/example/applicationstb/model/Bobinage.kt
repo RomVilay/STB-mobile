@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi
 import java.time.LocalDateTime
 import java.util.*
 
-class Section (var brins:Int, var longueur: Double){
+class Section (var nbBrins:Long, var longueur: Double, var diametre: Long){
 }
 
 class Bobinage(idFiche:String,
@@ -24,24 +24,32 @@ class Bobinage(idFiche:String,
                dureeTotale:Long?,
                observation: String?,
                photo:Array<String>?,
-               var marque:String,
-               val typeb:String,
-               val puissance:Long,
+               var marqueMoteur:String,
+               var typeBobinage:String,
+               var puissance:Long,
                var vitesse: Long,
+               var phases:Long,
                var tension: Long,
-               var phases:String,
-               var frequence:String,
-               var courant:String,
-               val callage:Boolean) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
-                    var sectionsFils : MutableList<Section> = mutableListOf();
-                    var nbSpires = 0;
-                    var Resistance = mutableMapOf<String,Long>()
-                    var Isolement1 = mutableMapOf<String,Long>()
-                    var Isolement2 = mutableMapOf<String,Long>()
+               var frequence:Long,
+               var courant:Long,
+               var callage:Boolean,
+               var sectionsFils : MutableList<Section>,
+               var nbSpires : Long,
+               var resistanceU : Long,
+               var resistanceV : Long,
+               var resistanceW : Long,
+               var tensionUT : Long,
+               var tensionVT : Long,
+               var tensionWT : Long,
+               var tensionUV : Long,
+               var tensionUW : Long,
+               var tensionVW : Long,
+                var schemas : MutableList<Uri>
+                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
+
                     @RequiresApi(Build.VERSION_CODES.O)
-                    var schemas : MutableList<Uri> = mutableListOf();
-                fun addSection(brins: Int, longueur: Double){
-                    sectionsFils.add(Section(brins,longueur))
+                fun addSection(nbBrins: Long, longueur: Double, diametre: Long){
+                    sectionsFils.add(Section(nbBrins,longueur,diametre))
                 }
                 fun addSchema (uri: Uri){
                     schemas.add(uri)
@@ -50,7 +58,7 @@ class Bobinage(idFiche:String,
                     return sectionsFils
                 }
                 fun getSection(index: Int): String {
-                    return "nb brins:"+sectionsFils[index].brins+" - longueur: "+sectionsFils[index].longueur
+                    return "nb brins:"+sectionsFils[index].nbBrins+" - longueur: "+sectionsFils[index].longueur
                 }
 
 
