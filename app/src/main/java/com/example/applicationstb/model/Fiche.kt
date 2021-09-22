@@ -6,18 +6,18 @@ import java.util.*
 
 @Parcelize
 open class Fiche(
-   open val _id:String,
-   open val numDevis: String,
-   open val numFiche: String,
-   open val type: Long,
-   open val status: Long,
-   open val client: Client,
-   open val contact: String?,
-   open val telContact: String?,
-   open val techniciens: Array<User>?,
+   open var _id:String,
+   open var numDevis: String,
+   open var numFiche: String,
+   open var type: Long,
+   open var status: Long,
+   open var client: Client,
+   open var contact: String?,
+   open var telContact: String?,
+   open var techniciens: Array<User>?,
    open val resp: User?,
-   open  val dateDebut: Date?,
-   open val dureeTotale: Long?,
-   open val observation: String?,
-   open val photo: Array<String>?): Parcelable {
+   open var dateDebut: Date?,
+   open var dureeTotale: Long?,
+   open var observations: String?,
+   open var photo: Array<String>?): Parcelable {
 }

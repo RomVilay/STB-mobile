@@ -54,7 +54,7 @@ class FicheChantierViewModel : ViewModel() {
 
     fun back(view:View){
         //console.log(signatures)
-        val action = FicheChantierDirections.deChantierversAccueil("Token","username")
+        val action = FicheChantierDirections.deChantierversAccueil(token!!,"tech")
         Navigation.findNavController(view).navigate(action)
     }
     fun addPhoto(index:Int,photo: Uri) {
@@ -91,7 +91,23 @@ class FicheChantierViewModel : ViewModel() {
     }*/
 
     fun save(){
-
+        //Log.i("INFO","token: ${token} - ${chantier.value!!._id} - ${chantier!!.value!!.observations}")
+        val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
+            override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
+                if ( response.code() == 200 ) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        Log.i("INFO","${resp.fiche!!.observations}")
+                    }
+                } else {
+                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                Log.e("Error","${t.stackTraceToString()}")
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
     }
 
     // TODO: Implement the ViewModel

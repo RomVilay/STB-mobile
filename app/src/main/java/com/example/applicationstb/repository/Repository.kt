@@ -44,6 +44,37 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
     }
 }
 
+class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readLong()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(materiel)
+        parcel.writeString(objet)
+        parcel.writeString(observations)
+        parcel.writeLong(status!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyChantier> {
+        override fun createFromParcel(parcel: Parcel): BodyChantier {
+            return BodyChantier(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyChantier?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 class LoginResponse(
     @field:Json(name = "auth-token")
     var token:String?,
@@ -118,6 +149,12 @@ class Repository {
     }
     fun getBobinage(token:String,ficheId:String, callback:Callback<ChantierResponse>){
         var call = service.getChantier(token,ficheId)
+        var fiche:Chantier? = null
+        call.enqueue(callback)
+    }
+    fun patchChantier(token:String,ficheId:String, chantier:Chantier, callback:Callback<ChantierResponse>){
+        var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status)
+        var call = service.patchChantier(token,ficheId,body)
         var fiche:Chantier? = null
         call.enqueue(callback)
     }

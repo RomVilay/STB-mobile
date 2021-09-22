@@ -20,7 +20,7 @@ class Chantier(
     resp: User?,
     dateDebut: Date?,
     dureeTotale:Long?,
-    observation: String?,
+    observations: String?,
     photo:Array<String>?,
     var vehicule: String?,
     var adresseChantier:String?,
@@ -30,4 +30,4 @@ class Chantier(
     var signatureTech:String?,
     var signatureClient:String?
 
-) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ) {}
+) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observations, photo ) {}

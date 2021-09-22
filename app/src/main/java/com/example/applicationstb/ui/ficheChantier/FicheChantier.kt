@@ -65,7 +65,7 @@ class FicheChantier : Fragment() {
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
         val materiel = layout.findViewById<EditText>(R.id.materiel)
         val objet = layout.findViewById<EditText>(R.id.objet)
-        val observation = layout.findViewById<EditText>(R.id.observation)
+        val observation = layout.findViewById<EditText>(R.id.observations)
         val selectButton = layout.findViewById<Button>(R.id.btnDemarrer)
         val client = layout.findViewById<TextView>(R.id.puissance)
         val vehicule = layout.findViewById<TextView>(R.id.vehicule)
@@ -102,7 +102,7 @@ class FicheChantier : Fragment() {
         viewModel.chantier.observe(viewLifecycleOwner, {
             materiel.setText(it.materiel)
             objet.setText(it.objet)
-            //observation.setText(chantier?.observations)
+            observation.setText(it.observations)
             client.setText(it.client.enterprise)
             vehicule.setText(it.vehicule)
             contact.setText(it.contact)
@@ -227,18 +227,17 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-
-            /*val uriTech = stech.extraBitmap.saveImage(context!!.applicationContext)
-            Log.i("INFO",uriTech.toString())
-            val uriCli = scli.extraBitmap.saveImage(context!!.applicationContext)
-            Log.i("INFO",uriCli.toString())
-            //Log.i("INFO","vue convertie to bitmap")
-            viewModel.signatures.add(uriTech)
-            viewModel.signatures.add(uriCli)
-            Log.i("INFO",viewModel.signatures.toString())*/
-
-            Log.i("info", viewModel.signatures.toString())
-            viewModel.back(layout)
+            var chantier = viewModel.chantier!!.value!!
+            chantier.materiel = materiel.text.toString()
+            chantier.objet = objet.text.toString()
+            chantier.observations = observation.text.toString()
+            chantier.status = 2L
+            //chantier.dateDebut = Date.from(dateDebut.text.toString())
+            viewModel.chantier.value = chantier
+            var t = viewModel.chantier.value
+            //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
+            viewModel.save()
+            //viewModel.back(layout)
         }
 
         return layout
