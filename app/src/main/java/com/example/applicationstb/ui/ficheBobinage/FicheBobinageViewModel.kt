@@ -20,9 +20,9 @@ class FicheBobinageViewModel : ViewModel() {
 
     var listeBobinage = arrayListOf<Fiche>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
-    var schemas = MutableLiveData<MutableList<Uri>>(mutableListOf())
+    var schemas = MutableLiveData<MutableList<String>>(mutableListOf())
     var bobinage = MutableLiveData<Bobinage>()
-    var schema = MutableLiveData<Uri>()
+    var schema = MutableLiveData<String>()
     var token :String? = null;
     var repository = Repository();
 
@@ -83,7 +83,7 @@ class FicheBobinageViewModel : ViewModel() {
     }
     fun addSchema(schema: Uri) {
         var list = schemas.value
-        list!!.add(schema)
+        list!!.add(schema.toString())
         schemas.value=list
     }
     fun somme(list: MutableList<Section>): Double {
@@ -98,7 +98,7 @@ class FicheBobinageViewModel : ViewModel() {
     fun backFs(view: View){
         Navigation.findNavController(view).navigate(R.id.de_fscreen_vers_fb)
     }
-    fun setSchema(sch: Uri){
+    fun setSchema(sch: String){
         schema.value = sch
         Log.i("INFO", sch.toString())
     }

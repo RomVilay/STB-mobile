@@ -44,7 +44,7 @@ class Bobinage(idFiche:String,
                var tensionUV : Long,
                var tensionUW : Long,
                var tensionVW : Long,
-                var schemas : MutableList<Uri>
+                var schemas : MutableList<String>
                 ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
@@ -52,7 +52,7 @@ class Bobinage(idFiche:String,
                     sectionsFils.add(Section(nbBrins,longueur,diametre))
                 }
                 fun addSchema (uri: Uri){
-                    schemas.add(uri)
+                    schemas.add(uri.toString())
                 }
                 fun getSectionFils(): List<Section> {
                     return sectionsFils

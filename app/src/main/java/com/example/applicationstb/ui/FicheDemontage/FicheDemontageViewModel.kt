@@ -14,8 +14,8 @@ class FicheDemontageViewModel : ViewModel() {
     var listeDemontages = arrayListOf<Fiche>()
     var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
-    var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
-    var schema = MutableLiveData<Uri>()
+    var photos = MutableLiveData<MutableList<String>>(mutableListOf())
+    var schema = MutableLiveData<String>()
     val selection : MutableLiveData<Fiche> by lazy {
         MutableLiveData<Fiche>()
     }
@@ -156,9 +156,9 @@ class FicheDemontageViewModel : ViewModel() {
     }
 
     fun addPhoto(index:Int,photo: Uri) {
-        photos.value!!.add(photo)
+        photos.value!!.add(photo.toString())
     }
-    fun setSchema(sch: Uri){
+    fun setSchema(sch: String){
         schema.value = sch
         Log.i("INFO", sch.toString())
     }

@@ -27,8 +27,8 @@ class FicheChantierViewModel : ViewModel() {
     var listeChantiers = arrayListOf<Fiche>()
     var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<Uri?>()
-    var photos = MutableLiveData<MutableList<Uri>>(mutableListOf())
-    var schema = MutableLiveData<Uri>()
+    var photos = MutableLiveData<MutableList<String>>(mutableListOf())
+    var schema = MutableLiveData<String>()
     init {
        /* var i =0
         while (i<10)
@@ -59,9 +59,9 @@ class FicheChantierViewModel : ViewModel() {
         Navigation.findNavController(view).navigate(action)
     }
     fun addPhoto(index:Int,photo: Uri) {
-        photos.value!!.add(photo)
+        photos.value!!.add(photo.toString())
     }
-    fun setSchema(sch: Uri){
+    fun setSchema(sch: String){
         schema.value = sch
         Log.i("INFO", sch.toString())
     }

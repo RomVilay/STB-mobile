@@ -68,7 +68,7 @@ class FicheBobinage : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        Log.i("INFO", "fiche n°: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} ")
+        Log.i("INFO", "tableau fiches: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} ")
         var list = arguments?.get("listBobinage") as Array<Fiche>
         viewModel.token = arguments?.get("token") as String
         viewModel.listeBobinage = list.toCollection(ArrayList())
@@ -77,7 +77,7 @@ class FicheBobinage : Fragment() {
 
         //champs détails
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
-        val adapterDevis = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeBobinage.map { it.numDevis })
+        val adapterDevis = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeBobinage.map { it.numFiche })
         spinner.adapter = adapterDevis
         var btnSelect = layout.findViewById<Button>(R.id.btnDemarrer)
         var non = layout.findViewById<TextView>(R.id.non)
@@ -133,14 +133,14 @@ class FicheBobinage : Fragment() {
         schemas = layout.findViewById(R.id.schemas)
         schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
-        viewModel.schemas.observe(viewLifecycleOwner, {
+        /*viewModel.schemas.observe(viewLifecycleOwner, {
             sAdapter.update(it)
             if ( viewModel.schemas.value?.size == 0){
                 schemas.visibility = View.GONE
             } else {
                 schemas.visibility = View.VISIBLE
             }
-        })
+        })*/
         viewModel.bobinage.observe(viewLifecycleOwner,{
             var bobinage = viewModel.bobinage.value
             if (bobinage != null) {
