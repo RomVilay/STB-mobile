@@ -28,6 +28,7 @@ import com.example.applicationstb.model.Fiche
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -159,6 +160,9 @@ class FicheBobinage : Fragment() {
                 IIU.setText(bobinage?.tensionUV.toString())
                 IIV.setText(bobinage?.tensionUW.toString())
                 IIW.setText(bobinage?.tensionVW.toString())
+                obs.setText(bobinage?.observations.toString())
+                var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
+                dated.setText( bobinage?.dateDebut!!.toLocaleString())
             }
             /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
             dateDebut.setText(LocalDateTime.now().format(format))*/
@@ -280,9 +284,9 @@ class FicheBobinage : Fragment() {
             //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
         }
         quit.setOnClickListener {
-            viewModel.schemas!!.value!!.forEach {
+            /*viewModel.schemas!!.value!!.forEach {
                 Log.i("INFO",it.toString())
-            }
+            }*/
             viewModel.back(layout)
         }
         enrg.setOnClickListener {
@@ -304,6 +308,7 @@ class FicheBobinage : Fragment() {
             bobi!!.tensionUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toLong() else bobi!!.tensionUV
             bobi!!.tensionUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toLong() else bobi!!.tensionUW
             bobi!!.tensionVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toLong() else bobi!!.tensionVW
+            bobi!!.observations = obs.text.toString()
             bobi!!.status = 2L
             bobi!!.calageEncoches = switch.isChecked()
             viewModel.bobinage.value = bobi

@@ -1,43 +1,40 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import com.example.applicationstb.R
-import java.io.OutputStream
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Environment
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.applicationstb.model.Chantier
+import com.example.applicationstb.R
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.util.*
 import kotlin.collections.ArrayList
 
 class FicheChantier : Fragment() {
@@ -61,6 +58,8 @@ class FicheChantier : Fragment() {
         viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
         var list = arguments?.get("listChantiers") as Array<Fiche>
         viewModel.token = arguments?.get("Token") as String
+        viewModel.username = arguments?.get("username") as String
+        Log.i("INFO","token: ${viewModel.token} - username: ${viewModel.username}")
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
@@ -73,9 +72,7 @@ class FicheChantier : Fragment() {
         val contact = layout.findViewById<TextView>(R.id.marque)
         val numero = layout.findViewById<TextView>(R.id.type)
         val adresse = layout.findViewById<TextView>(R.id.adresse)
-        val dates = layout.findViewById<LinearLayout>(R.id.dates)
-        val dateDebut = layout.findViewById<EditText>(R.id.DateFin)
-        val dateFin = layout.findViewById<EditText>(R.id.DateDebut)
+        val dateDebut = layout.findViewById<TextView>(R.id.dateDebut)
         val showDetails = layout.findViewById<TextView>(R.id.details)
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
@@ -109,8 +106,7 @@ class FicheChantier : Fragment() {
             contact.setText(it.contact)
             numero.setText(it.telContact)
             adresse.setText(it.adresseChantier)
-            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
-            dateDebut.setText(it.dateDebut.toString())
+            dateDebut.setText(it.dateDebut!!.toLocaleString())
         })
 
         btnPhoto.setOnClickListener {
@@ -159,7 +155,7 @@ class FicheChantier : Fragment() {
             contact.visibility = visibility
             numero.visibility = visibility
             adresse.visibility = visibility
-            dates.visibility = visibility
+            dateDebut.visibility = visibility
             Log.i("INFO","change")
         }
         spinner.adapter = adapter
@@ -238,10 +234,10 @@ class FicheChantier : Fragment() {
             viewModel.chantier.value = chantier
             var t = viewModel.chantier.value
             //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
-            viewModel.save()
+            Log.i("INFO",t.toString())
+            //viewModel.save()
             //viewModel.back(layout)
         }
-
         return layout
     }
 
@@ -310,5 +306,16 @@ class FicheChantier : Fragment() {
             }
         }
     }
+
+    /*fun writeToFile(fiche: Chantier, context: Context) {
+        try {
+            val outputStreamWriter =
+                OutputStreamWriter(context.openFileOutput("Fiche_${data}.txt", Context.MODE_PRIVATE))
+            outputStreamWriter.write(data)
+            outputStreamWriter.close()
+        } catch (e: IOException) {
+            Log.e("Exception", "File write failed: $e")
+        }
+    }*/
 
 }

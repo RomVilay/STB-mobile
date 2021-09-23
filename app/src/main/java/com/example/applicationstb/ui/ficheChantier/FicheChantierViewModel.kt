@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import android.net.Uri
 import android.util.Log
+import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.FichesResponse
@@ -23,6 +24,7 @@ import retrofit2.Response
 
 class FicheChantierViewModel : ViewModel() {
     var token: String? = null;
+    var username: String? = null;
     var repository = Repository();
     var listeChantiers = arrayListOf<Fiche>()
     var chantier = MutableLiveData<Chantier>()
@@ -55,7 +57,7 @@ class FicheChantierViewModel : ViewModel() {
 
     fun back(view:View){
         //console.log(signatures)
-        val action = FicheChantierDirections.deChantierversAccueil(token!!,"tech")
+        val action = FicheChantierDirections.deChantierversAccueil(token!!,username!!)
         Navigation.findNavController(view).navigate(action)
     }
     fun addPhoto(index:Int,photo: Uri) {
@@ -114,6 +116,7 @@ class FicheChantierViewModel : ViewModel() {
 
     fun save(){
         //Log.i("INFO","token: ${token} - ${chantier.value!!._id} - ${chantier!!.value!!.observations}")
+
         val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
             override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
                 if ( response.code() == 200 ) {

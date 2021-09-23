@@ -10,7 +10,7 @@ import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
 
 class FicheRemontageViewModel : ViewModel() {
     var listeRemontages = arrayListOf<Fiche>()
-    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var client = Client("0","Dupond ets.","3369077543","8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
     val selection : MutableLiveData<Fiche> by lazy {
         MutableLiveData<Fiche>()

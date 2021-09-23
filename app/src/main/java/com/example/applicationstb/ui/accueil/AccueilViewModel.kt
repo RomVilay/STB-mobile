@@ -4,6 +4,8 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
@@ -17,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AccueilViewModel : ViewModel() {
+
     var repository = Repository();
     var token: String? = null
     var username: String? = null

@@ -259,7 +259,8 @@
                         android:ems="10"
                         android:gravity="center"
                         android:hint="date fin"
-                        android:inputType="date" />
+                        android:inputType="date"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <Switch

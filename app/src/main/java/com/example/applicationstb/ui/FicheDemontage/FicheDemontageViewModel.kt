@@ -12,7 +12,7 @@ import android.util.Log
 
 class FicheDemontageViewModel : ViewModel() {
     var listeDemontages = arrayListOf<Fiche>()
-    var client = Client("0","Dupond ets.",3369077543,"8 rue truc, 31000 Toulouse")
+    var client = Client("0","Dupond ets.","3369077543","8 rue truc, 31000 Toulouse")
     var tech = User("0","Dumont","Toto",1,"toto","toto","0")
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()

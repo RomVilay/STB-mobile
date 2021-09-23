@@ -92,6 +92,7 @@ class BodyBobinage(var marqueMoteur : String?,
     var status: Long,
     var calageEncoches: Boolean,
     var sectionsFils: List<Section>? ,
+    var observations: String?
                   ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -115,7 +116,8 @@ class BodyBobinage(var marqueMoteur : String?,
         parcel.readBoolean(),
         listOf<Section>().apply {
             parcel.readList(this,Section::class.java.classLoader)
-        }
+        },
+        parcel.readString()
     ) {
     }
 
@@ -142,6 +144,7 @@ class BodyBobinage(var marqueMoteur : String?,
         listOf<Section>().apply {
             parcel.writeList(this)
         }
+        parcel.writeString(observations!!)
     }
 
     override fun describeContents(): Int {
@@ -260,7 +263,8 @@ class Repository {
             bobinage.tensionVW,
             bobinage.status,
             bobinage.calageEncoches,
-            bobinage.sectionsFils.toList())
+            bobinage.sectionsFils.toList(),
+            bobinage.observations)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
