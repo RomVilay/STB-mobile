@@ -83,7 +83,7 @@ class FicheBobinage : Fragment() {
         var vitesse = layout.findViewById<EditText>(R.id.vitesse)
         var type = layout.findViewById<EditText>(R.id.type)
         var marque = layout.findViewById<EditText>(R.id.marque)
-        var switch = layout.findViewById<Switch>(R.id.switch2)
+        var switch = layout.findViewById<Switch>(R.id.callage)
         var dates = layout.findViewById<LinearLayout>(R.id.dates)
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
         var datef = layout.findViewById<TextView>(R.id.DateFin)
@@ -147,7 +147,7 @@ class FicheBobinage : Fragment() {
                 phases.setText(bobinage?.phases.toString())
                 frequence.setText(bobinage?.frequences.toString())
                 courant.setText(bobinage?.courant.toString())
-                switch.setChecked(bobinage.callage)
+                switch.setChecked(bobinage.calageEncoches)
                 adapter.list = bobinage.sectionsFils
                 spire.setText(bobinage?.nbSpires.toString())
                 RU.setText(bobinage?.resistanceU.toString())
@@ -305,6 +305,7 @@ class FicheBobinage : Fragment() {
             bobi!!.tensionUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toLong() else bobi!!.tensionUW
             bobi!!.tensionVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toLong() else bobi!!.tensionVW
             bobi!!.status = 2L
+            bobi!!.calageEncoches = switch.isChecked()
             viewModel.bobinage.value = bobi
             viewModel.save()
         }

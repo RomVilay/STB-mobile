@@ -3,11 +3,13 @@ package com.example.applicationstb.model
 import android.media.Image
 import android.net.Uri
 import android.os.Build
+import android.os.Parcelable
 import androidx.annotation.RequiresApi
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.util.*
-
-class Section (var nbBrins:Long, var longueur: Double, var diametre: Double){
+@Parcelize
+class Section (var nbBrins:Long, var longueur: Double, var diametre: Double): Parcelable{
 }
 
 class Bobinage(idFiche:String,
@@ -32,7 +34,7 @@ class Bobinage(idFiche:String,
                var tension: Long,
                var frequences:Long,
                var courant:Long,
-               var callage:Boolean,
+               var calageEncoches:Boolean,
                var sectionsFils : MutableList<Section>,
                var nbSpires : Long,
                var resistanceU : Long,
