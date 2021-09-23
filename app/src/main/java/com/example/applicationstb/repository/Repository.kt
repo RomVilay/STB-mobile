@@ -72,18 +72,28 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
     }
 }
 
-class BodyBobinage(var nbSpires: Long?,
-                   var resistanceU: Long?,
-                   var resistanceV: Long,
-                   var resistanceW: Long,
-                   var tensionUT: Long,
-                   var tensionVT: Long,
-                   var tensionWT: Long,
-                   var tensionUV: Long,
-                   var tensionUW: Long,
-                   var tensionVW: Long,
+class BodyBobinage(var marqueMoteur : String?,
+    var typeBobinage: String?,
+    var vitesse:Long?,
+    var puissance:Long?,
+    var phases:Long?,
+    var frequences: Long?,
+    var courant: Long?,
+    var nbSpires: Long?,
+    var resistanceU: Long?,
+    var resistanceV: Long,
+    var resistanceW: Long,
+    var tensionUT: Long,
+    var tensionVT: Long,
+    var tensionWT: Long,
+    var tensionUV: Long,
+    var tensionUW: Long,
+    var tensionVW: Long,
+    var status: Long,
                   ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
         parcel.readLong(),
         parcel.readLong(),
         parcel.readLong(),
@@ -94,12 +104,34 @@ class BodyBobinage(var nbSpires: Long?,
         parcel.readLong(),
         parcel.readLong(),
         parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readLong()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(marqueMoteur!!)
+        parcel.writeString(typeBobinage!!)
+        parcel.writeLong(vitesse!!)
+        parcel.writeLong(puissance!!)
+        parcel.writeLong(phases!!)
+        parcel.writeLong(frequences!!)
+        parcel.writeLong(courant!!)
         parcel.writeLong(nbSpires!!)
         parcel.writeLong(resistanceU!!)
+        parcel.writeLong(resistanceV!!)
+        parcel.writeLong(resistanceW!!)
+        parcel.writeLong(tensionUT!!)
+        parcel.writeLong(tensionVT!!)
+        parcel.writeLong(tensionWT!!)
+        parcel.writeLong(tensionUV!!)
+        parcel.writeLong(tensionUW!!)
+        parcel.writeLong(tensionVW!!)
+        parcel.writeLong(status!!)
     }
 
     override fun describeContents(): Int {
@@ -198,8 +230,25 @@ class Repository {
         call.enqueue(callback)
     }
     fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
-        var body = BodyBobinage(bobinage.nbSpires, bobinage.resistanceU, bobinage.resistanceV, bobinage.resistanceW,
-            bobinage.tensionUT, bobinage.tensionVT, bobinage.tensionWT, bobinage.tensionUV, bobinage.tensionUW, bobinage.tensionVW )
+        var body = BodyBobinage(
+            bobinage.marqueMoteur,
+            bobinage.typeBobinage,
+            bobinage.vitesse,
+            bobinage.puissance,
+            bobinage.phases,
+            bobinage.frequences,
+            bobinage.courant,
+            bobinage.nbSpires,
+            bobinage.resistanceU,
+            bobinage.resistanceV,
+            bobinage.resistanceW,
+            bobinage.tensionUT,
+            bobinage.tensionVT,
+            bobinage.tensionWT,
+            bobinage.tensionUV,
+            bobinage.tensionUW,
+            bobinage.tensionVW,
+            bobinage.status)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)

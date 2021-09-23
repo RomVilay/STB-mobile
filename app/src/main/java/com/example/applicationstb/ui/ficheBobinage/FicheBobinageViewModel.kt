@@ -24,6 +24,7 @@ class FicheBobinageViewModel : ViewModel() {
     var bobinage = MutableLiveData<Bobinage>()
     var schema = MutableLiveData<String>()
     var token :String? = null;
+    var username: String? = null;
     var repository = Repository();
 
     init {
@@ -73,9 +74,9 @@ class FicheBobinageViewModel : ViewModel() {
             }
         })
     }
-    fun addSection(diametre:Long, longueur:Double){
+    fun addSection(diametre:Double, longueur:Double, nbBrins: Long){
         var list = sections.value
-        var section = Section(diametre,longueur,0)
+        var section = Section(nbBrins,longueur,diametre)
         list!!.add(section)
         sections.value = list
         //Log.i("INFO", "add section $brins - $longueur")
@@ -92,7 +93,7 @@ class FicheBobinageViewModel : ViewModel() {
         return tab.sum()
     }
     fun back(view: View){
-        val action = FicheBobinageDirections.deBobinageverAccueil(token,"username")
+        val action = FicheBobinageDirections.deBobinageverAccueil(token!!,username!!)
         Navigation.findNavController(view).navigate(action)
     }
     fun backFs(view: View){

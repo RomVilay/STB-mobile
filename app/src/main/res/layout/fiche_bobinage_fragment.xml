@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="88dp"
                     android:layout_marginLeft="88dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="7dp"
                     android:text="non"
                     android:textColor="@color/white"
                     android:visibility="gone"
@@ -125,7 +125,7 @@
                     android:hint="courant"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/frequence"
-                    app:layout_constraintTop_toBottomOf="@+id/tension" />
+                    app:layout_constraintTop_toBottomOf="@+id/details" />
 
                 <EditText
                     android:id="@+id/phase"
@@ -138,11 +138,11 @@
                     android:gravity="center"
                     android:hint="phase"
                     android:visibility="gone"
-                    app:layout_constraintStart_toEndOf="@+id/tension"
+                    app:layout_constraintStart_toEndOf="@+id/type"
                     app:layout_constraintTop_toBottomOf="@+id/client" />
 
                 <EditText
-                    android:id="@+id/tension"
+                    android:id="@+id/puissance"
                     android:layout_width="159dp"
                     android:layout_height="46dp"
                     android:layout_marginStart="16dp"
@@ -151,12 +151,12 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
-                    android:hint="tension"
+                    android:hint="puissance"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/dates"
                     app:layout_constraintStart_toEndOf="@+id/vitesse"
                     app:layout_constraintTop_toBottomOf="@+id/type"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <EditText
                     android:id="@+id/vitesse"
@@ -189,13 +189,13 @@
                     android:layout_height="46dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="31dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="type"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/marque"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/courant" />
 
                 <EditText
                     android:id="@+id/marque"
@@ -215,7 +215,7 @@
                     android:id="@+id/oui"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="7dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="oui"
@@ -227,7 +227,7 @@
                 <LinearLayout
                     android:id="@+id/dates"
                     android:layout_width="308dp"
-                    android:layout_height="47dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="190dp"
                     android:layout_marginEnd="120dp"
                     android:layout_marginRight="120dp"
@@ -246,6 +246,7 @@
                         android:layout_height="34dp"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:gravity="center"
                         android:hint="date début"
                         android:inputType="date"
                         android:padding="7dp" />
@@ -256,6 +257,7 @@
                         android:layout_height="34dp"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:gravity="center"
                         android:hint="date fin"
                         android:inputType="date" />
                 </LinearLayout>
@@ -283,20 +285,21 @@
                     android:id="@+id/addsection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="88dp"
-                    android:layout_marginLeft="88dp"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginLeft="48dp"
                     android:text="Ajout de section"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.518" />
 
                 <EditText
-                    android:id="@+id/nbfils"
+                    android:id="@+id/diam"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginLeft="28dp"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="diamètre "
@@ -306,39 +309,55 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
+                    android:id="@+id/nbfils"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginLeft="44dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="nb Brins"
+                    android:inputType="number"
+                    app:layout_constraintBottom_toBottomOf="@+id/inputlongueur"
+                    app:layout_constraintStart_toEndOf="@+id/inputlongueur"
+                    app:layout_constraintTop_toTopOf="@+id/inputlongueur" />
+
+                <EditText
                     android:id="@+id/inputlongueur"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="longueur"
                     android:inputType="number"
+                    app:layout_constraintBottom_toBottomOf="@+id/diam"
                     app:layout_constraintStart_toEndOf="@+id/x"
-                    tools:layout_editor_absoluteY="6dp" />
+                    app:layout_constraintTop_toTopOf="@+id/diam" />
 
                 <TextView
                     android:id="@+id/x"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="x"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/nbfils" />
+                    app:layout_constraintStart_toEndOf="@+id/diam" />
 
                 <Button
                     android:id="@+id/ajoutFil"
                     android:layout_width="44dp"
                     android:layout_height="51dp"
-                    android:layout_marginStart="52dp"
-                    android:layout_marginLeft="52dp"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginLeft="44dp"
                     android:text="+"
                     app:backgroundTint="@color/bleu_stb"
-                    app:layout_constraintStart_toEndOf="@+id/inputlongueur"
-                    tools:layout_editor_absoluteY="6dp" />
+                    app:layout_constraintBottom_toBottomOf="@+id/nbfils"
+                    app:layout_constraintStart_toEndOf="@+id/nbfils"
+                    app:layout_constraintTop_toTopOf="@+id/nbfils" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -363,23 +382,32 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/brins"
-                        android:layout_width="218dp"
+                        android:id="@+id/diametre"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/cell"
                         android:gravity="center"
-                        android:text="diamètre de section"
+                        android:text="diamètre"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/textlongueur"
-                        android:layout_width="208dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/cell"
                         android:gravity="center"
                         android:text="longueur"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/nbBrins"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="nbBrins"
                         android:textSize="20sp" />
                 </LinearLayout>
 

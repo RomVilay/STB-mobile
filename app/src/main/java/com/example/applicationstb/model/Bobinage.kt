@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi
 import java.time.LocalDateTime
 import java.util.*
 
-class Section (var nbBrins:Long, var longueur: Double, var diametre: Long){
+class Section (var nbBrins:Long, var longueur: Double, var diametre: Double){
 }
 
 class Bobinage(idFiche:String,
@@ -30,7 +30,7 @@ class Bobinage(idFiche:String,
                var vitesse: Long,
                var phases:Long,
                var tension: Long,
-               var frequence:Long,
+               var frequences:Long,
                var courant:Long,
                var callage:Boolean,
                var sectionsFils : MutableList<Section>,
@@ -48,7 +48,7 @@ class Bobinage(idFiche:String,
                 ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
-                fun addSection(nbBrins: Long, longueur: Double, diametre: Long){
+                fun addSection(nbBrins: Long, longueur: Double, diametre: Double){
                     sectionsFils.add(Section(nbBrins,longueur,diametre))
                 }
                 fun addSchema (uri: Uri){

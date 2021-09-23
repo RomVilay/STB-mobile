@@ -1,9 +1,6 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.Manifest
-import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,14 +8,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,10 +27,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.Fiche
 import java.io.File
 import java.io.IOException
-import java.io.OutputStream
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -72,6 +64,7 @@ class FicheBobinage : Fragment() {
         var list = arguments?.get("listBobinage") as Array<Fiche>
         viewModel.token = arguments?.get("token") as String
         viewModel.listeBobinage = list.toCollection(ArrayList())
+        viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
         //viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
 
@@ -84,7 +77,7 @@ class FicheBobinage : Fragment() {
         var oui = layout.findViewById<TextView>(R.id.oui)
         var frequence = layout.findViewById<EditText>(R.id.frequence)
         var client = layout.findViewById<EditText>(R.id.client)
-        var tension = layout.findViewById<EditText>(R.id.tension)
+        var puissance= layout.findViewById<EditText>(R.id.puissance)
         var courant = layout.findViewById<EditText>(R.id.courant)
         var phases = layout.findViewById<EditText>(R.id.phase)
         var vitesse = layout.findViewById<EditText>(R.id.vitesse)
@@ -103,8 +96,9 @@ class FicheBobinage : Fragment() {
         var visibility = View.VISIBLE
         //champs fils
         var btnfils = layout.findViewById<Button>(R.id.ajoutFil)
-        var nbfils = layout.findViewById<EditText>(R.id.nbfils)
+        var diam = layout.findViewById<EditText>(R.id.diam)
         var inLong = layout.findViewById<EditText>(R.id.inputlongueur)
+        var nbBrins = layout.findViewById<EditText>(R.id.nbfils)
         var RU = layout.findViewById<EditText>(R.id.RU)
         var RV = layout.findViewById<EditText>(R.id.RV)
         var RW = layout.findViewById<EditText>(R.id.RW)
@@ -133,28 +127,28 @@ class FicheBobinage : Fragment() {
         schemas = layout.findViewById(R.id.schemas)
         schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
-        /*viewModel.schemas.observe(viewLifecycleOwner, {
-            sAdapter.update(it)
+        viewModel.schemas.observe(viewLifecycleOwner, {
+          /*  sAdapter.update(it)
             if ( viewModel.schemas.value?.size == 0){
                 schemas.visibility = View.GONE
             } else {
                 schemas.visibility = View.VISIBLE
-            }
-        })*/
+            }*/
+        })
         viewModel.bobinage.observe(viewLifecycleOwner,{
             var bobinage = viewModel.bobinage.value
             if (bobinage != null) {
                 marque.setText(bobinage?.marqueMoteur)
-                //type.setText(bobinage?.type)
-                //vitesse.setText(bobinage.vitesse.toString())
+                courant.setText(bobinage?.courant.toString())
+                vitesse.setText(bobinage?.vitesse.toString())
+                type.setText(bobinage?.typeBobinage)
                 client.setText(bobinage?.client?.enterprise)
-                tension.setText(bobinage?.tension.toString())
+                puissance.setText(bobinage?.puissance.toString())
                 phases.setText(bobinage?.phases.toString())
-                frequence.setText(bobinage?.frequence.toString())
+                frequence.setText(bobinage?.frequences.toString())
                 courant.setText(bobinage?.courant.toString())
                 switch.setChecked(bobinage.callage)
                 adapter.list = bobinage.sectionsFils
-
                 spire.setText(bobinage?.nbSpires.toString())
                 RU.setText(bobinage?.resistanceU.toString())
                 RV.setText(bobinage?.resistanceV.toString())
@@ -188,7 +182,7 @@ class FicheBobinage : Fragment() {
             client.visibility = visibility
             oui.visibility = visibility
             frequence.visibility = visibility
-            tension.visibility = visibility
+            puissance.visibility = visibility
             courant.visibility = visibility
             phases.visibility = visibility
             vitesse.visibility = visibility
@@ -199,7 +193,7 @@ class FicheBobinage : Fragment() {
             Log.i("INFO", "change")
         }
         btnfils.setOnClickListener {
-            viewModel.addSection(nbfils.text.toString().toLong(), inLong.text.toString().toDouble())
+            viewModel.addSection(diam.text.toString().toDouble(), inLong.text.toString().toDouble(), nbBrins.text.toString().toLong())
         }
         addschema.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(getContext()!!,
@@ -293,16 +287,24 @@ class FicheBobinage : Fragment() {
         }
         enrg.setOnClickListener {
             var bobi = viewModel.bobinage.value
-            bobi!!.nbSpires = spire.text.toString().toLong()
-            bobi!!.resistanceU = RU.text.toString().toLong()
-            bobi!!.resistanceV = RV.text.toString().toLong()
-            bobi!!.resistanceW = RW.text.toString().toLong()
-            bobi!!.tensionUT = IU.text.toString().toLong()
-            bobi!!.tensionVT = IV.text.toString().toLong()
-            bobi!!.tensionWT = IW.text.toString().toLong()
-            bobi!!.tensionUV =  IIU.text.toString().toLong()
-            bobi!!.tensionUW =  IIV.text.toString().toLong()
-            bobi!!.tensionVW = IIW.text.toString().toLong()
+            bobi!!.marqueMoteur = marque.text.toString()
+            bobi!!.typeBobinage = type.text.toString()
+            bobi!!.vitesse = if (vitesse.text.isNotEmpty()) vitesse.text.toString().toLong() else bobi!!.vitesse
+            bobi!!.puissance = if (puissance.text.isNotEmpty()) puissance.text.toString().toLong() else bobi!!.puissance
+            bobi!!.phases = if (phases.text.isNotEmpty()) phases.text.toString().toLong() else bobi!!.phases
+            bobi!!.frequences = if (frequence.text.isNotEmpty()) frequence.text.toString().toLong() else bobi!!.frequences
+            bobi!!.courant = if (courant.text.isNotEmpty()) courant.text.toString().toLong() else bobi!!.courant
+            bobi!!.nbSpires = if (spire.text.isNotEmpty()) spire.text.toString().toLong() else bobi!!.courant
+            bobi!!.resistanceU = if(RU.text.isNotEmpty()) RU.text.toString().toLong() else bobi!!.resistanceU
+            bobi!!.resistanceV = if(RV.text.isNotEmpty()) RV.text.toString().toLong() else bobi!!.resistanceV
+            bobi!!.resistanceW = if (RW.text.isNotEmpty()) RW.text.toString().toLong() else bobi!!.resistanceW
+            bobi!!.tensionUT = if (IU.text.isNotEmpty()) IU.text.toString().toLong() else bobi!!.tensionUT
+            bobi!!.tensionVT = if (IV.text.isNotEmpty()) IV.text.toString().toLong() else bobi!!.tensionVT
+            bobi!!.tensionWT = if (IW.text.isNotEmpty()) IW.text.toString().toLong() else bobi!!.tensionWT
+            bobi!!.tensionUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toLong() else bobi!!.tensionUV
+            bobi!!.tensionUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toLong() else bobi!!.tensionUW
+            bobi!!.tensionVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toLong() else bobi!!.tensionVW
+            bobi!!.status = 2L
             viewModel.bobinage.value = bobi
             viewModel.save()
         }

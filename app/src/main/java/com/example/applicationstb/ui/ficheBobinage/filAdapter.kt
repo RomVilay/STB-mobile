@@ -1,14 +1,11 @@
 package com.example.applicationstb.ui.ficheBobinage
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Section
 
 class FillAdapter (var list: MutableList<Section>) :
@@ -17,10 +14,12 @@ class FillAdapter (var list: MutableList<Section>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var longueur: TextView
-        var brins: TextView
+        var diametre: TextView
+        var nbBrins: TextView
         init {
+            diametre = view.findViewById(R.id.dia)
             longueur = view.findViewById(R.id.lg)
-            brins = view.findViewById(R.id.br)
+            nbBrins = view.findViewById(R.id.br)
         }
     }
 
@@ -30,8 +29,9 @@ class FillAdapter (var list: MutableList<Section>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.diametre.text = list[position].diametre.toString()
         holder.longueur.text = list[position].longueur.toString()
-        holder.brins.text = list[position].nbBrins.toString()
+        holder.nbBrins.text = list[position].nbBrins.toString()
     }
 
     fun update (sections: MutableList<Section>){
