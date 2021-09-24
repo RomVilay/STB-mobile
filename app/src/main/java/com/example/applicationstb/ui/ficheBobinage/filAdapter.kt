@@ -30,7 +30,6 @@ class FillAdapter (var list: MutableList<Section>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.diametre.text = list[position].diametre.toString()
-        holder.longueur.text = list[position].longueur.toString()
         holder.nbBrins.text = list[position].nbBrins.toString()
     }
 

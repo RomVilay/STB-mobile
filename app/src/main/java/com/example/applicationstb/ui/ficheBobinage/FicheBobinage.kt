@@ -154,12 +154,12 @@ class FicheBobinage : Fragment() {
                 RU.setText(bobinage?.resistanceU.toString())
                 RV.setText(bobinage?.resistanceV.toString())
                 RW.setText(bobinage?.resistanceW.toString())
-                IU.setText(bobinage?.tensionUT.toString())
-                IV.setText(bobinage?.tensionVT.toString())
-                IW.setText(bobinage?.tensionWT.toString())
-                IIU.setText(bobinage?.tensionUV.toString())
-                IIV.setText(bobinage?.tensionUW.toString())
-                IIW.setText(bobinage?.tensionVW.toString())
+                IU.setText(bobinage?.isolementUT.toString())
+                IV.setText(bobinage?.isolementVT.toString())
+                IW.setText(bobinage?.isolementWT.toString())
+                IIU.setText(bobinage?.isolementUV.toString())
+                IIV.setText(bobinage?.isolementUW.toString())
+                IIW.setText(bobinage?.isolementVW.toString())
                 obs.setText(bobinage?.observations.toString())
                 var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
                 dated.setText( bobinage?.dateDebut!!.toLocaleString())
@@ -302,12 +302,12 @@ class FicheBobinage : Fragment() {
             bobi!!.resistanceU = if(RU.text.isNotEmpty()) RU.text.toString().toLong() else bobi!!.resistanceU
             bobi!!.resistanceV = if(RV.text.isNotEmpty()) RV.text.toString().toLong() else bobi!!.resistanceV
             bobi!!.resistanceW = if (RW.text.isNotEmpty()) RW.text.toString().toLong() else bobi!!.resistanceW
-            bobi!!.tensionUT = if (IU.text.isNotEmpty()) IU.text.toString().toLong() else bobi!!.tensionUT
-            bobi!!.tensionVT = if (IV.text.isNotEmpty()) IV.text.toString().toLong() else bobi!!.tensionVT
-            bobi!!.tensionWT = if (IW.text.isNotEmpty()) IW.text.toString().toLong() else bobi!!.tensionWT
-            bobi!!.tensionUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toLong() else bobi!!.tensionUV
-            bobi!!.tensionUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toLong() else bobi!!.tensionUW
-            bobi!!.tensionVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toLong() else bobi!!.tensionVW
+            bobi!!.isolementUT = if (IU.text.isNotEmpty()) IU.text.toString().toLong() else bobi!!.isolementUT
+            bobi!!.isolementVT = if (IV.text.isNotEmpty()) IV.text.toString().toLong() else bobi!!.isolementVT
+            bobi!!.isolementWT = if (IW.text.isNotEmpty()) IW.text.toString().toLong() else bobi!!.isolementWT
+            bobi!!.isolementUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toLong() else bobi!!.isolementUV
+            bobi!!.isolementUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toLong() else bobi!!.isolementUW
+            bobi!!.isolementVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toLong() else bobi!!.isolementVW
             bobi!!.observations = obs.text.toString()
             bobi!!.status = 2L
             bobi!!.calageEncoches = switch.isChecked()

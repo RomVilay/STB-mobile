@@ -1,37 +1,38 @@
 package com.example.applicationstb.ui.ficheChantier
 
-import android.graphics.Bitmap
-import android.graphics.Path
-import android.os.Build
+import android.app.Application
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
-import com.example.applicationstb.R
 import android.net.Uri
 import android.util.Log
-import androidx.test.core.app.ApplicationProvider
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.ChantierResponse
-import com.example.applicationstb.repository.FichesResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.repository.VehiculesResponse
-import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FicheChantierViewModel : ViewModel() {
+class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
+    var context = getApplication<Application>().applicationContext
     var token: String? = null;
     var username: String? = null;
-    var repository = Repository();
+    var repository = Repository(context);
     var listeChantiers = arrayListOf<Fiche>()
     var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<Uri?>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
     init {
+         viewModelScope.launch(Dispatchers.IO){
+            repository.createDb()
+       }
        /* var i =0
         while (i<10)
         {
@@ -54,6 +55,7 @@ class FicheChantierViewModel : ViewModel() {
         }*/
 
     }
+
 
     fun back(view:View){
         //console.log(signatures)
@@ -113,6 +115,19 @@ class FicheChantierViewModel : ViewModel() {
     /*fun setSignature(sign:Bitmap){
         signature.value = sign
     }*/
+    fun localGet(){
+        viewModelScope.launch(Dispatchers.IO){
+            var list = repository.getAllChantierLocalDatabase()
+            for (fiche in list){
+                Log.i("INFO", "id:${fiche._id}")
+            }
+        }
+    }
+    fun localSave(){
+        viewModelScope.launch(Dispatchers.IO){
+             repository.insertChantierLocalDatabase(chantier.value!!)
+        }
+    }
 
     fun save(){
         //Log.i("INFO","token: ${token} - ${chantier.value!!._id} - ${chantier!!.value!!.observations}")

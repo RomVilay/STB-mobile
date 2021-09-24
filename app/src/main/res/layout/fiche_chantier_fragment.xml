@@ -283,15 +283,25 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="quitter"
-                    app:backgroundTint="#164081" />
+                    app:backgroundTint="@color/gray_400" />
 
                 <Button
                     android:id="@+id/enregistrer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/round_textview_full_grey"
                     android:text="enregistrer"
-                    app:backgroundTint="#164081" />
+                    app:backgroundTint="@color/gray_400" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="Terminer la fiche" />
             </LinearLayout>
 
         </LinearLayout>

@@ -1,8 +1,10 @@
 package com.example.applicationstb.ui.ficheBobinage
 
+import android.app.Application
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
@@ -16,7 +18,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FicheBobinageViewModel : ViewModel() {
+class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
 
     var listeBobinage = arrayListOf<Fiche>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
@@ -25,7 +27,7 @@ class FicheBobinageViewModel : ViewModel() {
     var schema = MutableLiveData<String>()
     var token :String? = null;
     var username: String? = null;
-    var repository = Repository();
+    var repository = Repository(getApplication<Application>().applicationContext);
 
     init {
 
@@ -76,7 +78,7 @@ class FicheBobinageViewModel : ViewModel() {
     }
     fun addSection(diametre:Double, longueur:Double, nbBrins: Long){
         var list = sections.value
-        var section = Section(nbBrins,longueur,diametre)
+        var section = Section(nbBrins,diametre)
         list!!.add(section)
         sections.value = list
         //Log.i("INFO", "add section $brins - $longueur")
@@ -88,7 +90,7 @@ class FicheBobinageViewModel : ViewModel() {
         schemas.value=list
     }
     fun somme(list: MutableList<Section>): Double {
-        var tab = list.map { it.longueur * it.diametre }
+        var tab = list.map { Math.sqrt(it.diametre)*(Math.PI/4)* it.nbBrins }
         //Log.i("info", tab.toString())
         return tab.sum()
     }

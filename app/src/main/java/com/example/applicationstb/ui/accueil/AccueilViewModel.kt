@@ -1,8 +1,11 @@
 package com.example.applicationstb.ui.accueil
 
+import android.app.Application
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -14,13 +17,15 @@ import com.example.applicationstb.repository.FichesResponse
 import com.example.applicationstb.repository.LoginResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.connexion.ConnexionDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AccueilViewModel : ViewModel() {
+class AccueilViewModel(application: Application) : AndroidViewModel(application) {
 
-    var repository = Repository();
+    var repository = Repository(getApplication<Application>().applicationContext);
     var token: String? = null
     var username: String? = null
     var fiches: Array<Fiche>? = null
@@ -29,7 +34,7 @@ class AccueilViewModel : ViewModel() {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
-                    Log.i("INFO","${resp!!.fiches!!.size}")
+                    //Log.i("INFO","${resp!!.fiches!!.size}")
                     if (resp != null) {
                        fiches = resp.fiches
                        /* for(fiche in resp!!.fiches!!) {
@@ -68,7 +73,7 @@ class AccueilViewModel : ViewModel() {
         var tab = mutableListOf<Fiche>()
         for (fiche in fiches!!) {
             if (fiche.type == 4L) {
-                Log.i("INFO", "fiche n°: ${fiche.numFiche} - client: ${fiche.client.enterprise} ")
+                Log.i("INFO", "fiche n°: ${fiche.numFiche} - client: ${fiche.client!!.enterprise} ")
                 tab.add(fiche)
             }
         }

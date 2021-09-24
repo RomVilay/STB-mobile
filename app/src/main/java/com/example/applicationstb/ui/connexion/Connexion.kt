@@ -34,15 +34,14 @@ class Connexion : Fragment() {
         val password = layout.findViewById<EditText>(R.id.psw)
         val button = layout.findViewById<Button>(R.id.button)
         button.setOnClickListener{
-
                 viewModel.login(username.text.toString(),password.text.toString(),it)
+                viewModel.localGet()
              /*   val action = viewModel.user?.token?.let { it1 -> ConnexionDirections.versAccueil(it1) }
             if (action != null) {
                 findNavController().navigate(action)
             }
                 //viewModel.toAccueil(it)*/
         }
-        Log.i("INFO","init")
         return layout
     }
 

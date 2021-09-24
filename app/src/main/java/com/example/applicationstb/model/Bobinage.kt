@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.util.*
 @Parcelize
-class Section (var nbBrins:Long, var longueur: Double, var diametre: Double): Parcelable{
+class Section (var nbBrins:Long, var diametre: Double): Parcelable{
 }
 
 class Bobinage(idFiche:String,
@@ -31,7 +31,6 @@ class Bobinage(idFiche:String,
                var puissance:Long,
                var vitesse: Long,
                var phases:Long,
-               var tension: Long,
                var frequences:Long,
                var courant:Long,
                var calageEncoches:Boolean,
@@ -40,18 +39,20 @@ class Bobinage(idFiche:String,
                var resistanceU : Long,
                var resistanceV : Long,
                var resistanceW : Long,
-               var tensionUT : Long,
-               var tensionVT : Long,
-               var tensionWT : Long,
-               var tensionUV : Long,
-               var tensionUW : Long,
-               var tensionVW : Long,
-               var schemas : MutableList<String>
+               var isolementUT : Long,
+               var isolementVT : Long,
+               var isolementWT : Long,
+               var isolementUV : Long,
+               var isolementUW : Long,
+               var isolementVW : Long,
+               var schemas : MutableList<String>,
+               var poids : Long,
+               var tension: Long
                 ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
                 fun addSection(nbBrins: Long, longueur: Double, diametre: Double){
-                    sectionsFils.add(Section(nbBrins,longueur,diametre))
+                    sectionsFils.add(Section(nbBrins,diametre))
                 }
                 fun addSchema (uri: Uri){
                     schemas.add(uri.toString())
@@ -60,7 +61,7 @@ class Bobinage(idFiche:String,
                     return sectionsFils
                 }
                 fun getSection(index: Int): String {
-                    return "nb brins:"+sectionsFils[index].nbBrins+" - longueur: "+sectionsFils[index].longueur
+                    return "nb brins:"+sectionsFils[index].nbBrins+" - diamètre: "+sectionsFils[index].diametre
                 }
 
 

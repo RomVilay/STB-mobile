@@ -26,6 +26,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
@@ -77,6 +79,7 @@ class FicheChantier : Fragment() {
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
+
         var visibility = View.VISIBLE
         //define signature area
         //val stech = layout.findViewById<DawingView>(R.id.signTech)
@@ -101,7 +104,7 @@ class FicheChantier : Fragment() {
             materiel.setText(it.materiel)
             objet.setText(it.objet)
             observation.setText(it.observations)
-            client.setText(it.client.enterprise)
+            client.setText(it.client!!.enterprise)
             vehicule.setText(it.vehicule)
             contact.setText(it.contact)
             numero.setText(it.telContact)
@@ -232,9 +235,11 @@ class FicheChantier : Fragment() {
             chantier.dureeTotale = chantier.dateDebut!!.getTime() - Date.from(Instant.now()).getTime()
             //chantier.dateDebut = Date.from(dateDebut.text.toString())
             viewModel.chantier.value = chantier
+
             var t = viewModel.chantier.value
             //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
             Log.i("INFO",t.toString())
+            viewModel.localSave()
             //viewModel.save()
             //viewModel.back(layout)
         }

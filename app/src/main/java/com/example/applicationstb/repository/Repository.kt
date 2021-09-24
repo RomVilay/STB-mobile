@@ -1,10 +1,19 @@
 package com.example.applicationstb.repository
 
+import android.app.Activity
+import android.app.Application
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import com.example.applicationstb.localdatabase.ChantierDao
+import com.example.applicationstb.localdatabase.ChantierEntity
+import com.example.applicationstb.localdatabase.LocalDatabase
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import kotlinx.parcelize.Parcelize
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,6 +22,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 class BodyLogin(var username: String?, var password: String?): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -83,16 +93,18 @@ class BodyBobinage(var marqueMoteur : String?,
     var resistanceU: Long?,
     var resistanceV: Long,
     var resistanceW: Long,
-    var tensionUT: Long,
-    var tensionVT: Long,
-    var tensionWT: Long,
-    var tensionUV: Long,
-    var tensionUW: Long,
-    var tensionVW: Long,
+    var isolementUT: Long,
+    var isolementVT: Long,
+    var isolementWT: Long,
+    var isolementUV: Long,
+    var isolementUW: Long,
+    var isolementVW: Long,
     var status: Long,
     var calageEncoches: Boolean,
     var sectionsFils: List<Section>? ,
-    var observations: String?
+    var observations: String?,
+    var poids:Long,
+    var tension:Long
                   ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -117,7 +129,9 @@ class BodyBobinage(var marqueMoteur : String?,
         listOf<Section>().apply {
             parcel.readList(this,Section::class.java.classLoader)
         },
-        parcel.readString()
+        parcel.readString(),
+        parcel.readLong(),
+        parcel.readLong()
     ) {
     }
 
@@ -133,18 +147,20 @@ class BodyBobinage(var marqueMoteur : String?,
         parcel.writeLong(resistanceU!!)
         parcel.writeLong(resistanceV!!)
         parcel.writeLong(resistanceW!!)
-        parcel.writeLong(tensionUT!!)
-        parcel.writeLong(tensionVT!!)
-        parcel.writeLong(tensionWT!!)
-        parcel.writeLong(tensionUV!!)
-        parcel.writeLong(tensionUW!!)
-        parcel.writeLong(tensionVW!!)
+        parcel.writeLong(isolementUT!!)
+        parcel.writeLong(isolementVT!!)
+        parcel.writeLong(isolementWT!!)
+        parcel.writeLong(isolementUV!!)
+        parcel.writeLong(isolementUW!!)
+        parcel.writeLong(isolementVW!!)
         parcel.writeLong(status!!)
         parcel.writeBoolean(calageEncoches!!)
         listOf<Section>().apply {
             parcel.writeList(this)
         }
         parcel.writeString(observations!!)
+        parcel.writeLong(poids)
+        parcel.writeLong(tension)
     }
 
     override fun describeContents(): Int {
@@ -207,8 +223,7 @@ class CustomDateAdapter : JsonAdapter <Date>() {
         const val SERVER_FORMAT = ("yyyy-MM-dd'T'HH:mm") // define your server format here
     }
 }
-
-class Repository {
+class Repository (var context:Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter())
     val url = "http://195.154.107.195:4000"
     val retrofit = Retrofit.Builder()
@@ -216,6 +231,9 @@ class Repository {
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
+    var db : LocalDatabase? = null;
+    var chantierDao : ChantierDao? = null;
+
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
         var call = service.loginUser(body)
@@ -255,16 +273,18 @@ class Repository {
             bobinage.resistanceU,
             bobinage.resistanceV,
             bobinage.resistanceW,
-            bobinage.tensionUT,
-            bobinage.tensionVT,
-            bobinage.tensionWT,
-            bobinage.tensionUV,
-            bobinage.tensionUW,
-            bobinage.tensionVW,
-            bobinage.status,
+            bobinage.isolementUT,
+            bobinage.isolementVT,
+            bobinage.isolementWT,
+            bobinage.isolementUV,
+            bobinage.isolementUW,
+            bobinage.isolementVW,
+            bobinage.status!!,
             bobinage.calageEncoches,
             bobinage.sectionsFils.toList(),
-            bobinage.observations)
+            bobinage.observations,
+            bobinage.poids,
+            bobinage.tension)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
@@ -279,5 +299,36 @@ class Repository {
         var call = service.getVehiculeById(token,vehiculeId)
         var vehicule: Vehicule? = null
         call.enqueue(callback)
+    }
+    suspend fun createDb(){
+      db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
+          .build()
+      chantierDao = db!!.chantierDao()
+        Log.i("INFO","db créée")
+    }
+
+    suspend fun insertChantierLocalDatabase(chantier: Chantier){
+        var ch = ChantierEntity(
+            chantier._id,
+            chantier.status!!,
+            chantier.client!!._id,
+            chantier.contact,
+            chantier.telContact,
+            chantier.dateDebut,
+            chantier.dureeTotale.toString(),
+            chantier.observations,
+            chantier.vehicule,
+            chantier.adresseChantier,
+            chantier.objet,
+            chantier.materiel,
+            chantier.diagnostic,
+            chantier.signatureTech,
+            chantier.signatureClient
+        )
+        chantierDao!!.insertAll(ch)
+        getAllChantierLocalDatabase()
+    }
+   suspend fun getAllChantierLocalDatabase(): List<ChantierEntity>{
+        return chantierDao!!.getAll()
     }
 }
