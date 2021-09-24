@@ -28,9 +28,12 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
             var list = repository.getAllChantierLocalDatabase()
-            for (fiche in list){
-                Log.i("INFO", "id:${fiche._id}")
+            if ( list.size > 0) {
+
             }
+            /*for (fiche in list){
+                Log.i("INFO", "id:${fiche._id} ")
+            }*/
         }
     }
 
