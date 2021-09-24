@@ -3,6 +3,7 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
+import com.example.applicationstb.model.Chantier
 import java.util.*
 
 @Entity (tableName="chantiers")
@@ -23,7 +24,16 @@ data class ChantierEntity(
     var diagnostic:String?,
     var signatureTech:String?,
     var signatureClient:String?
-)
+){
+    fun toChantier() : Chantier{
+        var ch = Chantier(_id,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+        ch.materiel = materiel
+        ch.objet =  objet
+        ch.observations = observations
+        ch.status = status
+        return ch
+    }
+}
 
 class Converters {
     @TypeConverter

@@ -1,6 +1,9 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -129,26 +132,48 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun save(){
-        //Log.i("INFO","token: ${token} - ${chantier.value!!._id} - ${chantier!!.value!!.observations}")
-
-        val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
-            override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
-                if ( response.code() == 200 ) {
-                    val resp = response.body()
-                    if (resp != null) {
-                       // Log.i("INFO","${resp.fiche!!.observations}")
+    fun save(context: Context){
+        if (isOnline(context)){
+            val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
+                override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
+                    if ( response.code() == 200 ) {
+                        val resp = response.body()
+                        if (resp != null) {
+                            // Log.i("INFO","${resp.fiche!!.observations}")
+                        }
+                    } else {
+                        Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
                     }
-                } else {
-                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+                override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                    Log.e("Error","${t.stackTraceToString()}")
+                    Log.e("Error","erreur ${t.message}")
+                }
+            })
+        } else {
+            localSave()
+        }
+
+    }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
                 }
             }
-            override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
-                Log.e("Error","${t.stackTraceToString()}")
-                Log.e("Error","erreur ${t.message}")
-            }
-        })
+        }
+        return false
     }
-
-    // TODO: Implement the ViewModel
 }

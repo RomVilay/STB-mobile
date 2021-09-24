@@ -11,11 +11,11 @@ import java.util.*
 @RequiresApi(Build.VERSION_CODES.O)
 class Chantier(
     idFiche:String,
-    numDevis: String,
-    numFiche: String,
-    type:Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type:Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,

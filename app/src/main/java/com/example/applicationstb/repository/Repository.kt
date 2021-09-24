@@ -331,4 +331,7 @@ class Repository (var context:Context) {
    suspend fun getAllChantierLocalDatabase(): List<ChantierEntity>{
         return chantierDao!!.getAll()
     }
+    suspend fun deleteChantierLocalDatabse( chantier: ChantierEntity){
+        chantierDao!!.delete(chantier)
+    }
 }

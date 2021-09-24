@@ -10,7 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
+import com.example.applicationstb.localdatabase.ChantierEntity
+import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.User
+import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.LoginResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
@@ -27,13 +30,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     init{
         viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
-            var list = repository.getAllChantierLocalDatabase()
-            if ( list.size > 0) {
-
-            }
-            /*for (fiche in list){
-                Log.i("INFO", "id:${fiche._id} ")
-            }*/
         }
     }
 
@@ -53,6 +49,34 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                        // Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
                         //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
                         val action = user?.let { it1 -> ConnexionDirections.versAccueil(it1.token!!,it1.username) }
+                        viewModelScope.launch(Dispatchers.IO) {
+                            var list:List<ChantierEntity> = repository.getAllChantierLocalDatabase()
+                             //Log.i("INFO", "token : ${user!!.token}")
+                            if (list.size > 0){
+                                for ( fiche in list){
+                                    var ch = fiche.toChantier()
+                                    val resp = repository.patchChantier(user!!.token!!, ch._id, ch, object: Callback<ChantierResponse> {
+                                        override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
+                                            if ( response.code() == 200 ) {
+                                                val resp = response.body()
+                                                if (resp != null) {
+                                                    Log.i("INFO","fiche enregistrée")
+                                                }
+                                                viewModelScope.launch(Dispatchers.IO) {
+                                                    repository.deleteChantierLocalDatabse(fiche)
+                                                }
+                                            } else {
+                                                Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                                            }
+                                        }
+                                        override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                                            Log.e("Error","${t.stackTraceToString()}")
+                                            Log.e("Error","erreur ${t.message}")
+                                        }
+                                    })
+                                }
+                            }
+                        }
                         if (action != null) {
                             Navigation.findNavController(view).navigate(action)
                         }
@@ -66,6 +90,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 Log.e("Error","erreur ${t.message}")
             }
         })
+        /*for (fiche in list){
+            Log.i("INFO", "id:${fiche._id} ")
+        }*/
     }
     fun localGet(){
         viewModelScope.launch(Dispatchers.IO){

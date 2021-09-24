@@ -238,9 +238,9 @@ class FicheChantier : Fragment() {
 
             var t = viewModel.chantier.value
             //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
-            Log.i("INFO",t.toString())
-            viewModel.localSave()
-            //viewModel.save()
+            //Log.i("INFO",t.toString())
+            Log.i("INFO","connection internet: ${viewModel.isOnline(context!!)}")
+            viewModel.save(context!!)
             //viewModel.back(layout)
         }
         return layout
