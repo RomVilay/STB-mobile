@@ -148,8 +148,8 @@ class FicheBobinage : Fragment() {
                 phases.setText(bobinage?.phases.toString())
                 frequence.setText(bobinage?.frequences.toString())
                 courant.setText(bobinage?.courant.toString())
-                switch.setChecked(bobinage.calageEncoches)
-                adapter.list = bobinage.sectionsFils
+                switch.setChecked(bobinage.calageEncoches!!)
+                adapter.list = bobinage.sectionsFils!!
                 spire.setText(bobinage?.nbSpires.toString())
                 RU.setText(bobinage?.resistanceU.toString())
                 RV.setText(bobinage?.resistanceV.toString())
@@ -197,7 +197,8 @@ class FicheBobinage : Fragment() {
             Log.i("INFO", "change")
         }
         btnfils.setOnClickListener {
-            viewModel.addSection(diam.text.toString().toDouble(), inLong.text.toString().toDouble(), nbBrins.text.toString().toLong())
+            viewModel.addSection(nbBrins.text.toString().toLong(),diam.text.toString().toDouble())
+            Log.i("INFO",viewModel.somme(viewModel.sections.value!!).toString())
         }
         addschema.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(getContext()!!,

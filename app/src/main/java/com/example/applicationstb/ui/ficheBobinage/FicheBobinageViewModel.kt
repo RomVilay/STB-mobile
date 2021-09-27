@@ -76,7 +76,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             }
         })
     }
-    fun addSection(diametre:Double, longueur:Double, nbBrins: Long){
+    fun addSection(nbBrins: Long,diametre:Double){
         var list = sections.value
         var section = Section(nbBrins,diametre)
         list!!.add(section)

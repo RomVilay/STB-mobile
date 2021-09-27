@@ -10,12 +10,8 @@ import androidx.navigation.Navigation
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Fiche
-import com.example.applicationstb.model.User
-import com.example.applicationstb.repository.FichesResponse
-import com.example.applicationstb.repository.LoginResponse
-import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.model.*
+import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.connexion.ConnexionDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,11 +20,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
-
     var repository = Repository(getApplication<Application>().applicationContext);
+    init{
+        viewModelScope.launch(Dispatchers.IO){
+            repository.createDb()
+        }
+    }
     var token: String? = null
     var username: String? = null
     var fiches: Array<Fiche>? = null
+    var chantiers: MutableList<Chantier>? = mutableListOf();
+    var bobinages: MutableList<Bobinage>? = mutableListOf();
     fun listeFiches(token: String, userid: String){
         val resp = repository.getFichesUser(token, userid, object: Callback<FichesResponse> {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {
@@ -42,6 +44,66 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }*/
                         //Log.i("INFO","fiches : ${resp.fiches}")
                     }
+                    var nbCh = 0;
+                    var nbBo = 0;
+                    for (fiche in resp!!.fiches!! ){
+                        if (fiche.type == 1L ){
+                            val resp = repository.getChantier(token, fiche._id, object: Callback<ChantierResponse> {
+                                override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
+                                    if ( response.code() == 200 ) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            viewModelScope.launch(Dispatchers.IO){
+                                                var ch = repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
+                                                if (ch == null) {
+                                                    repository.insertChantierLocalDatabase(resp!!.fiche!!)
+                                                    chantiers!!.add(resp!!.fiche!!)
+                                                    Log.i("INFO","ajout en bdd locale")
+                                                } else {
+                                                    chantiers!!.add(ch)
+                                                }
+                                                //Log.i("INFO","fiche chantier :${ch!!._id} - matériel : ${ch!!.materiel}")
+                                            }
+                                        }
+                                    } else {
+                                        Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                                    }
+                                }
+                                override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                                    Log.e("Error","erreur ${t.message}")
+                                }
+                            })
+                            nbCh = chantiers!!.size
+                        }
+                        if ( fiche.type == 4L ){
+                            val resp = repository.getBobinage(token, fiche._id, object: Callback<BobinageResponse> {
+                                override fun onResponse(call: Call<BobinageResponse>, response: Response<BobinageResponse>) {
+                                    if ( response.code() == 200 ) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                           // Log.i("INFO","fiche bobinage :${resp.fiche!!._id} - spires : ${resp.fiche!!.nbSpires}")
+                                            bobinages!!.add(resp.fiche!!)
+                                            viewModelScope.launch(Dispatchers.IO){
+                                                var b = repository.getByIdBobinageLocalDatabse(resp.fiche!!._id)
+                                                if (b == null) {
+                                                    repository.insertBobinageLocalDatabase(resp!!.fiche!!)
+                                                    Log.i("INFO","ajout en bdd locale")
+                                                }
+                                                //Log.i("INFO","fiche bobinage :${b!!._id} - spires : ${b!!.nbSpires}")
+                                            }
+                                        }
+                                    } else {
+                                        Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                                    }
+                                }
+                                override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                                    Log.e("Error","erreur ${t.message}")
+                                }
+                            })
+                            nbBo = bobinages!!.size
+                        }
+                    }
+                    Log.i("INFO"," nb de chantier :${nbCh} - nb bobinages : ${nbBo}")
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
                 }
@@ -52,15 +114,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         })
     }
     fun toChantier(view: View){
-            var tab = mutableListOf<Fiche>()
-                for (fiche in fiches!!) {
-                    if (fiche.type == 1L) {
-                        //Log.i("INFO", "fiche n°: ${fiche.numFiche} - client: ${fiche.client.enterprise} - vehicule :${fiche.vehicule}")
-                        tab.add(fiche)
-                    }
-                }
-            var tab2 = tab.toTypedArray()
-        var action = AccueilDirections.versFicheChantier(tab2,token,username)
+        var action = AccueilDirections.versFicheChantier(chantiers!!.toTypedArray(),token,username)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheD(view: View){
@@ -70,22 +124,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         Navigation.findNavController(view).navigate(R.id.versFicheRemontage)
     }
     fun toBobinage(view: View){
-        var tab = mutableListOf<Fiche>()
-        for (fiche in fiches!!) {
-            if (fiche.type == 4L) {
-                Log.i("INFO", "fiche n°: ${fiche.numFiche} - client: ${fiche.client!!.enterprise} ")
-                tab.add(fiche)
-            }
-        }
-        var tab2 = tab.toTypedArray()
-        if (tab2.size > 0){
-            Log.i("INFO", "fiche n°: ${tab2[0].numFiche} - token: ${token} ")
-            var action = AccueilDirections.versFicheBobinage(tab2,token,username)
+            var action = AccueilDirections.versFicheBobinage(bobinages!!.toTypedArray(),token,username)
             Navigation.findNavController(view).navigate(action)
-        }
     }
     fun toDeconnexion(view: View){
         Navigation.findNavController(view).navigate(R.id.versConnexion)
     }
+
     // TODO: Implement the ViewModel
 }

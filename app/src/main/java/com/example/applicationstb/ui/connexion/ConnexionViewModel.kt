@@ -52,6 +52,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         viewModelScope.launch(Dispatchers.IO) {
                             var list:List<ChantierEntity> = repository.getAllChantierLocalDatabase()
                              //Log.i("INFO", "token : ${user!!.token}")
+                            Log.i("INFO","nb de fiches: ${list.size}")
                             if (list.size > 0){
                                 for ( fiche in list){
                                     var ch = fiche.toChantier()

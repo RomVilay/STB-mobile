@@ -1,9 +1,6 @@
 package com.example.applicationstb.localdatabase
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ChantierDao {
@@ -15,5 +12,11 @@ interface ChantierDao {
 
     @Query("SELECT * FROM chantiers")
     fun getAll(): List<ChantierEntity>
+
+    @Query("SELECT * FROM chantiers WHERE _id LIKE :id")
+    fun getById(id: String) : ChantierEntity
+
+    @Update
+    fun update(vararg fiches:ChantierEntity)
 
 }

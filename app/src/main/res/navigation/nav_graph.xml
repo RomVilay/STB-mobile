@@ -65,7 +65,7 @@
             app:destination="@id/schemaFragment" />
         <argument
             android:name="listChantiers"
-            app:argType="com.example.applicationstb.model.Fiche[]"
+            app:argType="com.example.applicationstb.model.Chantier[]"
             app:nullable="true" />
         <argument
             android:name="Token"
@@ -89,7 +89,7 @@
             app:destination="@id/schemaFragment" />
         <argument
             android:name="listBobinage"
-            app:argType="com.example.applicationstb.model.Fiche[]"
+            app:argType="com.example.applicationstb.model.Bobinage[]"
             app:nullable="true" />
         <argument
             android:name="token"

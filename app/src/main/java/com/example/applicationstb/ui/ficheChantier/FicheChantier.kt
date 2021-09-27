@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
+import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
@@ -58,7 +59,7 @@ class FicheChantier : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
-        var list = arguments?.get("listChantiers") as Array<Fiche>
+        var list = arguments?.get("listChantiers") as Array<Chantier>
         viewModel.token = arguments?.get("Token") as String
         viewModel.username = arguments?.get("username") as String
         Log.i("INFO","token: ${viewModel.token} - username: ${viewModel.username}")

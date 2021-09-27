@@ -8,9 +8,7 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.example.applicationstb.localdatabase.ChantierDao
-import com.example.applicationstb.localdatabase.ChantierEntity
-import com.example.applicationstb.localdatabase.LocalDatabase
+import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
 import kotlinx.parcelize.Parcelize
@@ -233,6 +231,7 @@ class Repository (var context:Context) {
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
     var db : LocalDatabase? = null;
     var chantierDao : ChantierDao? = null;
+    var bobinageDao : BobinageDao? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -271,20 +270,20 @@ class Repository (var context:Context) {
             bobinage.courant,
             bobinage.nbSpires,
             bobinage.resistanceU,
-            bobinage.resistanceV,
-            bobinage.resistanceW,
-            bobinage.isolementUT,
-            bobinage.isolementVT,
-            bobinage.isolementWT,
-            bobinage.isolementUV,
-            bobinage.isolementUW,
-            bobinage.isolementVW,
+            bobinage.resistanceV!!,
+            bobinage.resistanceW!!,
+            bobinage.isolementUT!!,
+            bobinage.isolementVT!!,
+            bobinage.isolementWT!!,
+            bobinage.isolementUV!!,
+            bobinage.isolementUW!!,
+            bobinage.isolementVW!!,
             bobinage.status!!,
-            bobinage.calageEncoches,
-            bobinage.sectionsFils.toList(),
-            bobinage.observations,
-            bobinage.poids,
-            bobinage.tension)
+            bobinage.calageEncoches!!,
+            bobinage.sectionsFils!!.toList(),
+            bobinage.observations!!,
+            bobinage.poids!!,
+            bobinage.tension!!)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
@@ -302,36 +301,47 @@ class Repository (var context:Context) {
     }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
+          .fallbackToDestructiveMigration()
           .build()
       chantierDao = db!!.chantierDao()
+      bobinageDao = db!!.bobinageDao()
         Log.i("INFO","db créée")
     }
 
     suspend fun insertChantierLocalDatabase(chantier: Chantier){
-        var ch = ChantierEntity(
-            chantier._id,
-            chantier.status!!,
-            chantier.client!!._id,
-            chantier.contact,
-            chantier.telContact,
-            chantier.dateDebut,
-            chantier.dureeTotale.toString(),
-            chantier.observations,
-            chantier.vehicule,
-            chantier.adresseChantier,
-            chantier.objet,
-            chantier.materiel,
-            chantier.diagnostic,
-            chantier.signatureTech,
-            chantier.signatureClient
-        )
-        chantierDao!!.insertAll(ch)
+        chantierDao!!.insertAll(chantier.toEntity())
         getAllChantierLocalDatabase()
     }
    suspend fun getAllChantierLocalDatabase(): List<ChantierEntity>{
         return chantierDao!!.getAll()
     }
+    suspend fun getByIdChantierLocalDatabse( id: String): Chantier? {
+        if (chantierDao!!.getById(id) !== null) {
+            return chantierDao!!.getById(id).toChantier()
+        } else return null
+    }
+    suspend fun updateChantierLocalDatabse( chantier: ChantierEntity){
+        chantierDao!!.update(chantier)
+    }
     suspend fun deleteChantierLocalDatabse( chantier: ChantierEntity){
         chantierDao!!.delete(chantier)
+    }
+    suspend fun insertBobinageLocalDatabase(bobinage: Bobinage){
+        bobinageDao!!.insertAll(bobinage.toEntity())
+        getAllBobinageLocalDatabase()
+    }
+    suspend fun getAllBobinageLocalDatabase(): List<BobinageEntity>{
+        return bobinageDao!!.getAll()
+    }
+    suspend fun getByIdBobinageLocalDatabse( id: String) : Bobinage? {
+        if (bobinageDao!!.getById(id) !== null) {
+            return bobinageDao!!.getById(id).toBobinage()
+        } else return null
+    }
+    suspend fun updateBobinageLocalDatabse( bobinage: BobinageEntity){
+        bobinageDao!!.update(bobinage)
+    }
+    suspend fun deleteBobinageLocalDatabse( bobinage: BobinageEntity){
+        bobinageDao!!.delete(bobinage)
     }
 }

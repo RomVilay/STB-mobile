@@ -5,6 +5,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.applicationstb.localdatabase.BobinageEntity
+import com.example.applicationstb.localdatabase.ChantierEntity
 import java.time.LocalDateTime
 import java.util.*
 
@@ -54,4 +56,23 @@ class Chantier(
             "\" materiel \": ${materiel},"+
             "\" objet\": ${objet} }"
         }
+    fun toEntity() : ChantierEntity {
+        return ChantierEntity(
+            _id,
+            status!!,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale!!.toString(),
+            observations,
+            vehicule,
+            adresseChantier,
+            objet,
+            materiel,
+            diagnostic,
+            signatureTech,
+            signatureClient
+        )
+    }
 }
