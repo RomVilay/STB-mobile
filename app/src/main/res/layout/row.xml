@@ -7,15 +7,7 @@
 
     <TextView
         android:id="@+id/dia"
-        android:layout_width="141dp"
-        android:layout_height="45dp"
-        android:background="@drawable/cell"
-        android:gravity="center"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/lg"
-        android:layout_width="142dp"
+        android:layout_width="214dp"
         android:layout_height="45dp"
         android:background="@drawable/cell"
         android:gravity="center"
@@ -23,7 +15,7 @@
 
     <TextView
         android:id="@+id/br"
-        android:layout_width="142dp"
+        android:layout_width="214dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/cell"

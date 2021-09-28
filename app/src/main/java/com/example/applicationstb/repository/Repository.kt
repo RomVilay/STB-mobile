@@ -301,7 +301,6 @@ class Repository (var context:Context) {
     }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-          .fallbackToDestructiveMigration()
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
@@ -331,10 +330,15 @@ class Repository (var context:Context) {
     suspend fun getAllBobinageLocalDatabase(): List<BobinageEntity>{
         return bobinageDao!!.getAll()
     }
-    suspend fun getByIdBobinageLocalDatabse( id: String) : Bobinage? {
-        if (bobinageDao!!.getById(id) !== null) {
-            return bobinageDao!!.getById(id).toBobinage()
-        } else return null
+    suspend fun getByIdBobinageLocalDatabse(id: String) : Bobinage? {
+        try {
+            if (bobinageDao!!.getById(id) !== null) {
+                return bobinageDao!!.getById(id).toBobinage()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
     }
     suspend fun updateBobinageLocalDatabse( bobinage: BobinageEntity){
         bobinageDao!!.update(bobinage)

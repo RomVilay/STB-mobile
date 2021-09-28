@@ -99,7 +99,6 @@ class FicheBobinage : Fragment() {
         //champs fils
         var btnfils = layout.findViewById<Button>(R.id.ajoutFil)
         var diam = layout.findViewById<EditText>(R.id.diam)
-        var inLong = layout.findViewById<EditText>(R.id.inputlongueur)
         var nbBrins = layout.findViewById<EditText>(R.id.nbfils)
         var RU = layout.findViewById<EditText>(R.id.RU)
         var RV = layout.findViewById<EditText>(R.id.RV)
@@ -288,9 +287,6 @@ class FicheBobinage : Fragment() {
             //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
         }
         quit.setOnClickListener {
-            /*viewModel.schemas!!.value!!.forEach {
-                Log.i("INFO",it.toString())
-            }*/
             viewModel.back(layout)
         }
         enrg.setOnClickListener {
@@ -315,8 +311,9 @@ class FicheBobinage : Fragment() {
             bobi!!.observations = obs.text.toString()
             bobi!!.status = 2L
             bobi!!.calageEncoches = switch.isChecked()
+            bobi!!.sectionsFils = viewModel.sections.value
             viewModel.bobinage.value = bobi
-            viewModel.save()
+            viewModel.save(context!!)
         }
         return layout
     }

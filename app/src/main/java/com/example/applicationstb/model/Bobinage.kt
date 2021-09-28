@@ -67,7 +67,7 @@ class Bobinage(idFiche:String,
                     return sectionsFils!!.toList()
                 }
     fun toEntity() : BobinageEntity {
-        return BobinageEntity(  _id,
+        return BobinageEntity(_id,
             numDevis,
             numFiche,
             status!!,

@@ -379,16 +379,6 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/textlongueur"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/cell"
-                        android:gravity="center"
-                        android:text="longueur"
-                        android:textSize="20sp" />
-
-                    <TextView
                         android:id="@+id/nbBrins"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"

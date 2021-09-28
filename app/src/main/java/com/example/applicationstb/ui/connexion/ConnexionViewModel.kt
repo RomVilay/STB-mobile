@@ -13,9 +13,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
+import com.example.applicationstb.localdatabase.BobinageEntity
 import com.example.applicationstb.localdatabase.ChantierEntity
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.User
+import com.example.applicationstb.repository.BobinageResponse
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.LoginResponse
 import com.example.applicationstb.repository.Repository
@@ -43,7 +45,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         Navigation.findNavController(view).navigate(action)
     }
     fun login(username: String,psw: String, view: View){
-        Log.i("INFO",isOnline(getApplication<Application>().applicationContext).toString())
         if (isOnline(context) == true) {
             val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
                 override fun onResponse(
@@ -64,12 +65,12 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 )
                             }
                             viewModelScope.launch(Dispatchers.IO) {
-                                var list: List<ChantierEntity> =
+                                var listCh: List<ChantierEntity> =
                                     repository.getAllChantierLocalDatabase()
                                 //Log.i("INFO", "token : ${user!!.token}")
-                                Log.i("INFO", "nb de fiches: ${list.size}")
-                                if (list.size > 0) {
-                                    for (fiche in list) {
+                                Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
+                                if (listCh.size > 0) {
+                                    for (fiche in listCh) {
                                         var ch = fiche.toChantier()
                                         val resp = repository.patchChantier(
                                             user!!.token!!,
@@ -100,6 +101,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                                                 override fun onFailure(
                                                     call: Call<ChantierResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listb: List< BobinageEntity > =
+                                    repository.getAllBobinageLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches bobinage: ${listb.size}")
+                                if (listb.size > 0) {
+                                    for (fiche in listb) {
+                                        var ch = fiche.toBobinage()
+                                        val resp = repository.patchBobinage(
+                                            user!!.token!!,
+                                            ch._id,
+                                            ch,
+                                            object : Callback<BobinageResponse> {
+                                                override fun onResponse(
+                                                    call: Call<BobinageResponse>,
+                                                    response: Response<BobinageResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteBobinageLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<BobinageResponse>,
                                                     t: Throwable
                                                 ) {
                                                     Log.e("Error", "${t.stackTraceToString()}")

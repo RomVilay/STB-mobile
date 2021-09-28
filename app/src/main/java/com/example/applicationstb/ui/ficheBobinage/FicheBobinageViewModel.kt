@@ -10,6 +10,7 @@ import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
@@ -17,12 +18,15 @@ import com.example.applicationstb.repository.BobinageResponse
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
 
+    var repository = Repository(getApplication<Application>().applicationContext);
     var listeBobinage = arrayListOf<Bobinage>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
     var schemas = MutableLiveData<MutableList<String>>(mutableListOf())
@@ -30,11 +34,12 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var schema = MutableLiveData<String>()
     var token: String? = null;
     var username: String? = null;
-    var repository = Repository(getApplication<Application>().applicationContext);
     var context = getApplication<Application>().applicationContext
 
     init {
-
+        viewModelScope.launch(Dispatchers.IO){
+            repository.createDb()
+        }
         /*var i =0
         while (i<10)
         {
@@ -131,32 +136,52 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
-    fun save() {
+    fun save(context: Context) {
         Log.i("INFO", bobinage.value!!._id)
-        val resp = repository.patchBobinage(
-            token!!,
-            bobinage.value!!._id,
-            bobinage.value!!,
-            object : Callback<BobinageResponse> {
-                override fun onResponse(
-                    call: Call<BobinageResponse>,
-                    response: Response<BobinageResponse>
-                ) {
-                    if (response.code() == 200) {
-                        val resp = response.body()
-                        if (resp != null) {
-                            Log.i("INFO", "enregistré")
+        if (isOnline(context)) {
+            val resp = repository.patchBobinage(
+                token!!,
+                bobinage.value!!._id,
+                bobinage.value!!,
+                object : Callback<BobinageResponse> {
+                    override fun onResponse(
+                        call: Call<BobinageResponse>,
+                        response: Response<BobinageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            if (resp != null) {
+                                Log.i("INFO", "enregistré")
+                            }
+                        } else {
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()}"
+                            )
                         }
-                    } else {
-                        Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
                     }
-                }
 
-                override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
-                    Log.e("Error", "erreur ${t.message}")
-                }
-            })
+                    override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                        Log.e("Error", "erreur ${t.message}")
+                    }
+                })
+        } else {
+            localSave()
+        }
 
+    }
+    fun localSave(){
+        Log.i("INFO","local save fiche ${bobinage.value!!._id}")
+        viewModelScope.launch(Dispatchers.IO){
+            var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            if (bob !== null) {
+                repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
+                Log.i("INFO","patch ${bobinage.value!!.sectionsFils}")
+            } else {
+                repository.insertBobinageLocalDatabase(bobinage.value!!)
+                Log.i("INFO","insert ${bobinage.value!!._id}")
+            }
+        }
     }
 
     fun isOnline(context: Context): Boolean {

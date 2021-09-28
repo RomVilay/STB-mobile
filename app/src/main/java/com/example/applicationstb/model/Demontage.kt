@@ -47,6 +47,7 @@ abstract class DemontageMoteur(
     var puissance: Int ? = null;
     var bride: Int ? = null;
     var vitesse : Int ? = null;
+    var prezClav: Boolean ? = null;
     /**
      * etat moteur
      */

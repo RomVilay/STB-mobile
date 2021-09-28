@@ -235,7 +235,6 @@ class FicheChantier : Fragment() {
             chantier.dureeTotale = chantier.dateDebut!!.getTime() - Date.from(Instant.now()).getTime()
             //chantier.dateDebut = Date.from(dateDebut.text.toString())
             viewModel.chantier.value = chantier
-
             var t = viewModel.chantier.value
             //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
             //Log.i("INFO",t.toString())

@@ -13,12 +13,10 @@ class FillAdapter (var list: MutableList<Section>) :
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var longueur: TextView
         var diametre: TextView
         var nbBrins: TextView
         init {
             diametre = view.findViewById(R.id.dia)
-            longueur = view.findViewById(R.id.lg)
             nbBrins = view.findViewById(R.id.br)
         }
     }
