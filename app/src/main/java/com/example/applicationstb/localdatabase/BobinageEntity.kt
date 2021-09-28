@@ -2,12 +2,24 @@ package com.example.applicationstb.localdatabase
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 import com.example.applicationstb.model.Bobinage
+import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.Section
+import java.util.*
 
 @Entity (tableName = "bobinages")
 data class BobinageEntity (
     @PrimaryKey var _id:String,
+    var numDevis:String?,
+    var numFiche:String?,
+    var statut:Long?,
+    var client:String?,
+    var contact:String?,
+    var telContact:String?,
+    var dateDebut: Date?,
+    var dureeTotale:Long?,
+    var observation: String?,
     var marqueMoteur:String?,
     var typeBobinage:String?,
     var vitesse: Long?,
@@ -16,6 +28,7 @@ data class BobinageEntity (
     var frequences:Long?,
     var courant:Long?,
     var calageEncoches:Boolean?,
+    var sectionFils: MutableList<Section>,
     var nbSpires : Long?,
     var resistanceU : Long?,
     var resistanceV : Long?,
@@ -26,26 +39,24 @@ data class BobinageEntity (
     var isolementUV : Long?,
     var isolementUW : Long?,
     var isolementVW : Long?,
-    var status: Long?,
-    var observations : String?,
     var poids : Long?,
     var tension: Long?
     ){
     fun toBobinage() : Bobinage {
         return Bobinage(
             _id,
+            numDevis,
+            numFiche,
+            4,
+            statut,
+            Client(client!!,null,null,null),
+            contact,
+            telContact,
             null,
             null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
+            dateDebut,
+            dureeTotale,
+            observation,
             null,
             marqueMoteur,
             typeBobinage,
@@ -55,7 +66,7 @@ data class BobinageEntity (
             frequences,
             courant,
             calageEncoches,
-            null,
+            sectionFils,
             nbSpires,
             resistanceU,
             resistanceV,
@@ -70,4 +81,5 @@ data class BobinageEntity (
             poids,
             tension)
     }
+
 }

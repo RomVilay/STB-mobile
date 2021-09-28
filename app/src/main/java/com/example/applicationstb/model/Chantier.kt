@@ -59,12 +59,14 @@ class Chantier(
     fun toEntity() : ChantierEntity {
         return ChantierEntity(
             _id,
+            numDevis,
+            numFiche,
             status!!,
             client!!._id,
             contact,
             telContact,
             dateDebut,
-            dureeTotale!!.toString(),
+            dureeTotale!!,
             observations,
             vehicule,
             adresseChantier,

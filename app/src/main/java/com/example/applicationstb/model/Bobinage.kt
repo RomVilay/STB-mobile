@@ -7,10 +7,15 @@ import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import com.example.applicationstb.localdatabase.BobinageEntity
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.util.*
 @Parcelize
+@Serializable
 class Section (var nbBrins:Long, var diametre: Double): Parcelable{
+    override fun toString(): String {
+        return "{\"nbBrins\":${nbBrins},\"diametre\":${diametre}}"
+    }
 }
 
 class Bobinage(idFiche:String,
@@ -63,6 +68,15 @@ class Bobinage(idFiche:String,
                 }
     fun toEntity() : BobinageEntity {
         return BobinageEntity(  _id,
+            numDevis,
+            numFiche,
+            status!!,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale!!,
+            observations,
             marqueMoteur,
             typeBobinage,
             vitesse,
@@ -71,6 +85,7 @@ class Bobinage(idFiche:String,
             frequences,
             courant,
             calageEncoches,
+            sectionsFils!!,
             nbSpires,
             resistanceU,
             resistanceV,
@@ -81,8 +96,6 @@ class Bobinage(idFiche:String,
             isolementUV,
             isolementUW,
             isolementVW,
-            status,
-            observations,
             poids,
             tension)
     }

@@ -1,6 +1,9 @@
 package com.example.applicationstb.ui.accueil
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
@@ -29,14 +32,15 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var token: String? = null
     var username: String? = null
     var fiches: Array<Fiche>? = null
-    var chantiers: MutableList<Chantier>? = mutableListOf();
-    var bobinages: MutableList<Bobinage>? = mutableListOf();
+    var context = getApplication<Application>().applicationContext
+    var chantiers: MutableList<Chantier> = mutableListOf();
+    var bobinages: MutableList<Bobinage> = mutableListOf();
     fun listeFiches(token: String, userid: String){
         val resp = repository.getFichesUser(token, userid, object: Callback<FichesResponse> {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {
                 if ( response.code() == 200 ) {
                     val resp = response.body()
-                    //Log.i("INFO","${resp!!.fiches!!.size}")
+                    Log.i("INFO","${resp!!.fiches!!.size}")
                     if (resp != null) {
                        fiches = resp.fiches
                        /* for(fiche in resp!!.fiches!!) {
@@ -73,7 +77,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     Log.e("Error","erreur ${t.message}")
                                 }
                             })
-                            nbCh = chantiers!!.size
                         }
                         if ( fiche.type == 4L ){
                             val resp = repository.getBobinage(token, fiche._id, object: Callback<BobinageResponse> {
@@ -100,10 +103,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     Log.e("Error","erreur ${t.message}")
                                 }
                             })
-                            nbBo = bobinages!!.size
                         }
                     }
-                    Log.i("INFO"," nb de chantier :${nbCh} - nb bobinages : ${nbBo}")
+                    Log.i("INFO"," nb de chantier :${chantiers.size} - nb bobinages : ${bobinages.size}")
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
                 }
@@ -112,6 +114,20 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 Log.e("Error","erreur ${t.message}")
             }
         })
+    }
+    fun listeFicheLocal(){
+        viewModelScope.launch(Dispatchers.IO){
+            var listChantier = repository.getAllChantierLocalDatabase()
+            for (ch in listChantier){
+                chantiers.add(ch.toChantier())
+                Log.i("INFO",ch.toChantier().toString())
+            }
+            var listBobinage = repository.getAllBobinageLocalDatabase()
+            Log.i("INFO",listBobinage.size.toString()+" bobinages")
+            for( bobinage in listBobinage){
+                bobinages.add(bobinage.toBobinage())
+            }
+        }
     }
     fun toChantier(view: View){
         var action = AccueilDirections.versFicheChantier(chantiers!!.toTypedArray(),token,username)
@@ -129,6 +145,28 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
     fun toDeconnexion(view: View){
         Navigation.findNavController(view).navigate(R.id.versConnexion)
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     // TODO: Implement the ViewModel

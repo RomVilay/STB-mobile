@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Fiche
 import java.io.File
 import java.io.IOException
@@ -62,7 +63,7 @@ class FicheBobinage : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         Log.i("INFO", "tableau fiches: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} ")
-        var list = arguments?.get("listBobinage") as Array<Fiche>
+        var list = arguments?.get("listBobinage") as Array<Bobinage>
         viewModel.token = arguments?.get("token") as String
         viewModel.listeBobinage = list.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
@@ -170,8 +171,10 @@ class FicheBobinage : Fragment() {
 
         btnSelect.setOnClickListener {
             var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
-            viewModel.selectBobinage(bobinage!!._id)
-
+            viewModel.bobinage.value = bobinage
+            viewModel.sections.value = bobinage?.sectionsFils
+            viewModel.schemas.value = bobinage?.schemas
+            //viewModel.selectBobinage(bobinage!!._id)
             /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
             dated.setText(LocalDateTime.now().format(format))*/
         }

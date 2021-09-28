@@ -1,6 +1,9 @@
 package com.example.applicationstb.ui.connexion
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,6 +29,7 @@ import retrofit2.Response
 class ConnexionViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
     var user:User? = null
+    var context = getApplication<Application>().applicationContext
     var repository = Repository(getApplication<Application>().applicationContext);
     init{
         viewModelScope.launch(Dispatchers.IO){
@@ -39,61 +43,91 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         Navigation.findNavController(view).navigate(action)
     }
     fun login(username: String,psw: String, view: View){
-        val resp = repository.logUser(username,psw,object: Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if ( response.code() == 200 ) {
-                    val resp = response.body()
-                    if (resp != null) {
-                        user = resp.user
-                        user?.token = resp.token
-                       // Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
-                        //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
-                        val action = user?.let { it1 -> ConnexionDirections.versAccueil(it1.token!!,it1.username) }
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var list:List<ChantierEntity> = repository.getAllChantierLocalDatabase()
-                             //Log.i("INFO", "token : ${user!!.token}")
-                            Log.i("INFO","nb de fiches: ${list.size}")
-                            if (list.size > 0){
-                                for ( fiche in list){
-                                    var ch = fiche.toChantier()
-                                    val resp = repository.patchChantier(user!!.token!!, ch._id, ch, object: Callback<ChantierResponse> {
-                                        override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
-                                            if ( response.code() == 200 ) {
-                                                val resp = response.body()
-                                                if (resp != null) {
-                                                    Log.i("INFO","fiche enregistrée")
+        Log.i("INFO",isOnline(getApplication<Application>().applicationContext).toString())
+        if (isOnline(context) == true) {
+            val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    if (response.code() == 200) {
+                        val resp = response.body()
+                        if (resp != null) {
+                            user = resp.user
+                            user?.token = resp.token
+                            // Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
+                            //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
+                            val action = user?.let { it1 ->
+                                ConnexionDirections.versAccueil(
+                                    it1.token!!,
+                                    it1.username
+                                )
+                            }
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var list: List<ChantierEntity> =
+                                    repository.getAllChantierLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches: ${list.size}")
+                                if (list.size > 0) {
+                                    for (fiche in list) {
+                                        var ch = fiche.toChantier()
+                                        val resp = repository.patchChantier(
+                                            user!!.token!!,
+                                            ch._id,
+                                            ch,
+                                            object : Callback<ChantierResponse> {
+                                                override fun onResponse(
+                                                    call: Call<ChantierResponse>,
+                                                    response: Response<ChantierResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteChantierLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
                                                 }
-                                                viewModelScope.launch(Dispatchers.IO) {
-                                                    repository.deleteChantierLocalDatabse(fiche)
+
+                                                override fun onFailure(
+                                                    call: Call<ChantierResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
                                                 }
-                                            } else {
-                                                Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
-                                            }
-                                        }
-                                        override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
-                                            Log.e("Error","${t.stackTraceToString()}")
-                                            Log.e("Error","erreur ${t.message}")
-                                        }
-                                    })
+                                            })
+                                    }
                                 }
                             }
+                            if (action != null) {
+                                Navigation.findNavController(view).navigate(action)
+                            }
+                            //toAccueil(view)
                         }
-                        if (action != null) {
-                            Navigation.findNavController(view).navigate(action)
-                        }
-                        //toAccueil(view)
+                    } else {
+                        Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
                     }
-                } else {
-                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
                 }
-            }
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("Error","erreur ${t.message}")
-            }
-        })
-        /*for (fiche in list){
-            Log.i("INFO", "id:${fiche._id} ")
-        }*/
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Log.e("Error", "erreur ${t.message}")
+                }
+            })
+        } else {
+            Log.i("INFO","connexion offline")
+            var action = ConnexionDirections.versAccueil("tech", "pwd")
+            Navigation.findNavController(view).navigate(action)
+        }
     }
     fun localGet(){
         viewModelScope.launch(Dispatchers.IO){
@@ -102,5 +136,26 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 Log.i("INFO", "id:${fiche._id}")
             }
         }
+    }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

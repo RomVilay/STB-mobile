@@ -207,12 +207,11 @@ class FicheChantier : Fragment() {
         }
         selectButton.setOnClickListener {
             var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
-            viewModel.selectChantier(viewModel.token as String , chantier!!._id)
-            chantier = viewModel.chantier.value
-            //Log.i("INFO", "client: ${chantier!!.client} ")
+            //Log.i("INFO","${viewModel.listeChantiers}")
+            viewModel.chantier.value = chantier
             /*materiel.setText(chantier?.materiel)
             objet.setText(chantier?.objet)
-            //observation.setText(chantier?.observations)
+            observation.setText(chantier?.observations)
             client.setText(chantier?.client?.enterprise)
             vehicule.setText(chantier?.vehicule?.nom)
             contact.setText(chantier?.contact)

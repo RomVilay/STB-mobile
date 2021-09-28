@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.accueil
 
+import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -11,7 +12,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
+import com.google.android.material.snackbar.Snackbar
 
 class Accueil : Fragment() {
 
@@ -28,11 +32,12 @@ class Accueil : Fragment() {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
         viewModel.token = arguments?.get("Token") as? String
         viewModel.username = arguments?.get("Username") as? String
-        if (viewModel.token !== null && viewModel.username !== null) {
+        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
             viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
-            //viewModel.listeFiches(viewModel.token.toString())
+        } else {
+            Log.i("INFO"," pas connecté")
+            viewModel.listeFicheLocal()
         }
-        //Log.i("INFO",viewModel.token!!)
 
         val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
@@ -51,7 +56,12 @@ class Accueil : Fragment() {
         }
         cht.setOnClickListener {
             Log.i("INFO",token!!)
-            viewModel.toChantier(layout)
+            if (viewModel.chantiers.size > 0) {
+                viewModel.toChantier(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de chantiers attribués", 60)
+                mySnackbar.show()
+            }
         }
         rm.setOnClickListener {
             viewModel.toFicheR(layout)

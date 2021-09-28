@@ -27,7 +27,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var token: String? = null;
     var username: String? = null;
     var repository = Repository(context);
-    var listeChantiers = arrayListOf<Fiche>()
+    var listeChantiers = arrayListOf<Chantier>()
     var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<Uri?>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
@@ -127,8 +127,17 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
     }
     fun localSave(){
+        Log.i("INFO","local save")
         viewModelScope.launch(Dispatchers.IO){
-             repository.insertChantierLocalDatabase(chantier.value!!)
+            var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
+            //Log.i("INFO","${ch}")
+            if (ch !== null) {
+                repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
+                //Log.i("INFO","patch ${chantier.value!!._id}")
+            } else {
+                repository.insertChantierLocalDatabase(chantier.value!!)
+                //Log.i("INFO","insert ${chantier.value!!._id}")
+            }
         }
     }
 

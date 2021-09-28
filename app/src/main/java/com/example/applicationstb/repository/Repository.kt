@@ -282,8 +282,8 @@ class Repository (var context:Context) {
             bobinage.calageEncoches!!,
             bobinage.sectionsFils!!.toList(),
             bobinage.observations!!,
-            bobinage.poids!!,
-            bobinage.tension!!)
+            0,
+            0)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
@@ -310,7 +310,6 @@ class Repository (var context:Context) {
 
     suspend fun insertChantierLocalDatabase(chantier: Chantier){
         chantierDao!!.insertAll(chantier.toEntity())
-        getAllChantierLocalDatabase()
     }
    suspend fun getAllChantierLocalDatabase(): List<ChantierEntity>{
         return chantierDao!!.getAll()
@@ -328,7 +327,6 @@ class Repository (var context:Context) {
     }
     suspend fun insertBobinageLocalDatabase(bobinage: Bobinage){
         bobinageDao!!.insertAll(bobinage.toEntity())
-        getAllBobinageLocalDatabase()
     }
     suspend fun getAllBobinageLocalDatabase(): List<BobinageEntity>{
         return bobinageDao!!.getAll()

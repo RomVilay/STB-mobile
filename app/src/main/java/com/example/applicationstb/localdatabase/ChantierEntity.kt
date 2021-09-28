@@ -4,17 +4,26 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.example.applicationstb.model.Chantier
+import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.Section
+import com.example.applicationstb.model.Vehicule
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.encodeToJsonElement
 import java.util.*
 
 @Entity (tableName="chantiers")
 data class ChantierEntity(
     @PrimaryKey var _id:String,
-    var status: Long,
+    var numDevis:String?,
+    var numFiche:String?,
+    var status: Long?,
     var client: String,
     var contact: String?,
     var telContact: String?,
     var dateDebut: Date?,
-    var dureeTotale: String?,
+    var dureeTotale: Long?,
     var observations: String?,
    // var photo: Array<String>?,
     var vehicule: String?,
@@ -26,12 +35,29 @@ data class ChantierEntity(
     var signatureClient:String?
 ){
     fun toChantier() : Chantier{
-        var ch = Chantier(_id,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-        ch.materiel = materiel
-        ch.objet =  objet
-        ch.observations = observations
-        ch.status = status
-        return ch
+        return Chantier(
+            _id,
+            numDevis,
+            numFiche,
+            1,
+            status,
+            Client(client,null,null,null),
+            contact,
+            telContact,
+            null,
+            null,
+            dateDebut,
+            dureeTotale!!.toLong(),
+            observations,
+            null,
+            vehicule,
+            adresseChantier,
+            objet,
+            materiel,
+            diagnostic,
+            signatureTech,
+            signatureClient
+        )
     }
 }
 
@@ -54,5 +80,13 @@ class Converters {
         var tab: Array<String> = value.split(",").map { it }.toTypedArray()
         return tab
     }
+    @TypeConverter
+    fun fromSectionList (value: MutableList<Section>) = Json.encodeToString(value)
+
+    @TypeConverter
+    fun toSectionList (value: String) = Json.decodeFromString<MutableList<Section>>(value)
+
+
+
 
 }
