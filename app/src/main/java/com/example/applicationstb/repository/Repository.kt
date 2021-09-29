@@ -232,6 +232,10 @@ class Repository (var context:Context) {
     var db : LocalDatabase? = null;
     var chantierDao : ChantierDao? = null;
     var bobinageDao : BobinageDao ? = null;
+    var demontageTriphaseDao : DemontageTriphaseDao? = null;
+    var demontageCCDao : DemontageCCDao? = null;
+    var remontageTriphaseDao: RemontageTriphaseDao? = null;
+    var remontageCourantCDao: RemontageCourantCDao? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -334,6 +338,10 @@ class Repository (var context:Context) {
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
+      remontageTriphaseDao = db!!.remontageTriphaseDao()
+      remontageTriphaseDao = db!!.remontageCCDao()
+      demontageTriphaseDao = db!!.demontageTriphaseDao()
+      demontageCCDao = db!!.demontageCCDao()
         Log.i("INFO","db créée")
     }
 

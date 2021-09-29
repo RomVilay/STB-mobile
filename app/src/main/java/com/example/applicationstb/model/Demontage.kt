@@ -6,15 +6,15 @@ import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
 import java.util.*
 
 enum class Etat2 {
-    A_controler("à contrôler"), Ok, a_rebague("à rebaguer")
+    A_controler, Ok, a_rebague
 }
 
 enum class Etat3 {
-    BonEtat, Casse, Absent, A_Changer("à changer"), Sortie_par_cables("sortie par câbles")
+    BonEtat, Casse, Absent, A_Changer, Sortie_par_cables
 }
 
 enum class Etat {
-    propre, sale, tres_sale("très sale")
+    propre, sale, tres_sale
 }
 
 enum class Rotation {
@@ -29,13 +29,13 @@ enum class Matiere {
     ceramique, carbone_silicium, carbone, tugstène
 }
 
-abstract class DemontageMoteur(
+class DemontageMoteur(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -44,42 +44,41 @@ abstract class DemontageMoteur(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
-    var typeFicheDemontage: Int,
     var marque: String?,
     var numSerie: Int?,
     var puissance: Float?,
     var bride: Float?,
-    var vitesse: Float?,
-    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
-    var accouplement: Boolean?,
-    var coteAccouplement: String?,
+    var vitesse : Float?,
+    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
+    var accouplement:Boolean?,
+    var coteAccouplement:String?,
     var clavette: Boolean?,
-    var aspect: Int?,
-    var aspectInterieur: Int?,
-    var couplage: String?,
+    var aspect:Int?,
+    var aspectInterieur:Int?,
+    var couplage:String?,
     var flasqueAvant: Int?,
     var flasqueArriere: Int?,
     var porteeRAvant: Int?,
-    var porteeRArriere: Int?,
+    var porteeRArriere:  Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
     var refRoulementAvant: String?,
     var refRoulementArriere: String?,
-    var typeRoulementAvant: String?,
-    var typeRoulementArriere: String?,
+    var typeRoulementAvant: String ?,
+    var typeRoulementArriere: String ?,
     var refJointAvant: String?,
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
     var typeJointArriere: Boolean?,
     var ventilateur: Int?,
     var capotV: Int?,
-    var socleBoiteABorne: Int?,
-    var capotBoiteABorne: Int?,
-    var plaqueABorne: Int?,
-    var presenceSondes: Boolean?,
+    var socleBoiteABorne : Int?,
+    var capotBoiteABorne : Int?,
+    var plaqueABorne : Int?,
+    var presenceSondes: Boolean ?,
     var typeSondes: String?,
     var equilibrage: Boolean?,
-    var peinture: String?
+    var peinture : String?,
 ) : Fiche(
     idFiche,
     numDevis,
@@ -96,14 +95,6 @@ abstract class DemontageMoteur(
     observation,
     photo
 ) {
-    override fun toString(): String {
-        var s =
-            "couplage: " + couplage + " - flasqueAvant: " + flasqueAvant + " - flasqueArriere: " + flasqueArriere + " - porteerar: " +
-                    porteerar + " - porteeravt: " + porteeravt + " - refRoulementAv: " + refRoulementAv + " - typeRoulementAv: " + typeRoulementAv +
-                    " - refRoulementAr: " + refRoulementAr + " - typeRoulementAr: " + typeRoulementAr + " - refJointAvant: " + refJointAvant +
-                    " - typeJointAvant: " + typeJointAvant + " - refJointAr: " + refJointAr + " - typeJointAr: " + typeJointAr + " - etat bout d'arbre: " + boutarbre + " - rondelle elastique: " + rondelleE + " "
-        return s
-    }
 }
 
 class DemontagePompe(
@@ -152,7 +143,7 @@ class DemontagePompe(
     var epaisseurPF: Int? = null;
 }
 
-class Monophase(
+/*class Monophase(
     idFiche: String,
     numDevis: String,
     numFiche: String,
@@ -261,15 +252,15 @@ class Monophase(
     var cnds: Int? = null; //valeur condenseur
     var tension: Int? = null;
     var Intensité: Int? = null;
-}
+}*/
 
 class Triphase(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -277,8 +268,7 @@ class Triphase(
     dateDebut: Date?,
     dureeTotale: Long?,
     observation: String?,
-    photo: Array<String>?
-    typeFicheDemontage: Int,
+    photo: Array<String>?,
     marque: String?,
     numSerie: Int?,
     puissance: Float?,
@@ -454,7 +444,7 @@ class Triphase(
     }
 }
 
-class RotorBobine(
+/*class RotorBobine(
     idFiche: String,
     numDevis: String,
     numFiche: String,
@@ -569,15 +559,15 @@ class RotorBobine(
     var tension: Array<Int>? = null; //tension UVW
     var intensité: Array<Int>? = null; //intensité UVW rotor
     var dureeEssai: Int? = null;
-}
+}*/
 
 class CourantContinu(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -586,7 +576,6 @@ class CourantContinu(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
-    typeFicheDemontage: Int,
     marque: String?,
     numSerie: Int?,
     puissance: Float?,
@@ -758,7 +747,7 @@ class CourantContinu(
         }
     }
 
-class Alternateur(
+/*class Alternateur(
     idFiche: String,
     numDevis: String,
     numFiche: String,
@@ -877,4 +866,4 @@ class Alternateur(
     var intensite: Array<Int>? = null; //intensité U,V,V
     var tensionE: Array<Int>? = null; //tension exitation U,V,W
     var intensiteE: Array<Int>? = null; // intensité exitation U,V,W
-}
+}*/

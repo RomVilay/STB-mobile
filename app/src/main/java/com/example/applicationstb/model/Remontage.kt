@@ -3,11 +3,11 @@ package com.example.applicationstb.model
 import java.sql.Timestamp
 import java.util.*
 
-abstract class Remontage (
-    idFiche:String,
+abstract class Remontage(
+    idFiche: String,
     numDevis: String,
     numFiche: String,
-    type:Long,
+    type: Long,
     statut: Long,
     client: Client,
     contact: String?,
@@ -15,107 +15,352 @@ abstract class Remontage (
     techniciens: Array<User>?,
     resp: User?,
     dateDebut: Date?,
-    dureeTotale:Long?,
+    dureeTotale: Long?,
     observation: String?,
-    photo:Array<String>?
-        ) :Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo){
-            var remontageRoulement: Int? = null;
-            var collageRoulementPorteeArbre : Int? = null;
-            var collageRoulementPorteeFlasque : Int? = null;
-            var verificationFixationCouronne : Boolean? = null;
-            var verificationIsolementPorteBalais : Boolean? = null;
-            var isolementPorteBalaisV : Int? = null;
-            var isolementPorteBalaisOhm : Int? = null;
-            // essais dynamiques
-            var tensionStatorAVide: Boolean? = null;
-            var tensionInducAVide: Boolean? = null;
-            var intensiteStatorAVide: Boolean? = null;
-            var intensiteInducAVide: Boolean? = null;
-            var tensionInduitAVide: Boolean? = null;
-            var tensionRotorVide: Boolean? = null;
-            var TSV : Int ? = null;         //tension stator à vide
-            var TInductV : Int? = null;          //tension inducteur à vide
-            var ISV : Int? = null;          // intensité stator à vide
-            var IIV : Int? = null;          //intensité inducteur à vide
-            var TInduitV : Int? = null;          //tension induit à vide
-            var TRO : Int? = null;          //tension rotor ouvert
-            var II : Int? = null;           //Intensité Induit
-            var VV :Int? = null;            //vitesse à vide
-            var PV : Int? = null;           //Puissance à vide
-            var Duree : Timestamp? = null;        //Duree de l'essai
-            var SR : Boolean? = null;       //sens de rotation
-            //essais vibratoires
-            var V1V : Int? = null;  // vitesse 1v
-            var A1V : Int? = null;  //accélération 1v
-            var V2V : Int? = null;  // vitesse 2v
-            var A2V : Int? = null;  //accélération 2v
-            var V1H : Int? = null;  // vitesse 1H
-            var A1H : Int? = null;  //accélération 1H
-            var V2H : Int? = null;  // vitesse 2H
-            var A2H : Int? = null;  //accélération 2H
-            var V2A : Int? = null;  // vitesse 2A
-            var A2A : Int? = null;  //accélération 2A
+    photo: Array<String>?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementPorteeFlasque: Int?,
+    var verificationFixationCouronne: Boolean?,
+    var verificationIsolementPorteBalais: Boolean?,
+    var isolementPorteBalaisV: Int?,
+    var isolementPorteBalaisOhm: Int?,
+    // essais dynamiques
+    var tensionStatorAVide: Boolean?,
+    var tensionInducAVide: Boolean?,
+    var intensiteStatorAVide: Boolean?,
+    var intensiteInducAVide: Boolean?,
+    var tensionInduitAVide: Boolean?,
+    var tensionRotorVide: Boolean?,
+    var tensionSIU: Float?,
+    var tensionSIV: Float?,
+    var tensionSIW: Float?,
+    var intensiteStatorAVide: Float?,
+    var intensiteInducteursAVide: Float?,
+    var intensiteU: Float?,
+    var intensiteV: Float?,
+    var intensiteW: Float?,
+    var tensionInduitAVideU: Float?,
+    var tensionInduitAVideV: Float?,
+    var tensionInduitAVideW: Float?,
+    var tensionRotoOuvertU: Float?,
+    var tensionRotoOuvertV: Float?,
+    var tensionRotoOuvertW: Float?,
+    var tensionIRU: Float?,
+    var tensionIRV: Float?,
+    var tensionIRW: Float?,
+    var intensiteInduit: Boolean,
+    var intensiteU: Float?,
+    var vitesseAVide: Float?,
+    var puissanceAVide: Float?,
+    var dureeEssai: Float?,
+    var sensRotation: Int?,
+
+//essais vibratoires
+    var V1V: Float?,  // vitesse 1v
+    var A1V: Float?,  //accélération 1v
+    var V2V: Float?,  // vitesse 2v
+    var A2V: Float?,  //accélération 2v
+    var V1H: Float?,  // vitesse 1H
+    var A1H: Float?,  //accélération 1H
+    var V2H: Float?,  // vitesse 2H
+    var A2H: Float?,  //accélération 2H
+    var V2A: Float?,  // vitesse 2A
+    var A2A: Float?,  //accélération 2A
+) : Fiche(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo
+) {}
+
+class RemontageTriphase(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    remontageRoulement: Int?,
+    collageRoulementPorteeArbre: Int?,
+    collageRoulementPorteeFlasque: Int?,
+    verificationFixationCouronne: Boolean?,
+    verificationIsolementPorteBalais: Boolean?,
+    isolementPorteBalaisV: Int?,
+    isolementPorteBalaisOhm: Int?,
+    // essais dynamiques
+    tensionStatorAVide: Boolean?,
+    tensionInducAVide: Boolean?,
+    intensiteStatorAVideB: Boolean?,
+    intensiteInducAVide: Boolean?,
+    tensionInduitAVide: Boolean?,
+    tensionRotorVide: Boolean?,
+    tensionSIU: Float?,
+    tensionSIV: Float?,
+    tensionSIW: Float?,
+    intensiteStatorAVide: Float?,
+    intensiteInducteursAVide: Float?,
+    intensiteU: Float?,
+    intensiteV: Float?,
+    intensiteW: Float?,
+    tensionInduitAVideU: Float?,
+    tensionInduitAVideV: Float?,
+    tensionInduitAVideW: Float?,
+    tensionRotoOuvertU: Float?,
+    tensionRotoOuvertV: Float?,
+    tensionRotoOuvertW: Float?,
+    tensionIRU: Float?,
+    tensionIRV: Float?,
+    tensionIRW: Float?,
+    intensiteInduit: Boolean,
+    intensiteU: Float?,
+    vitesseAVide: Float?,
+    puissanceAVide: Float?,
+    dureeEssai: Float?,
+    sensRotation: Int?,
+    //essais vibratoires
+    V1V: Float?,  // vitesse 1v
+    A1V: Float?,  //accélération 1v
+    V2V: Float?,  // vitesse 2v
+    A2V: Float?,  //accélération 2v
+    V1H: Float?,  // vitesse 1H
+    A1H: Float?,  //accélération 1H
+    V2H: Float?,  // vitesse 2H
+    A2H: Float?,  //accélération 2H
+    V2A: Float?,  // vitesse 2A
+    A2A: Float?,  //accélération 2A
+    var isolementPhaseMasse: Float?,
+    var isolementPhase: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var isolementPMStatorU: Float?,
+    var isolementPMStatorV: Float?,
+    var isolementPMStatorW: Float?,
+    var isolementPMRotorU: Float?,
+    var isolementPMRotorV: Float?,
+    var isolementPMRotorW: Float?,
+    var isolementPhaseStatorUV: Float?,
+    var isolementPhaseStatorVW: Float?,
+    var isolementPhaseStatorUW: Float?,
+    var isolementPhaseRotorUV: Float?,
+    var isolementPhaseRotorVW: Float?,
+    var isolementPhaseRotorUW: Float?,
+) : Remontage(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photoremontageRoulement,
+    collageRoulementPorteeArbre,
+    collageRoulementPorteeFlasque,
+    verificationFixationCouronne,
+    verificationIsolementPorteBalais,
+    isolementPorteBalaisV,
+    isolementPorteBalaisOhm,
+    tensionStatorAVide,
+    tensionInducAVide,
+    intensiteStatorAVide,
+    intensiteInducAVide,
+    tensionInduitAVide,
+    tensionRotorVide,
+    tensionSIU,
+    tensionSIV,
+    tensionSIW,
+    intensiteStatorAVide,
+    intensiteInducteursAVide,
+    intensiteU,
+    intensiteV,
+    intensiteW,
+    tensionInduitAVideU,
+    tensionInduitAVideV,
+    tensionInduitAVideW,
+    tensionRotoOuvertU,
+    tensionRotoOuvertV,
+    tensionRotoOuvertW,
+    tensionIRU,
+    tensionIRV,
+    tensionIRW,
+    intensiteInduit,
+    intensiteU,
+    vitesseAVide,
+    puissanceAVide,
+    dureeEssai,
+    sensRotation,
+//essais vibratoires
+    V1V,  // vitesse 1v
+    A1V,  //accélération 1v
+    V2V,  // vitesse 2v
+    A2V,  //accélération 2v
+    V1H,  // vitesse 1H
+    A1H,  //accélération 1H
+    V2H,  // vitesse 2H
+    A2H,  //accélération 2H
+    V2A,  // vitesse 2A
+    A2A,  //accélération 2A
+) {}
+
+class RemontageCourantC(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    remontageRoulement: Int?,
+    collageRoulementPorteeArbre: Int?,
+    collageRoulementPorteeFlasque: Int?,
+    verificationFixationCouronne: Boolean?,
+    verificationIsolementPorteBalais: Boolean?,
+    isolementPorteBalaisV: Int?,
+    isolementPorteBalaisOhm: Int?,
+    // essais dynamiques
+    tensionStatorAVide: Boolean?,
+    tensionInducAVide: Boolean?,
+    intensiteStatorAVide: Boolean?,
+    intensiteInducAVide: Boolean?,
+    tensionInduitAVide: Boolean?,
+    tensionRotorVide: Boolean?,
+    tensionSIU: Float?,
+    tensionSIV: Float?,
+    tensionSIW: Float?,
+    intensiteStatorAVide: Float?,
+    intensiteInducteursAVide: Float?,
+    intensiteU: Float?,
+    intensiteV: Float?,
+    intensiteW: Float?,
+    tensionInduitAVideU: Float?,
+    tensionInduitAVideV: Float?,
+    tensionInduitAVideW: Float?,
+    tensionRotoOuvertU: Float?,
+    tensionRotoOuvertV: Float?,
+    tensionRotoOuvertW: Float?,
+    tensionIRU: Float?,
+    tensionIRV: Float?,
+    tensionIRW: Float?,
+    intensiteInduit: Boolean,
+    intensiteU: Float?,
+    vitesseAVide: Float?,
+    puissanceAVide: Float?,
+    dureeEssai: Float?,
+    sensRotation: Int?,
+    //essais vibratoires
+    V1V: Float?,  // vitesse 1v
+    A1V: Float?,  //accélération 1v
+    V2V: Float?,  // vitesse 2v
+    A2V: Float?,  //accélération 2v
+    V1H: Float?,  // vitesse 1H
+    A1H: Float?,  //accélération 1H
+    V2H: Float?,  // vitesse 2H
+    A2H: Float?,  //accélération 2H
+    V2A: Float?,  // vitesse 2A
+    A2A: Float?,  //accélération 2A
+    var resistanceInducteurs: Float?,
+    var resistanceInduit: Float?,
+    var isolementInducteursMasse: Float?,
+    var isolementInduitMasse: Float?,
+    var isolementInduitInducteurs: Float?,
+    var releveIsoInducteursMasse: Float?,
+    var releveIsoInduitMasse: Float?,
+    var releveIsoInduitInducteurs: Float?,
+) : Remontage(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo,
+    remontageRoulement,
+    collageRoulementPorteeArbre,
+collageRoulementPorteeFlasque,
+verificationFixationCouronne,
+verificationIsolementPorteBalais,
+isolementPorteBalaisV,
+isolementPorteBalaisOhm,
+tensionStatorAVide,
+tensionInducAVide,
+intensiteStatorAVide,
+intensiteInducAVide,
+tensionInduitAVide,
+tensionRotorVide,
+tensionSIU,
+tensionSIV,
+tensionSIW,
+intensiteStatorAVide,
+intensiteInducteursAVide,
+intensiteU,
+intensiteV,
+intensiteW,
+tensionInduitAVideU,
+tensionInduitAVideV,
+tensionInduitAVideW,
+tensionRotoOuvertU,
+tensionRotoOuvertV,
+tensionRotoOuvertW,
+tensionIRU,
+tensionIRV,
+tensionIRW,
+intensiteInduit,
+intensiteU,
+vitesseAVide,
+puissanceAVide,
+dureeEssai,
+sensRotation,
+//essais vibratoires
+V1V,  // vitesse 1v
+A1V,  //accélération 1v
+V2V,  // vitesse 2v
+A2V,  //accélération 2v
+V1H,  // vitesse 1H
+A1H,  //accélération 1H
+V2H,  // vitesse 2H
+A2H,  //accélération 2H
+V2A,  // vitesse 2A
+A2A,  //accélération 2A
+) {
 
 }
-class RemontageTriphase (
-    idFiche:String,
-    numDevis: String,
-    numFiche: String,
-    type:Long,
-    statut: Long,
-    client: Client,
-    contact: String?,
-    telContact: String?,
-    techniciens: Array<User>?,
-    resp: User?,
-    dateDebut: Date?,
-    dureeTotale:Long?,
-    observation: String?,
-    photo:Array<String>?) : Remontage(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-        var isoPM : Int? = null;
-        var isoP : Int? = null;
-        var resStatorU : Int? = null;
-        var resStatorV : Int? = null;
-        var resStatorW : Int? = null;
-        var isoPMSU : Int? = null;
-        var isoPMSV : Int? = null;
-        var isoPMSW : Int? = null;
-        var isoPMRU : Int? = null;
-        var isoPMRV : Int? = null;
-        var isoPMRW : Int? = null;
-        var isoPSUV : Int? = null;
-        var isoPSVW : Int? = null;
-        var isoPSUW : Int? = null;
-        var isoPRUV : Int? = null;
-        var isoPRVW : Int? = null;
-        var isoPRUW : Int? = null;
-        var ResU : Int? = null;
-        var ResV : Int? = null;
-        var ResW : Int? = null;
-                 }
-class RemontageCourantC (
-    idFiche:String,
-    numDevis: String,
-    numFiche: String,
-    type:Long,
-    statut: Long,
-    client: Client,
-    contact: String?,
-    telContact: String?,
-    techniciens: Array<User>?,
-    resp: User?,
-    dateDebut: Date?,
-    dureeTotale:Long?,
-    observation: String?,
-    photo:Array<String>?) : Remontage(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-        var resInducst :Int? = null;
-        var resIndui : Int? = null;
-        var isoInducMasse : Int? = null;
-        var isoInduitMasse : Int? = null;
-        var isoInduitInduc : Int? = null;
-        var relIsoInduMasse: Int? = null;
-        var relIsoInduitMasse : Int? = null;
-        var relIsoInduitInduct: Int ? = null;
-
-    }
 //essais dyna et vibratoires à rajouter

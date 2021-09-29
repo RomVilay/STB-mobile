@@ -1,10 +1,11 @@
 package com.example.applicationstb.localdatabase
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Triphase
 import java.util.*
 
-@Entity
+@Entity(tableName = "demontage_triphase")
 data class DemontageTriphaseEntity(
     @PrimaryKey var _id: String,
     var numDevis: String?,
@@ -70,7 +71,7 @@ data class DemontageTriphaseEntity(
     var intensiteW: Int?,
     var dureeEssai: Int?,
 ) {
-    fun toTriphase(): Triphase {
+   /* fun toTriphase(): Triphase {
         var fiche = Triphase(
             _id,
             numDevis,
@@ -139,5 +140,5 @@ data class DemontageTriphaseEntity(
             intensiteW,
             dureeEssai)
         return fiche
-    }
+    }*/
 }

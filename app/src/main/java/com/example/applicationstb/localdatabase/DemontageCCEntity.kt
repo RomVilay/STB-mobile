@@ -1,10 +1,13 @@
 package com.example.applicationstb.localdatabase
 
-import com.example.applicationstb.model.CourantContinu
-import com.example.applicationstb.model.Triphase
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.applicationstb.model.Client
+//import com.example.applicationstb.model.CourantContinu
 import java.util.*
 
-class DemontageCCEntity {
+@Entity(tableName = "demontage_cc")
+data class DemontageCCEntity (
     @PrimaryKey var _id:String,
     var numDevis:String?,
     var numFiche:String?,
@@ -67,17 +70,17 @@ class DemontageCCEntity {
     var tensionExcitation: Int?,
     var intensiteExcitation: Int?
     ){
-        fun toCContinu (): CourantContinu {
+        /*fun toCContinu (): CourantContinu {
             var fiche = CourantContinu(
                 _id,
                 numDevis,
                 numFiche,
                 2,
                 statut,
-                client,
+                Client(client,null,null,null),
                 contact,
                 telContact,
-                techniciens,
+                nu,
                 resp,
                 dateDebut,
                 dureeTotale,
@@ -135,6 +138,5 @@ class DemontageCCEntity {
                 intensiteExcitation
             )
             return fiche
-        }
+        }*/
     }
-}
