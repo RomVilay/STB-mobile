@@ -19,14 +19,20 @@ abstract class Remontage (
     observation: String?,
     photo:Array<String>?
         ) :Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo){
-            var remontage: Int? = null;
-            var collageRPArbre : Int? = null;
-            var collageRPFlasque : Int? = null;
-            var fixCouronne : Boolean? = null;
-            var isoPB : Boolean? = null;
-            var isoPBV : Int? = null;
-            var isoPBR : Int? = null;
+            var remontageRoulement: Int? = null;
+            var collageRoulementPorteeArbre : Int? = null;
+            var collageRoulementPorteeFlasque : Int? = null;
+            var verificationFixationCouronne : Boolean? = null;
+            var verificationIsolementPorteBalais : Boolean? = null;
+            var isolementPorteBalaisV : Int? = null;
+            var isolementPorteBalaisOhm : Int? = null;
             // essais dynamiques
+            var tensionStatorAVide: Boolean? = null;
+            var tensionInducAVide: Boolean? = null;
+            var intensiteStatorAVide: Boolean? = null;
+            var intensiteInducAVide: Boolean? = null;
+            var tensionInduitAVide: Boolean? = null;
+            var tensionRotorVide: Boolean? = null;
             var TSV : Int ? = null;         //tension stator à vide
             var TInductV : Int? = null;          //tension inducteur à vide
             var ISV : Int? = null;          // intensité stator à vide

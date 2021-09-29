@@ -82,53 +82,53 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
 
 class BodyBobinage(var marqueMoteur : String?,
     var typeBobinage: String?,
-    var vitesse:Long?,
-    var puissance:Long?,
+    var vitesse:Float?,
+    var puissance:Float?,
     var phases:Long?,
-    var frequences: Long?,
-    var courant: Long?,
+    var frequences: Float?,
+    var courant: Float?,
     var nbSpires: Long?,
-    var resistanceU: Long?,
-    var resistanceV: Long,
-    var resistanceW: Long,
-    var isolementUT: Long,
-    var isolementVT: Long,
-    var isolementWT: Long,
-    var isolementUV: Long,
-    var isolementUW: Long,
-    var isolementVW: Long,
-    var status: Long,
-    var calageEncoches: Boolean,
+    var resistanceU: Float?,
+    var resistanceV: Float?,
+    var resistanceW: Float?,
+    var isolementUT: Float?,
+    var isolementVT: Float?,
+    var isolementWT: Float?,
+    var isolementUV: Float?,
+    var isolementUW: Float?,
+    var isolementVW: Float?,
+    var status: Long?,
+    var calageEncoches: Boolean?,
     var sectionsFils: List<Section>? ,
     var observations: String?,
-    var poids:Long,
-    var tension:Long
+    var poids:Float?,
+    var tension:Long?
                   ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readLong(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
-        parcel.readLong(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readLong(),
         parcel.readBoolean(),
         listOf<Section>().apply {
             parcel.readList(this,Section::class.java.classLoader)
         },
         parcel.readString(),
-        parcel.readLong(),
+        parcel.readFloat(),
         parcel.readLong()
     ) {
     }
@@ -136,29 +136,29 @@ class BodyBobinage(var marqueMoteur : String?,
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(marqueMoteur!!)
         parcel.writeString(typeBobinage!!)
-        parcel.writeLong(vitesse!!)
-        parcel.writeLong(puissance!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeFloat(puissance!!)
         parcel.writeLong(phases!!)
-        parcel.writeLong(frequences!!)
-        parcel.writeLong(courant!!)
+        parcel.writeFloat(frequences!!)
+        parcel.writeFloat(courant!!)
         parcel.writeLong(nbSpires!!)
-        parcel.writeLong(resistanceU!!)
-        parcel.writeLong(resistanceV!!)
-        parcel.writeLong(resistanceW!!)
-        parcel.writeLong(isolementUT!!)
-        parcel.writeLong(isolementVT!!)
-        parcel.writeLong(isolementWT!!)
-        parcel.writeLong(isolementUV!!)
-        parcel.writeLong(isolementUW!!)
-        parcel.writeLong(isolementVW!!)
+        parcel.writeFloat(resistanceU!!)
+        parcel.writeFloat(resistanceV!!)
+        parcel.writeFloat(resistanceW!!)
+        parcel.writeFloat(isolementUT!!)
+        parcel.writeFloat(isolementVT!!)
+        parcel.writeFloat(isolementWT!!)
+        parcel.writeFloat(isolementUV!!)
+        parcel.writeFloat(isolementUW!!)
+        parcel.writeFloat(isolementVW!!)
         parcel.writeLong(status!!)
         parcel.writeBoolean(calageEncoches!!)
         listOf<Section>().apply {
             parcel.writeList(this)
         }
         parcel.writeString(observations!!)
-        parcel.writeLong(poids)
-        parcel.writeLong(tension)
+        parcel.writeFloat(poids!!)
+        parcel.writeLong(tension!!)
     }
 
     override fun describeContents(): Int {
@@ -231,7 +231,7 @@ class Repository (var context:Context) {
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
     var db : LocalDatabase? = null;
     var chantierDao : ChantierDao? = null;
-    var bobinageDao : BobinageDao? = null;
+    var bobinageDao : BobinageDao ? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -260,6 +260,33 @@ class Repository (var context:Context) {
         call.enqueue(callback)
     }
     fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
+        if (bobinage.resistanceV == null) {
+            bobinage.resistanceV = 0f
+        }
+        if (bobinage.resistanceW == null) {
+            bobinage.resistanceW = 0f
+        }
+        if (bobinage.isolementUT == null) {
+            bobinage.isolementUT = 0f }
+
+        if (bobinage.isolementVT == null ) {
+            bobinage.isolementVT = 0f
+        }
+        if (bobinage.isolementWT == null) {
+            bobinage.isolementWT = 0f
+        }
+        if (bobinage.isolementUV == null) {
+            bobinage.isolementUV = 0f
+        }
+        if (bobinage.isolementUW == null) {
+            bobinage.isolementUW = 0f
+        }
+        if (bobinage.isolementVW == null ){
+            bobinage.isolementVW = 0f
+        }
+        if (bobinage.poids == null){
+            bobinage.poids = 0f
+        }
         var body = BodyBobinage(
             bobinage.marqueMoteur,
             bobinage.typeBobinage,
@@ -270,19 +297,22 @@ class Repository (var context:Context) {
             bobinage.courant,
             bobinage.nbSpires,
             bobinage.resistanceU,
-            bobinage.resistanceV!!,
-            bobinage.resistanceW!!,
-            bobinage.isolementUT!!,
-            bobinage.isolementVT!!,
-            bobinage.isolementWT!!,
-            bobinage.isolementUV!!,
-            bobinage.isolementUW!!,
-            bobinage.isolementVW!!,
-            bobinage.status!!,
-            bobinage.calageEncoches!!,
+            bobinage.resistanceV,
+            bobinage.resistanceW,
+            bobinage.isolementUT,
+            bobinage.isolementVT,
+            bobinage.isolementWT,
+            bobinage.isolementUV,
+            bobinage.isolementUW,
+            bobinage.isolementVW,
+            bobinage.status,
+            if (bobinage.calageEncoches !== null){
+                bobinage.calageEncoches
+            } else false,
             bobinage.sectionsFils!!.toList(),
-            bobinage.observations!!,
-            0,
+            if (bobinage.observations !== null){
+                bobinage.observations} else "",
+            bobinage.poids,
             0)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null

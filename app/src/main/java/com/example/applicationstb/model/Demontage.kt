@@ -1,31 +1,39 @@
 package com.example.applicationstb.model
 
 import android.net.Uri
+import com.example.applicationstb.localdatabase.DemontageCCEntity
+import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
 import java.util.*
 
 enum class Etat2 {
-    A_controler, Ok, a_rebague
+    A_controler("à contrôler"), Ok, a_rebague("à rebaguer")
 }
+
 enum class Etat3 {
-    BonEtat, Casse, Absent, A_Changer, Sortie_par_cables
+    BonEtat, Casse, Absent, A_Changer("à changer"), Sortie_par_cables("sortie par câbles")
 }
-enum class Etat{
-    propre,sale,tres_sale
+
+enum class Etat {
+    propre, sale, tres_sale("très sale")
 }
+
 enum class Rotation {
-    gauche,droite
+    gauche, droite
 }
-enum class TypePompe{
-    entrainement_vis,ressort_coax_conique,ressort_coax_cyl,soufflet
+
+enum class TypePompe {
+    entrainement_vis, ressort_coax_conique, ressort_coax_cyl, soufflet
 }
-enum class Matiere{
-    ceramique,carbone_silicium,carbone,tugstène
+
+enum class Matiere {
+    ceramique, carbone_silicium, carbone, tugstène
 }
+
 abstract class DemontageMoteur(
-    idFiche:String,
+    idFiche: String,
     numDevis: String,
     numFiche: String,
-    type:Long,
+    type: Long,
     statut: Long,
     client: Client,
     contact: String?,
@@ -33,122 +41,233 @@ abstract class DemontageMoteur(
     techniciens: Array<User>?,
     resp: User?,
     dateDebut: Date?,
-    dureeTotale:Long?,
+    dureeTotale: Long?,
     observation: String?,
-    photo:Array<String>?,
-): Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-    /**
-     * infos moteur
-     */
-    var marque: String? = null;
-    var date: Date? = null;
-    var numSerie: String ? = null;
-    var typeM: String ? = null;
-    var puissance: Int ? = null;
-    var bride: Int ? = null;
-    var vitesse : Int ? = null;
-    var prezClav: Boolean ? = null;
-    /**
-     * etat moteur
-     */
-    var arbre:Boolean? = null;
-    var accouplement:Boolean? = null;
-    var aspect:Etat? = null;
-    var aspectI:Etat? = null;
-    /**
-     * partie mecanique
-     */
-    var couplage:String? = null;
-    var flasqueAvant: String ? = null;
-    var flasqueArriere: String ? = null;
-    var porteerar: String ? = null;
-    var porteeravt: String ? = null;
-    var boutarbre: Boolean? = null;
-    var rondelleE: Boolean? = null;
-    var refRoulementAv: String? = null;
-    var typeRoulementAv: String ? = null;
-    var refRoulementAr: String? = null;
-    var typeRoulementAr: String ? = null;
-    var refJointAvant: String ? = null;
-    var typeJointAvant: String ? = null;
-    var refJointAr: String ? = null;
-    var typeJointAr: String ? = null;
-    var capotV: String ? = null;
-    var ventilateur: String ? = null;
-    var socleBoiteABorne : String ? = null;
-    var capotBoiteABorne : String ? = null;
-    var plaqueABorne : String ? = null;
-    var pesenceBorne: Boolean ? = null;
-    var equilibrage: Boolean ? = null;
-    var peinture : Boolean ? = null;
-
+    photo: Array<String>?,
+    var typeFicheDemontage: Int,
+    var marque: String?,
+    var numSerie: Int?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
+    var clavette: Boolean?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere: Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: String?,
+    var refRoulementArriere: String?,
+    var typeRoulementAvant: String?,
+    var typeRoulementArriere: String?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture: String?
+) : Fiche(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo
+) {
     override fun toString(): String {
-        var s = "couplage: "+couplage+" - flasqueAvant: "+flasqueAvant+" - flasqueArriere: "+flasqueArriere+" - porteerar: "+
-                porteerar+" - porteeravt: "+porteeravt+" - refRoulementAv: "+refRoulementAv+" - typeRoulementAv: "+typeRoulementAv+
-                " - refRoulementAr: "+refRoulementAr+" - typeRoulementAr: "+typeRoulementAr+" - refJointAvant: "+refJointAvant+
-                " - typeJointAvant: "+typeJointAvant+" - refJointAr: "+refJointAr+" - typeJointAr: "+typeJointAr+" - etat bout d'arbre: "+boutarbre+" - rondelle elastique: "+rondelleE+" "
+        var s =
+            "couplage: " + couplage + " - flasqueAvant: " + flasqueAvant + " - flasqueArriere: " + flasqueArriere + " - porteerar: " +
+                    porteerar + " - porteeravt: " + porteeravt + " - refRoulementAv: " + refRoulementAv + " - typeRoulementAv: " + typeRoulementAv +
+                    " - refRoulementAr: " + refRoulementAr + " - typeRoulementAr: " + typeRoulementAr + " - refJointAvant: " + refJointAvant +
+                    " - typeJointAvant: " + typeJointAvant + " - refJointAr: " + refJointAr + " - typeJointAr: " + typeJointAr + " - etat bout d'arbre: " + boutarbre + " - rondelle elastique: " + rondelleE + " "
         return s
     }
 }
 
-class DemontagePompe( idFiche:String,
-                      numDevis: String,
-                      numFiche: String,
-                      type:Long,
-                      statut: Long,
-                      client: Client,
-                      contact: String?,
-                      telContact: String?,
-                      techniciens: Array<User>?,
-                      resp: User?,
-                      dateDebut: Date?,
-                      dureeTotale:Long?,
-                      observation: String?,
-                      photo:Array<String>?
-): Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-    var numSerie: String ? = null;
-    var fluide: String ? = null;
-    var sensRotation: Rotation ? = null;
-    var typeP: TypePompe ? = null;
-    var typeJoint: String ? = null;
-    var matiere: Matiere ? = null;
-    var diametreA: Int ? = null;
-    var diametreExtPR:Int ? = null;
-    var longueurNC:Int ? = null;
-    var longueurC:Int ? = null;
-    var longueurPRT:Int ? = null;
-    var diametreEPF:Int ? = null;
-    var epaisseurPF : Int ? = null;
-}
-class Monophase(
-    idFiche:String,
+class DemontagePompe(
+    idFiche: String,
     numDevis: String,
     numFiche: String,
+    type: Long,
     statut: Long,
-    type:Long,
     client: Client,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
     resp: User?,
     dateDebut: Date?,
-    dureeTotale:Long?,
+    dureeTotale: Long?,
     observation: String?,
-    photo:Array<String>?
-):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-    var isoPM: Int ? = null; // isolement phase/masse
-    var rt: Int ? = null;    // resistance travail
-    var rd: Int ? = null;    //resistance démarrage
-    var cnds : Int ? = null; //valeur condenseur
-    var tension: Int ? = null;
-    var Intensité : Int ? = null;
+    photo: Array<String>?
+) : Fiche(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo
+) {
+    var numSerie: String? = null;
+    var fluide: String? = null;
+    var sensRotation: Rotation? = null;
+    var typeP: TypePompe? = null;
+    var typeJoint: String? = null;
+    var matiere: Matiere? = null;
+    var diametreA: Int? = null;
+    var diametreExtPR: Int? = null;
+    var longueurNC: Int? = null;
+    var longueurC: Int? = null;
+    var longueurPRT: Int? = null;
+    var diametreEPF: Int? = null;
+    var epaisseurPF: Int? = null;
+}
+
+class Monophase(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    statut: Long,
+    type: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    typeFicheDemontage: Int,
+    marque: String?,
+    numSerie: Int?,
+    puissance: Float?,
+    bride: Float?,
+    vitesse: Float?,
+    arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    accouplement: Boolean?,
+    coteAccouplement: String?,
+    clavette: Boolean?,
+    aspect: Int?,
+    aspectInterieur: Int?,
+    couplage: String?,
+    flasqueAvant: Int?,
+    flasqueArriere: Int?,
+    porteeRAvant: Int?,
+    porteeRArriere: Int?,
+    boutArbre: Boolean?,
+    rondelleElastique: Boolean?,
+    refRoulementAvant: String?,
+    refRoulementArriere: String?,
+    typeRoulementAvant: String?,
+    typeRoulementArriere: String?,
+    refJointAvant: String?,
+    refJointArriere: String?,
+    typeJointAvant: Boolean?,
+    typeJointArriere: Boolean?,
+    ventilateur: Int?,
+    capotV: Int?,
+    socleBoiteABorne: Int?,
+    capotBoiteABorne: Int?,
+    plaqueABorne: Int?,
+    presenceSondes: Boolean?,
+    typeSondes: String?,
+    equilibrage: Boolean?,
+    peinture: String?,
+) : DemontageMoteur(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo,
+    typeFicheDemontage,
+    marque,
+    numSerie,
+    puissance,
+    bride,
+    vitesse,
+    arbreSortantEntrant, //arbre sortant ou rentrant
+    accouplement,
+    coteAccouplement,
+    clavette,
+    aspect,
+    aspectInterieur,
+    couplage,
+    flasqueAvant,
+    flasqueArriere,
+    porteeRAvant,
+    porteeRArriere,
+    boutArbre,
+    rondelleElastique,
+    refRoulementAvant,
+    refRoulementArriere,
+    typeRoulementAvant,
+    typeRoulementArriere,
+    refJointAvant,
+    refJointArriere,
+    typeJointAvant,
+    typeJointArriere,
+    ventilateur,
+    capotV,
+    socleBoiteABorne,
+    capotBoiteABorne,
+    plaqueABorne,
+    presenceSondes,
+    typeSondes,
+    equilibrage,
+    peinture
+) {
+    var isoPM: Int? = null; // isolement phase/masse
+    var rt: Int? = null;    // resistance travail
+    var rd: Int? = null;    //resistance démarrage
+    var cnds: Int? = null; //valeur condenseur
+    var tension: Int? = null;
+    var Intensité: Int? = null;
 }
 
 class Triphase(
-    idFiche:String,
+    idFiche: String,
     numDevis: String,
     numFiche: String,
-    type:Long,
+    type: Long,
     statut: Long,
     client: Client,
     contact: String?,
@@ -156,96 +275,606 @@ class Triphase(
     techniciens: Array<User>?,
     resp: User?,
     dateDebut: Date?,
-    dureeTotale:Long?,
+    dureeTotale: Long?,
     observation: String?,
-    photo:Array<String>?
-):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-    var isoPM: Array<Int> ? = null; //iso phase/masse UM/VM/WM
-    var isoPP: Array<Int> ? = null; //iso phase/phase UV/VW/UW
-    var resistanceStator: Array<Int> ? = null; // resistance stator UVW
-    var tensions: Array<Int> ? = null; // tensions UVW
-    var intensité: Array<Int> ? = null; // intensité UVW
-    var dureeEssai: Int ? = null;
+    photo: Array<String>?
+    typeFicheDemontage: Int,
+    marque: String?,
+    numSerie: Int?,
+    puissance: Float?,
+    bride: Float?,
+    vitesse: Float?,
+    arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    accouplement: Boolean?,
+    coteAccouplement: String?,
+    clavette: Boolean?,
+    aspect: Int?,
+    aspectInterieur: Int?,
+    couplage: String?,
+    flasqueAvant: Int?,
+    flasqueArriere: Int?,
+    porteeRAvant: Int?,
+    porteeRArriere: Int?,
+    boutArbre: Boolean?,
+    rondelleElastique: Boolean?,
+    refRoulementAvant: String?,
+    refRoulementArriere: String?,
+    typeRoulementAvant: String?,
+    typeRoulementArriere: String?,
+    refJointAvant: String?,
+    refJointArriere: String?,
+    typeJointAvant: Boolean?,
+    typeJointArriere: Boolean?,
+    ventilateur: Int?,
+    capotV: Int?,
+    socleBoiteABorne: Int?,
+    capotBoiteABorne: Int?,
+    plaqueABorne: Int?,
+    presenceSondes: Boolean?,
+    typeSondes: String?,
+    equilibrage: Boolean?,
+    peinture: String?,
+    var isolementPhaseMasseStatorUM: Int?,
+    var isolementPhaseMasseStatorVM: Int?,
+    var isolementPhaseMasseStatorWM: Int?,
+    var isolementPhasePhaseStatorUV: Int?,
+    var isolementPhasePhaseStatorVW: Int?,
+    var isolementPhasePhaseStatorUW: Int?,
+    var resistanceStatorU: Int?,
+    var resistanceStatorV: Int?,
+    var resistanceStatorW: Int?,
+    var tensionU: Int?,
+    var tensionV: Int?,
+    var tensionW: Int?,
+    var intensiteU: Int?,
+    var intensiteV: Int?,
+    var intensiteW: Int?,
+    var dureeEssai: Int?,
+) : DemontageMoteur(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo,
+    typeFicheDemontage,
+    marque,
+    numSerie,
+    puissance,
+    bride,
+    vitesse,
+    arbreSortantEntrant, //arbre sortant ou rentrant
+    accouplement,
+    coteAccouplement,
+    clavette,
+    aspect,
+    aspectInterieur,
+    couplage,
+    flasqueAvant,
+    flasqueArriere,
+    porteeRAvant,
+    porteeRArriere,
+    boutArbre,
+    rondelleElastique,
+    refRoulementAvant,
+    refRoulementArriere,
+    typeRoulementAvant,
+    typeRoulementArriere,
+    refJointAvant,
+    refJointArriere,
+    typeJointAvant,
+    typeJointArriere,
+    ventilateur,
+    capotV,
+    socleBoiteABorne,
+    capotBoiteABorne,
+    plaqueABorne,
+    presenceSondes,
+    typeSondes,
+    equilibrage,
+    peinture
+) {
+    fun toEntity() : DemontageTriphaseEntity{
+        return DemontageTriphaseEntity(
+            _id,
+            numDevis,
+            numFiche,
+            2,
+            statut,
+            client,
+            contact,
+            telContact,
+            techniciens,
+            resp,
+            dateDebut,
+            dureeTotale,
+            observation,
+            photo,
+            typeFicheDemontage,
+            marque,
+            numSerie,
+            puissance,
+            bride,
+            vitesse,
+            arbreSortantEntrant,
+            accouplement,
+            coteAccouplement,
+            clavette,
+            aspect,
+            aspectInterieur,
+            couplage,
+            flasqueAvant,
+            flasqueArriere,
+            porteeRArriere,
+            porteeRAvant,
+            boutArbre,
+            rondelleElastique,
+            refRoulementAvant,
+            refRoulementArriere,
+            typeRoulementAvant,
+            typeRoulementArriere,
+            refJointAvant,
+            refJointArriere,
+            typeJointAvant,
+            typeJointArriere,
+            ventilateur,
+            capotV,
+            socleBoiteABorne,
+            capotBoiteABorne,
+            plaqueABorne,
+            presenceSondes,
+            typeSondes,
+            equilibrage,
+            peinture,
+            isolementPhaseMasseStatorUM,
+            isolementPhaseMasseStatorVM,
+            isolementPhaseMasseStatorWM,
+            isolementPhasePhaseStatorUV,
+            isolementPhasePhaseStatorVW,
+            isolementPhasePhaseStatorUW,
+            resistanceStatorU,
+            resistanceStatorV,
+            resistanceStatorW,
+            tensionU,
+            tensionV,
+            tensionW,
+            intensiteU,
+            intensiteV,
+            intensiteW,
+            dureeEssai
+        )
+    }
 }
 
-class RotorBobine (idFiche:String,
-                   numDevis: String,
-                   numFiche: String,
-                   type:Long,
-                   statut: Long,
-                   client: Client,
-                   contact: String?,
-                   telContact: String?,
-                   techniciens: Array<User>?,
-                   resp: User?,
-                   dateDebut: Date?,
-                   dureeTotale:Long?,
-                   observation: String?,
-                   photo:Array<String>?
-):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
+class RotorBobine(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    typeFicheDemontage: Int,
+    marque: String?,
+    numSerie: Int?,
+    puissance: Float?,
+    bride: Float?,
+    vitesse: Float?,
+    arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    accouplement: Boolean?,
+    coteAccouplement: String?,
+    clavette: Boolean?,
+    aspect: Int?,
+    aspectInterieur: Int?,
+    couplage: String?,
+    flasqueAvant: Int?,
+    flasqueArriere: Int?,
+    porteeRAvant: Int?,
+    porteeRArriere: Int?,
+    boutArbre: Boolean?,
+    rondelleElastique: Boolean?,
+    refRoulementAvant: String?,
+    refRoulementArriere: String?,
+    typeRoulementAvant: String?,
+    typeRoulementArriere: String?,
+    refJointAvant: String?,
+    refJointArriere: String?,
+    typeJointAvant: Boolean?,
+    typeJointArriere: Boolean?,
+    ventilateur: Int?,
+    capotV: Int?,
+    socleBoiteABorne: Int?,
+    capotBoiteABorne: Int?,
+    plaqueABorne: Int?,
+    presenceSondes: Boolean?,
+    typeSondes: String?,
+    equilibrage: Boolean?,
+    peinture: String?,
+) : DemontageMoteur(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo,
+    typeFicheDemontage,
+    marque,
+    numSerie,
+    puissance,
+    bride,
+    vitesse,
+    arbreSortantEntrant, //arbre sortant ou rentrant
+    accouplement,
+    coteAccouplement,
+    clavette,
+    aspect,
+    aspectInterieur,
+    couplage,
+    flasqueAvant,
+    flasqueArriere,
+    porteeRAvant,
+    porteeRArriere,
+    boutArbre,
+    rondelleElastique,
+    refRoulementAvant,
+    refRoulementArriere,
+    typeRoulementAvant,
+    typeRoulementArriere,
+    refJointAvant,
+    refJointArriere,
+    typeJointAvant,
+    typeJointArriere,
+    ventilateur,
+    capotV,
+    socleBoiteABorne,
+    capotBoiteABorne,
+    plaqueABorne,
+    presenceSondes,
+    typeSondes,
+    equilibrage,
+    peinture
+) {
     //partie statique
-    var isoPMS : Array<Int> ? = null; //iso phase/masse stator UT VT WT
-    var isoPMR: Array<Int> ? = null;  //iso phase/masse rotor B1T B2T B3T
-    var isoPB : Int ? = null;         //iso porte balais
-    var isoPPS : Array<Int> ? = null; //iso phase/phase stator
-    var resS : Array<Int> ? = null;   //resistance stator UVW
-    var resR: Array<Int> ? = null;    //resistance rotor B1/B2 B2/B2 B1/B3
+    var isoPMS: Array<Int>? = null; //iso phase/masse stator UT VT WT
+    var isoPMR: Array<Int>? = null;  //iso phase/masse rotor B1T B2T B3T
+    var isoPB: Int? = null;         //iso porte balais
+    var isoPPS: Array<Int>? = null; //iso phase/phase stator
+    var resS: Array<Int>? = null;   //resistance stator UVW
+    var resR: Array<Int>? = null;    //resistance rotor B1/B2 B2/B2 B1/B3
+
     //partie dynamique
-    var tension: Array<Int> ? = null; //tension UVW
-    var intensité:Array<Int> ? = null; //intensité UVW rotor
-    var dureeEssai:Int ? = null;
-}
-class CourantContinu (idFiche:String,
-                      numDevis: String,
-                      numFiche: String,
-                      type:Long,
-                      statut: Long,
-                      client: Client,
-                      contact: String?,
-                      telContact: String?,
-                      techniciens: Array<User>?,
-                      resp: User?,
-                      dateDebut: Date?,
-                      dureeTotale:Long?,
-                      observation: String?,
-                      photo:Array<String>?
-):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-    var isoMass :Array<Int> ? = null; // iso masse induit/poles principaux / poles auxilliaires / poles compensatoires / porte balais
-    var resistances : Array<Int> ? = null; // resistance induit, poles principaux, poles aux, poles complémentaires
-    var ti : Int ? = null;  //tension/induit
-    var ii: Int ? = null;   // intensité induit
-    var te : Int ? = null;  //tension exitaiton
-    var ie : Int ? = null;  //intensité exitation
+    var tension: Array<Int>? = null; //tension UVW
+    var intensité: Array<Int>? = null; //intensité UVW rotor
+    var dureeEssai: Int? = null;
 }
 
-class Alternateur (idFiche:String,
-                   numDevis: String,
-                   numFiche: String,
-                   type:Long,
-                   statut: Long,
-                   client: Client,
-                   contact: String?,
-                   telContact: String?,
-                   techniciens: Array<User>?,
-                   resp: User?,
-                   dateDebut: Date?,
-                   dureeTotale:Long?,
-                   observation: String?,
-                   photo:Array<String>?
-):DemontageMoteur(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo) {
-    var imsp :Array<Int> ? = null; //iso masse stator
-    var imrp :Array<Int> ? = null; //iso masse rotor
-    var imse : Int ? = null; //iso masse stator exitation
-    var imre : Int ? = null; //iso masse rotor exitation
-    var rsp : Array<Int> ? = null; // res stator principal
-    var rrp : Int ? = null; // res rotor principal
-    var rse : Int ? = null; // res stator extitation
-    var rre: Int ?  = null; // res rotor exitation
-    var ipps: Array<Int> ? = null; //iso phase phase stator
-    var testDiode: Boolean ? = null;
+class CourantContinu(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    typeFicheDemontage: Int,
+    marque: String?,
+    numSerie: Int?,
+    puissance: Float?,
+    bride: Float?,
+    vitesse: Float?,
+    arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    accouplement: Boolean?,
+    coteAccouplement: String?,
+    clavette: Boolean?,
+    aspect: Int?,
+    aspectInterieur: Int?,
+    couplage: String?,
+    flasqueAvant: Int?,
+    flasqueArriere: Int?,
+    porteeRAvant: Int?,
+    porteeRArriere: Int?,
+    boutArbre: Boolean?,
+    rondelleElastique: Boolean?,
+    refRoulementAvant: String?,
+    refRoulementArriere: String?,
+    typeRoulementAvant: String?,
+    typeRoulementArriere: String?,
+    refJointAvant: String?,
+    refJointArriere: String?,
+    typeJointAvant: Boolean?,
+    typeJointArriere: Boolean?,
+    ventilateur: Int?,
+    capotV: Int?,
+    socleBoiteABorne: Int?,
+    capotBoiteABorne: Int?,
+    plaqueABorne: Int?,
+    presenceSondes: Boolean?,
+    typeSondes: String?,
+    equilibrage: Boolean?,
+    peinture: String?,
+    var isolationMasseInduit: Int?,
+    var isolationMassePolesPrincipaux: Int?,
+    var isolationMassePolesAuxilliaires: Int?,
+    var isolationMassePolesCompensatoires: Int?,
+    var isolationMassePorteBalais: Int?,
+    var resistanceInduit: Int?,
+    var resistancePP: Int?,
+    var resistancePA: Int?,
+    var resistancePC: Int?,
+    /* essais dynamiques */
+    var tensionInduit: Int?,
+    var intensiteInduit: Int?,
+    var tensionExcitation: Int?,
+    var intensiteExcitation: Int?,
+    ) : DemontageMoteur(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo,
+    typeFicheDemontage,
+    marque,
+    numSerie,
+    puissance,
+    bride,
+    vitesse,
+    arbreSortantEntrant, //arbre sortant ou rentrant
+    accouplement,
+    coteAccouplement,
+    clavette,
+    aspect,
+    aspectInterieur,
+    couplage,
+    flasqueAvant,
+    flasqueArriere,
+    porteeRAvant,
+    porteeRArriere,
+    boutArbre,
+    rondelleElastique,
+    refRoulementAvant,
+    refRoulementArriere,
+    typeRoulementAvant,
+    typeRoulementArriere,
+    refJointAvant,
+    refJointArriere,
+    typeJointAvant,
+    typeJointArriere,
+    ventilateur,
+    capotV,
+    socleBoiteABorne,
+    capotBoiteABorne,
+    plaqueABorne,
+    presenceSondes,
+    typeSondes,
+    equilibrage,
+    peinture
+) {
+        fun toEntity(){
+            return DemontageCCEntity(
+                _id,
+                numDevis,
+                numFiche,
+                2,
+                statut,
+                client,
+                contact,
+                telContact,
+                techniciens,
+                resp,
+                dateDebut,
+                dureeTotale,
+                observation,
+                photo,
+                typeFicheDemontage,
+                marque,
+                numSerie,
+                puissance,
+                bride,
+                vitesse,
+                arbreSortantEntrant,
+                accouplement,
+                coteAccouplement,
+                clavette,
+                aspect,
+                aspectInterieur,
+                couplage,
+                flasqueAvant,
+                flasqueArriere,
+                porteeRArriere,
+                porteeRAvant,
+                boutArbre,
+                rondelleElastique,
+                refRoulementAvant,
+                refRoulementArriere,
+                typeRoulementAvant,
+                typeRoulementArriere,
+                refJointAvant,
+                refJointArriere,
+                typeJointAvant,
+                typeJointArriere,
+                ventilateur,
+                capotV,
+                socleBoiteABorne,
+                capotBoiteABorne,
+                plaqueABorne,
+                presenceSondes,
+                typeSondes,
+                equilibrage,
+                peinture,
+                isolationMasseInduit,
+                isolationMassePolesPrincipaux,
+                isolationMassePolesAuxilliaires,
+                isolationMassePolesCompensatoires,
+                isolationMassePorteBalais,
+                resistanceInduit,
+                resistancePP,
+                resistancePA,
+                resistancePC,
+                /* essais dynamiques */
+                tensionInduit,
+                intensiteInduit,
+                tensionExcitation,
+                intensiteExcitation
+            )
+        }
+    }
+
+class Alternateur(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    typeFicheDemontage: Int,
+    marque: String?,
+    numSerie: Int?,
+    puissance: Float?,
+    bride: Float?,
+    vitesse: Float?,
+    arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    accouplement: Boolean?,
+    coteAccouplement: String?,
+    clavette: Boolean?,
+    aspect: Int?,
+    aspectInterieur: Int?,
+    couplage: String?,
+    flasqueAvant: Int?,
+    flasqueArriere: Int?,
+    porteeRAvant: Int?,
+    porteeRArriere: Int?,
+    boutArbre: Boolean?,
+    rondelleElastique: Boolean?,
+    refRoulementAvant: String?,
+    refRoulementArriere: String?,
+    typeRoulementAvant: String?,
+    typeRoulementArriere: String?,
+    refJointAvant: String?,
+    refJointArriere: String?,
+    typeJointAvant: Boolean?,
+    typeJointArriere: Boolean?,
+    ventilateur: Int?,
+    capotV: Int?,
+    socleBoiteABorne: Int?,
+    capotBoiteABorne: Int?,
+    plaqueABorne: Int?,
+    presenceSondes: Boolean?,
+    typeSondes: String?,
+    equilibrage: Boolean?,
+    peinture: String?,
+) : DemontageMoteur(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo,
+    typeFicheDemontage,
+    marque,
+    numSerie,
+    puissance,
+    bride,
+    vitesse,
+    arbreSortantEntrant, //arbre sortant ou rentrant
+    accouplement,
+    coteAccouplement,
+    clavette,
+    aspect,
+    aspectInterieur,
+    couplage,
+    flasqueAvant,
+    flasqueArriere,
+    porteeRAvant,
+    porteeRArriere,
+    boutArbre,
+    rondelleElastique,
+    refRoulementAvant,
+    refRoulementArriere,
+    typeRoulementAvant,
+    typeRoulementArriere,
+    refJointAvant,
+    refJointArriere,
+    typeJointAvant,
+    typeJointArriere,
+    ventilateur,
+    capotV,
+    socleBoiteABorne,
+    capotBoiteABorne,
+    plaqueABorne,
+    presenceSondes,
+    typeSondes,
+    equilibrage,
+    peinture
+) {
+    var imsp: Array<Int>? = null; //iso masse stator
+    var imrp: Array<Int>? = null; //iso masse rotor
+    var imse: Int? = null; //iso masse stator exitation
+    var imre: Int? = null; //iso masse rotor exitation
+    var rsp: Array<Int>? = null; // res stator principal
+    var rrp: Int? = null; // res rotor principal
+    var rse: Int? = null; // res stator extitation
+    var rre: Int? = null; // res rotor exitation
+    var ipps: Array<Int>? = null; //iso phase phase stator
+    var testDiode: Boolean? = null;
+
     //essais dynamiques
-    var tensions : Array<Int> ? = null; //tensions U,V,W
-    var intensite : Array<Int> ? = null; //intensité U,V,V
-    var tensionE : Array<Int> ? = null; //tension exitation U,V,W
-    var intensiteE : Array<Int> ? = null; // intensité exitation U,V,W
+    var tensions: Array<Int>? = null; //tensions U,V,W
+    var intensite: Array<Int>? = null; //intensité U,V,V
+    var tensionE: Array<Int>? = null; //tension exitation U,V,W
+    var intensiteE: Array<Int>? = null; // intensité exitation U,V,W
 }
