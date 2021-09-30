@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Fiche
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -296,6 +297,13 @@ class FicheBobinage : Fragment() {
             viewModel.back(layout)
         }
         enrg.setOnClickListener {
+            /*if (IU == null) {
+                Snackbar.make(
+                    layout.findViewById(R.id.FicheBobinageLayout),
+                    "veuilleza définir une valeur pour la résistance",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }*/
             var bobi = viewModel.bobinage.value
             bobi!!.marqueMoteur = marque.text.toString()
             bobi!!.typeBobinage = type.text.toString()
