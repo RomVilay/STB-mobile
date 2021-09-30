@@ -148,7 +148,7 @@ class FicheBobinage : Fragment() {
                 phases.setText(bobinage?.phases.toString())
                 frequence.setText(bobinage?.frequences.toString())
                 courant.setText(bobinage?.courant.toString())
-                switch.setChecked(bobinage.calageEncoches!!)
+                if(bobinage.calageEncoches !== null) {switch.setChecked(bobinage.calageEncoches!!)} else switch.setChecked(false)
                 adapter.list = bobinage.sectionsFils!!
                 spire.setText(bobinage?.nbSpires.toString())
                 poids.setText(bobinage?.poids.toString())
@@ -202,7 +202,9 @@ class FicheBobinage : Fragment() {
         }
         btnfils.setOnClickListener {
             viewModel.addSection(nbBrins.text.toString().toLong(),diam.text.toString().toDouble())
-            Log.i("INFO",viewModel.somme(viewModel.sections.value!!).toString())
+            var s = viewModel.somme(viewModel.sections.value!!)
+            som.setText(s.toString())
+            //Log.i("INFO",viewModel.somme(viewModel.sections.value!!).toString())
         }
         addschema.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(getContext()!!,
@@ -316,6 +318,7 @@ class FicheBobinage : Fragment() {
             bobi!!.calageEncoches = switch.isChecked()
             bobi!!.sectionsFils = viewModel.sections.value
             viewModel.bobinage.value = bobi
+            Log.i("INFO","iUT: ${bobi.isolementUT}")
             viewModel.save(context!!)
         }
         return layout

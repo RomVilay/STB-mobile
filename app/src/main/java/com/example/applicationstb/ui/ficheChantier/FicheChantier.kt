@@ -197,12 +197,11 @@ class FicheChantier : Fragment() {
                     dialog.dismiss()
                 })
             val alert = dialogBuilder.create()
-            alert.setTitle("Signature Responsable")
             alert.show()
             alert.setOnDismissListener {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
-                viewModel.signatures.add(1,uri)
+                viewModel.signatures.add(uri)
             }
         }
         selectButton.setOnClickListener {
@@ -285,7 +284,7 @@ class FicheChantier : Fragment() {
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
         values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "img_${SystemClock.uptimeMillis()}")
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "sign_${viewModel.chantier.value!!.numFiche}")
 
         val uri: Uri? =
                 context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)

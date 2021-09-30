@@ -137,7 +137,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun save(context: Context) {
-        Log.i("INFO", bobinage.value!!._id)
+        Log.i("INFO", "iso: ${bobinage.value!!.isolementUT}")
         if (isOnline(context)) {
             val resp = repository.patchBobinage(
                 token!!,
@@ -165,6 +165,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         Log.e("Error", "erreur ${t.message}")
                     }
                 })
+            localSave()
         } else {
             localSave()
         }
