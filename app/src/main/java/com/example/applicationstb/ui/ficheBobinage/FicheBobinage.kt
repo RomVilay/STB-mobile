@@ -110,6 +110,7 @@ class FicheBobinage : Fragment() {
         var IIV = layout.findViewById<EditText>(R.id.IIV)
         var IIW = layout.findViewById<EditText>(R.id.IIW)
         var addschema = layout.findViewById<Button>(R.id.addschema)
+        var tension = layout.findViewById<EditText>(R.id.tension)
         var obs = layout.findViewById<EditText>(R.id.observations)
         var som = layout.findViewById<TextView>(R.id.somme)
         var spire = layout.findViewById<EditText>(R.id.spire)
@@ -140,17 +141,17 @@ class FicheBobinage : Fragment() {
             var bobinage = viewModel.bobinage.value
             if (bobinage != null) {
                 marque.setText(bobinage?.marqueMoteur)
-                courant.setText(bobinage?.courant.toString())
-                vitesse.setText(bobinage?.vitesse.toString())
+                if (bobinage.courant!== null) {courant.setText(bobinage?.courant.toString())} //
+                if (bobinage.vitesse!== null) {vitesse.setText(bobinage?.vitesse.toString())} //
                 type.setText(bobinage?.typeBobinage)
                 client.setText(bobinage?.client?.enterprise)
-                puissance.setText(bobinage?.puissance.toString())
-                phases.setText(bobinage?.phases.toString())
-                frequence.setText(bobinage?.frequences.toString())
-                courant.setText(bobinage?.courant.toString())
+                if (bobinage.puissance!== null) {puissance.setText(bobinage?.puissance.toString())} //
+                if (bobinage.phases!== null) {phases.setText(bobinage?.phases.toString())} //
+                if (bobinage.frequences!== null) {frequence.setText(bobinage?.frequences.toString())} //
                 if(bobinage.calageEncoches !== null) {switch.setChecked(bobinage.calageEncoches!!)} else switch.setChecked(false)
+                tension.setText(bobinage?.tension.toString())
                 adapter.list = bobinage.sectionsFils!!
-                spire.setText(bobinage?.nbSpires.toString())
+                if (bobinage.nbSpires!== null) {spire.setText(bobinage?.nbSpires.toString())}
                 poids.setText(bobinage?.poids.toString())
                 RU.setText(bobinage?.resistanceU.toString())
                 RV.setText(bobinage?.resistanceV.toString())
@@ -196,6 +197,7 @@ class FicheBobinage : Fragment() {
             type.visibility = visibility
             marque.visibility = visibility
             dates.visibility = visibility
+            tension.visibility = visibility
             switch.visibility = visibility
             poids.visibility = visibility
             Log.i("INFO", "change")

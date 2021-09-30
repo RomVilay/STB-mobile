@@ -310,7 +310,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="diamètre "
-                    android:inputType="number"
+                    android:inputType="numberSigned|number|text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/addsection"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -475,7 +475,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="5"
                     android:gravity="center"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|text" />
 
             </LinearLayout>
 
@@ -511,7 +511,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
 
                 <TextView
                     android:id="@+id/Rintensité"
@@ -530,7 +530,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
 
                 <TextView
                     android:id="@+id/Rpuissance"
@@ -549,7 +549,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
             </LinearLayout>
 
             <TextView
@@ -584,7 +584,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
 
                 <TextView
                     android:id="@+id/Iintensité"
@@ -603,7 +603,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
 
                 <TextView
                     android:id="@+id/Ipuissance"
@@ -622,7 +622,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
             </LinearLayout>
 
             <TextView
@@ -657,7 +657,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
 
                 <TextView
                     android:id="@+id/IIintensité"
@@ -676,7 +676,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
 
                 <TextView
                     android:id="@+id/IIpuissance"
@@ -695,7 +695,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberSigned|number|text" />
             </LinearLayout>
 
             <Button

@@ -261,6 +261,27 @@ class Repository (var context:Context) {
         call.enqueue(callback)
     }
     fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
+        if (bobinage.vitesse == null) {
+            bobinage.vitesse = 0f
+        }
+        if (bobinage.puissance == null) {
+            bobinage.puissance = 0f
+        }
+        if (bobinage.phases == null) {
+            bobinage.phases = 0
+        }
+        if (bobinage.frequences == null) {
+            bobinage.frequences = 0f
+        }
+        if (bobinage.courant == null) {
+            bobinage.courant = 0f
+        }
+        if (bobinage.nbSpires == null) {
+            bobinage.nbSpires = 0
+        }
+        if (bobinage.resistanceU == null) {
+            bobinage.resistanceU = 0f
+        }
         if (bobinage.resistanceV == null) {
             bobinage.resistanceV = 0f
         }
