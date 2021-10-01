@@ -131,7 +131,6 @@ class BodyBobinage(var marqueMoteur : String?,
         parcel.readFloat(),
         parcel.readLong()
     ) {
-        Log.i("INFO",this.isolementUT.toString())
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -232,7 +231,11 @@ class Repository (var context:Context) {
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
     var db : LocalDatabase? = null;
     var chantierDao : ChantierDao? = null;
-    var bobinageDao : BobinageDao? = null;
+    var bobinageDao : BobinageDao ? = null;
+    var demontageTriphaseDao : DemontageTriphaseDao? = null;
+    var demontageCCDao : DemontageCCDao? = null;
+    var remontageTriphaseDao: RemontageTriphaseDao? = null;
+    var remontageCourantCDao: RemontageCCDao? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -261,27 +264,6 @@ class Repository (var context:Context) {
         call.enqueue(callback)
     }
     fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
-        if (bobinage.vitesse == null) {
-            bobinage.vitesse = 0f
-        }
-        if (bobinage.puissance == null) {
-            bobinage.puissance = 0f
-        }
-        if (bobinage.phases == null) {
-            bobinage.phases = 0
-        }
-        if (bobinage.frequences == null) {
-            bobinage.frequences = 0f
-        }
-        if (bobinage.courant == null) {
-            bobinage.courant = 0f
-        }
-        if (bobinage.nbSpires == null) {
-            bobinage.nbSpires = 0
-        }
-        if (bobinage.resistanceU == null) {
-            bobinage.resistanceU = 0f
-        }
         if (bobinage.resistanceV == null) {
             bobinage.resistanceV = 0f
         }
@@ -309,7 +291,6 @@ class Repository (var context:Context) {
         if (bobinage.poids == null){
             bobinage.poids = 0f
         }
-        Log.i("INFO","isoUT ${bobinage.isolementUT}")
         var body = BodyBobinage(
             bobinage.marqueMoteur,
             bobinage.typeBobinage,
@@ -354,10 +335,13 @@ class Repository (var context:Context) {
     }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-          .fallbackToDestructiveMigration()
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
+      remontageTriphaseDao = db!!.remontageTriphaseDao()
+      remontageCourantCDao = db!!.remontageCCDao()
+      demontageTriphaseDao = db!!.demontageTriphaseDao()
+      demontageCCDao = db!!.demontageCCDao()
         Log.i("INFO","db créée")
     }
 

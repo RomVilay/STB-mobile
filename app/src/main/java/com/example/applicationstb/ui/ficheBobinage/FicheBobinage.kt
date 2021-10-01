@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Fiche
-import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat

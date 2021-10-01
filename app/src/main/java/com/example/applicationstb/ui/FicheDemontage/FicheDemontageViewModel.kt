@@ -80,12 +80,12 @@ class FicheDemontageViewModel : ViewModel() {
     }
     fun afficherFiche(fiche:Fiche){
         when (fiche){
-            is Monophase -> Log.i("Info","Type monophasé")
-            is Triphase -> Log.i("Info", "Type triphasé")
-            is RotorBobine -> Log.i("INFO","Type Rotor Bobine")
             is CourantContinu -> Log.i("INFO", "Type Courant Continu")
+            is Triphase -> Log.i("Info", "Type triphasé")
+            /*is RotorBobine -> Log.i("INFO","Type Rotor Bobine")
+            is Monophase -> Log.i("Info","Type monophasé")
             is Alternateur -> Log.i("INFO","type alternateur")
-            is DemontagePompe -> Log.i("Info", "type pompe")
+            is DemontagePompe -> Log.i("Info", "type pompe")*/
         }
     }
     fun setCouplage(type:String){
@@ -93,7 +93,7 @@ class FicheDemontageViewModel : ViewModel() {
         fichemot.couplage = type
         selection.value = fichemot
     }
-    fun setFlasques(etat:String, position: String){
+    fun setFlasques(etat:Int, position: String){
         var fichemot = selection.value as DemontageMoteur
         if (position == "av") {
             fichemot.flasqueAvant = etat
@@ -102,45 +102,45 @@ class FicheDemontageViewModel : ViewModel() {
         }
         selection.value = fichemot
     }
-    fun setPRoulements(position:String,etat:String){
+    fun setPRoulements(position:String,etat:Int){
         var fichemot = selection.value as DemontageMoteur
         if (position == "av") {
-            fichemot.porteeravt = etat
+            fichemot.porteeRAvant = etat
         } else {
-            fichemot.porteerar = etat
+            fichemot.porteeRArriere = etat
         }
         selection.value = fichemot
     }
     fun setEtatBA(etat:Boolean){
         var fichemot = selection.value as DemontageMoteur
-        fichemot.boutarbre = etat
+        fichemot.boutArbre = etat
         selection.value = fichemot
     }
     fun setRoulAr(type:String){
         var fichemot = selection.value as DemontageMoteur
-        fichemot.typeRoulementAr = type
+        fichemot.typeRoulementArriere = type
         selection.value = fichemot
     }
     fun setRoulAv(type:String){
         var fichemot = selection.value as DemontageMoteur
-        fichemot.typeRoulementAv = type
+        fichemot.typeRoulementAvant = type
         selection.value = fichemot
     }
     fun setRefRoul(position:String,ref:String){
         var fichemot = selection.value as DemontageMoteur
         if (position == "av") {
-            fichemot.refRoulementAv = ref
+            fichemot.refRoulementAvant = ref
         } else {
-            fichemot.refRoulementAr = ref
+            fichemot.refRoulementArriere = ref
         }
         selection.value = fichemot
     }
-    fun setJointAr(type:String){
+    fun setJointAr(type:Boolean){
         var fichemot = selection.value as DemontageMoteur
-        fichemot.typeJointAr = type
+        fichemot.typeJointArriere = type
         selection.value = fichemot
     }
-    fun setJointAv(type:String){
+    fun setJointAv(type:Boolean){
         var fichemot = selection.value as DemontageMoteur
         fichemot.typeJointAvant = type
         selection.value = fichemot
@@ -150,7 +150,7 @@ class FicheDemontageViewModel : ViewModel() {
         if (position == "av") {
             fichemot.refJointAvant = ref
         } else {
-            fichemot.refJointAr = ref
+            fichemot.refJointArriere = ref
         }
         selection.value = fichemot
     }

@@ -63,7 +63,7 @@ class MecaFragment : Fragment() {
         etatFlasqueAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setFlasques(etatFlasqueAvant.selectedItem.toString(),"av")
+                viewModel.setFlasques(position+1,"av")
             }
         }
         etatFlasqueAvant.setOnFocusChangeListener{ view, hasFocus ->
@@ -78,7 +78,7 @@ class MecaFragment : Fragment() {
         etatFlasqueArrière.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setFlasques(etatFlasqueAvant.selectedItem.toString(),"ar")
+                viewModel.setFlasques(position+1,"ar")
             }
         }
         // portée roulements
@@ -90,7 +90,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementAvant.selectedItem.toString()
-                    viewModel.setPRoulements("av",selection)
+                    viewModel.setPRoulements("av",position)
                     //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -102,7 +102,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementArriere.selectedItem.toString()
-                viewModel.setPRoulements("ar",selection)
+                viewModel.setPRoulements("ar",position)
                 //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -118,13 +118,13 @@ class MecaFragment : Fragment() {
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var type = if (fiche.typeRoulementAr == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAr) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
+                var type = if (fiche.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementArriere) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
                 typeRoulement.setSelection(type)
-                refRoul.setText(fiche.refRoulementAr)
+                refRoul.setText(fiche.refRoulementArriere)
             } else {
-                var type = if (fiche.typeRoulementAv == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
+                var type = if (fiche.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
                 typeRoulement.setSelection(type)
-                refRoul.setText(fiche.refRoulementAv)
+                refRoul.setText(fiche.refRoulementAvant)
             }
         }
         typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -135,7 +135,7 @@ class MecaFragment : Fragment() {
                 var selection = typeRoulement.selectedItem.toString()
                 if (switchRoullements.isChecked) {
                     viewModel.setRoulAr(selection)
-                    Log.i("INFO", "roulement arrière:"+fiche.refRoulementAr)
+                    Log.i("INFO", "roulement arrière:"+fiche.refRoulementArriere)
                 } else {
                     viewModel.setRoulAv(selection)
                     Log.i("INFO", "roulement avant:"+selection)
@@ -155,9 +155,9 @@ class MecaFragment : Fragment() {
         var refJoints = layout.findViewById<EditText>(R.id.refJoints)
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var type = if (fiche.typeJointAr == null) 0 else arrayOf<String>("simple lèvre","double lèvre").indexOf(fiche.typeJointAr) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
+                var type = if (fiche.typeJointArriere == null) 0 else arrayOf<String>("simple lèvre","double lèvre").indexOf(fiche.typeJointArriere) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
                 typeJoints.setSelection(type)
-                refJoints.setText(fiche.refJointAr)
+                refJoints.setText(fiche.refJointArriere)
             } else {
                 var type = if (fiche.typeJointAvant == null) 0 else arrayOf<String>("simple lèvre","double lèvre").indexOf(fiche.typeJointAvant) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
                 typeJoints.setSelection(type)
@@ -171,10 +171,10 @@ class MecaFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeJoints.selectedItem.toString()
                 if (switchJoints.isChecked) {
-                    viewModel.setJointAr(selection)
-                    //Log.i("INFO", "roulement arrière:"+fiche.refRoulementAr)
+                    viewModel.setJointAr(true)
+                    //Log.i("INFO", "roulement arrière:"+fiche.refRoulementArriere)
                 } else {
-                    viewModel.setJointAv(selection)
+                    viewModel.setJointAv(false)
                     //Log.i("INFO", "roulement avant:"+selection)
                 }
             }

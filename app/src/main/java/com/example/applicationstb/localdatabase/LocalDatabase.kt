@@ -7,11 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 
-@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class), version = 7)
+@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class), version = 8)
 @TypeConverters (Converters::class)
     abstract class LocalDatabase : RoomDatabase() {
         abstract fun chantierDao(): ChantierDao
         abstract fun bobinageDao(): BobinageDao
+        abstract fun demontageTriphaseDao(): DemontageTriphaseDao
+        abstract fun demontageCCDao(): DemontageCCDao
+        abstract fun remontageTriphaseDao(): RemontageTriphaseDao
+        abstract fun remontageCCDao(): RemontageCCDao
     @Volatile
     private var INSTANCE: LocalDatabase? = null
 
