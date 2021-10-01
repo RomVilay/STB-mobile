@@ -1345,7 +1345,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/titre4" />
 
                     <Button
-                        android:id="@+id/enregistrerMono"
+                        android:id="@+id/enregistrerAlt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="80dp"
@@ -1353,11 +1353,11 @@
                         android:layout_marginTop="192dp"
                         android:text="Enregistrer"
                         app:backgroundTint="#164081"
-                        app:layout_constraintStart_toEndOf="@+id/retourMono"
+                        app:layout_constraintStart_toEndOf="@+id/retourAlt"
                         app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
                     <Button
-                        android:id="@+id/retourMono"
+                        android:id="@+id/retourAlt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="168dp"

@@ -1,11 +1,14 @@
 package com.example.applicationstb.ui.FicheDemontage
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
@@ -15,13 +18,21 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import java.io.File
+import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MonophaseFragment : Fragment() {
@@ -32,6 +43,8 @@ class MonophaseFragment : Fragment() {
     private val viewModel: FicheDemontageViewModel by activityViewModels()
     private lateinit var photos:RecyclerView
     private  val PHOTO_RESULT = 1888
+    lateinit var currentPhotoPath: String
+    val REQUEST_IMAGE_CAPTURE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +67,23 @@ class MonophaseFragment : Fragment() {
 
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
         var btnPhoto = layout.findViewById<Button>(R.id.photo2)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto2)
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(layout,viewModel.schema.value.toString())
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+        enregistrer.setOnClickListener {
+            viewModel.enregistrer(layout)
+        }
         /*var listePhotos = layout.findViewById<Button>(R.id.recyclerPhoto2)
         listePhotos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         listePhotos.adapter = schemaAdapter(viewModel.photos.schemas,{ item ->
@@ -103,64 +133,64 @@ class MonophaseFragment : Fragment() {
             meca.layoutParams = layout
         }
         btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent, PHOTO_RESULT)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            context!!,
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                    }
+                }
+            }
         }
-
-
-        retour.setOnClickListener {
-            viewModel.retour(layout)
-        }
-        enregistrer.setOnClickListener {
-            viewModel.enregistrer(layout)
-        }
-
         return layout
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PHOTO_RESULT) {
-            val photo: Bitmap = data?.extras?.get("data") as Bitmap
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            val uri = context?.let { photo.saveImage(it.applicationContext) }
-            if (uri != null) {
-                Log.i("INFO",uri.toString())
-                viewModel.addPhoto(0,uri)
-            }
-            Log.i("INFO",uri.toString())
+            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
         }
     }
 
-    fun Bitmap.saveImage(context: Context): Uri? {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
-        values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "img_${SystemClock.uptimeMillis()}")
-
-        val uri: Uri? =
-            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        if (uri != null) {
-            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
-            values.put(MediaStore.Images.Media.IS_PENDING, false)
-            context.contentResolver.update(uri, values, null, null)
-            return uri
-        }
-        return null
-    }
-
-
-    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
-        if (outputStream != null) {
-            try {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
         }
     }
 

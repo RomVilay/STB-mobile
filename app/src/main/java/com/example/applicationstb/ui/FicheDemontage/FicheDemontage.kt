@@ -37,30 +37,30 @@ class FicheDemontage : Fragment() {
             //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
             viewModel.select(spinner.selectedItemPosition)
             when (viewModel.selection.value){
-                is Monophase -> fragmentManager.commit {
+                /*is Monophase -> fragmentManager.commit {
                     replace<MonophaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
-                }
+                }*/
                 is Triphase -> fragmentManager.commit {
                     replace<TriphaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is RotorBobine -> fragmentManager.commit {
+                /*is RotorBobine -> fragmentManager.commit {
                     replace<RotorBobineFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
-                }
+                }*/
                 is CourantContinu -> fragmentManager.commit {
                     replace<CCFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is Alternateur ->fragmentManager.commit {
+               /* is Alternateur ->fragmentManager.commit {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
                 is DemontagePompe -> fragmentManager.commit {
                     replace<PompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
-                }
+                }*/
             }
         }
         return layout

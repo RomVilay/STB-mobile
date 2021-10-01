@@ -1,11 +1,27 @@
 package com.example.applicationstb.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
+import java.util.*
+
+@Parcelize
+@Serializable
 open class Fiche(
-    val numDevis: String,
-    val numFiche: String,
-    val client: Client,
-    val contact: String,
-    val telContact: Long,
-    val techniciens: Array<User>,
-    val resp: User) {
+   open var _id:String,
+   open var numDevis: String?,
+   open var numFiche: String?,
+   open var type: Long?,
+   open var status: Long?,
+   open var client: Client?,
+   open var contact: String?,
+   open var telContact: String?,
+   open var techniciens: Array<User>?,
+   open val resp: User?,
+   @Contextual
+   open var dateDebut: Date?,
+   open var dureeTotale: Long?,
+   open var observations: String?,
+   open var photo: Array<String>?): Parcelable {
 }

@@ -128,7 +128,7 @@ class DawingView : View {
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_signatures")
         values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "img_${SystemClock.uptimeMillis()}")
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "sign_${SystemClock.uptimeMillis()}")
 
         val uri: Uri? =
                 context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
