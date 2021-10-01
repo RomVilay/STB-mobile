@@ -1,6 +1,8 @@
 package com.example.applicationstb.model
 
 import android.net.Uri
+import com.example.applicationstb.localdatabase.DemontageCCEntity
+import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
 import java.util.*
 
 enum class Etat2 {
