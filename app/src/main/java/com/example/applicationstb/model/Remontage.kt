@@ -3,7 +3,7 @@ package com.example.applicationstb.model
 import java.sql.Timestamp
 import java.util.*
 
-abstract class Remontage(
+open class Remontage(
     idFiche: String,
     numDevis: String,
     numFiche: String,
@@ -18,56 +18,45 @@ abstract class Remontage(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
-    var remontageRoulement: Int?,
-    var collageRoulementPorteeArbre: Int?,
-    var collageRoulementPorteeFlasque: Int?,
-    var verificationFixationCouronne: Boolean?,
-    var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Int?,
-    var isolementPorteBalaisOhm: Int?,
+    open var remontageRoulement: Int?,
+    open var collageRoulementPorteeArbre: Int?,
+    open var collageRoulementPorteeFlasque: Int?,
+    open var verificationFixationCouronne: Boolean?,
+    open var verificationIsolementPorteBalais: Boolean?,
+    open var isolementPorteBalaisV: Int?,
+    open var isolementPorteBalaisOhm: Int?,
     // essais dynamiques
-    var tensionStatorAVide: Boolean?,
-    var tensionInducAVide: Boolean?,
-    var intensiteStatorAVide: Boolean?,
-    var intensiteInducAVide: Boolean?,
-    var tensionInduitAVide: Boolean?,
-    var tensionRotorVide: Boolean?,
-    var tensionSIU: Float?,
-    var tensionSIV: Float?,
-    var tensionSIW: Float?,
-    var intensiteStatorAVide: Float?,
-    var intensiteInducteursAVide: Float?,
-    var intensiteU: Float?,
-    var intensiteV: Float?,
-    var intensiteW: Float?,
-    var tensionInduitAVideU: Float?,
-    var tensionInduitAVideV: Float?,
-    var tensionInduitAVideW: Float?,
-    var tensionRotoOuvertU: Float?,
-    var tensionRotoOuvertV: Float?,
-    var tensionRotoOuvertW: Float?,
-    var tensionIRU: Float?,
-    var tensionIRV: Float?,
-    var tensionIRW: Float?,
-    var intensiteInduit: Boolean,
-    var intensiteU: Float?,
-    var vitesseAVide: Float?,
-    var puissanceAVide: Float?,
-    var dureeEssai: Float?,
-    var sensRotation: Int?,
+    open var tensionStatorInducteurs: Boolean?,
+    open var tensionStatorInducteursU: Float?,
+    open var tensionStatorInducteursV: Float?,
+    open var tensionStatorInducteursW: Float?,
+    open var intensiteStatorInducteur: Boolean?,
+    open var intensiteStatorInducteurU: Float?,
+    open var intensiteStatorInducteurV: Float?,
+    open var intensiteStatorInducteurW: Float?,
+    open var tensionInduitRotor: Boolean?,
+    open var tensionInduitRotorU: Float?,
+    open var tensionInduitRotorV: Float?,
+    open var tensionInduitRotorW: Float?,
+    open var intensiteInduit: Boolean,
+    open var intensiteInduitU: Float?,
+    open var vitesseU: Float?,
+    open var puissanceU: Float?,
+    open var dureeEssai: Float?,
+    open var sensRotation: Int?,
 
 //essais vibratoires
-    var V1V: Float?,  // vitesse 1v
-    var A1V: Float?,  //accélération 1v
-    var V2V: Float?,  // vitesse 2v
-    var A2V: Float?,  //accélération 2v
-    var V1H: Float?,  // vitesse 1H
-    var A1H: Float?,  //accélération 1H
-    var V2H: Float?,  // vitesse 2H
-    var A2H: Float?,  //accélération 2H
-    var V2A: Float?,  // vitesse 2A
-    var A2A: Float?,  //accélération 2A
-) : Fiche(
+    open var vitesse1V: Float?,  // vitesse 1v
+    open var acceleration1V: Float?,  //accélération 1v
+    open var vitesse2V: Float?,  // vitesse 2v
+    open var acceleration2V: Float?,  //accélération 2v
+    open var vitesse1H: Float?,  // vitesse 1H
+    open var acceleration1H: Float?,  //accélération 1H
+    open var vitesse2H: Float?,  // vitesse 2H
+    open var acceleration2H: Float?,  //accélération 2H
+    open var vitesse2A: Float?,  // vitesse 2A
+    open var acceleration2A: Float?,  //accélération 2A
+) : Fiche (
     idFiche,
     numDevis,
     numFiche,
@@ -107,46 +96,35 @@ class RemontageTriphase(
     isolementPorteBalaisV: Int?,
     isolementPorteBalaisOhm: Int?,
     // essais dynamiques
-    tensionStatorAVide: Boolean?,
-    tensionInducAVide: Boolean?,
-    intensiteStatorAVideB: Boolean?,
-    intensiteInducAVide: Boolean?,
-    tensionInduitAVide: Boolean?,
-    tensionRotorVide: Boolean?,
-    tensionSIU: Float?,
-    tensionSIV: Float?,
-    tensionSIW: Float?,
-    intensiteStatorAVide: Float?,
-    intensiteInducteursAVide: Float?,
-    intensiteU: Float?,
-    intensiteV: Float?,
-    intensiteW: Float?,
-    tensionInduitAVideU: Float?,
-    tensionInduitAVideV: Float?,
-    tensionInduitAVideW: Float?,
-    tensionRotoOuvertU: Float?,
-    tensionRotoOuvertV: Float?,
-    tensionRotoOuvertW: Float?,
-    tensionIRU: Float?,
-    tensionIRV: Float?,
-    tensionIRW: Float?,
-    intensiteInduit: Boolean,
-    intensiteU: Float?,
-    vitesseAVide: Float?,
-    puissanceAVide: Float?,
-    dureeEssai: Float?,
-    sensRotation: Int?,
+    tensionStatorInducteurs: Boolean?,
+     tensionStatorInducteursU: Float?,
+     tensionStatorInducteursV: Float?,
+     tensionStatorInducteursW: Float?,
+     intensiteStatorInducteur: Boolean?,
+     intensiteStatorInducteurU: Float?,
+     intensiteStatorInducteurV: Float?,
+     intensiteStatorInducteurW: Float?,
+     tensionInduitRotor: Boolean?,
+     tensionInduitRotorU: Float?,
+     tensionInduitRotorV: Float?,
+     tensionInduitRotorW: Float?,
+     intensiteInduit: Boolean,
+     intensiteInduitU: Float?,
+     vitesseU: Float?,
+     puissanceU: Float?,
+     dureeEssai: Float?,
+     sensRotation: Int?,
     //essais vibratoires
-    V1V: Float?,  // vitesse 1v
-    A1V: Float?,  //accélération 1v
-    V2V: Float?,  // vitesse 2v
-    A2V: Float?,  //accélération 2v
-    V1H: Float?,  // vitesse 1H
-    A1H: Float?,  //accélération 1H
-    V2H: Float?,  // vitesse 2H
-    A2H: Float?,  //accélération 2H
-    V2A: Float?,  // vitesse 2A
-    A2A: Float?,  //accélération 2A
+     vitesse1V: Float?,  // vitesse 1v
+     acceleration1V: Float?,  //accélération 1v
+     vitesse2V: Float?,  // vitesse 2v
+     acceleration2V: Float?,  //accélération 2v
+     vitesse1H: Float?,  // vitesse 1H
+     acceleration1H: Float?,  //accélération 1H
+     vitesse2H: Float?,  // vitesse 2H
+     acceleration2H: Float?,  //accélération 2H
+     vitesse2A: Float?,  // vitesse 2A
+     acceleration2A: Float?,
     var isolementPhaseMasse: Float?,
     var isolementPhase: Float?,
     var resistanceStatorU: Float?,
@@ -178,53 +156,43 @@ class RemontageTriphase(
     dateDebut,
     dureeTotale,
     observation,
-    photoremontageRoulement,
+    photo,
+    remontageRoulement,
     collageRoulementPorteeArbre,
     collageRoulementPorteeFlasque,
     verificationFixationCouronne,
     verificationIsolementPorteBalais,
     isolementPorteBalaisV,
     isolementPorteBalaisOhm,
-    tensionStatorAVide,
-    tensionInducAVide,
-    intensiteStatorAVide,
-    intensiteInducAVide,
-    tensionInduitAVide,
-    tensionRotorVide,
-    tensionSIU,
-    tensionSIV,
-    tensionSIW,
-    intensiteStatorAVide,
-    intensiteInducteursAVide,
-    intensiteU,
-    intensiteV,
-    intensiteW,
-    tensionInduitAVideU,
-    tensionInduitAVideV,
-    tensionInduitAVideW,
-    tensionRotoOuvertU,
-    tensionRotoOuvertV,
-    tensionRotoOuvertW,
-    tensionIRU,
-    tensionIRV,
-    tensionIRW,
-    intensiteInduit,
-    intensiteU,
-    vitesseAVide,
-    puissanceAVide,
-    dureeEssai,
-    sensRotation,
+    tensionStatorInducteurs,
+    tensionStatorInducteursU,
+tensionStatorInducteursV,
+tensionStatorInducteursW,
+intensiteStatorInducteur,
+intensiteStatorInducteurU,
+intensiteStatorInducteurV,
+intensiteStatorInducteurW,
+tensionInduitRotor,
+tensionInduitRotorU,
+tensionInduitRotorV,
+tensionInduitRotorW,
+intensiteInduit,
+intensiteInduitU,
+vitesseU,
+puissanceU,
+dureeEssai,
+sensRotation,
 //essais vibratoires
-    V1V,  // vitesse 1v
-    A1V,  //accélération 1v
-    V2V,  // vitesse 2v
-    A2V,  //accélération 2v
-    V1H,  // vitesse 1H
-    A1H,  //accélération 1H
-    V2H,  // vitesse 2H
-    A2H,  //accélération 2H
-    V2A,  // vitesse 2A
-    A2A,  //accélération 2A
+    vitesse1V,  // vitesse 1v
+    acceleration1V,  //accélération 1v
+    vitesse2V,  // vitesse 2v
+    acceleration2V,  //accélération 2v
+    vitesse1H,  // vitesse 1H
+    acceleration1H,  //accélération 1H
+    vitesse2H,  // vitesse 2H
+    acceleration2H,  //accélération 2H
+    vitesse2A,  // vitesse 2A
+    acceleration2A,  //accélération 2A
 ) {}
 
 class RemontageCourantC(
@@ -250,46 +218,35 @@ class RemontageCourantC(
     isolementPorteBalaisV: Int?,
     isolementPorteBalaisOhm: Int?,
     // essais dynamiques
-    tensionStatorAVide: Boolean?,
-    tensionInducAVide: Boolean?,
-    intensiteStatorAVide: Boolean?,
-    intensiteInducAVide: Boolean?,
-    tensionInduitAVide: Boolean?,
-    tensionRotorVide: Boolean?,
-    tensionSIU: Float?,
-    tensionSIV: Float?,
-    tensionSIW: Float?,
-    intensiteStatorAVide: Float?,
-    intensiteInducteursAVide: Float?,
-    intensiteU: Float?,
-    intensiteV: Float?,
-    intensiteW: Float?,
-    tensionInduitAVideU: Float?,
-    tensionInduitAVideV: Float?,
-    tensionInduitAVideW: Float?,
-    tensionRotoOuvertU: Float?,
-    tensionRotoOuvertV: Float?,
-    tensionRotoOuvertW: Float?,
-    tensionIRU: Float?,
-    tensionIRV: Float?,
-    tensionIRW: Float?,
+    tensionStatorInducteurs: Boolean?,
+    tensionStatorInducteursU: Float?,
+    tensionStatorInducteursV: Float?,
+    tensionStatorInducteursW: Float?,
+    intensiteStatorInducteur: Boolean?,
+    intensiteStatorInducteurU: Float?,
+    intensiteStatorInducteurV: Float?,
+    intensiteStatorInducteurW: Float?,
+    tensionInduitRotor: Boolean?,
+    tensionInduitRotorU: Float?,
+    tensionInduitRotorV: Float?,
+    tensionInduitRotorW: Float?,
     intensiteInduit: Boolean,
-    intensiteU: Float?,
-    vitesseAVide: Float?,
-    puissanceAVide: Float?,
+    intensiteInduitU: Float?,
+    vitesseU: Float?,
+    puissanceU: Float?,
     dureeEssai: Float?,
     sensRotation: Int?,
     //essais vibratoires
-    V1V: Float?,  // vitesse 1v
-    A1V: Float?,  //accélération 1v
-    V2V: Float?,  // vitesse 2v
-    A2V: Float?,  //accélération 2v
-    V1H: Float?,  // vitesse 1H
-    A1H: Float?,  //accélération 1H
-    V2H: Float?,  // vitesse 2H
-    A2H: Float?,  //accélération 2H
-    V2A: Float?,  // vitesse 2A
-    A2A: Float?,  //accélération 2A
+    vitesse1V: Float?,  // vitesse 1v
+    acceleration1V: Float?,  //accélération 1v
+    vitesse2V: Float?,  // vitesse 2v
+    acceleration2V: Float?,  //accélération 2v
+    vitesse1H: Float?,  // vitesse 1H
+    acceleration1H: Float?,  //accélération 1H
+    vitesse2H: Float?,  // vitesse 2H
+    acceleration2H: Float?,  //accélération 2H
+    vitesse2A: Float?,  // vitesse 2A
+    acceleration2A: Float?,
     var resistanceInducteurs: Float?,
     var resistanceInduit: Float?,
     var isolementInducteursMasse: Float?,
@@ -315,51 +272,40 @@ class RemontageCourantC(
     photo,
     remontageRoulement,
     collageRoulementPorteeArbre,
-collageRoulementPorteeFlasque,
-verificationFixationCouronne,
-verificationIsolementPorteBalais,
-isolementPorteBalaisV,
-isolementPorteBalaisOhm,
-tensionStatorAVide,
-tensionInducAVide,
-intensiteStatorAVide,
-intensiteInducAVide,
-tensionInduitAVide,
-tensionRotorVide,
-tensionSIU,
-tensionSIV,
-tensionSIW,
-intensiteStatorAVide,
-intensiteInducteursAVide,
-intensiteU,
-intensiteV,
-intensiteW,
-tensionInduitAVideU,
-tensionInduitAVideV,
-tensionInduitAVideW,
-tensionRotoOuvertU,
-tensionRotoOuvertV,
-tensionRotoOuvertW,
-tensionIRU,
-tensionIRV,
-tensionIRW,
-intensiteInduit,
-intensiteU,
-vitesseAVide,
-puissanceAVide,
-dureeEssai,
-sensRotation,
+    collageRoulementPorteeFlasque,
+    verificationFixationCouronne,
+    verificationIsolementPorteBalais,
+    isolementPorteBalaisV,
+    isolementPorteBalaisOhm,
+    tensionStatorInducteurs,
+    tensionStatorInducteursU,
+    tensionStatorInducteursV,
+    tensionStatorInducteursW,
+    intensiteStatorInducteur,
+    intensiteStatorInducteurU,
+    intensiteStatorInducteurV,
+    intensiteStatorInducteurW,
+    tensionInduitRotor,
+    tensionInduitRotorU,
+    tensionInduitRotorV,
+    tensionInduitRotorW,
+    intensiteInduit,
+    intensiteInduitU,
+    vitesseU,
+    puissanceU,
+    dureeEssai,
+    sensRotation,
 //essais vibratoires
-V1V,  // vitesse 1v
-A1V,  //accélération 1v
-V2V,  // vitesse 2v
-A2V,  //accélération 2v
-V1H,  // vitesse 1H
-A1H,  //accélération 1H
-V2H,  // vitesse 2H
-A2H,  //accélération 2H
-V2A,  // vitesse 2A
-A2A,  //accélération 2A
+    vitesse1V,  // vitesse 1v
+    acceleration1V,  //accélération 1v
+    vitesse2V,  // vitesse 2v
+    acceleration2V,  //accélération 2v
+    vitesse1H,  // vitesse 1H
+    acceleration1H,  //accélération 1H
+    vitesse2H,  // vitesse 2H
+    acceleration2H,  //accélération 2H
+    vitesse2A,  // vitesse 2A
+    acceleration2A,  //accélération 2A
 ) {
 
 }

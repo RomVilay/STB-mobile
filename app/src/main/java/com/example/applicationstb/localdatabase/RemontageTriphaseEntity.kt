@@ -25,45 +25,37 @@ data class RemontageTriphaseEntity (
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Int?,
     var isolementPorteBalaisOhm: Int?,
-    var tensionStatorAVide: Boolean?,
-    var tensionInducAVide: Boolean?,
-    var intensiteStatorAVideB: Boolean?,
-    var intensiteInducAVideB: Boolean?,
-    var tensionInduitAVide: Boolean?,
-    var tensionRotorVide: Boolean?,
-    var tensionSIU: Float?,
-    var tensionSIV: Float?,
-    var tensionSIW: Float?,
-    var intensiteStatorAVide: Float?,
-    var intensiteInducteursAVide: Float?,
-    var intensiteU: Float?,
-    var intensiteV: Float?,
-    var intensiteW: Float?,
-    var tensionInduitAVideU: Float?,
-    var tensionInduitAVideV: Float?,
-    var tensionInduitAVideW: Float?,
-    var tensionRotoOuvertU: Float?,
-    var tensionRotoOuvertV: Float?,
-    var tensionRotoOuvertW: Float?,
-    var tensionIRU: Float?,
-    var tensionIRV: Float?,
-    var tensionIRW: Float?,
-    var intensityInduit: Boolean?,
-    var intensityU: Float?,
-    var vitesseAVide: Float?,
-    var puissanceAVide: Float?,
+    // essais dynamiques
+    var tensionStatorInducteurs: Boolean?,
+    var tensionStatorInducteursU: Float?,
+    var tensionStatorInducteursV: Float?,
+    var tensionStatorInducteursW: Float?,
+    var intensiteStatorInducteur: Boolean?,
+    var intensiteStatorInducteurU: Float?,
+    var intensiteStatorInducteurV: Float?,
+    var intensiteStatorInducteurW: Float?,
+    var tensionInduitRotor: Boolean?,
+    var tensionInduitRotorU: Float?,
+    var tensionInduitRotorV: Float?,
+    var tensionInduitRotorW: Float?,
+    var intensiteInduit: Boolean,
+    var intensiteInduitU: Float?,
+    var vitesseU: Float?,
+    var puissanceU: Float?,
     var dureeEssai: Float?,
     var sensRotation: Int?,
-    var V1V: Float?,  // vitesse 1v
-    var A1V: Float?,  //accélération 1v
-    var V2V: Float?,  // vitesse 2v
-    var A2V: Float?,  //accélération 2v
-    var V1H: Float?,  // vitesse 1H
-    var A1H: Float?,  //accélération 1H
-    var V2H: Float?,  // vitesse 2H
-    var A2H: Float?,  //accélération 2H
-    var V2A: Float?,  // vitesse 2A
-    var A2A: Float?,  //accélération 2A
+
+//essais vibratoires
+    var vitesse1V: Float?,  // vitesse 1v
+    var acceleration1V: Float?,  //accélération 1v
+    var vitesse2V: Float?,  // vitesse 2v
+    var acceleration2V: Float?,  //accélération 2v
+    var vitesse1H: Float?,  // vitesse 1H
+    var acceleration1H: Float?,  //accélération 1H
+    var vitesse2H: Float?,  // vitesse 2H
+    var acceleration2H: Float?,  //accélération 2H
+    var vitesse2A: Float?,  // vitesse 2A
+    var acceleration2A: Float?,  //accélération 2A
     var isolementPhaseMasse: Float?,
     var isolementPhase: Float?,
     var resistanceStatorU: Float?,
@@ -80,7 +72,7 @@ data class RemontageTriphaseEntity (
     var isolementPhaseStatorUW: Float?,
     var isolementPhaseRotorUV: Float?,
     var isolementPhaseRotorVW: Float?,
-    var isolementPhaseRotorUW: Float?
+    var isolementPhaseRotorUW: Float?,
 ) {
     /*fun toRTriphase(): RemontageTriphase{
         return RemontageTriphase(

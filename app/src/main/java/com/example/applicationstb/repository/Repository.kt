@@ -235,7 +235,7 @@ class Repository (var context:Context) {
     var demontageTriphaseDao : DemontageTriphaseDao? = null;
     var demontageCCDao : DemontageCCDao? = null;
     var remontageTriphaseDao: RemontageTriphaseDao? = null;
-    var remontageCourantCDao: RemontageCourantCDao? = null;
+    var remontageCourantCDao: RemontageCCDao? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -339,7 +339,7 @@ class Repository (var context:Context) {
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
       remontageTriphaseDao = db!!.remontageTriphaseDao()
-      remontageTriphaseDao = db!!.remontageCCDao()
+      remontageCourantCDao = db!!.remontageCCDao()
       demontageTriphaseDao = db!!.demontageTriphaseDao()
       demontageCCDao = db!!.demontageCCDao()
         Log.i("INFO","db créée")
