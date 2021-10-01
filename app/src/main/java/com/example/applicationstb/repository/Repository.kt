@@ -335,6 +335,7 @@ class Repository (var context:Context) {
     }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
+          .fallbackToDestructiveMigration()
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
