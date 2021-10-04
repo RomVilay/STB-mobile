@@ -45,10 +45,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     Log.i("INFO","${resp!!.fiches!!.size}")
                     if (resp != null) {
                        fiches = resp.fiches
-                       /* for(fiche in resp!!.fiches!!) {
-                            Log.i("info",fiche.type.toString())
-                        }*/
-                        //Log.i("INFO","fiches : ${resp.fiches}")
                     }
                     var nbCh = 0;
                     var nbBo = 0;
@@ -79,6 +75,111 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     Log.e("Error","erreur ${t.message}")
                                 }
                             })
+                        }
+                        if (fiche.type == 2L){
+                            Log.i("INFO","fiche demontage ${fiche.numFiche}")
+                            val resp = repository.getDemontage(token, fiche._id, object: Callback<DemontageResponse> {
+                                override fun onResponse(call: Call<DemontageResponse>, response: Response<DemontageResponse>) {
+                                    if ( response.code() == 200 ) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+
+                                            //fiche demontage triphase
+                                            if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 6) {
+                                                val demoTri = repository.getDemontageTriphase(token, resp.fiche!!._id, object: Callback<DemontageTriphaseResponse>{
+                                                    override fun onResponse(call: Call<DemontageTriphaseResponse>, response: Response<DemontageTriphaseResponse>) {
+                                                        if ( response.code() == 200 ) {
+                                                            val resp2 = response.body()
+                                                            if (resp2 != null) {
+                                                                //Log.i("INFO","fiche DemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                //demontages!!.add(resp.fiche!!)
+                                                                viewModelScope.launch(Dispatchers.IO) {
+                                                                    var demoT =
+                                                                        repository.getByIdDemoTriLocalDatabse(
+                                                                            resp2.fiche!!._id
+                                                                        )
+                                                                    if (demoT == null) {
+                                                                        repository.insertDemoTriLocalDatabase(
+                                                                            resp2!!.fiche!!
+                                                                        )
+                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "ajout demo tri en bdd locale"
+                                                                        )
+                                                                    } else {
+                                                                        demontages!!.add(demoT)
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                Log.i(
+                                                                    "INFO",
+                                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<DemontageTriphaseResponse>, t: Throwable) {
+                                                        Log.e("Error","erreur ${t.message}")
+                                                    }
+                                                })
+                                            }
+                                            // fiche demontage Courant Continu
+                                            if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 5) {
+                                                val demoTri = repository.getDemontageCC(token, resp.fiche!!._id, object: Callback<DemontageCCResponse>{
+                                                    override fun onResponse(call: Call<DemontageCCResponse>, response: Response<DemontageCCResponse>) {
+                                                        if ( response.code() == 200 ) {
+                                                            val resp2 = response.body()
+                                                            if (resp2 != null) {
+                                                                viewModelScope.launch(Dispatchers.IO) {
+                                                                    var demoCC =
+                                                                        repository.getByIdDemoCCLocalDatabse(
+                                                                            resp2.fiche!!._id
+                                                                        )
+                                                                    if (demoCC == null) {
+                                                                        repository.insertDemoCCLocalDatabase(
+                                                                            resp2!!.fiche!!
+                                                                        )
+                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "ajout demo CC en bdd locale"
+                                                                        )
+                                                                    } else {
+                                                                        demontages!!.add(demoCC)
+                                                                    }
+                                                                }
+                                                            }
+                                                        } else {
+                                                            Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<DemontageCCResponse>, t: Throwable) {
+                                                        Log.e("Error","erreur ${t.message}")
+                                                    }
+                                                })
+                                            }
+                                           /* Demontages!!.add(resp.fiche!!)
+                                            viewModelScope.launch(Dispatchers.IO){
+                                                var b = repository.getByIdDemontageLocalDatabse(resp.fiche!!._id)
+                                                if (b == null) {
+                                                    repository.insertDemontageLocalDatabase(resp!!.fiche!!)
+                                                    Log.i("INFO","ajout en bdd locale")
+                                                }*/
+
+                                         //   }
+                                        }
+                                    } else {
+                                        Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                                    }
+                                }
+                                override fun onFailure(call: Call<DemontageResponse>, t: Throwable) {
+                                    Log.e("Error","erreur ${t.message}")
+                                }
+                            })
+                        }
+                        if (fiche.type == 3L){
+                            Log.i("INFO","fiche remontage ${fiche.numFiche}")
                         }
                         if ( fiche.type == 4L ){
                             val resp = repository.getBobinage(token, fiche._id, object: Callback<BobinageResponse> {

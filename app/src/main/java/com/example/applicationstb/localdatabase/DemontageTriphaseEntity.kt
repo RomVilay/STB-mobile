@@ -2,6 +2,7 @@ package com.example.applicationstb.localdatabase
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.Triphase
 import java.util.*
 
@@ -17,7 +18,6 @@ data class DemontageTriphaseEntity(
     var dateDebut: Date?,
     var dureeTotale: Long?,
     var observation: String?,
-    var photo: Array<String>?,
     var typeFicheDemontage: Int,
     var marque: String?,
     var numSerie: Int?,
@@ -71,23 +71,22 @@ data class DemontageTriphaseEntity(
     var intensiteW: Int?,
     var dureeEssai: Int?,
 ) {
-   /* fun toTriphase(): Triphase {
+    fun toTriphase(): Triphase {
         var fiche = Triphase(
             _id,
             numDevis,
             numFiche,
             2,
             statut,
-            client,
+            Client(client,null,null,null),
             contact,
             telContact,
-            techniciens,
-            resp,
+            null,
+            null,
             dateDebut,
             dureeTotale,
             observation,
-            photo,
-            typeFicheDemontage,
+            null,
             marque,
             numSerie,
             puissance,
@@ -140,5 +139,5 @@ data class DemontageTriphaseEntity(
             intensiteW,
             dureeEssai)
         return fiche
-    }*/
+    }
 }

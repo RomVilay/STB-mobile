@@ -877,6 +877,9 @@ class RemontageCCResponse(
 class VehiculesResponse(
     var vehicule:Vehicule?
 )
+class DemontageResponse(
+    var fiche:DemontageMoteur?
+)
 
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
@@ -944,6 +947,11 @@ class Repository (var context:Context) {
     fun getBobinage(token:String,ficheId:String, callback:Callback<BobinageResponse>){
         var call = service.getBobinage(token,ficheId)
         var fiche:Bobinage? = null
+        call.enqueue(callback)
+    }
+    fun getDemontage(token:String,ficheId:String, callback:Callback<DemontageResponse>){
+        val call = service.getDemontage(token,ficheId)
+        var fiche:DemontageMoteur?=null
         call.enqueue(callback)
     }
     fun getDemontageTriphase(token:String,ficheId:String, callback: Callback<DemontageTriphaseResponse>){
@@ -1314,5 +1322,52 @@ class Repository (var context:Context) {
     }
     suspend fun deleteBobinageLocalDatabse( bobinage: BobinageEntity){
         bobinageDao!!.delete(bobinage)
+    }
+    //dao demontage triphase
+    suspend fun insertDemoTriLocalDatabase(demo: Triphase){
+       demontageTriphaseDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageTriLocalDatabase(): List<DemontageTriphaseEntity >{
+        return demontageTriphaseDao!!.getAll()
+    }
+    suspend fun getByIdDemoTriLocalDatabse(id: String) : Triphase? {
+        try {
+            if (demontageTriphaseDao!!.getById(id) !== null) {
+                return demontageTriphaseDao!!.getById(id).toTriphase()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoTriLocalDatabse( demo: DemontageTriphaseEntity){
+        demontageTriphaseDao!!.update(demo)
+    }
+    suspend fun deleteDemontageTriphaseLocalDatabse( demo: DemontageTriphaseEntity){
+        demontageTriphaseDao!!.delete(demo)
+    }
+
+    // dao demo courant continu
+    suspend fun insertDemoCCLocalDatabase(demo: CourantContinu){
+        demontageCCDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageCCLocalDatabase(): List<DemontageCCEntity >{
+        return demontageCCDao!!.getAll()
+    }
+    suspend fun getByIdDemoCCLocalDatabse(id: String) : CourantContinu? {
+        try {
+            if (demontageCCDao!!.getById(id) !== null) {
+                return demontageCCDao!!.getById(id).toCContinu()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoCCLocalDatabse( demo: DemontageCCEntity){
+        demontageCCDao!!.update(demo)
+    }
+    suspend fun deleteDemontageCCLocalDatabse( demo: DemontageCCEntity){
+        demontageCCDao!!.delete(demo)
     }
 }

@@ -58,5 +58,8 @@ interface APIstb  {
     @PATCH("/fiches/{ficheId}")
     fun patchRemontageCC(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontageCC ): Call<RemontageCCResponse>
 
+    @GET("/fiches/{ficheId}")
+    fun getDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageResponse>
+
 
 }

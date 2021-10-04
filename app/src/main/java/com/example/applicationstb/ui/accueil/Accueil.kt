@@ -30,16 +30,16 @@ class Accueil : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
+        val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         viewModel.token = arguments?.get("Token") as? String
         viewModel.username = arguments?.get("Username") as? String
         if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
             viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
         } else {
-            Log.i("INFO"," pas connecté")
+            val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'êtes pas connecté au réseau Internet.", 3600)
+            mySnackbar.show()
             viewModel.listeFicheLocal()
         }
-
-        val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
         val cht = layout.findViewById<Button>(R.id.btnChantier)
         val dm = layout.findViewById<TextView>(R.id.btnDemo)
@@ -67,7 +67,12 @@ class Accueil : Fragment() {
             viewModel.toFicheR(layout)
         }
         rb.setOnClickListener {
-            viewModel.toBobinage(layout)
+            if (viewModel.chantiers.size > 0) {
+                viewModel.toBobinage(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de bobinages attribués", 3600)
+                mySnackbar.show()
+            }
         }
         rep.setOnClickListener {
             if (list.visibility == View.GONE) {

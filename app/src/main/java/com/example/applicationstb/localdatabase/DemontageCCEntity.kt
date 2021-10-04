@@ -3,6 +3,7 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.CourantContinu
 //import com.example.applicationstb.model.CourantContinu
 import java.util.*
 
@@ -18,7 +19,6 @@ data class DemontageCCEntity (
     var dateDebut: Date?,
     var dureeTotale: Long?,
     var observation: String?,
-    var photo: Array<String>?,
     var typeFicheDemontage: Int,
     var marque: String?,
     var numSerie: Int?,
@@ -70,7 +70,7 @@ data class DemontageCCEntity (
     var tensionExcitation: Int?,
     var intensiteExcitation: Int?
     ){
-        /*fun toCContinu (): CourantContinu {
+        fun toCContinu (): CourantContinu {
             var fiche = CourantContinu(
                 _id,
                 numDevis,
@@ -80,13 +80,12 @@ data class DemontageCCEntity (
                 Client(client,null,null,null),
                 contact,
                 telContact,
-                nu,
-                resp,
+                null,
+                null,
                 dateDebut,
                 dureeTotale,
                 observation,
-                photo,
-                typeFicheDemontage,
+                null,
                 marque,
                 numSerie,
                 puissance,
@@ -138,5 +137,5 @@ data class DemontageCCEntity (
                 intensiteExcitation
             )
             return fiche
-        }*/
+        }
     }
