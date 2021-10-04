@@ -1126,7 +1126,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
                     <Switch
-                        android:id="@+id/switch7"
+                        android:id="@+id/switchSondes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -1136,7 +1136,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/spiPla" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName6"
+                        android:id="@+id/typeSonde"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="348dp"
@@ -1146,7 +1146,7 @@
                         android:hint=" type sonde"
                         android:inputType="textShortMessage|textPersonName"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/switch7" />
+                        app:layout_constraintTop_toBottomOf="@+id/switchSondes" />
 
                     <TextView
                         android:id="@+id/textView39"
@@ -1168,10 +1168,10 @@
                         android:layout_marginBottom="36dp"
                         android:text="Peinture"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/switch9" />
+                        app:layout_constraintStart_toEndOf="@+id/swEqui" />
 
                     <Switch
-                        android:id="@+id/switch8"
+                        android:id="@+id/swPeinture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -1181,7 +1181,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textView40" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName7"
+                        android:id="@+id/ral"
                         android:layout_width="83dp"
                         android:layout_height="36dp"
                         android:layout_marginStart="20dp"
@@ -1191,10 +1191,10 @@
                         android:hint="ral"
                         android:inputType="textShortMessage"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/switch8" />
+                        app:layout_constraintStart_toEndOf="@+id/swPeinture" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName10"
+                        android:id="@+id/coul"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -1204,11 +1204,11 @@
                         android:inputType="textShortMessage"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6"
+                        app:layout_constraintTop_toBottomOf="@+id/typeSonde"
                         app:layout_constraintVertical_bias="0.0" />
 
                     <Switch
-                        android:id="@+id/switch9"
+                        android:id="@+id/swEqui"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"

@@ -42,6 +42,15 @@
         <action
             android:id="@+id/versFullScreen"
             app:destination="@id/schemaFragment" />
+        <argument android:name="token"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="listDemontages"
+            app:argType="com.example.applicationstb.model.DemontageMoteur[]" />
     </fragment>
     <fragment
         android:id="@+id/connexion"

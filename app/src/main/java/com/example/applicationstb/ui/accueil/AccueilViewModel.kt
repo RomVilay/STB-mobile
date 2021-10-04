@@ -237,7 +237,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheD(view: View){
-        Navigation.findNavController(view).navigate(R.id.versFicheD)
+        var action = AccueilDirections.versFicheD(token!!,username!!,demontages!!.toTypedArray())
+        Navigation.findNavController(view).navigate(action)
     }
     fun toFicheR(view: View){
         Navigation.findNavController(view).navigate(R.id.versFicheRemontage)

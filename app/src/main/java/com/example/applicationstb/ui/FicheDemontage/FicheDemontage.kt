@@ -13,6 +13,7 @@ import android.widget.Spinner
 import androidx.fragment.app.*
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
+import java.util.ArrayList
 
 class FicheDemontage : Fragment() {
 
@@ -26,34 +27,42 @@ class FicheDemontage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        var list = arguments?.get("listDemontages") as Array<DemontageMoteur>
+        viewModel.token = arguments?.get("token") as String
+        viewModel.listeDemontages = list.toCollection(ArrayList())
+        viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
-        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.javaClass.name.substring(33)  })
+        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.numFiche  })
         spinner.adapter = adapterDemontages
         var btnDemontage = layout.findViewById<Button>(R.id.selectDemontage)
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
         val fragmentManager = childFragmentManager
         btnDemontage.setOnClickListener {
+            var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
+            viewModel.selection.value = demo
+            //viewModel.photos.value = demo!!.photo!!.toMutableList()
+
             //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
-            viewModel.select(spinner.selectedItemPosition)
             when (viewModel.selection.value){
-                /*is Monophase -> fragmentManager.commit {
-                    replace<MonophaseFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }*/
-                is Triphase -> fragmentManager.commit {
-                    replace<TriphaseFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-                /*is RotorBobine -> fragmentManager.commit {
-                    replace<RotorBobineFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }*/
                 is CourantContinu -> fragmentManager.commit {
                     replace<CCFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-               /* is Alternateur ->fragmentManager.commit {
+                is Triphase -> fragmentManager.commit {
+                    replace<TriphaseFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                /*is Monophase -> fragmentManager.commit {
+                    replace<MonophaseFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+               is RotorBobine -> fragmentManager.commit {
+                    replace<RotorBobineFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+
+                is Alternateur ->fragmentManager.commit {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }

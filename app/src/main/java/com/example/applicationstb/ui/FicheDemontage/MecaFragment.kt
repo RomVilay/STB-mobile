@@ -36,13 +36,14 @@ class MecaFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
         var layout = inflater.inflate(R.layout.fragment_meca, container, false)
         var fiche = viewModel.selection.value as DemontageMoteur
         //couplage
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
         var txtclp = layout.findViewById<EditText>(R.id.autreCpl)
         txtclp.setOnFocusChangeListener { _, hasFocus ->
-           viewModel.setCouplage(txtclp.text.toString())
+           viewModel.selection.value!!.couplage = txtclp.text.toString()
         }
         couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Y","Δ","Autre"))
         couplage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -53,17 +54,17 @@ class MecaFragment : Fragment() {
                     txtclp.visibility = View.VISIBLE
                 } else {
                     txtclp.visibility = View.GONE
-                    viewModel.setCouplage(selection)
+                    viewModel.selection.value!!.couplage = selection
                 }
             }
         }
         //etats flasque
         var etatFlasqueAvant = layout.findViewById<Spinner>(R.id.spiFA)
-        etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("N/A","OK","A contrôler","A rebaguer"))
+        etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
         etatFlasqueAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setFlasques(position+1,"av")
+                viewModel.selection.value!!.flasqueAvant = position
             }
         }
         etatFlasqueAvant.setOnFocusChangeListener{ view, hasFocus ->
@@ -78,7 +79,7 @@ class MecaFragment : Fragment() {
         etatFlasqueArrière.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setFlasques(position+1,"ar")
+                viewModel.selection.value!!.flasqueArriere = position
             }
         }
         // portée roulements
@@ -90,7 +91,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementAvant.selectedItem.toString()
-                    viewModel.setPRoulements("av",position)
+                viewModel.selection.value!!.porteeRAvant = position
                     //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -102,14 +103,19 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementArriere.selectedItem.toString()
-                viewModel.setPRoulements("ar",position)
+                viewModel.selection.value!!.porteeRArriere = position
                 //Log.i("INFO", "roulement arrière:"+)
             }
         }
         //etat bout arbre
         var etatBA = layout.findViewById<Switch>(R.id.switchBA)
         etatBA.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setEtatBA(isChecked)
+                viewModel.selection.value!!.boutArbre = isChecked
+        }
+        //rondelle élastique
+        var PRE = layout.findViewById<Switch>(R.id.switchPRE)
+        PRE.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.rondelleElastique = isChecked
         }
         //roulements
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
@@ -118,13 +124,13 @@ class MecaFragment : Fragment() {
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var type = if (fiche.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementArriere) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
+                var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!!)
                 typeRoulement.setSelection(type)
-                refRoul.setText(fiche.refRoulementArriere)
+                refRoul.setText(viewModel.selection.value!!.refRoulementArriere)
             } else {
-                var type = if (fiche.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
+                var type = if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementAvant!!)
                 typeRoulement.setSelection(type)
-                refRoul.setText(fiche.refRoulementAvant)
+                refRoul.setText(viewModel.selection.value!!.refRoulementAvant)
             }
         }
         typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -134,18 +140,16 @@ class MecaFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeRoulement.selectedItem.toString()
                 if (switchRoullements.isChecked) {
-                    viewModel.setRoulAr(selection)
-                    Log.i("INFO", "roulement arrière:"+fiche.refRoulementArriere)
+                    viewModel.selection.value!!.typeRoulementArriere =  selection
                 } else {
-                    viewModel.setRoulAv(selection)
-                    Log.i("INFO", "roulement avant:"+selection)
+                    viewModel.selection.value!!.typeRoulementAvant = selection
                 }
             }
 
         }
         refRoul.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                if (switchRoullements.isChecked) viewModel.setRefRoul("ar",refRoul.text.toString()) else viewModel.setRefRoul("av",refRoul.text.toString())
+                if (switchRoullements.isChecked) viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString() else  viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
             }
         }
         //joints
@@ -155,13 +159,28 @@ class MecaFragment : Fragment() {
         var refJoints = layout.findViewById<EditText>(R.id.refJoints)
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var type = if (fiche.typeJointArriere == null) 0 else arrayOf<String>("simple lèvre","double lèvre").indexOf(fiche.typeJointArriere) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
+                var type = if (viewModel.selection.value!!.typeJointArriere == null) {
+                    0
+                } else { if (viewModel.selection.value!!.typeJointArriere == false) {
+                        0
+                    } else {
+                    1
+                 }
+                }
                 typeJoints.setSelection(type)
-                refJoints.setText(fiche.refJointArriere)
+                refJoints.setText(viewModel.selection.value!!.refJointArriere)
             } else {
-                var type = if (fiche.typeJointAvant == null) 0 else arrayOf<String>("simple lèvre","double lèvre").indexOf(fiche.typeJointAvant) //arrayOf<String>("","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAv).toString()
-                typeJoints.setSelection(type)
-                refJoints.setText(fiche.refJointAvant)
+                var type = if (viewModel.selection.value!!.typeJointAvant == null) {
+                    0
+                } else {
+                    if (viewModel.selection.value!!.typeJointAvant == false) {
+                        0
+                    } else {
+                        1
+                    }
+                }
+                    typeJoints.setSelection(type)
+                refJoints.setText(viewModel.selection.value!!.refJointAvant)
             }
         }
         typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -187,14 +206,36 @@ class MecaFragment : Fragment() {
         //capot ventilateur
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
         cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
+           if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
         vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Absent"))
-        var socle = layout.findViewById<Spinner>(R.id.spiSocle)
+        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!!)
+            var socle = layout.findViewById<Spinner>(R.id.spiSocle)
         socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        var capot = layout.findViewById<Spinner>(R.id.spiCap)
+        if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!!)
+            var capot = layout.findViewById<Spinner>(R.id.spiCap)
         capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        var plaque = layout.findViewById<Spinner>(R.id.spiPla)
+        if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!!)
+            var plaque = layout.findViewById<Spinner>(R.id.spiPla!!)
         plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Sortie par câbles"))
+        if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!!)
+        var sondes = layout.findViewById<Switch>(R.id.switchSondes)
+        if (viewModel.selection.value!!.presenceSondes !== null) { sondes.isChecked(viewModel.selection.value!!.presenceSondes!!) }  else {sondes.isChecked(false)}
+        sondes.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.presenceSondes = isChecked
+        }
+        var typeSondes = layout.findViewById<EditText>(R.id.typeSonde)
+        typeSondes.setText(viewModel.selection.value!!.typeSondes)
+        typeSondes.onFocusChangeListener {
+            viewModel.selection.value!!.typeSondes = typeSondes.text
+        }
+        var equi = layout.findViewById<Switch>(R.id.swEqui)
+        if (viewModel.selection.value!!.equilibrage !== null) equi.isChecked(viewModel.selection.value!!.equilibrage)
+        equi.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.equilibrage = isChecked
+        }
+        var peint = layout.findViewById<Switch>(R.id.swPeinture)
+        if (viewModel.selection.value!!.peinture !== null) peint.isChecked(viewModel.selection.value!!.peinture)
         return layout
     }
 
