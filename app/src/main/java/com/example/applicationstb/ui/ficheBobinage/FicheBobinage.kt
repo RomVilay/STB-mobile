@@ -130,12 +130,17 @@ class FicheBobinage : Fragment() {
         schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
         viewModel.schemas.observe(viewLifecycleOwner, {
-          /*  sAdapter.update(it)
-            if ( viewModel.schemas.value?.size == 0){
-                schemas.visibility = View.GONE
+            Log.i("INFO",viewModel.schemas.value?.size.toString())
+            if (viewModel.schemas.value !== null) {
+                sAdapter.update(viewModel.schemas.value!!)
+                if (viewModel.schemas.value?.size == 0) {
+                    schemas.visibility = View.GONE
+                } else {
+                    schemas.visibility = View.VISIBLE
+                }
             } else {
-                schemas.visibility = View.VISIBLE
-            }*/
+                viewModel.schemas.value = mutableListOf()
+            }
         })
         viewModel.bobinage.observe(viewLifecycleOwner,{
             var bobinage = viewModel.bobinage.value
@@ -344,15 +349,33 @@ class FicheBobinage : Fragment() {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+                schemas.visibility = View.VISIBLE
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+                schemas.visibility = View.VISIBLE
+            }
         }
+    }
+
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 
     /*private fun galleryAddPic() {
@@ -364,19 +387,19 @@ class FicheBobinage : Fragment() {
     }*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PHOTO_RESULT) {
+        /*if (requestCode == PHOTO_RESULT) {
             val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            /*val uri = context?.let { photo.saveImage(it.applicationContext) }
+            val uri = context?.let { photo.saveImage(it.applicationContext) }
             if (uri != null) {
-                viewModel.addSchema(uri)
+                viewModel.addSchema(0,uri)
             }
-            Log.i("INFO",uri.toString())*/
-        }
+            Log.i("INFO",uri.toString())
+        }*/
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            viewModel.addSchema(Uri.parse(currentPhotoPath))
+            viewModel.addSchema(0,Uri.parse(currentPhotoPath))
             //galleryAddPic()
         }
     }

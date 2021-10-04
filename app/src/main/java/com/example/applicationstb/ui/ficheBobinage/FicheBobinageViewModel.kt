@@ -79,7 +79,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                             Log.i("INFO", "${resp.fiche!!._id}")
                             bobinage.value = resp.fiche
                             sections.value = bobinage.value!!.sectionsFils
-                            schemas.value = bobinage.value!!.schemas
+                            schemas.value = mutableListOf()
                         }
                     } else {
                         Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
@@ -104,11 +104,11 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
 
-    fun addSchema(schema: Uri) {
-        var list = schemas.value
-        list!!.add(schema.toString())
+    /*fun addSchema(schema: Uri) {
+        var list = schemas.value!!
+        list.add(schema.toString())
         schemas.value = list
-    }
+    }*/
 
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { Math.sqrt(it.diametre) * (Math.PI / 4) * it.nbBrins }
@@ -128,6 +128,10 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     fun setSchema(sch: String) {
         schema.value = sch
         Log.i("INFO", sch.toString())
+    }
+
+    fun addSchema(index:Int,photo: Uri) {
+        schemas.value!!.add(photo.toString())
     }
 
     fun fullScreen(view: View, uri: String) {

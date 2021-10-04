@@ -59,7 +59,7 @@ class Accueil : Fragment() {
             if (viewModel.chantiers.size > 0) {
                 viewModel.toChantier(layout)
             } else {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de chantiers attribués", 60)
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de chantiers attribués", 3600)
                 mySnackbar.show()
             }
         }

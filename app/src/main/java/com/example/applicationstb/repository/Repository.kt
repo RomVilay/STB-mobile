@@ -1265,6 +1265,7 @@ class Repository (var context:Context) {
     }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
+
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
