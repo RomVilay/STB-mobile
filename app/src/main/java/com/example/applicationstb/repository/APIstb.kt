@@ -34,4 +34,29 @@ interface APIstb  {
     @PATCH("/fiches/{ficheId}")
     fun patchBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyBobinage ): Call<BobinageResponse>
 
+    @GET("/fiches/{ficheId}")
+    fun getDemontageTriphase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageTriphaseResponse>
+
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageTriphase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageTriphase ): Call<DemontageTriphaseResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemontageCC(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageCCResponse>
+
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageCC(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageCC ): Call<DemontageCCResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getRemontageTriphase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageTriphaseResponse>
+
+    @PATCH("/fiches/{ficheId}")
+    fun patchRemontageTriphase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontageTriphase ): Call<RemontageTriphaseResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getRemontageCC(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageCCResponse>
+
+    @PATCH("/fiches/{ficheId}")
+    fun patchRemontageCC(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontageCC ): Call<RemontageCCResponse>
+
+
 }

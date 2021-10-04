@@ -35,6 +35,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var context = getApplication<Application>().applicationContext
     var chantiers: MutableList<Chantier> = mutableListOf();
     var bobinages: MutableList<Bobinage> = mutableListOf();
+    var demontages: MutableList<DemontageMoteur> = mutableListOf();
+    var remontages: MutableList<Remontage> = mutableListOf();
     fun listeFiches(token: String, userid: String){
         val resp = repository.getFichesUser(token, userid, object: Callback<FichesResponse> {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {

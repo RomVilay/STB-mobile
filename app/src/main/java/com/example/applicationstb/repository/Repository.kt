@@ -176,6 +176,678 @@ class BodyBobinage(var marqueMoteur : String?,
     }
 }
 
+class BodyDemontageTriphase ( var marque: String?,
+                      var numSerie: Int?,
+                      var puissance: Float?,
+                      var bride: Float?,
+                      var vitesse : Float?,
+                      var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
+                      var accouplement:Boolean?,
+                      var coteAccouplement:String?,
+                      var clavette: Boolean?,
+                      var aspect:Int?,
+                      var aspectInterieur:Int?,
+                      var couplage:String?,
+                      var flasqueAvant: Int?,
+                      var flasqueArriere: Int?,
+                      var porteeRAvant: Int?,
+                      var porteeRArriere:  Int?,
+                      var boutArbre: Boolean?,
+                      var rondelleElastique: Boolean?,
+                      var refRoulementAvant: String?,
+                      var refRoulementArriere: String?,
+                      var typeRoulementAvant: String ?,
+                      var typeRoulementArriere: String ?,
+                      var refJointAvant: String?,
+                      var refJointArriere: String?,
+                      var typeJointAvant: Boolean?,
+                      var typeJointArriere: Boolean?,
+                      var ventilateur: Int?,
+                      var capotV: Int?,
+                      var socleBoiteABorne : Int?,
+                      var capotBoiteABorne : Int?,
+                      var plaqueABorne : Int?,
+                      var presenceSondes: Boolean ?,
+                      var typeSondes: String?,
+                      var equilibrage: Boolean?,
+                      var peinture : String?,
+                      var isolementPhaseMasseStatorUM: Int?,
+                      var isolementPhaseMasseStatorVM: Int?,
+                      var isolementPhaseMasseStatorWM: Int?,
+                      var isolementPhasePhaseStatorUV: Int?,
+                      var isolementPhasePhaseStatorVW: Int?,
+                      var isolementPhasePhaseStatorUW: Int?,
+                      var resistanceStatorU: Int?,
+                      var resistanceStatorV: Int?,
+                      var resistanceStatorW: Int?,
+                      var tensionU: Int?,
+                      var tensionV: Int?,
+                      var tensionW: Int?,
+                      var intensiteU: Int?,
+                      var intensiteV: Int?,
+                      var intensiteW: Int?,
+                      var dureeEssai: Int?,
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(marque!!)
+        parcel.writeInt(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeInt(aspect!!)
+        parcel.writeInt(aspectInterieur!!)
+        parcel.writeString(couplage!!)
+        parcel.writeInt(flasqueAvant!!)
+        parcel.writeInt(flasqueArriere!!)
+        parcel.writeInt(porteeRAvant!!)
+        parcel.writeInt(porteeRArriere!!)
+        parcel.writeBoolean(boutArbre!!)
+        parcel.writeBoolean(rondelleElastique!!)
+        parcel.writeString(refRoulementAvant!!)
+        parcel.writeString(refRoulementArriere!!)
+        parcel.writeString(typeRoulementAvant!!)
+        parcel.writeString(typeRoulementArriere!!)
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeInt(ventilateur!!)
+        parcel.writeInt(capotV!!)
+        parcel.writeInt(socleBoiteABorne!!)
+        parcel.writeInt(capotBoiteABorne!!)
+        parcel.writeInt(plaqueABorne!!)
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes!!)
+        parcel.writeBoolean(equilibrage!!)
+        parcel.writeString(peinture!!)
+        parcel.writeInt(isolementPhaseMasseStatorUM!!)
+        parcel.writeInt(isolementPhaseMasseStatorVM!!)
+        parcel.writeInt(isolementPhaseMasseStatorWM!!)
+        parcel.writeInt(isolementPhasePhaseStatorUV!!)
+        parcel.writeInt(isolementPhasePhaseStatorVW!!)
+        parcel.writeInt(isolementPhasePhaseStatorUW!!)
+        parcel.writeInt(resistanceStatorU!!)
+        parcel.writeInt(resistanceStatorV!!)
+        parcel.writeInt(resistanceStatorW!!)
+        parcel.writeInt(tensionU!!)
+        parcel.writeInt(tensionV!!)
+        parcel.writeInt(tensionW!!)
+        parcel.writeInt(intensiteU!!)
+        parcel.writeInt(intensiteV!!)
+        parcel.writeInt(intensiteW!!)
+        parcel.writeInt(dureeEssai!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemontageTriphase> {
+        override fun createFromParcel(parcel: Parcel): BodyDemontageTriphase {
+            return BodyDemontageTriphase(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemontageTriphase?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyDemontageCC ( var marque: String?,
+                              var numSerie: Int?,
+                              var puissance: Float?,
+                              var bride: Float?,
+                              var vitesse : Float?,
+                              var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
+                              var accouplement:Boolean?,
+                              var coteAccouplement:String?,
+                              var clavette: Boolean?,
+                              var aspect:Int?,
+                              var aspectInterieur:Int?,
+                              var couplage:String?,
+                              var flasqueAvant: Int?,
+                              var flasqueArriere: Int?,
+                              var porteeRAvant: Int?,
+                              var porteeRArriere:  Int?,
+                              var boutArbre: Boolean?,
+                              var rondelleElastique: Boolean?,
+                              var refRoulementAvant: String?,
+                              var refRoulementArriere: String?,
+                              var typeRoulementAvant: String ?,
+                              var typeRoulementArriere: String ?,
+                              var refJointAvant: String?,
+                              var refJointArriere: String?,
+                              var typeJointAvant: Boolean?,
+                              var typeJointArriere: Boolean?,
+                              var ventilateur: Int?,
+                              var capotV: Int?,
+                              var socleBoiteABorne : Int?,
+                              var capotBoiteABorne : Int?,
+                              var plaqueABorne : Int?,
+                              var presenceSondes: Boolean ?,
+                              var typeSondes: String?,
+                              var equilibrage: Boolean?,
+                              var peinture : String?,
+                              var isolationMasseInduit: Int?,
+                        var isolationMassePolesPrincipaux: Int?,
+                        var isolationMassePolesAuxilliaires: Int?,
+                        var isolationMassePolesCompensatoires: Int?,
+                        var isolationMassePorteBalais: Int?,
+                        var resistanceInduit: Int?,
+                        var resistancePP: Int?,
+                        var resistancePA: Int?,
+                        var resistancePC: Int?,
+    /* essais dynamiques */
+                        var tensionInduit: Int?,
+                        var intensiteInduit: Int?,
+                        var tensionExcitation: Int?,
+                        var intensiteExcitation: Int?,
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(marque!!)
+        parcel.writeInt(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeInt(aspect!!)
+        parcel.writeInt(aspectInterieur!!)
+        parcel.writeString(couplage!!)
+        parcel.writeInt(flasqueAvant!!)
+        parcel.writeInt(flasqueArriere!!)
+        parcel.writeInt(porteeRAvant!!)
+        parcel.writeInt(porteeRArriere!!)
+        parcel.writeBoolean(boutArbre!!)
+        parcel.writeBoolean(rondelleElastique!!)
+        parcel.writeString(refRoulementAvant!!)
+        parcel.writeString(refRoulementArriere!!)
+        parcel.writeString(typeRoulementAvant!!)
+        parcel.writeString(typeRoulementArriere!!)
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeInt(ventilateur!!)
+        parcel.writeInt(capotV!!)
+        parcel.writeInt(socleBoiteABorne!!)
+        parcel.writeInt(capotBoiteABorne!!)
+        parcel.writeInt(plaqueABorne!!)
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes!!)
+        parcel.writeBoolean(equilibrage!!)
+        parcel.writeString(peinture!!)
+        parcel.writeInt(isolationMasseInduit!!)
+        parcel.writeInt(isolationMassePolesPrincipaux!!)
+        parcel.writeInt(isolationMassePolesAuxilliaires!!)
+        parcel.writeInt(isolationMassePolesCompensatoires!!)
+        parcel.writeInt(isolationMassePorteBalais!!)
+        parcel.writeInt(resistanceInduit!!)
+        parcel.writeInt(resistancePP!!)
+        parcel.writeInt(resistancePA!!)
+        parcel.writeInt(resistancePC!!)
+        parcel.writeInt(tensionInduit!!)
+        parcel.writeInt(tensionV!!)
+        parcel.writeInt(intensiteInduit!!)
+        parcel.writeInt(tensionExcitation!!)
+        parcel.writeInt(intensiteExcitation!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemontageCC> {
+        override fun createFromParcel(parcel: Parcel): BodyDemontageCC {
+            return BodyDemontageCC(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemontageCC?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyRemontageTriphase (  var remontageRoulement: Int?,
+                               var collageRoulementPorteeArbre: Int?,
+                               var collageRoulementPorteeFlasque: Int?,
+                               var verificationFixationCouronne: Boolean?,
+                               var verificationIsolementPorteBalais: Boolean?,
+                               var isolementPorteBalaisV: Int?,
+                               var isolementPorteBalaisOhm: Int?,
+                               var tensionStatorInducteurs: Boolean?,
+                               var tensionStatorInducteursU: Float?,
+                               var tensionStatorInducteursV: Float?,
+                               var tensionStatorInducteursW: Float?,
+                               var intensiteStatorInducteur: Boolean?,
+                               var intensiteStatorInducteurU: Float?,
+                               var intensiteStatorInducteurV: Float?,
+                               var intensiteStatorInducteurW: Float?,
+                               var tensionInduitRotor: Boolean?,
+                               var tensionInduitRotorU: Float?,
+                               var tensionInduitRotorV: Float?,
+                               var tensionInduitRotorW: Float?,
+                               var intensiteInduit: Boolean,
+                               var intensiteInduitU: Float?,
+                               var vitesseU: Float?,
+                               var puissanceU: Float?,
+                               var dureeEssai: Float?,
+                               var sensRotation: Int?,
+                               var vitesse1V: Float?,  // vitesse 1v
+                               var acceleration1V: Float?,  //accélération 1v
+                               var vitesse2V: Float?,  // vitesse 2v
+                               var acceleration2V: Float?,  //accélération 2v
+                               var vitesse1H: Float?,  // vitesse 1H
+                               var acceleration1H: Float?,  //accélération 1H
+                               var vitesse2H: Float?,  // vitesse 2H
+                               var acceleration2H: Float?,  //accélération 2H
+                               var vitesse2A: Float?,  // vitesse 2A
+                               var acceleration2A: Float?,  //accélération 2A
+                               var isolementPhaseMasse: Float?,
+                               var isolementPhase: Float?,
+                               var resistanceStatorU: Float?,
+                               var resistanceStatorV: Float?,
+                               var resistanceStatorW: Float?,
+                               var isolementPMStatorU: Float?,
+                               var isolementPMStatorV: Float?,
+                               var isolementPMStatorW: Float?,
+                               var isolementPMRotorU: Float?,
+                               var isolementPMRotorV: Float?,
+                               var isolementPMRotorW: Float?,
+                               var isolementPhaseStatorUV: Float?,
+                               var isolementPhaseStatorVW: Float?,
+                               var isolementPhaseStatorUW: Float?,
+                               var isolementPhaseRotorUV: Float?,
+                               var isolementPhaseRotorVW: Float?,
+                               var isolementPhaseRotorUW: Float?,
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(remontageRoulement!!),
+        parcel.writeInt(collageRoulementPorteeArbre!!),
+        parcel.writeInt(collageRoulementPorteeFlasque!!),
+        parcel.writeBoolean(verificationFixationCouronne!!),
+        parcel.writeBoolean(verificationIsolementPorteBalais!!),
+        parcel.writeInt(isolementPorteBalaisV!!),
+        parcel.writeInt(isolementPorteBalaisOhm!!),
+        parcel.writeBoolean(tensionStatorInducteurs!!),
+        parcel.writeFloat(tensionStatorInducteursU!!),
+        parcel.writeFloat(tensionStatorInducteursV!!),
+        parcel.writeFloat(tensionStatorInducteursW!!),
+        parcel.writeBoolean(intensiteStatorInducteur!!),
+        parcel.writeFloat(intensiteStatorInducteurU!!),
+        parcel.writeFloat(intensiteStatorInducteurV!!),
+        parcel.writeFloat(intensiteStatorInducteurW!!),
+        parcel.writeBoolean(tensionInduitRotor!!),
+        parcel.writeFloat(tensionInduitRotorU!!),
+        parcel.writeFloat(tensionInduitRotorV!!),
+        parcel.writeFloat(tensionInduitRotorW!!),
+        parcel.writeBoolean(intensiteInduit!!),
+        parcel.writeFloat(intensiteInduitU!!),
+        parcel.writeFloat(vitesseU!!),
+        parcel.writeFloat(puissanceU!!),
+        parcel.writeFloat(dureeEssai!!),
+        parcel.writeInt(sensRotation!!),
+        parcel.writeFloat(vitesse1V!!),
+        parcel.writeFloat(acceleration1V!!),
+        parcel.writeFloat(vitesse2V!!),
+        parcel.writeFloat(acceleration2V!!),
+        parcel.writeFloat(vitesse1H!!),
+        parcel.writeFloat(acceleration1H!!),
+        parcel.writeFloat(vitesse2H!!),
+        parcel.writeFloat(acceleration2H!!),
+        parcel.writeFloat(vitesse2A!!),
+        parcel.writeFloat(acceleration2A!!),
+        parcel.writeFloat(isolementPhaseMasse!!),
+        parcel.writeFloat(isolementPhase!!),
+        parcel.writeFloat(resistanceStatorU!!),
+        parcel.writeFloat(resistanceStatorV!!),
+        parcel.writeFloat(resistanceStatorW!!),
+        parcel.writeFloat(isolementPMStatorU!!),
+        parcel.writeFloat(isolementPMStatorV!!),
+        parcel.writeFloat(isolementPMStatorW!!),
+        parcel.writeFloat(isolementPMRotorU!!),
+        parcel.writeFloat(isolementPMRotorV!!),
+        parcel.writeFloat(isolementPMRotorW!!),
+        parcel.writeFloat(isolementPhaseStatorUV!!),
+        parcel.writeFloat(isolementPhaseStatorVW!!),
+        parcel.writeFloat(isolementPhaseRotorUW!!),
+        parcel.writeFloat(isolementPhaseStatorUV!!),
+        parcel.writeFloat(isolementPhaseStatorVW!!),
+        parcel.writeFloat(isolementPhaseRotorUW!!),
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyRemontageTriphase> {
+        override fun createFromParcel(parcel: Parcel): BodyRemontageTriphase {
+            return BodyRemontageTriphase(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyRemontageTriphase?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyRemontageCC (  var remontageRoulement: Int?,
+                               var collageRoulementPorteeArbre: Int?,
+                               var collageRoulementPorteeFlasque: Int?,
+                               var verificationFixationCouronne: Boolean?,
+                               var verificationIsolementPorteBalais: Boolean?,
+                               var isolementPorteBalaisV: Int?,
+                               var isolementPorteBalaisOhm: Int?,
+                               var tensionStatorInducteurs: Boolean?,
+                               var tensionStatorInducteursU: Float?,
+                               var tensionStatorInducteursV: Float?,
+                               var tensionStatorInducteursW: Float?,
+                               var intensiteStatorInducteur: Boolean?,
+                               var intensiteStatorInducteurU: Float?,
+                               var intensiteStatorInducteurV: Float?,
+                               var intensiteStatorInducteurW: Float?,
+                               var tensionInduitRotor: Boolean?,
+                               var tensionInduitRotorU: Float?,
+                               var tensionInduitRotorV: Float?,
+                               var tensionInduitRotorW: Float?,
+                               var intensiteInduit: Boolean,
+                               var intensiteInduitU: Float?,
+                               var vitesseU: Float?,
+                               var puissanceU: Float?,
+                               var dureeEssai: Float?,
+                               var sensRotation: Int?,
+                               var vitesse1V: Float?,  // vitesse 1v
+                               var acceleration1V: Float?,  //accélération 1v
+                               var vitesse2V: Float?,  // vitesse 2v
+                               var acceleration2V: Float?,  //accélération 2v
+                               var vitesse1H: Float?,  // vitesse 1H
+                               var acceleration1H: Float?,  //accélération 1H
+                               var vitesse2H: Float?,  // vitesse 2H
+                               var acceleration2H: Float?,  //accélération 2H
+                               var vitesse2A: Float?,  // vitesse 2A
+                               var acceleration2A: Float?,  //accélération 2A
+                         var resistanceInducteurs: Float?,
+                         var resistanceInduit: Float?,
+                         var isolementInducteursMasse: Float?,
+                         var isolementInduitMasse: Float?,
+                         var isolementInduitInducteurs: Float?,
+                         var releveIsoInducteursMasse: Float?,
+                         var releveIsoInduitMasse: Float?,
+                         var releveIsoInduitInducteurs: Float?,
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(remontageRoulement!!),
+        parcel.writeInt(collageRoulementPorteeArbre!!),
+        parcel.writeInt(collageRoulementPorteeFlasque!!),
+        parcel.writeBoolean(verificationFixationCouronne!!),
+        parcel.writeBoolean(verificationIsolementPorteBalais!!),
+        parcel.writeInt(isolementPorteBalaisV!!),
+        parcel.writeInt(isolementPorteBalaisOhm!!),
+        parcel.writeBoolean(tensionStatorInducteurs!!),
+        parcel.writeFloat(tensionStatorInducteursU!!),
+        parcel.writeFloat(tensionStatorInducteursV!!),
+        parcel.writeFloat(tensionStatorInducteursW!!),
+        parcel.writeBoolean(intensiteStatorInducteur!!),
+        parcel.writeFloat(intensiteStatorInducteurU!!),
+        parcel.writeFloat(intensiteStatorInducteurV!!),
+        parcel.writeFloat(intensiteStatorInducteurW!!),
+        parcel.writeBoolean(tensionInduitRotor!!),
+        parcel.writeFloat(tensionInduitRotorU!!),
+        parcel.writeFloat(tensionInduitRotorV!!),
+        parcel.writeFloat(tensionInduitRotorW!!),
+        parcel.writeBoolean(intensiteInduit!!),
+        parcel.writeFloat(intensiteInduitU!!),
+        parcel.writeFloat(vitesseU!!),
+        parcel.writeFloat(puissanceU!!),
+        parcel.writeFloat(dureeEssai!!),
+        parcel.writeInt(sensRotation!!),
+        parcel.writeFloat(vitesse1V!!),
+        parcel.writeFloat(acceleration1V!!),
+        parcel.writeFloat(vitesse2V!!),
+        parcel.writeFloat(acceleration2V!!),
+        parcel.writeFloat(vitesse1H!!),
+        parcel.writeFloat(acceleration1H!!),
+        parcel.writeFloat(vitesse2H!!),
+        parcel.writeFloat(acceleration2H!!),
+        parcel.writeFloat(vitesse2A!!),
+        parcel.writeFloat(acceleration2A!!),
+        parcel.writeFloat(resistanceInducteurs!!),
+        parcel.writeFloat(resistanceInduit!!),
+        parcel.writeFloat(isolementInducteursMasse!!),
+        parcel.writeFloat(isolementInduitMasse!!),
+        parcel.writeFloat(isolementInduitInducteurs!!),
+        parcel.writeFloat(releveIsoInducteursMasse!!),
+        parcel.writeFloat(releveIsoInduitMasse!!),
+        parcel.writeFloat(releveIsoInduitInducteurs!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyRemontageCC> {
+        override fun createFromParcel(parcel: Parcel): BodyRemontageCC {
+            return BodyRemontageCC(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyRemontageCC?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 class LoginResponse(
     @field:Json(name = "auth-token")
     var token:String?,
@@ -190,6 +862,18 @@ class ChantierResponse(
 )
 class BobinageResponse(
     var fiche:Bobinage?
+)
+class DemontageTriphaseResponse(
+    var fiche: Triphase?
+)
+class DemontageCCResponse(
+    var fiche: CourantContinu?
+)
+class RemontageTriphaseResponse(
+    var fiche: RemontageTriphase?
+)
+class RemontageCCResponse(
+    var fiche: RemontageCourantC?
 )
 class VehiculesResponse(
     var vehicule:Vehicule?
@@ -261,6 +945,85 @@ class Repository (var context:Context) {
     fun getBobinage(token:String,ficheId:String, callback:Callback<BobinageResponse>){
         var call = service.getBobinage(token,ficheId)
         var fiche:Bobinage? = null
+        call.enqueue(callback)
+    }
+    fun getDemontageTriphase(token:String,ficheId, callback: Callback<DemontageTriphaseResponse>){
+        var call = service.getDemontageTriphase(token,ficheId)
+        var fiche:Triphase? = null
+        call.enqueue(callback)
+    }
+    fun patchDemontageTriphase(token:String,ficheId:String, triphase:Triphase, callback:Callback<ChantierResponse>){
+        var body = BodyDemontageTriphase(
+            triphase.marque,
+            triphase.numSerie,
+            triphase.puissance,
+            triphase.bride,
+            triphase.vitesse,
+            triphase.arbreSortantEntrant,
+            triphase.accouplement,
+            triphase.coteAccouplement,
+            triphase.clavette,
+            triphase.aspect,
+            triphase.aspectInterieur,
+            triphase.couplage,
+            triphase.flasqueAvant,
+            triphase.flasqueArriere,
+            triphase.porteeRAvant,
+            triphase.porteeRArriere,
+            triphase.boutArbre,
+            triphase.rondelleElastique,
+            triphase.refRoulementAvant,
+            triphase.refRoulementArriere,
+            triphase.typeRoulementAvant,
+            triphase.typeRoulementArriere,
+            triphase.refJointAvant,
+            triphase.refJointAvant,
+            triphase.typeJointAvant,
+            triphase.typeJointArriere,
+            triphase.ventilateur,
+            triphase.capotV,
+            triphase.socleBoiteABorne,
+            triphase.capotBoiteABorne,
+            triphase.plaqueABorne,
+            triphase.presenceSondes,
+            triphase.typeSondes,
+            triphase.equilibrage,
+            triphase.peinture,
+            triphase.isolementPhaseMasseStatorUM,
+            triphase.isolementPhaseMasseStatorVM,
+            triphase.isolementPhaseMasseStatorWM,
+            triphase.isolementPhasePhaseStatorUV,
+            triphase.isolementPhasePhaseStatorVW,
+            triphase.isolementPhasePhaseStatorUW,
+            triphase.resistanceStatorU,
+            triphase.resistanceStatorV,
+            triphase.resistanceStatorW,
+            triphase.tensionU,
+            triphase.tensionV,
+            triphase.tensionW,
+            triphase.intensiteU,
+            triphase.intensiteV,
+            triphase.intensiteW,
+            triphase.dureeEssai
+        )
+        var call = service.patchChantier(token,ficheId,body)
+        var fiche:Chantier? = null
+        call.enqueue(callback)
+    }
+
+    fun getDemontageCC(token:String,ficheId, callback: Callback<DemontageCCResponse>){
+        var call = service.getDemontageCC(token,ficheId)
+        var fiche:CourantContinu? = null
+        call.enqueue(callback)
+    }
+    fun getRemontageCC(token:String,ficheId, callback: Callback<RemontageCCResponse>){
+        var call = service.getRemontageCC(token,ficheId)
+        var fiche:RemontageCourantC? = null
+        call.enqueue(callback)
+    }
+    fun getRemontageTriphase(token:String,ficheId, callback: Callback<RemontageTriphaseResponse>){
+        var call = service.getRemontageTriphase(token,ficheId)
+        var fiche:RemontageTriphase? = null
         call.enqueue(callback)
     }
     fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
