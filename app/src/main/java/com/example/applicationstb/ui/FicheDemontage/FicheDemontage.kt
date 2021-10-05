@@ -43,7 +43,7 @@ class FicheDemontage : Fragment() {
             viewModel.selection.value = demo
             //viewModel.photos.value = demo!!.photo!!.toMutableList()
 
-            //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
+            Log.i("INFO","demontage ${viewModel.selection.value!!.javaClass.name}")
             when (viewModel.selection.value){
                 is CourantContinu -> fragmentManager.commit {
                     replace<CCFragment>(R.id.fragmentContainer)

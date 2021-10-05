@@ -95,8 +95,9 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -119,7 +120,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -141,7 +143,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -193,8 +196,9 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:hint="val"
-                            android:inputType="number"
                             android:padding="5dp" />
 
                         <TextView
@@ -217,7 +221,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -239,7 +244,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -281,7 +287,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -304,7 +311,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -326,7 +334,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -358,7 +367,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -379,7 +389,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -402,7 +413,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -441,7 +453,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -462,7 +475,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -485,7 +499,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:hint="val"
-                            android:inputType="number"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -512,6 +527,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:hint="val"
                         android:inputType="number"
                         android:padding="5dp"
@@ -1249,7 +1265,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/editTextTextMultiLine"
+                        android:id="@+id/obs2"
                         android:layout_width="648dp"
                         android:layout_height="92dp"
                         android:ems="10"
@@ -1267,10 +1283,10 @@
                         android:layout_marginTop="12dp"
                         android:text="ajouter une photo"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
                     <Button
-                        android:id="@+id/enregistrerMono"
+                        android:id="@+id/enregistrerTRi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="104dp"
@@ -1278,11 +1294,11 @@
                         android:layout_marginTop="204dp"
                         android:text="Enregistrer"
                         app:backgroundTint="#164081"
-                        app:layout_constraintStart_toEndOf="@+id/retourMono"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintStart_toEndOf="@+id/retourTri"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
                     <Button
-                        android:id="@+id/retourMono"
+                        android:id="@+id/retourTri"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="164dp"
@@ -1291,7 +1307,7 @@
                         android:text="Retour"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerPhoto"

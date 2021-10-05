@@ -1308,7 +1308,7 @@
                         android:layout_marginTop="12dp"
                         android:text="ajouter une photo"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerPhoto"
@@ -1335,7 +1335,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/editTextTextMultiLine"
+                        android:id="@+id/obs2"
                         android:layout_width="648dp"
                         android:layout_height="92dp"
                         android:ems="10"
@@ -1354,7 +1354,7 @@
                         android:text="Enregistrer"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toEndOf="@+id/retourAlt"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
                     <Button
                         android:id="@+id/retourAlt"
@@ -1366,7 +1366,7 @@
                         android:text="Retour"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>

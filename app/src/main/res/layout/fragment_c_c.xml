@@ -1200,18 +1200,18 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/enregistrerMono"
+                        android:id="@+id/enregistrerTRi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="92dp"
                         android:layout_marginLeft="92dp"
                         android:text="Enregistrer"
                         app:backgroundTint="#164081"
-                        app:layout_constraintStart_toEndOf="@+id/retourMono"
+                        app:layout_constraintStart_toEndOf="@+id/retourTri"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
 
                     <Button
-                        android:id="@+id/retourMono"
+                        android:id="@+id/retourTri"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="172dp"

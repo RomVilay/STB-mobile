@@ -15,9 +15,15 @@ import org.json.JSONArray
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.applicationstb.repository.BobinageResponse
+import com.example.applicationstb.repository.DemontageCCResponse
+import com.example.applicationstb.repository.DemontageTriphaseResponse
 import com.example.applicationstb.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FicheDemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
@@ -128,10 +134,87 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
-    fun enregistrer(view:View){
-        Log.i("Info",selection.value.toString())
-        var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
-        Navigation.findNavController(view).navigate(action)
+    fun enregistrer(){
+        if (selection.value!!.typeFicheDemontage == 6)  {
+            var t = selection.value!! as Triphase
+            if (isOnline(context))   {
+                    val resp = repository.patchDemontageTriphase(
+                        token!!,
+                        selection.value!!._id,
+                        t,
+                        object : Callback<DemontageTriphaseResponse> {
+                            override fun onResponse(
+                                call: Call<DemontageTriphaseResponse>,
+                                response: Response<DemontageTriphaseResponse>
+                            ) {
+                                if (response.code() == 200) {
+                                    val resp = response.body()
+                                    if (resp != null) {
+                                        Log.i("INFO", "enregistré")
+                                    }
+                                } else {
+                                    Log.i(
+                                        "INFO",
+                                        "code : ${response.code()} - erreur : ${response.message()}"
+                                    )
+                                }
+                            }
+
+                            override fun onFailure(call: Call<DemontageTriphaseResponse>, t: Throwable) {
+                                Log.e("Error", "erreur ${t.message}")
+                            }
+                        })
+                } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                    if (tri !== null ) {
+                        repository.updateDemoTriLocalDatabse(t.toEntity())
+                    } else  {
+                        repository.insertDemoTriLocalDatabase(t)
+                        }
+                    }
+                }
+            }
+        if (selection.value!!.typeFicheDemontage == 5)  {
+            var c = selection.value!! as CourantContinu
+            if (isOnline(context))   {
+                val resp = repository.patchDemontageCC(
+                    token!!,
+                    selection.value!!._id,
+                    c,
+                    object : Callback<DemontageCCResponse> {
+                        override fun onResponse(
+                            call: Call<DemontageCCResponse>,
+                            response: Response<DemontageCCResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    Log.i("INFO", "demontage enregistré")
+                                }
+                            } else {
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DemontageCCResponse>, t: Throwable) {
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var tri = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                    if (tri !== null ) {
+                        repository.updateDemoCCLocalDatabse(c.toEntity())
+                    } else  {
+                        repository.insertDemoCCLocalDatabase(c)
+                    }
+                }
+            }
+        }
     }
 
     fun isOnline(context: Context): Boolean {

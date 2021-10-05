@@ -1,15 +1,11 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +26,6 @@ import com.example.applicationstb.R
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,8 +55,8 @@ class MonophaseFragment : Fragment() {
         var infos = layout.findViewById<CardView>(R.id.infoMoteur)
         var essais = layout.findViewById<CardView>(R.id.essais)
         var meca = layout.findViewById<CardView>(R.id.meca)
-        var retour = layout.findViewById<Button>(R.id.retourMono)
-        var enregistrer = layout.findViewById<Button>(R.id.enregistrerMono)
+        var retour = layout.findViewById<Button>(R.id.retourTri)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
 
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
 
@@ -82,7 +77,7 @@ class MonophaseFragment : Fragment() {
             viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
-            viewModel.enregistrer(layout)
+
         }
         /*var listePhotos = layout.findViewById<Button>(R.id.recyclerPhoto2)
         listePhotos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

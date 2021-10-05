@@ -103,7 +103,7 @@ class AlternateurFragment : Fragment() {
             viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
-            viewModel.enregistrer(layout)
+
         }
         val fmanager = childFragmentManager
         fmanager.commit {
