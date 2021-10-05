@@ -14,18 +14,9 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.DemontageMoteur
 import android.util.Log
 import android.widget.*
+import androidx.core.widget.doAfterTextChanged
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MecaFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MecaFragment : Fragment() {
 
     private val viewModel: FicheDemontageViewModel by activityViewModels()
@@ -147,10 +138,13 @@ class MecaFragment : Fragment() {
             }
 
         }
-        refRoul.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (switchRoullements.isChecked) viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString() else  viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
-            }
+        refRoul.doAfterTextChanged {
+
+                if (switchRoullements.isChecked) {
+                    viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
+                } else  {
+                    viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
+                }
         }
         //joints
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
@@ -173,7 +167,7 @@ class MecaFragment : Fragment() {
                 var type = if (viewModel.selection.value!!.typeJointAvant == null) {
                     0
                 } else {
-                    if (viewModel.selection.value!!.typeJointAvant == false) {
+                    if (viewModel.selection.value!!.typeJointAvant!!) {
                         0
                     } else {
                         1
@@ -190,72 +184,102 @@ class MecaFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeJoints.selectedItem.toString()
                 if (switchJoints.isChecked) {
-                    viewModel.setJointAr(true)
-                    //Log.i("INFO", "roulement arrière:"+fiche.refRoulementArriere)
+                    if (position == 1 ) viewModel.selection.value!!.typeJointArriere = true else viewModel.selection.value!!.typeJointArriere = false
+                    Log.i("INFO", "position:${position} - valeur: ${selection} - type joint arrière : ${viewModel.selection.value!!.typeJointArriere!!.toString()}")
                 } else {
-                    viewModel.setJointAv(false)
-                    //Log.i("INFO", "roulement avant:"+selection)
+                    if (position == 1 ) viewModel.selection.value!!.typeJointAvant = true else viewModel.selection.value!!.typeJointAvant = false
+                    Log.i("INFO", "position:${position} - valeur: ${selection} - type joint av : ${viewModel.selection.value!!.typeJointAvant!!.toString()}")
                 }
             }
         }
-        refJoints.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (switchJoints.isChecked) viewModel.setRefJoint("ar",refJoints.text.toString()) else viewModel.setRefJoint("av",refJoints.text.toString())
-            }
+        refJoints.doAfterTextChanged {
+                if (switchJoints.isChecked) {
+                    viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
+                } else {
+                    viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
+                }
         }
         //capot ventilateur
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
         cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-           if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
+           if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!! + 1)
+        cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+               viewModel.selection.value!!.capotV = position + 1
+            }
+        }
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
         vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Absent"))
-        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!!)
+        vent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+              viewModel.selection.value!!.ventilateur = position + 1
+            }
+
+        }
+        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!!+1)
             var socle = layout.findViewById<Spinner>(R.id.spiSocle)
         socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
         if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!!)
-            var capot = layout.findViewById<Spinner>(R.id.spiCap)
+           socle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+               override fun onNothingSelected(parent: AdapterView<*>?) {
+
+               }
+               override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    viewModel.selection.value!!.socleBoiteABorne = position + 1
+               }
+           }
+        var capot = layout.findViewById<Spinner>(R.id.spiCap)
         capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!!)
+        if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!!+1)
+         capot.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+             override fun onNothingSelected(parent: AdapterView<*>?) {
+
+             }
+             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selection.value!!.capotBoiteABorne = position + 1
+             }
+
+         }
             var plaque = layout.findViewById<Spinner>(R.id.spiPla!!)
         plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Sortie par câbles"))
-        if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!!)
+        if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!!+1)
+        plaque.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selection.value!!.plaqueABorne = position + 1
+            }
+        }
         var sondes = layout.findViewById<Switch>(R.id.switchSondes)
-        if (viewModel.selection.value!!.presenceSondes !== null) { sondes.isChecked(viewModel.selection.value!!.presenceSondes!!) }  else {sondes.isChecked(false)}
+        if (viewModel.selection.value!!.presenceSondes !== null && viewModel.selection.value!!.presenceSondes!!)
+        {
+           sondes.setChecked(true)
+        }  else {
+            sondes.setChecked(false)
+        }
         sondes.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.presenceSondes = isChecked
         }
         var typeSondes = layout.findViewById<EditText>(R.id.typeSonde)
         typeSondes.setText(viewModel.selection.value!!.typeSondes)
-        typeSondes.onFocusChangeListener {
-            viewModel.selection.value!!.typeSondes = typeSondes.text
+        typeSondes.doAfterTextChanged {
+            viewModel.selection.value!!.typeSondes = typeSondes.text.toString()
         }
         var equi = layout.findViewById<Switch>(R.id.swEqui)
-        if (viewModel.selection.value!!.equilibrage !== null) equi.isChecked(viewModel.selection.value!!.equilibrage)
+        if (viewModel.selection.value!!.equilibrage !== null) equi.setChecked(viewModel.selection.value!!.equilibrage!!)
         equi.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.equilibrage = isChecked
         }
-        var peint = layout.findViewById<Switch>(R.id.swPeinture)
-        if (viewModel.selection.value!!.peinture !== null) peint.isChecked(viewModel.selection.value!!.peinture)
+        var peint = layout.findViewById<EditText>(R.id.coul)
+        if (viewModel.selection.value!!.peinture !== null) peint.setText(viewModel.selection.value!!.peinture)
         return layout
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MecaFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                MecaFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
-    }
 }

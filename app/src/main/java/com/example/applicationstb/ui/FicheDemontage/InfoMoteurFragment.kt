@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.fragment.app.activityViewModels
 import com.example.applicationstb.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -14,6 +15,7 @@ import com.example.applicationstb.R
 
 
 class InfoMoteurFragment : Fragment() {
+    private val viewModel: FicheDemontageViewModel by activityViewModels()
 
     // TODO: Rename and change types of parameters
 
