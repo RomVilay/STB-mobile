@@ -33,7 +33,7 @@ class MecaFragment : Fragment() {
         //couplage
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
         var txtclp = layout.findViewById<EditText>(R.id.autreCpl)
-        txtclp.setOnFocusChangeListener { _, hasFocus ->
+        txtclp.doAfterTextChanged {
            viewModel.selection.value!!.couplage = txtclp.text.toString()
         }
         couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Y","Δ","Autre"))
