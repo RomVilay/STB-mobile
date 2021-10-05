@@ -387,6 +387,7 @@ class BodyDemontageCC ( var marque: String?,
                         var typeSondes: String?,
                         var equilibrage: Boolean?,
                         var peinture : String?,
+                        var isolationMasseInduit: Int?,
                         var isolationMassePolesPrincipaux: Int?,
                         var isolationMassePolesAuxilliaires: Int?,
                         var isolationMassePolesCompensatoires: Int?,
@@ -448,6 +449,7 @@ class BodyDemontageCC ( var marque: String?,
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
     ) {
     }
 
@@ -487,6 +489,7 @@ class BodyDemontageCC ( var marque: String?,
         parcel.writeString(typeSondes!!)
         parcel.writeBoolean(equilibrage!!)
         parcel.writeString(peinture!!)
+        parcel.writeInt(isolationMasseInduit!!)
         parcel.writeInt(isolationMassePolesPrincipaux!!)
         parcel.writeInt(isolationMassePolesAuxilliaires!!)
         parcel.writeInt(isolationMassePolesCompensatoires!!)
@@ -1061,6 +1064,7 @@ class Repository (var context:Context) {
             fiche.typeSondes,
             fiche.equilibrage,
             fiche.peinture,
+            fiche.isolationMasseInduit,
             fiche.isolationMassePolesPrincipaux,
             fiche.isolationMassePolesAuxilliaires,
             fiche.isolationMassePolesCompensatoires,
