@@ -21,6 +21,7 @@ import com.example.applicationstb.repository.DemontageTriphaseResponse
 import com.example.applicationstb.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -155,13 +156,15 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 } else {
                                     Log.i(
                                         "INFO",
-                                        "code : ${response.code()} - erreur : ${response.message()}"
+                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
                                     )
                                 }
                             }
 
                             override fun onFailure(call: Call<DemontageTriphaseResponse>, t: Throwable) {
-                                Log.e("Error", "erreur ${t.message}")
+                                Log.e("Error", "erreur ${t.message} - body request ${
+                                    call.request().body().toString()
+                                }\"")
                             }
                         })
                 } else {
@@ -169,8 +172,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
                     if (tri !== null ) {
                         repository.updateDemoTriLocalDatabse(t.toEntity())
+                        Log.i("INFO", "patch local")
                     } else  {
                         repository.insertDemoTriLocalDatabase(t)
+                        Log.i("INFO", "enregistré local")
                         }
                     }
                 }
@@ -195,7 +200,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             } else {
                                 Log.i(
                                     "INFO",
-                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                    "code : ${response.code()} - erreur : ${response.errorBody()!!.charStream().readText()}"
                                 )
                             }
                         }

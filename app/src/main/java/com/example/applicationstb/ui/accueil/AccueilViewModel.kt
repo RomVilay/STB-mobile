@@ -108,6 +108,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "ajout demo tri en bdd locale"
                                                                         )
                                                                     } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "fiche déjà en bdd"
+                                                                        )
                                                                         demontages!!.add(demoT)
                                                                     }
                                                                 }
@@ -147,6 +151,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         )
                                                                     } else {
                                                                         demontages!!.add(demoCC)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "fiche déjà en bdd"
+                                                                        )
                                                                     }
                                                                 }
                                                             }
@@ -229,6 +237,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             Log.i("INFO",listBobinage.size.toString()+" bobinages")
             for( bobinage in listBobinage){
                 bobinages.add(bobinage.toBobinage())
+            }
+            var listDT = repository.getAllDemontageTriLocalDatabase()
+            for (dt in listDT){
+                demontages.add(dt.toTriphase())
+            }
+            var listDCC = repository.getAllDemontageCCLocalDatabase()
+            for (dcc in listDCC){
+                demontages.add(dcc.toCContinu())
             }
         }
     }

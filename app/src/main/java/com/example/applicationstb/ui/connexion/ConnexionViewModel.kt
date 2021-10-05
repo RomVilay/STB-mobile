@@ -15,12 +15,10 @@ import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.BobinageEntity
 import com.example.applicationstb.localdatabase.ChantierEntity
+import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.User
-import com.example.applicationstb.repository.BobinageResponse
-import com.example.applicationstb.repository.ChantierResponse
-import com.example.applicationstb.repository.LoginResponse
-import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -145,6 +143,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                                                 override fun onFailure(
                                                     call: Call<BobinageResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listDT: List<DemontageTriphaseEntity> =
+                                    repository.getAllDemontageTriLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches DemontageTriphase: ${listDT.size}")
+                                if (listDT.size > 0) {
+                                    for (fiche in listDT) {
+                                        var dt = fiche.toTriphase()
+                                        val resp = repository.patchDemontageTriphase(
+                                            user!!.token!!,
+                                            dt._id,
+                                            dt,
+                                            object : Callback<DemontageTriphaseResponse> {
+                                                override fun onResponse(
+                                                    call: Call<DemontageTriphaseResponse>,
+                                                    response: Response<DemontageTriphaseResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteDemontageTriphaseLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<DemontageTriphaseResponse>,
                                                     t: Throwable
                                                 ) {
                                                     Log.e("Error", "${t.stackTraceToString()}")

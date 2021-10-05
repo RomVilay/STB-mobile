@@ -1,8 +1,10 @@
 package com.example.applicationstb.model
 
 import android.net.Uri
+import android.util.Log
 import com.example.applicationstb.localdatabase.DemontageCCEntity
 import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
+import kotlinx.serialization.json.Json
 import java.util.*
 
 enum class Etat2 {
@@ -373,6 +375,69 @@ class Triphase(
     equilibrage,
     peinture
 ) {
+    override fun toString(): String {
+        return "${_id} - ${numDevis} + - ${
+            numFiche}  - ${
+            status}  - ${
+            client!!._id}  - ${
+            contact}  - ${
+            telContact}  - ${
+            dateDebut}  - ${
+            dureeTotale}  - ${
+            observations}  - ${
+            6}  - ${
+            marque}  - ${
+            numSerie}  - ${
+            puissance}  - ${
+            bride}  - ${
+            vitesse}  - ${
+            arbreSortantEntrant}  - ${
+            accouplement}  - ${
+            coteAccouplement}  - ${
+            clavette}  - ${
+            aspect}  - ${
+            aspectInterieur}  - ${
+            couplage}  - ${
+            flasqueAvant}  - ${
+            flasqueArriere}  - ${
+            porteeRArriere}  - ${
+            porteeRAvant}  - ${
+            boutArbre}  - ${
+            rondelleElastique}  - ${
+            refRoulementAvant}  - ${
+            refRoulementArriere}  - ${
+            typeRoulementAvant}  - ${
+            typeRoulementArriere}  - ${
+            refJointAvant}  - ${
+            refJointArriere}  - ${
+            typeJointAvant}  - ${
+            typeJointArriere}  - ${
+            ventilateur}  - ${
+            capotV}  - ${
+            socleBoiteABorne}  - ${
+            capotBoiteABorne}  - ${
+            plaqueABorne}  - ${
+            presenceSondes}  - ${
+            typeSondes}  - ${
+            equilibrage}  - ${
+            peinture}  - ${
+            isolementPhaseMasseStatorUM}  - ${
+            isolementPhaseMasseStatorVM}  - ${
+            isolementPhaseMasseStatorWM}  - ${
+            isolementPhasePhaseStatorUV}  - ${
+            isolementPhasePhaseStatorVW}  - ${
+            isolementPhasePhaseStatorUW}  - ${
+            resistanceStatorU}  - ${
+            resistanceStatorV}  - ${
+            resistanceStatorW}  - ${
+            tensionU}  - ${
+            tensionV}  - ${
+            tensionW}  - ${
+            intensiteU}  - ${
+            intensiteV}  - ${
+            intensiteW}  - ${
+            dureeEssai}"
+    }
     fun toEntity() : DemontageTriphaseEntity{
         return DemontageTriphaseEntity(
             _id,

@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -69,29 +70,86 @@ class TriphaseFragment : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
-
+        var fiche = viewModel.selection.value!! as Triphase
         viewModel.selection.observe(viewLifecycleOwner, {
-            var fiche = viewModel.selection.value as Triphase
-             if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!) else 0
-            if (fiche.isolementPhaseMasseStatorVM !== null)VM.setText(fiche.isolementPhaseMasseStatorVM!!) else 0
+             if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
+            if (fiche.isolementPhaseMasseStatorVM !== null)VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
             if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
             if (fiche.isolementPhasePhaseStatorUV !== null)UV.setText(fiche.isolementPhasePhaseStatorUV!!.toString())
-            if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!) else 0
-            if (fiche.isolementPhasePhaseStatorVW!== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!) else 0
-            if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!) else 0
-            if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!) else 0
-            if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!) else 0
-            if (fiche.tensionU !== null) VU.setText(fiche.tensionU!!) else 0
-            if (fiche.tensionV !== null) VV.setText(fiche.tensionV!!) else 0
-            if (fiche.tensionW !== null) VW.setText(fiche.tensionW!!) else 0
-            if (fiche.intensiteU !== null) VUI.setText(fiche.intensiteU!!) else 0
-            if (fiche.intensiteV !== null) VVI.setText(fiche.intensiteV!!) else 0
-            if (fiche.intensiteW !== null) VWI.setText(fiche.intensiteW!!) else 0
-            if (fiche.dureeEssai !== null) dessai.setText(fiche.dureeEssai!!) else 0
+            if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!.toString()) else 0
+            if (fiche.isolementPhasePhaseStatorVW!== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!.toString()) else 0
+            if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
+            if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
+            if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
+            if (fiche.tensionU !== null) VU.setText(fiche.tensionU!!.toString()) else 0
+            if (fiche.tensionV !== null) VV.setText(fiche.tensionV!!.toString()) else 0
+            if (fiche.tensionW !== null) VW.setText(fiche.tensionW!!.toString()) else 0
+            if (fiche.intensiteU !== null) VUI.setText(fiche.intensiteU!!.toString()) else 0
+            if (fiche.intensiteV !== null) VVI.setText(fiche.intensiteV!!.toString()) else 0
+            if (fiche.intensiteW !== null) VWI.setText(fiche.intensiteW!!.toString()) else 0
+            if (fiche.dureeEssai !== null) dessai.setText(fiche.dureeEssai!!.toString()) else 0
             if (fiche.observations !== null) obs.setText(fiche.observations)
         })
+        UM.doAfterTextChanged {
+            fiche.isolementPhaseMasseStatorUM = UM.text.toString().toInt()
+        }
+        VM.doAfterTextChanged {
+            fiche.isolementPhaseMasseStatorVM = VM.text.toString().toInt()
+        }
+        WM.doAfterTextChanged {
+            fiche.isolementPhaseMasseStatorWM = WM.text.toString().toInt()
+        }
+        UV.doAfterTextChanged {
+            fiche.isolementPhasePhaseStatorUV = UV.text.toString().toInt()
+        }
+        UW.doAfterTextChanged {
+            fiche.isolementPhasePhaseStatorUW = UW.text.toString().toInt()
+        }
+        iVW.doAfterTextChanged {
+            fiche.isolementPhasePhaseStatorVW = iVW.text.toString().toInt()
+        }
+        RU.doAfterTextChanged {
+            fiche.resistanceStatorU = RU.text.toString().toInt()
+        }
+        RV.doAfterTextChanged {
+            fiche.resistanceStatorV = RV.text.toString().toInt()
+        }
+        RW.doAfterTextChanged {
+            fiche.resistanceStatorW = RW.text.toString().toInt()
+        }
+        VU.doAfterTextChanged {
+            fiche.tensionU = VU.text.toString().toInt()
+        }
+        VV.doAfterTextChanged {
+            fiche.tensionV = VV.text.toString().toInt()
+        }
+        VW.doAfterTextChanged {
+            fiche.tensionW = VW.text.toString().toInt()
+        }
+        VUI.doAfterTextChanged {
+            fiche.intensiteU = VUI.text.toString().toInt()
+        }
+        VVI.doAfterTextChanged {
+            fiche.intensiteV = VVI.text.toString().toInt()
+        }
+        VWI.doAfterTextChanged {
+            fiche.intensiteW = VWI.text.toString().toInt()
+        }
+        VU.doAfterTextChanged {
+            fiche.tensionU = VU.text.toString().toInt()
+        }
+        dessai.doAfterTextChanged {
+            fiche.dureeEssai = dessai.text.toString().toInt()
+        }
+        obs.doAfterTextChanged {
+            fiche.observations = obs.text.toString()
+        }
+        dessai.doAfterTextChanged {
+            fiche.dureeEssai = dessai.text.toString().toInt()
+        }
 
         enr.setOnClickListener {
+            Log.i("INFO","ar:${viewModel.selection.value!!.refJointArriere} - av ${viewModel.selection.value!!.refJointAvant}")
             viewModel.enregistrer()
         }
 

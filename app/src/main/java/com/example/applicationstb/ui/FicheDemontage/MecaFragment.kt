@@ -45,7 +45,7 @@ class MecaFragment : Fragment() {
                     txtclp.visibility = View.VISIBLE
                 } else {
                     txtclp.visibility = View.GONE
-                    viewModel.selection.value!!.couplage = selection
+                    viewModel.selection.value!!.couplage = selection + 1
                 }
             }
         }
@@ -55,7 +55,7 @@ class MecaFragment : Fragment() {
         etatFlasqueAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.flasqueAvant = position
+                viewModel.selection.value!!.flasqueAvant = position + 1
             }
         }
         etatFlasqueAvant.setOnFocusChangeListener{ view, hasFocus ->
@@ -70,7 +70,7 @@ class MecaFragment : Fragment() {
         etatFlasqueArrière.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.flasqueArriere = position
+                viewModel.selection.value!!.flasqueArriere = position + 1
             }
         }
         // portée roulements
@@ -82,7 +82,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementAvant.selectedItem.toString()
-                viewModel.selection.value!!.porteeRAvant = position
+                viewModel.selection.value!!.porteeRAvant = position + 1
                     //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -94,7 +94,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementArriere.selectedItem.toString()
-                viewModel.selection.value!!.porteeRArriere = position
+                viewModel.selection.value!!.porteeRArriere = position + 1
                 //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -139,7 +139,6 @@ class MecaFragment : Fragment() {
 
         }
         refRoul.doAfterTextChanged {
-
                 if (switchRoullements.isChecked) {
                     viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
                 } else  {
@@ -167,13 +166,13 @@ class MecaFragment : Fragment() {
                 var type = if (viewModel.selection.value!!.typeJointAvant == null) {
                     0
                 } else {
-                    if (viewModel.selection.value!!.typeJointAvant!!) {
+                    if (viewModel.selection.value!!.typeJointAvant!! == false) {
                         0
                     } else {
                         1
                     }
                 }
-                    typeJoints.setSelection(type)
+                typeJoints.setSelection(type)
                 refJoints.setText(viewModel.selection.value!!.refJointAvant)
             }
         }
@@ -194,15 +193,17 @@ class MecaFragment : Fragment() {
         }
         refJoints.doAfterTextChanged {
                 if (switchJoints.isChecked) {
+                    Log.i("INFO","update ar")
                     viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
                 } else {
+                    Log.i("INFO","update av")
                     viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
                 }
         }
         //capot ventilateur
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
         cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-           if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!! + 1)
+           //if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
         cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -218,14 +219,14 @@ class MecaFragment : Fragment() {
 
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-              viewModel.selection.value!!.ventilateur = position + 1
+              viewModel.selection.value!!.ventilateur = position +1
             }
 
         }
-        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!!+1)
+        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!! - 1)
             var socle = layout.findViewById<Spinner>(R.id.spiSocle)
         socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!!)
+        if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!! - 1)
            socle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -236,19 +237,18 @@ class MecaFragment : Fragment() {
            }
         var capot = layout.findViewById<Spinner>(R.id.spiCap)
         capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!!+1)
+        if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!! - 1)
          capot.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
              override fun onNothingSelected(parent: AdapterView<*>?) {
-
              }
              override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.capotBoiteABorne = position + 1
+                viewModel.selection.value!!.capotBoiteABorne = position+1
              }
 
          }
             var plaque = layout.findViewById<Spinner>(R.id.spiPla!!)
         plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Sortie par câbles"))
-        if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!!+1)
+        if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!! - 1)
         plaque.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -279,6 +279,9 @@ class MecaFragment : Fragment() {
         }
         var peint = layout.findViewById<EditText>(R.id.coul)
         if (viewModel.selection.value!!.peinture !== null) peint.setText(viewModel.selection.value!!.peinture)
+        peint.doAfterTextChanged {
+            viewModel.selection.value!!.peinture = peint.text.toString()
+        }
         return layout
     }
 

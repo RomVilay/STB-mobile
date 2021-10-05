@@ -17,6 +17,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -70,6 +71,8 @@ class CCFragment : Fragment() {
         var vV = layout.findViewById<EditText>(R.id.vV)     //tension excitation
         var vUI = layout.findViewById<EditText>(R.id.vUI)   //intensité induit
         var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
+        var enr = layout.findViewById<Button>(R.id.enregistrerCC)
+        var retour = layout.findViewById<Button>(R.id.retourCC)
        /* if (viewModel.selection.value.javaClass is CourantContinu){
             var fiche: CourantContinu? = viewModel.selection.value as CourantContinu
             isopmu.setText(fiche.isoMass[0])
@@ -77,6 +80,66 @@ class CCFragment : Fragment() {
             isopmw.setText(fiche.isoMass[2])
 
         }*/
+        var fiche = viewModel.selection.value!! as CourantContinu
+        viewModel.selection.observe(viewLifecycleOwner, {
+            if(fiche.isolationMasseInduit !== null )isopmu.setText(fiche.isolationMasseInduit.toString())
+            if(fiche.isolationMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolationMassePolesPrincipaux.toString())  //pole principal
+            if(fiche.isolationMassePolesAuxilliaires !== null ) isopmw.setText(fiche.isolationMassePolesAuxilliaires.toString())  //pole auxilliare
+            if(fiche.isolationMassePolesCompensatoires !==null) isoppU.setText(fiche.isolationMassePolesCompensatoires.toString()) // pôle compensatoire
+            if(fiche.isolationMassePorteBalais !== null) isoppV.setText(fiche.isolationMassePorteBalais.toString()) // pôle porte balais
+            //resistances
+             if (fiche.resistanceInduit !== null) rU.setText(fiche.resistanceInduit.toString())    //résistance Induit
+             if (fiche.resistancePP !== null) rV.setText(fiche.resistancePP.toString())    // résistance pôle principal
+             if (fiche.resistancePA !== null) rI.setText(fiche.resistancePA.toString())    //resistance pôle auxilliaire
+             if (fiche.resistancePC !== null) rPP.setText(fiche.resistancePC.toString())   // resistance pôle compensatoire
+            // essais dynamiques
+             if (fiche.tensionInduit !== null) vU.setText(fiche.tensionInduit.toString())    //tension induit
+             if (fiche.tensionExcitation !== null) vV.setText(fiche.tensionExcitation.toString())   //tension excitation
+             if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
+             if (fiche.intensiteExcitation != null )vVI.setText(fiche.intensiteExcitation.toString())
+        })
+        isopmu.doAfterTextChanged {
+            fiche.isolationMasseInduit = isopmu.text.toString().toInt()
+        }
+        isopmv.doAfterTextChanged {
+            fiche.isolationMassePolesPrincipaux = isopmv.text.toString().toInt()
+        }
+        isopmw.doAfterTextChanged {
+            fiche.isolationMassePolesAuxilliaires = isopmw.text.toString().toInt()
+        }
+        isoppU.doAfterTextChanged {
+            fiche.isolationMassePolesCompensatoires = isoppU.text.toString().toInt()
+        }
+        isoppV.doAfterTextChanged {
+            fiche.isolationMassePorteBalais = isoppV.text.toString().toInt()
+        }
+         rU.doAfterTextChanged {
+            fiche.resistanceInduit = rU.text.toString().toInt()
+        }
+        rI.doAfterTextChanged {
+            fiche.resistancePA = rI.text.toString().toInt()
+        }
+        rV.doAfterTextChanged {
+            fiche.resistancePP = rV.text.toString().toInt()
+        }
+        rPP.doAfterTextChanged {
+            fiche.resistancePC = rPP.text.toString().toInt()
+        }
+        vU.doAfterTextChanged {
+            fiche.tensionInduit = vU.text.toString().toInt()
+        }
+        vV.doAfterTextChanged {
+            fiche.tensionExcitation = vV.text.toString().toInt()
+        }
+        vUI.doAfterTextChanged {
+            fiche.intensiteInduit = vUI.text.toString().toInt()
+        }
+        vVI.doAfterTextChanged {
+            fiche.intensiteExcitation = vVI.text.toString().toInt()
+        }
+        enr.setOnClickListener {
+            viewModel.enregistrer()
+        }
 
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)

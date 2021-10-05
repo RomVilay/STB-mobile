@@ -84,6 +84,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -107,6 +108,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -129,6 +131,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -182,6 +185,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -205,6 +209,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -249,6 +254,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -271,6 +277,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -305,6 +312,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -327,6 +335,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -360,6 +369,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -381,6 +391,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -421,6 +432,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -442,6 +454,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
+                            android:gravity="center"
                             android:hint="val"
                             android:inputType="number"
                             android:padding="5dp" />
@@ -1200,18 +1213,18 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/enregistrerTRi"
+                        android:id="@+id/enregistrerCC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="92dp"
                         android:layout_marginLeft="92dp"
                         android:text="Enregistrer"
                         app:backgroundTint="#164081"
-                        app:layout_constraintStart_toEndOf="@+id/retourTri"
+                        app:layout_constraintStart_toEndOf="@+id/retourCC"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
 
                     <Button
-                        android:id="@+id/retourTri"
+                        android:id="@+id/retourCC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="172dp"
