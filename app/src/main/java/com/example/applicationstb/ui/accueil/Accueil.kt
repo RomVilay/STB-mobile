@@ -76,7 +76,7 @@ class Accueil : Fragment() {
             }
         }
         rb.setOnClickListener {
-            if (viewModel.chantiers.size > 0) {
+            if (viewModel.bobinages.size > 0) {
                 viewModel.toBobinage(layout)
             } else {
                 val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de bobinages attribués", 3600)

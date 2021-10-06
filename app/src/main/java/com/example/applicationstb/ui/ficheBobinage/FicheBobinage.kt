@@ -161,7 +161,7 @@ class FicheBobinage : Fragment() {
                 adapter.list = bobinage.sectionsFils!!
                 if (bobinage.nbSpires!== null) {spire.setText(bobinage?.nbSpires.toString())}
                 poids.setText(bobinage?.poids.toString())
-                RU.setText(bobinage?.resistanceU.toString())
+                if (bobinage.resistanceU !== null) {RU.setText(bobinage?.resistanceU.toString())}
                 RV.setText(bobinage?.resistanceV.toString())
                 RW.setText(bobinage?.resistanceW.toString())
                 IU.setText(bobinage?.isolementUT.toString())
@@ -313,8 +313,8 @@ class FicheBobinage : Fragment() {
                 ).show()
             }*/
             var bobi = viewModel.bobinage.value
-            bobi!!.marqueMoteur = marque.text.toString()
-            bobi!!.typeBobinage = type.text.toString()
+            bobi!!.marqueMoteur = if (marque.text.isNotEmpty()) marque.text.toString() else bobi!!.marqueMoteur
+            bobi!!.typeBobinage = if (type.text.isNotEmpty()) type.text.toString() else bobi!!.typeBobinage
             bobi!!.vitesse = if (vitesse.text.isNotEmpty()) vitesse.text.toString().toFloat() else bobi!!.vitesse
             bobi!!.puissance = if (puissance.text.isNotEmpty()) puissance.text.toString().toFloat() else bobi!!.puissance
             bobi!!.phases = if (phases.text.isNotEmpty()) phases.text.toString().toLong() else bobi!!.phases
