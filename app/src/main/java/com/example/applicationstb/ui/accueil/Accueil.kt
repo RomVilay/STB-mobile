@@ -52,10 +52,14 @@ class Accueil : Fragment() {
             viewModel.toDeconnexion(layout)
         }
         dm.setOnClickListener {
-            viewModel.toFicheD(layout)
+            if (viewModel.demontages.size > 0) {
+                viewModel.toFicheD(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de Demontages attribués", 3600)
+                mySnackbar.show()
+            }
         }
         cht.setOnClickListener {
-            Log.i("INFO",token!!)
             if (viewModel.chantiers.size > 0) {
                 viewModel.toChantier(layout)
             } else {
@@ -64,7 +68,12 @@ class Accueil : Fragment() {
             }
         }
         rm.setOnClickListener {
-            viewModel.toFicheR(layout)
+            if (viewModel.remontages.size > 0) {
+                viewModel.toFicheR(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de Remontages attribués", 3600)
+                mySnackbar.show()
+            }
         }
         rb.setOnClickListener {
             if (viewModel.chantiers.size > 0) {

@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.BobinageEntity
 import com.example.applicationstb.localdatabase.ChantierEntity
+import com.example.applicationstb.localdatabase.DemontageCCEntity
 import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.User
@@ -187,6 +188,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                                                 override fun onFailure(
                                                     call: Call<DemontageTriphaseResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listCC: List<DemontageCCEntity> =
+                                    repository.getAllDemontageCCLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches DemontageTriphase: ${listCC.size}")
+                                if (listCC.size > 0) {
+                                    for (fiche in listCC) {
+                                        var dcc = fiche.toCContinu()
+                                        val resp = repository.patchDemontageCC(
+                                            user!!.token!!,
+                                            dcc._id,
+                                            dcc,
+                                            object : Callback<DemontageCCResponse> {
+                                                override fun onResponse(
+                                                    call: Call<DemontageCCResponse>,
+                                                    response: Response<DemontageCCResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteDemontageCCLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<DemontageCCResponse>,
                                                     t: Throwable
                                                 ) {
                                                     Log.e("Error", "${t.stackTraceToString()}")

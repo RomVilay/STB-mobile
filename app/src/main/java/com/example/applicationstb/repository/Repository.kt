@@ -49,11 +49,12 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
     }
 }
 
-class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?): Parcelable {
+class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?, var dureeTotale: Long?): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readLong(),
         parcel.readLong()
     ) {
     }
@@ -63,6 +64,7 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
         parcel.writeString(objet)
         parcel.writeString(observations)
         parcel.writeLong(status!!)
+        parcel.writeLong(dureeTotale!!)
     }
 
     override fun describeContents(): Int {
@@ -102,7 +104,8 @@ class BodyBobinage(var marqueMoteur : String?,
     var sectionsFils: List<Section>? ,
     var observations: String?,
     var poids:Float?,
-    var tension:Long?
+    var tension:Long?,
+    var dureeTotale: Long?
                   ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -129,7 +132,8 @@ class BodyBobinage(var marqueMoteur : String?,
         },
         parcel.readString(),
         parcel.readFloat(),
-        parcel.readLong()
+        parcel.readLong(),
+        parcel.readLong(),
     ) {
     }
 
@@ -159,6 +163,7 @@ class BodyBobinage(var marqueMoteur : String?,
         parcel.writeString(observations!!)
         parcel.writeFloat(poids!!)
         parcel.writeLong(tension!!)
+        parcel.writeLong(dureeTotale!!)
     }
 
     override fun describeContents(): Int {
@@ -176,7 +181,9 @@ class BodyBobinage(var marqueMoteur : String?,
     }
 }
 
-class BodyDemontageTriphase ( var marque: String?,
+class BodyDemontageTriphase (
+                      var status: Long?,
+                      var marque: String?,
                       var numSerie: Int?,
                       var puissance: Float?,
                       var bride: Float?,
@@ -227,8 +234,10 @@ class BodyDemontageTriphase ( var marque: String?,
                       var intensiteV: Int?,
                       var intensiteW: Int?,
                       var dureeEssai: Int?,
+                      var dureeTotale: Int?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readLong(),
         parcel.readString(),
         parcel.readInt(),
         parcel.readFloat(),
@@ -264,6 +273,7 @@ class BodyDemontageTriphase ( var marque: String?,
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readString(),
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -284,6 +294,7 @@ class BodyDemontageTriphase ( var marque: String?,
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
         parcel.writeFloat(puissance!!)
@@ -335,6 +346,7 @@ class BodyDemontageTriphase ( var marque: String?,
         parcel.writeInt(intensiteV!!)
         parcel.writeInt(intensiteW!!)
         parcel.writeInt(dureeEssai!!)
+        parcel.writeInt(dureeTotale!!)
     }
 
     override fun describeContents(): Int {
@@ -352,7 +364,8 @@ class BodyDemontageTriphase ( var marque: String?,
     }
 }
 
-class BodyDemontageCC ( var marque: String?,
+class BodyDemontageCC ( var status: Long?,
+                        var marque: String?,
                         var numSerie: Int?,
                         var puissance: Float?,
                         var bride: Float?,
@@ -400,8 +413,10 @@ class BodyDemontageCC ( var marque: String?,
                         var intensiteInduit: Int?,
                         var tensionExcitation: Int?,
                         var intensiteExcitation: Int?,
+                        var dureeTotale: Int?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readLong(),
         parcel.readString(),
         parcel.readInt(),
         parcel.readFloat(),
@@ -437,6 +452,7 @@ class BodyDemontageCC ( var marque: String?,
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readString(),
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -454,6 +470,7 @@ class BodyDemontageCC ( var marque: String?,
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
         parcel.writeFloat(puissance!!)
@@ -502,6 +519,7 @@ class BodyDemontageCC ( var marque: String?,
         parcel.writeInt(intensiteInduit!!)
         parcel.writeInt(tensionExcitation!!)
         parcel.writeInt(intensiteExcitation!!)
+        parcel.writeInt(dureeTotale!!)
     }
 
     override fun describeContents(): Int {
@@ -964,6 +982,7 @@ class Repository (var context:Context) {
     }
     fun patchDemontageTriphase(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
         var body = BodyDemontageTriphase(
+            triphase.status,
             triphase.marque,
             triphase.numSerie,
             triphase.puissance,
@@ -1014,7 +1033,8 @@ class Repository (var context:Context) {
             triphase.intensiteU,
             triphase.intensiteV,
             triphase.intensiteW,
-            triphase.dureeEssai
+            triphase.dureeEssai,
+            triphase.dureeTotale!!.toInt()
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
         var fiche:Chantier? = null
@@ -1029,6 +1049,7 @@ class Repository (var context:Context) {
 
     fun patchDemontageCC(token:String,ficheId:String, fiche:CourantContinu, callback:Callback<DemontageCCResponse>){
         var body = BodyDemontageCC(
+            fiche.status,
             fiche.marque,
             fiche.numSerie,
             fiche.puissance,
@@ -1076,7 +1097,8 @@ class Repository (var context:Context) {
             fiche.tensionInduit,
             fiche.intensiteInduit,
             fiche.tensionExcitation,
-            fiche.intensiteExcitation
+            fiche.intensiteExcitation,
+            fiche.dureeTotale!!.toInt()
         )
         var call = service.patchDemontageCC(token,ficheId,body)
         var fiche:CourantContinu? = null
@@ -1259,13 +1281,14 @@ class Repository (var context:Context) {
             if (bobinage.observations !== null){
                 bobinage.observations} else "",
             bobinage.poids,
-            0)
+            0,
+            bobinage.dureeTotale)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
     }
     fun patchChantier(token:String,ficheId:String, chantier:Chantier, callback:Callback<ChantierResponse>){
-        var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status)
+        var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status, chantier.dureeTotale)
         var call = service.patchChantier(token,ficheId,body)
         var fiche:Chantier? = null
         call.enqueue(callback)

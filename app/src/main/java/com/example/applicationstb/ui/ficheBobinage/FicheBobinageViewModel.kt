@@ -18,6 +18,7 @@ import com.example.applicationstb.repository.BobinageResponse
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -140,7 +141,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
-    fun save(context: Context) {
+    fun save(context: Context, view:View) {
         Log.i("INFO", "iso: ${bobinage.value!!.isolementUT}")
         if (isOnline(context)) {
             val resp = repository.patchBobinage(
@@ -155,9 +156,13 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         if (response.code() == 200) {
                             val resp = response.body()
                             if (resp != null) {
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
                                 Log.i("INFO", "enregistré")
                             }
                         } else {
+                            val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
+                            mySnackbar.show()
                             Log.i(
                                 "INFO",
                                 "code : ${response.code()} - erreur : ${response.message()}"
@@ -166,23 +171,29 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     }
 
                     override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                        val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
+                        mySnackbar.show()
                         Log.e("Error", "erreur ${t.message}")
                     }
                 })
-            localSave()
+            //localSave(view)
         } else {
-            localSave()
+            localSave(view)
         }
 
     }
-    fun localSave(){
+    fun localSave(view:View){
         Log.i("INFO","local save fiche ${bobinage.value!!._id}")
         viewModelScope.launch(Dispatchers.IO){
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             if (bob !== null) {
+                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                mySnackbar.show()
                 repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
                 Log.i("INFO","patch ${bobinage.value!!.sectionsFils}")
             } else {
+                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                mySnackbar.show()
                 repository.insertBobinageLocalDatabase(bobinage.value!!)
                 Log.i("INFO","insert ${bobinage.value!!._id}")
             }

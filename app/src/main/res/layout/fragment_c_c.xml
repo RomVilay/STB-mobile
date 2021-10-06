@@ -1216,21 +1216,32 @@
                         android:id="@+id/enregistrerCC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="92dp"
-                        android:layout_marginLeft="92dp"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginLeft="50dp"
                         android:text="Enregistrer"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_600"
                         app:layout_constraintStart_toEndOf="@+id/retourCC"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
+
+                    <Button
+                        android:id="@+id/termCC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginLeft="50dp"
+                        android:text="Terminer"
+                        app:backgroundTint="#164081"
+                        app:layout_constraintStart_toEndOf="@+id/enregistrerCC"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
 
                     <Button
                         android:id="@+id/retourCC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="172dp"
-                        android:layout_marginLeft="172dp"
+                        android:layout_marginStart="120dp"
+                        android:layout_marginLeft="120dp"
                         android:text="Retour"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_600"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

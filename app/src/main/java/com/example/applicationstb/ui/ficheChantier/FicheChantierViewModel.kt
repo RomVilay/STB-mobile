@@ -16,6 +16,7 @@ import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.repository.VehiculesResponse
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -126,41 +127,51 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
-    fun localSave(){
+    fun localSave(view:View){
         Log.i("INFO","local save")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
             //Log.i("INFO","${ch}")
             if (ch !== null) {
                 repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
+                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                mySnackbar.show()
                 //Log.i("INFO","patch ${chantier.value!!._id}")
             } else {
+                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                mySnackbar.show()
                 repository.insertChantierLocalDatabase(chantier.value!!)
                 //Log.i("INFO","insert ${chantier.value!!._id}")
             }
         }
     }
 
-    fun save(context: Context){
+    fun save(context: Context, view: View){
         if (isOnline(context)){
             val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
                 override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
                     if ( response.code() == 200 ) {
                         val resp = response.body()
                         if (resp != null) {
+                            val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                            mySnackbar.show()
                             // Log.i("INFO","${resp.fiche!!.observations}")
                         }
                     } else {
+                        val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
+                        mySnackbar.show()
                         Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
                     }
                 }
                 override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                    val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
+                    mySnackbar.show()
                     Log.e("Error","${t.stackTraceToString()}")
                     Log.e("Error","erreur ${t.message}")
                 }
             })
         } else {
-            localSave()
+            localSave(view)
         }
 
     }

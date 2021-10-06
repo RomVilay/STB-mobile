@@ -13,7 +13,7 @@ import android.widget.Spinner
 import androidx.fragment.app.*
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
-import java.util.ArrayList
+import java.util.*
 
 class FicheDemontage : Fragment() {
 
@@ -39,6 +39,7 @@ class FicheDemontage : Fragment() {
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
         val fragmentManager = childFragmentManager
         btnDemontage.setOnClickListener {
+            viewModel.start.value = Date()
             var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
             viewModel.selection.value = demo
             //viewModel.photos.value = demo!!.photo!!.toMutableList()

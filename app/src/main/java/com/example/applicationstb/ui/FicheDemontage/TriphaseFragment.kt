@@ -49,6 +49,7 @@ class TriphaseFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var layout = inflater.inflate(R.layout.fragment_triphase, container, false)
+        var start : Date? = null;
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
         var infos = layout.findViewById<FrameLayout>(R.id.infoLayout)
         var btnPhoto = layout.findViewById<Button>(R.id.photo)
@@ -71,6 +72,7 @@ class TriphaseFragment : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
+        var ter = layout.findViewById<Button>(R.id.termTri)
         var fiche = viewModel.selection.value!! as Triphase
         viewModel.selection.observe(viewLifecycleOwner, {
              if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
@@ -150,8 +152,29 @@ class TriphaseFragment : Fragment() {
         }
 
         enr.setOnClickListener {
-            Log.i("INFO","ar:${viewModel.selection.value!!.refJointArriere} - av ${viewModel.selection.value!!.refJointAvant}")
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                viewModel.selection.value!!.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            viewModel.selection.value!!.status = 2L
+            Log.i("INFO","duree:${viewModel.selection.value!!.dureeTotale}")
             viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        ter.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                viewModel.selection.value!!.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            viewModel.selection.value!!.status = 3L
+            Log.i("INFO","duree:${viewModel.selection.value!!.dureeTotale}")
+            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        retour.setOnClickListener {
+            viewModel.back(layout)
         }
 
 

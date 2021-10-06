@@ -740,7 +740,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="quitter"
-                    app:backgroundTint="@color/bleu_stb" />
+                    app:backgroundTint="@color/gray_600" />
 
                 <Button
                     android:id="@+id/enregistrer"
@@ -748,6 +748,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="enregistrer"
+                    app:backgroundTint="@color/gray_600" />
+
+                <Button
+                    android:id="@+id/termB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="terminer la fiche"
                     app:backgroundTint="@color/bleu_stb" />
             </LinearLayout>
 

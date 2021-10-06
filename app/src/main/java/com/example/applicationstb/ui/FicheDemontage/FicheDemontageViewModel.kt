@@ -20,6 +20,7 @@ import com.example.applicationstb.repository.BobinageResponse
 import com.example.applicationstb.repository.DemontageCCResponse
 import com.example.applicationstb.repository.DemontageTriphaseResponse
 import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class FicheDemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
@@ -37,6 +39,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
     var selection = MutableLiveData<DemontageMoteur>()
+    var start = MutableLiveData<Date>()
     init{
         viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -44,6 +47,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
     fun select (id: String){
 
+    }
+    fun back(view: View) {
+        val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
+        Navigation.findNavController(view).navigate(action)
     }
     fun afficherFiche(fiche:Fiche){
         when (fiche){

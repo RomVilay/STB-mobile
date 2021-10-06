@@ -1289,10 +1289,22 @@
                         android:id="@+id/enregistrerTRi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="104dp"
-                        android:layout_marginLeft="104dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginLeft="44dp"
                         android:layout_marginTop="204dp"
                         android:text="Enregistrer"
+                        app:backgroundTint="@color/gray_600"
+                        app:layout_constraintStart_toEndOf="@+id/retourTri"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/termTri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="260dp"
+                        android:layout_marginLeft="260dp"
+                        android:layout_marginTop="204dp"
+                        android:text="Terminer"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toEndOf="@+id/retourTri"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
@@ -1301,11 +1313,11 @@
                         android:id="@+id/retourTri"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="164dp"
-                        android:layout_marginLeft="164dp"
+                        android:layout_marginStart="120dp"
+                        android:layout_marginLeft="120dp"
                         android:layout_marginTop="204dp"
                         android:text="Retour"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_600"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
 

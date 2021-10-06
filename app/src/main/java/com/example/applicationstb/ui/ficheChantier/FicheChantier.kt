@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -55,6 +56,7 @@ class FicheChantier : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        var start : Date? = null;
         viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
         var list = arguments?.get("listChantiers") as Array<Chantier>
         viewModel.token = arguments?.get("Token") as String
@@ -204,6 +206,7 @@ class FicheChantier : Fragment() {
             var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
             //Log.i("INFO","${viewModel.listeChantiers}")
             viewModel.chantier.value = chantier
+            start = Date()
             /*materiel.setText(chantier?.materiel)
             objet.setText(chantier?.objet)
             observation.setText(chantier?.observations)
@@ -231,10 +234,16 @@ class FicheChantier : Fragment() {
             //chantier.dateDebut = Date.from(dateDebut.text.toString())
             viewModel.chantier.value = chantier
             var t = viewModel.chantier.value
+            if (viewModel.chantier.value!!.dureeTotale !== null) {
+                viewModel.chantier.value!!.dureeTotale =
+                    (Date().time - start!!.time ) + viewModel.chantier.value!!.dureeTotale!!
+            } else {
+                viewModel.chantier.value!!.dureeTotale = Date().time - start!!.time
+            }
             //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
             //Log.i("INFO",t.toString())
-            Log.i("INFO","connection internet: ${viewModel.isOnline(context!!)}")
-            viewModel.save(context!!)
+            Log.i("INFO","duree: ${viewModel.chantier.value!!.dureeTotale}")
+            viewModel.save(context!!, layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
             //viewModel.back(layout)
         }
         return layout

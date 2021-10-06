@@ -73,7 +73,11 @@ class CCFragment : Fragment() {
         var vUI = layout.findViewById<EditText>(R.id.vUI)   //intensité induit
         var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
         var enr = layout.findViewById<Button>(R.id.enregistrerCC)
+        var ter = layout.findViewById<Button>(R.id.termCC)
         var retour = layout.findViewById<Button>(R.id.retourCC)
+        retour.setOnClickListener {
+            viewModel.back(layout)
+        }
        /* if (viewModel.selection.value.javaClass is CourantContinu){
             var fiche: CourantContinu? = viewModel.selection.value as CourantContinu
             isopmu.setText(fiche.isoMass[0])
@@ -139,8 +143,26 @@ class CCFragment : Fragment() {
             fiche.intensiteExcitation = vVI.text.toString().toInt()
         }
         enr.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                viewModel.selection.value!!.dureeTotale =
+                    ( Date().time -  viewModel.start.value!!.time ) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            viewModel.selection.value!!.status = 2L
             viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
+        ter.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                viewModel.selection.value!!.dureeTotale =
+                    ( Date().time -  viewModel.start.value!!.time ) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            viewModel.selection.value!!.status = 3L
+            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+
 
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
