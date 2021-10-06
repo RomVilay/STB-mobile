@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
@@ -150,7 +151,7 @@ class TriphaseFragment : Fragment() {
 
         enr.setOnClickListener {
             Log.i("INFO","ar:${viewModel.selection.value!!.refJointArriere} - av ${viewModel.selection.value!!.refJointAvant}")
-            viewModel.enregistrer()
+            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
 
 

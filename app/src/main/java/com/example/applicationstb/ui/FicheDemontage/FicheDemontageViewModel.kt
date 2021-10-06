@@ -13,12 +13,14 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 import org.json.JSONArray
 import android.util.Log
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.applicationstb.repository.BobinageResponse
 import com.example.applicationstb.repository.DemontageCCResponse
 import com.example.applicationstb.repository.DemontageTriphaseResponse
 import com.example.applicationstb.repository.Repository
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -135,7 +137,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
-    fun enregistrer(){
+    fun enregistrer(view:View){
         if (selection.value!!.typeFicheDemontage == 6)  {
             var t = selection.value!! as Triphase
             if (isOnline(context))   {
@@ -151,9 +153,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 if (response.code() == 200) {
                                     val resp = response.body()
                                     if (resp != null) {
+                                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                        mySnackbar.show()
                                         Log.i("INFO", "enregistré")
                                     }
                                 } else {
+                                    val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                    mySnackbar.show()
                                     Log.i(
                                         "INFO",
                                         "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
@@ -162,6 +168,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
 
                             override fun onFailure(call: Call<DemontageTriphaseResponse>, t: Throwable) {
+                                val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
                                 Log.e("Error", "erreur ${t.message} - body request ${
                                     call.request().body().toString()
                                 }\"")
@@ -172,9 +180,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
                     if (tri !== null ) {
                         repository.updateDemoTriLocalDatabse(t.toEntity())
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
                         Log.i("INFO", "patch local")
                     } else  {
                         repository.insertDemoTriLocalDatabase(t)
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
                         Log.i("INFO", "enregistré local")
                         }
                     }
@@ -195,9 +207,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             if (response.code() == 200) {
                                 val resp = response.body()
                                 if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
                                     Log.i("INFO", "demontage enregistré")
                                 }
                             } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
                                 Log.i(
                                     "INFO",
                                     "code : ${response.code()} - erreur : ${response.errorBody()!!.charStream().readText()}"
@@ -207,6 +223,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                         override fun onFailure(call: Call<DemontageCCResponse>, t: Throwable) {
                             Log.e("Error", "erreur ${t.message}")
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
                         }
                     })
             } else {
@@ -217,6 +235,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     } else  {
                         repository.insertDemoCCLocalDatabase(c)
                     }
+                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                    mySnackbar.show()
                 }
             }
         }

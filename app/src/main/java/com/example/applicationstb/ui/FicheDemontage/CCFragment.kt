@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
@@ -138,7 +139,7 @@ class CCFragment : Fragment() {
             fiche.intensiteExcitation = vVI.text.toString().toInt()
         }
         enr.setOnClickListener {
-            viewModel.enregistrer()
+            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
 
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
