@@ -20,7 +20,7 @@ data class RemontageCCEntity (
     var telContact: String?,
     var dureeTotale: Long?,
     var observation: String?,
-    var photo: Array<String>?,
+    var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementPorteeFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
@@ -67,22 +67,22 @@ data class RemontageCCEntity (
     var releveIsoInduitMasse: Float?,
     var releveIsoInduitInducteurs: Float?,
 ){
-    /*fun toRCourantC() : RemontageCourantC {
+    fun toRCourantC() : RemontageCourantC {
         return RemontageCourantC(
             _id,
-            numDevis,
-            numFiche,
+            numDevis!!,
+            numFiche!!,
             3,
-            statut,
-            Client(client,null,null,null),
+            statut!!,
+            Client(client!!,null,null,null),
             contact,
             telContact,
             null,
             null,
-            dateDebut,
+            null,
             dureeTotale,
             observation,
-            photo,
+            null,
             remontageRoulement,
         collageRoulementPorteeArbre,
         collageRoulementPorteeFlasque,
@@ -90,46 +90,35 @@ data class RemontageCCEntity (
         verificationIsolementPorteBalais,
         isolementPorteBalaisV,
         isolementPorteBalaisOhm,
-        tensionStatorAVide,
-        tensionInducAVide,
-        intensiteStatorAVide,
-        intensiteInducAVide,
-        tensionInduitAVide,
-        tensionRotorVide,
-        tensionSIU,
-        tensionSIV,
-        tensionSIW,
-        intensiteStatorAVide,
-        intensiteInducteursAVide,
-        intensiteU,
-        intensiteV,
-        intensiteW,
-        tensionInduitAVideU,
-        tensionInduitAVideV,
-        tensionInduitAVideW,
-        tensionRotoOuvertU,
-        tensionRotoOuvertV,
-        tensionRotoOuvertW,
-        tensionIRU,
-        tensionIRV,
-        tensionIRW,
+            tensionStatorInducteurs,
+        tensionStatorInducteursU,
+        tensionStatorInducteursV,
+        tensionStatorInducteursW,
+        intensiteStatorInducteur,
+        intensiteStatorInducteurU,
+        intensiteStatorInducteurV,
+        intensiteStatorInducteurW,
+        tensionInduitRotor,
+        tensionInduitRotorU,
+        tensionInduitRotorV,
+        tensionInduitRotorW,
         intensiteInduit,
-        intensiteU,
-        vitesseAVide,
-        puissanceAVide,
+        intensiteInduitU,
+        vitesseU,
+        puissanceU,
         dureeEssai,
         sensRotation,
 //essais vibratoires
-        V1V,  // vitesse 1v
-        A1V,  //accélération 1v
-        V2V,  // vitesse 2v
-        A2V,  //accélération 2v
-        V1H,  // vitesse 1H
-        A1H,  //accélération 1H
-        V2H,  // vitesse 2H
-        A2H,  //accélération 2H
-        V2A,  // vitesse 2A
-        A2A,  //accélération 2A
+        vitesse1V,  // vitesse 1v
+        acceleration1V,  //accélération 1v
+        vitesse2V,  // vitesse 2v
+        acceleration2V,  //accélération 2v
+        vitesse1H,  // vitesse 1H
+        acceleration1H,  //accélération 1H
+        vitesse2H,  // vitesse 2H
+        acceleration2H,  //accélération 2H
+        vitesse2A,  // vitesse 2acceleration
+        acceleration2A,  //accélération 2A
          resistanceInducteurs,
          resistanceInduit,
          isolementInducteursMasse,
@@ -139,5 +128,5 @@ data class RemontageCCEntity (
          releveIsoInduitMasse,
          releveIsoInduitInducteurs
         )
-    }*/
+    }
 }

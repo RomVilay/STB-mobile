@@ -120,6 +120,18 @@
         <action
             android:id="@+id/action_ficheRemontage_to_ficheDemontage"
             app:destination="@id/ficheDemontage" />
+        <argument
+            android:name="token"
+            app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="listRemontages"
+            app:argType="com.example.applicationstb.model.Remontage[]" />
+        <action
+            android:id="@+id/deRemoVersFScreen"
+            app:destination="@id/schemaFragment" />
     </fragment>
     <fragment
         android:id="@+id/schemaFragment"

@@ -61,5 +61,8 @@ interface APIstb  {
     @GET("/fiches/{ficheId}")
     fun getDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageResponse>
 
+    @GET("/fiches/{ficheId}")
+    fun getRemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageResponse>
+
 
 }

@@ -901,6 +901,9 @@ class VehiculesResponse(
 class DemontageResponse(
     var fiche:DemontageMoteur?
 )
+class RemontageResponse(
+    var fiche:Remontage?
+)
 
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
@@ -1104,6 +1107,11 @@ class Repository (var context:Context) {
         var fiche:CourantContinu? = null
         call.enqueue(callback)
     }
+    fun getRemontage(token:String,ficheId:String, callback:Callback<RemontageResponse>){
+        val call = service.getRemontage(token,ficheId)
+        var fiche:Remontage?=null
+        call.enqueue(callback)
+    }
     fun getRemontageCC(token:String,ficheId:String, callback: Callback<RemontageCCResponse>){
         var call = service.getRemontageCC(token,ficheId)
         var fiche:RemontageCourantC? = null
@@ -1114,7 +1122,7 @@ class Repository (var context:Context) {
         var body = BodyRemontageCC(
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
-            fiche.collageRoulementPorteeFlasque,
+            fiche.collageRoulementFlasque,
             fiche.verificationFixationCouronne,
             fiche.verificationIsolementPorteBalais,
             fiche.isolementPorteBalaisV,
@@ -1171,7 +1179,7 @@ class Repository (var context:Context) {
         var body = BodyRemontageTriphase(
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
-            fiche.collageRoulementPorteeFlasque,
+            fiche.collageRoulementFlasque,
             fiche.verificationFixationCouronne,
             fiche.verificationIsolementPorteBalais,
             fiche.isolementPorteBalaisV,
@@ -1300,7 +1308,6 @@ class Repository (var context:Context) {
     }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
@@ -1396,5 +1403,53 @@ class Repository (var context:Context) {
     }
     suspend fun deleteDemontageCCLocalDatabse( demo: DemontageCCEntity){
         demontageCCDao!!.delete(demo)
+    }
+
+    //dao remontage triphase
+    suspend fun insertRemoTriLocalDatabase(remo: RemontageTriphase){
+        remontageTriphaseDao!!.insertAll(remo.toEntity())
+    }
+    suspend fun getAllRemontageTriLocalDatabase(): List<RemontageTriphaseEntity>{
+        return remontageTriphaseDao!!.getAll()
+    }
+    suspend fun getByIdRemoTriLocalDatabse(id: String) : RemontageTriphase? {
+        try {
+            if (remontageTriphaseDao!!.getById(id) !== null) {
+                return remontageTriphaseDao!!.getById(id).toRTriphase()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateRemoTriLocalDatabse( remo: RemontageTriphaseEntity){
+        remontageTriphaseDao!!.update(remo)
+    }
+    suspend fun deleteRemontageTriphaseLocalDatabse( remo: RemontageTriphaseEntity){
+        remontageTriphaseDao!!.delete(remo)
+    }
+
+    // dao remo courant continu
+    suspend fun insertRemoCCLocalDatabase(remo: RemontageCourantC){
+        remontageCourantCDao!!.insertAll(remo.toEntity())
+    }
+    suspend fun getAllRemontageCCLocalDatabase(): List<RemontageCCEntity>{
+        return remontageCourantCDao!!.getAll()
+    }
+    suspend fun getByIdRemoCCLocalDatabse(id: String) : RemontageCourantC? {
+        try {
+            if (remontageCourantCDao!!.getById(id) !== null) {
+                return remontageCourantCDao!!.getById(id).toRCourantC()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateRemoCCLocalDatabse( remo: RemontageCCEntity){
+        remontageCourantCDao!!.update(remo)
+    }
+    suspend fun deleteRemontageCCLocalDatabse( remo: RemontageCCEntity){
+        remontageCourantCDao!!.delete(remo)
     }
 }

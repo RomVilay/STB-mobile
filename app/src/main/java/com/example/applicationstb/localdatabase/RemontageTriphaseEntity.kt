@@ -3,6 +3,7 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.TypeConverter
 import androidx.room.PrimaryKey
+import com.example.applicationstb.model.Client
 import com.example.applicationstb.model.RemontageTriphase
 
 @Entity (tableName = "remontage_triphase")
@@ -17,7 +18,6 @@ data class RemontageTriphaseEntity (
     var telContact: String?,
     var dureeTotale: Long?,
     var observation: String?,
-    var photo: Array<String>?,
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementPorteeFlasque: Int?,
@@ -74,70 +74,59 @@ data class RemontageTriphaseEntity (
     var isolementPhaseRotorVW: Float?,
     var isolementPhaseRotorUW: Float?,
 ) {
-    /*fun toRTriphase(): RemontageTriphase{
+    fun toRTriphase(): RemontageTriphase{
         return RemontageTriphase(
         _id,
-        numDevis,
-        numFiche,
+        numDevis!!,
+        numFiche!!,
         3,
-        statut,
-        Client(client,null,null,null),
+        statut!!,
+        Client(client!!,null,null,null),
         contact,
         telContact,
         null,
         null,
-        dateDebut,
+        null,
         dureeTotale,
         observation,
-        photo,
-        remontageRoulement,
-        collageRoulementPorteeArbre,
-        collageRoulementPorteeFlasque,
-        verificationFixationCouronne,
-        verificationIsolementPorteBalais,
-        isolementPorteBalaisV,
-        isolementPorteBalaisOhm,
-        tensionStatorAVide,
-        tensionInducAVide,
-        intensiteStatorAVide,
-        intensiteInducAVide,
-        tensionInduitAVide,
-        tensionRotorVide,
-        tensionSIU,
-        tensionSIV,
-        tensionSIW,
-        intensiteStatorAVide,
-        intensiteInducteursAVide,
-        intensiteU,
-        intensiteV,
-        intensiteW,
-        tensionInduitAVideU,
-        tensionInduitAVideV,
-        tensionInduitAVideW,
-        tensionRotoOuvertU,
-        tensionRotoOuvertV,
-        tensionRotoOuvertW,
-        tensionIRU,
-        tensionIRV,
-        tensionIRW,
-        intensiteInduit,
-        intensiteU,
-        vitesseAVide,
-        puissanceAVide,
-        dureeEssai,
-        sensRotation,
+        null,
+            remontageRoulement,
+            collageRoulementPorteeArbre,
+            collageRoulementPorteeFlasque,
+            verificationFixationCouronne,
+            verificationIsolementPorteBalais,
+            isolementPorteBalaisV,
+            isolementPorteBalaisOhm,
+            tensionStatorInducteurs,
+            tensionStatorInducteursU,
+            tensionStatorInducteursV,
+            tensionStatorInducteursW,
+            intensiteStatorInducteur,
+            intensiteStatorInducteurU,
+            intensiteStatorInducteurV,
+            intensiteStatorInducteurW,
+            tensionInduitRotor,
+            tensionInduitRotorU,
+            tensionInduitRotorV,
+            tensionInduitRotorW,
+            intensiteInduit,
+            intensiteInduitU,
+            vitesseU,
+            puissanceU,
+            dureeEssai,
+            sensRotation,
 //essais vibratoires
-        V1V,  // vitesse 1v
-        A1V,  //accélération 1v
-        V2V,  // vitesse 2v
-        A2V,  //accélération 2v
-        V1H,  // vitesse 1H
-        A1H,  //accélération 1H
-        V2H,  // vitesse 2H
-        A2H,  //accélération 2H
-        V2A,  // vitesse 2A
-        A2A,  //accélération 2A
-        isolementPhaseMasse,
+            vitesse1V,  // vitesse 1v
+            acceleration1V,  //accélération 1v
+            vitesse2V,  // vitesse 2v
+            acceleration2V,  //accélération 2v
+            vitesse1H,  // vitesse 1H
+            acceleration1H,  //accélération 1H
+            vitesse2H,  // vitesse 2H
+            acceleration2H,  //accélération 2H
+            vitesse2A,  // vitesse 2acceleration
+            acceleration2A,
+             isolementPhaseMasse,
          isolementPhase,
          resistanceStatorU,
          resistanceStatorV,
@@ -154,5 +143,5 @@ data class RemontageTriphaseEntity (
          isolementPhaseRotorUV,
          isolementPhaseRotorVW,
          isolementPhaseRotorUW)
-    }*/
+    }
 }

@@ -187,7 +187,105 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             })
                         }
                         if (fiche.type == 3L){
-                            Log.i("INFO","fiche remontage ${fiche.numFiche}")
+                            Log.i("INFO","fiche remontage ${fiche.numFiche} ")
+                            var remo = repository.getRemontage(token, fiche._id, object: Callback<RemontageResponse> {
+                                override fun onResponse(call: Call<RemontageResponse>, response: Response<RemontageResponse>){
+                                    if ( response.code() == 200 ) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 1) {
+                                                val demoTri = repository.getRemontageTriphase(token, resp.fiche!!._id, object: Callback<RemontageTriphaseResponse>{
+                                                    override fun onResponse(call: Call<RemontageTriphaseResponse>, response: Response<RemontageTriphaseResponse>) {
+                                                        if ( response.code() == 200 ) {
+                                                            val resp2 = response.body()
+                                                            if (resp2 != null) {
+                                                                //Log.i("INFO","fiche RemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                //demontages!!.add(resp.fiche!!)
+                                                                viewModelScope.launch(Dispatchers.IO) {
+                                                                    var demoT =
+                                                                        repository.getByIdRemoTriLocalDatabse(
+                                                                            resp2.fiche!!._id
+                                                                        )
+                                                                    if (demoT == null) {
+                                                                        repository.insertRemoTriLocalDatabase(
+                                                                            resp2!!.fiche!!
+                                                                        )
+                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "ajout remo tri en bdd locale"
+                                                                        )
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "fiche déjà en bdd"
+                                                                        )
+                                                                        remontages!!.add(demoT as Remontage)
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                Log.i(
+                                                                    "INFO",
+                                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<RemontageTriphaseResponse>, t: Throwable) {
+                                                        Log.e("Error","erreur ${t.message}")
+                                                    }
+                                                })
+                                            }
+                                            if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 2) {
+                                                val demoTri = repository.getRemontageCC(token, resp.fiche!!._id, object: Callback<RemontageCCResponse >{
+                                                    override fun onResponse(call: Call<RemontageCCResponse>, response: Response<RemontageCCResponse>) {
+                                                        if ( response.code() == 200 ) {
+                                                            val resp2 = response.body()
+                                                            if (resp2 != null) {
+                                                                //Log.i("INFO","fiche RemontageCC :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                //demontages!!.add(resp.fiche!!)
+                                                                viewModelScope.launch(Dispatchers.IO) {
+                                                                    var demoT =
+                                                                        repository.getByIdRemoCCLocalDatabse(
+                                                                            resp2.fiche!!._id
+                                                                        )
+                                                                    if (demoT == null) {
+                                                                        repository.insertRemoCCLocalDatabase(
+                                                                            resp2!!.fiche!!
+                                                                        )
+                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "ajout remo cc en bdd locale"
+                                                                        )
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "fiche déjà en bdd"
+                                                                        )
+                                                                        remontages!!.add(demoT as Remontage)
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                Log.i(
+                                                                    "INFO",
+                                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<RemontageCCResponse>, t: Throwable) {
+                                                        Log.e("Error","erreur ${t.message}")
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    }
+                                }
+                                override fun onFailure(call: Call<RemontageResponse>, t: Throwable) {
+                                    Log.e("Error","erreur ${t.message}")
+                                }
+                            })
                         }
                         if ( fiche.type == 4L ){
                             val resp = repository.getBobinage(token, fiche._id, object: Callback<BobinageResponse> {
@@ -231,10 +329,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             var listChantier = repository.getAllChantierLocalDatabase()
             for (ch in listChantier){
                 chantiers.add(ch.toChantier())
-                Log.i("INFO",ch.toChantier().toString())
             }
             var listBobinage = repository.getAllBobinageLocalDatabase()
-            Log.i("INFO",listBobinage.size.toString()+" bobinages")
             for( bobinage in listBobinage){
                 bobinages.add(bobinage.toBobinage())
             }
@@ -245,6 +341,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             var listDCC = repository.getAllDemontageCCLocalDatabase()
             for (dcc in listDCC){
                 demontages.add(dcc.toCContinu())
+            }
+            var listRT = repository.getAllRemontageTriLocalDatabase()
+            for (rt in listRT){
+                remontages.add(rt.toRTriphase())
+            }
+            var listRCC = repository.getAllRemontageCCLocalDatabase()
+            for (rcc in listRCC){
+                remontages.add(rcc.toRCourantC())
             }
         }
     }
@@ -257,7 +361,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheR(view: View){
-        Navigation.findNavController(view).navigate(R.id.versFicheRemontage)
+        var action = AccueilDirections.versFicheRemontage(token!!,username!!,remontages!!.toTypedArray())
+        Navigation.findNavController(view).navigate(action)
     }
     fun toBobinage(view: View){
             var action = AccueilDirections.versFicheBobinage(bobinages!!.toTypedArray(),token,username)

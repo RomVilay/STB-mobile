@@ -1,5 +1,7 @@
 package com.example.applicationstb.model
 
+import com.example.applicationstb.localdatabase.RemontageCCEntity
+import com.example.applicationstb.localdatabase.RemontageTriphaseEntity
 import java.sql.Timestamp
 import java.util.*
 
@@ -18,9 +20,10 @@ open class Remontage(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
+    var typeFicheRemontage: Int?,
     open var remontageRoulement: Int?,
     open var collageRoulementPorteeArbre: Int?,
-    open var collageRoulementPorteeFlasque: Int?,
+    open var collageRoulementFlasque: Int?,
     open var verificationFixationCouronne: Boolean?,
     open var verificationIsolementPorteBalais: Boolean?,
     open var isolementPorteBalaisV: Int?,
@@ -90,12 +93,11 @@ class RemontageTriphase(
     photo: Array<String>?,
     remontageRoulement: Int?,
     collageRoulementPorteeArbre: Int?,
-    collageRoulementPorteeFlasque: Int?,
+    collageRoulementFlasque: Int?,
     verificationFixationCouronne: Boolean?,
     verificationIsolementPorteBalais: Boolean?,
     isolementPorteBalaisV: Int?,
     isolementPorteBalaisOhm: Int?,
-    // essais dynamiques
     tensionStatorInducteurs: Boolean?,
      tensionStatorInducteursU: Float?,
      tensionStatorInducteursV: Float?,
@@ -114,7 +116,6 @@ class RemontageTriphase(
      puissanceU: Float?,
      dureeEssai: Float?,
      sensRotation: Int?,
-    //essais vibratoires
      vitesse1V: Float?,  // vitesse 1v
      acceleration1V: Float?,  //accélération 1v
      vitesse2V: Float?,  // vitesse 2v
@@ -157,9 +158,10 @@ class RemontageTriphase(
     dureeTotale,
     observation,
     photo,
+    1,
     remontageRoulement,
     collageRoulementPorteeArbre,
-    collageRoulementPorteeFlasque,
+    collageRoulementFlasque,
     verificationFixationCouronne,
     verificationIsolementPorteBalais,
     isolementPorteBalaisV,
@@ -193,7 +195,74 @@ sensRotation,
     acceleration2H,  //accélération 2H
     vitesse2A,  // vitesse 2A
     acceleration2A,  //accélération 2A
-) {}
+) {
+    fun toEntity(): RemontageTriphaseEntity {
+        return RemontageTriphaseEntity(
+        _id,
+        numDevis,
+        numFiche,
+        type,
+        status,
+        client!!._id,
+        contact,
+        telContact,
+        dureeTotale,
+        observations,
+        remontageRoulement,
+        collageRoulementPorteeArbre,
+        collageRoulementFlasque,
+        verificationFixationCouronne,
+        verificationIsolementPorteBalais,
+        isolementPorteBalaisV,
+        isolementPorteBalaisOhm,
+        tensionStatorInducteurs,
+        tensionStatorInducteursU,
+        tensionStatorInducteursV,
+        tensionStatorInducteursW,
+        intensiteStatorInducteur,
+        intensiteStatorInducteurU,
+        intensiteStatorInducteurV,
+        intensiteStatorInducteurW,
+        tensionInduitRotor,
+        tensionInduitRotorU,
+        tensionInduitRotorV,
+        tensionInduitRotorW,
+        intensiteInduit,
+        intensiteInduitU,
+        vitesseU,
+        puissanceU,
+        dureeEssai,
+        sensRotation,
+         vitesse1V,  // vitesse 1v
+         acceleration1V,  //accélération 1v
+         vitesse2V,  // vitesse 2v
+         acceleration2V,  //accélération 2v
+         vitesse1H,  // vitesse 1H
+         acceleration1H,  //accélération 1H
+         vitesse2H,  // vitesse 2H
+         acceleration2H,  //accélération 2H
+         vitesse2A,  // vitesse 2A
+         acceleration2A,  //accélération 2A
+         isolementPhaseMasse,
+         isolementPhase,
+         resistanceStatorU,
+         resistanceStatorV,
+         resistanceStatorW,
+         isolementPMStatorU,
+         isolementPMStatorV,
+         isolementPMStatorW,
+         isolementPMRotorU,
+         isolementPMRotorV,
+         isolementPMRotorW,
+         isolementPhaseStatorUV,
+         isolementPhaseStatorVW,
+         isolementPhaseStatorUW,
+         isolementPhaseRotorUV,
+         isolementPhaseRotorVW,
+         isolementPhaseRotorUW)
+
+    }
+}
 
 class RemontageCourantC(
     idFiche: String,
@@ -212,7 +281,7 @@ class RemontageCourantC(
     photo: Array<String>?,
     remontageRoulement: Int?,
     collageRoulementPorteeArbre: Int?,
-    collageRoulementPorteeFlasque: Int?,
+    collageRoulementFlasque: Int?,
     verificationFixationCouronne: Boolean?,
     verificationIsolementPorteBalais: Boolean?,
     isolementPorteBalaisV: Int?,
@@ -254,7 +323,7 @@ class RemontageCourantC(
     var isolementInduitInducteurs: Float?,
     var releveIsoInducteursMasse: Float?,
     var releveIsoInduitMasse: Float?,
-    var releveIsoInduitInducteurs: Float?,
+    var releveIsoInduitInducteurs: Float?
 ) : Remontage(
     idFiche,
     numDevis,
@@ -270,9 +339,10 @@ class RemontageCourantC(
     dureeTotale,
     observation,
     photo,
+    2,
     remontageRoulement,
     collageRoulementPorteeArbre,
-    collageRoulementPorteeFlasque,
+    collageRoulementFlasque,
     verificationFixationCouronne,
     verificationIsolementPorteBalais,
     isolementPorteBalaisV,
@@ -307,6 +377,63 @@ class RemontageCourantC(
     vitesse2A,  // vitesse 2A
     acceleration2A,  //accélération 2A
 ) {
+    fun toEntity(): RemontageCCEntity {
+        return RemontageCCEntity(
+            _id,
+            numDevis,
+        numFiche,
+        type,
+        status,
+        client!!._id,
+        contact,
+        telContact,
+        dureeTotale,
+        observations,
+        remontageRoulement,
+        collageRoulementPorteeArbre,
+        collageRoulementFlasque,
+        verificationFixationCouronne,
+        verificationIsolementPorteBalais,
+        isolementPorteBalaisV,
+        isolementPorteBalaisOhm,
+        // essais dynamiques
+        tensionStatorInducteurs,
+        tensionStatorInducteursU,
+        tensionStatorInducteursV,
+        tensionStatorInducteursW,
+        intensiteStatorInducteur,
+        intensiteStatorInducteurU,
+        intensiteStatorInducteurV,
+        intensiteStatorInducteurW,
+        tensionInduitRotor,
+        tensionInduitRotorU,
+        tensionInduitRotorV,
+        tensionInduitRotorW,
+        intensiteInduit,
+        intensiteInduitU,
+        vitesseU,
+        puissanceU,
+        dureeEssai,
+        sensRotation,
+        vitesse1V,  // vitesse 1v
+        acceleration1V,  //accélération 1v
+        vitesse2V,  // vitesse 2v
+        acceleration2V,  //accélération 2v
+        vitesse1H,  // vitesse 1H
+        acceleration1H,  //accélération 1H
+        vitesse2H,  // vitesse 2H
+        acceleration2H,  //accélération 2H
+        vitesse2A,  // vitesse 2A
+        acceleration2A,  //accélération 2A
+        resistanceInducteurs,
+        resistanceInduit,
+        isolementInducteursMasse,
+        isolementInduitMasse,
+        isolementInduitInducteurs,
+        releveIsoInducteursMasse,
+        releveIsoInduitMasse,
+        releveIsoInduitInducteurs)
 
+    }
 }
 //essais dyna et vibratoires à rajouter
