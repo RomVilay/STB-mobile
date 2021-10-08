@@ -548,10 +548,10 @@ class BodyRemontageTriphase (  var remontageRoulement: Int?,
                                var tensionStatorInducteursU: Float?,
                                var tensionStatorInducteursV: Float?,
                                var tensionStatorInducteursW: Float?,
-                               var intensiteStatorInducteur: Boolean?,
-                               var intensiteStatorInducteurU: Float?,
-                               var intensiteStatorInducteurV: Float?,
-                               var intensiteStatorInducteurW: Float?,
+                               var intensiteStatorInducteurs: Boolean?,
+                               var intensiteStatorInducteursU: Float?,
+                               var intensiteStatorInducteursV: Float?,
+                               var intensiteStatorInducteursW: Float?,
                                var tensionInduitRotor: Boolean?,
                                var tensionInduitRotorU: Float?,
                                var tensionInduitRotorV: Float?,
@@ -658,10 +658,10 @@ class BodyRemontageTriphase (  var remontageRoulement: Int?,
         parcel.writeFloat(tensionStatorInducteursU!!)
         parcel.writeFloat(tensionStatorInducteursV!!)
         parcel.writeFloat(tensionStatorInducteursW!!)
-        parcel.writeBoolean(intensiteStatorInducteur!!)
-        parcel.writeFloat(intensiteStatorInducteurU!!)
-        parcel.writeFloat(intensiteStatorInducteurV!!)
-        parcel.writeFloat(intensiteStatorInducteurW!!)
+        parcel.writeBoolean(intensiteStatorInducteurs!!)
+        parcel.writeFloat(intensiteStatorInducteursU!!)
+        parcel.writeFloat(intensiteStatorInducteursV!!)
+        parcel.writeFloat(intensiteStatorInducteursW!!)
         parcel.writeBoolean(tensionInduitRotor!!)
         parcel.writeFloat(tensionInduitRotorU!!)
         parcel.writeFloat(tensionInduitRotorV!!)
@@ -727,10 +727,10 @@ class BodyRemontageCC (  var remontageRoulement: Int?,
                                var tensionStatorInducteursU: Float?,
                                var tensionStatorInducteursV: Float?,
                                var tensionStatorInducteursW: Float?,
-                               var intensiteStatorInducteur: Boolean?,
-                               var intensiteStatorInducteurU: Float?,
-                               var intensiteStatorInducteurV: Float?,
-                               var intensiteStatorInducteurW: Float?,
+                               var intensiteStatorInducteurs: Boolean?,
+                               var intensiteStatorInducteursU: Float?,
+                               var intensiteStatorInducteursV: Float?,
+                               var intensiteStatorInducteursW: Float?,
                                var tensionInduitRotor: Boolean?,
                                var tensionInduitRotorU: Float?,
                                var tensionInduitRotorV: Float?,
@@ -819,10 +819,10 @@ class BodyRemontageCC (  var remontageRoulement: Int?,
         parcel.writeFloat(tensionStatorInducteursU!!)
         parcel.writeFloat(tensionStatorInducteursV!!)
         parcel.writeFloat(tensionStatorInducteursW!!)
-        parcel.writeBoolean(intensiteStatorInducteur!!)
-        parcel.writeFloat(intensiteStatorInducteurU!!)
-        parcel.writeFloat(intensiteStatorInducteurV!!)
-        parcel.writeFloat(intensiteStatorInducteurW!!)
+        parcel.writeBoolean(intensiteStatorInducteurs!!)
+        parcel.writeFloat(intensiteStatorInducteursU!!)
+        parcel.writeFloat(intensiteStatorInducteursV!!)
+        parcel.writeFloat(intensiteStatorInducteursW!!)
         parcel.writeBoolean(tensionInduitRotor!!)
         parcel.writeFloat(tensionInduitRotorU!!)
         parcel.writeFloat(tensionInduitRotorV!!)
@@ -1131,10 +1131,10 @@ class Repository (var context:Context) {
             fiche.tensionStatorInducteursU,
             fiche.tensionStatorInducteursV,
             fiche.tensionStatorInducteursW,
-            fiche.intensiteStatorInducteur,
-            fiche.intensiteStatorInducteurU,
-            fiche.intensiteStatorInducteurV,
-            fiche.intensiteStatorInducteurW,
+            fiche.intensiteStatorInducteurs,
+            fiche.intensiteStatorInducteursU,
+            fiche.intensiteStatorInducteursV,
+            fiche.intensiteStatorInducteursW,
             fiche.tensionInduitRotor,
             fiche.tensionInduitRotorU,
             fiche.tensionInduitRotorV,
@@ -1188,10 +1188,10 @@ class Repository (var context:Context) {
             fiche.tensionStatorInducteursU,
             fiche.tensionStatorInducteursV,
             fiche.tensionStatorInducteursW,
-            fiche.intensiteStatorInducteur,
-            fiche.intensiteStatorInducteurU,
-            fiche.intensiteStatorInducteurV,
-            fiche.intensiteStatorInducteurW,
+            fiche.intensiteStatorInducteurs,
+            fiche.intensiteStatorInducteursU,
+            fiche.intensiteStatorInducteursV,
+            fiche.intensiteStatorInducteursW,
             fiche.tensionInduitRotor,
             fiche.tensionInduitRotorU,
             fiche.tensionInduitRotorV,

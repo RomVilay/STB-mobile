@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.fragment.app.activityViewModels
 import com.example.applicationstb.R
 
 
@@ -22,6 +23,7 @@ class essaisStatTriFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        private var viewModel: FicheRemontageViewModel by activityViewModels()
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_essais_stat_tri, container, false)
         val spiIsoPM = layout.findViewById<Spinner>(R.id.spinnerIsoPMT)

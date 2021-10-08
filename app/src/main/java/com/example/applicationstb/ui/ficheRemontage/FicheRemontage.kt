@@ -79,8 +79,37 @@ class FicheRemontage : Fragment() {
         var isoPBRB = layout.findViewById<RadioButton>(R.id.isoPBRB)
         var isoPBV = layout.findViewById<EditText>(R.id.isoPBV)
         var risoPBV = layout.findViewById<EditText>(R.id.RisoPBV)
+        var tensionStatorInducteurs = layout.findViewById<Switch>(R.id.swTSI)
+         var tensionStatorInducteursU = layout.findViewById<EditText>(R.id.TSVU)
+         var tensionStatorInducteursV = layout.findViewById<EditText>(R.id.TSVV)
+         var tensionStatorInducteursW = layout.findViewById<EditText>(R.id.TSVW)
+         var intensiteStatorInducteurs = layout.findViewById<Switch>(R.id.swTSI2)
+         var intensiteStatorInducteursU = layout.findViewById<EditText>(R.id.ISVU)
+         var intensiteStatorInducteursV = layout.findViewById<EditText>(R.id.ISVV)
+         var intensiteStatorInducteursW = layout.findViewById<EditText>(R.id.ISVW)
+         var tensionInduitRotor = layout.findViewById<Switch>(R.id.swTSI3)
+         var tensionInduitRotorU = layout.findViewById<EditText>(R.id.TIU)
+         var tensionInduitRotorV = layout.findViewById<EditText>(R.id.TIV)
+         var tensionInduitRotorW = layout.findViewById<EditText>(R.id.TIW)
+         var intensiteInduit = layout.findViewById<RadioButton>(R.id.Iindcut)
+         var intensiteInduitU = layout.findViewById<EditText>(R.id.IntIndu)
+         var vitesseU = layout.findViewById<EditText>(R.id.vitesseRemo)
+         var puissanceU = layout.findViewById<EditText>(R.id.pRemotri)
+         var dureeEssai = layout.findViewById<EditText>(R.id.dureeEssaiRemoTri)
+         var sensRotation = layout.findViewById<ToggleButton>(R.id.sensRotationS)
+         var V1V = layout.findViewById<EditText>(R.id.V1V)
+         var V1H = layout.findViewById<EditText>(R.id.V1H)
+         var V2V = layout.findViewById<EditText>(R.id.V2V)
+         var V2H = layout.findViewById<EditText>(R.id.V2H)
+         var V2A = layout.findViewById<EditText>(R.id.V2A)
+         var A1V = layout.findViewById<EditText>(R.id.A1V)
+         var A1H = layout.findViewById<EditText>(R.id.A1H)
+         var A2V = layout.findViewById<EditText>(R.id.A2V)
+         var A2H = layout.findViewById<EditText>(R.id.A2H)
+         var A2A = layout.findViewById<EditText>(R.id.A2A)
+         var obs = layout.findViewById<EditText>(R.id.observations)
         viewModel.selection.observe(viewLifecycleOwner, {
-            Log.i("INFO","fiche ${viewModel.selection.value!!.collageRoulementFlasque}")
+            Log.i("INFO","fiche ${viewModel.selection.value!!.intensiteStatorInducteursV}")
             var fiche = viewModel.selection.value!!
             if(fiche.remontageRoulement !== null) spinnerMnt.setSelection(fiche.remontageRoulement!!)
             if(fiche.collageRoulementPorteeArbre !== null) spinnerCPA.setSelection(fiche.collageRoulementPorteeArbre!!)
@@ -89,6 +118,33 @@ class FicheRemontage : Fragment() {
             if(fiche.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(fiche.verificationIsolementPorteBalais!!)
             if(fiche.isolementPorteBalaisV !== null) isoPBV.setText(fiche.isolementPorteBalaisV!!.toString())
             if(fiche.isolementPorteBalaisOhm !== null) risoPBV.setText(fiche.isolementPorteBalaisOhm!!.toString())
+            if(fiche.tensionStatorInducteurs !== null ) tensionStatorInducteurs.setChecked(fiche.tensionStatorInducteurs!!)
+            if(fiche.tensionStatorInducteursU !== null) tensionStatorInducteursU.setText(fiche.tensionStatorInducteursU!!.toString())
+            if(fiche.tensionStatorInducteursV !== null) tensionStatorInducteursV.setText(fiche.tensionStatorInducteursV!!.toString())
+            if(fiche.tensionStatorInducteursW !== null) tensionStatorInducteursW.setText(fiche.tensionStatorInducteursW!!.toString())
+            if(fiche.tensionInduitRotor !== null ) tensionInduitRotor.setChecked(fiche.tensionInduitRotor!!)
+            if(fiche.intensiteStatorInducteursU !== null) intensiteStatorInducteursU.setText(fiche.intensiteStatorInducteursU!!.toString())
+            if(fiche.intensiteStatorInducteursV !== null) intensiteStatorInducteursV.setText(fiche.intensiteStatorInducteursV!!.toString())
+            if(fiche.intensiteStatorInducteursW !== null) intensiteStatorInducteursW.setText(fiche.intensiteStatorInducteursW!!.toString())
+            if(fiche.intensiteInduit !== null ) tensionStatorInducteurs.setChecked(fiche.intensiteInduit)
+            if(fiche.tensionInduitRotorU !== null) tensionInduitRotorU.setText(fiche.tensionInduitRotorU!!.toString())
+            if(fiche.tensionInduitRotorV !== null) tensionInduitRotorV.setText(fiche.tensionInduitRotorV!!.toString())
+            if(fiche.tensionInduitRotorW !== null) tensionInduitRotorW.setText(fiche.tensionInduitRotorW!!.toString())
+            if(fiche.intensiteInduit !== null ) tensionStatorInducteurs.setChecked(fiche.intensiteInduit!!)
+            if(fiche.intensiteInduitU !== null) intensiteInduitU.setText(fiche.intensiteInduitU!!.toString())
+            if(fiche.vitesseU !== null) vitesseU.setText(fiche.vitesseU!!.toString())
+            if(fiche.dureeEssai !== null) dureeEssai.setText(fiche.dureeEssai!!.toString())
+            if(fiche.observations !== null) obs.setText(fiche.observations!!.toString())
+            if(fiche.vitesse1V !== null) V1V.setText(fiche.vitesse1V!!.toString())
+            if(fiche.vitesse1H !== null) V1H.setText(fiche.vitesse1H!!.toString())
+            if(fiche.vitesse2V !== null) V2V.setText(fiche.vitesse2V!!.toString())
+            if(fiche.vitesse2A !== null) V2A.setText(fiche.vitesse2A!!.toString())
+            if(fiche.acceleration1V !== null) A1V.setText(fiche.acceleration1V!!.toString())
+            if(fiche.acceleration1H !== null) A1H.setText(fiche.acceleration1H!!.toString())
+            if(fiche.acceleration2V !== null) A2V.setText(fiche.acceleration2V!!.toString())
+            if(fiche.acceleration2H !== null) A2H.setText(fiche.acceleration2H!!.toString())
+            if(fiche.acceleration2A !== null) A2A.setText(fiche.acceleration2A!!.toString())
+            if(fiche.sensRotation !== null && fiche.sensRotation == 2 ) sensRotation.setChecked(true) else sensRotation.setChecked(false)
         })
 
         titre.setOnClickListener{
@@ -98,7 +154,83 @@ class FicheRemontage : Fragment() {
         btnquitter.setOnClickListener {
             viewModel.retour(layout)
         }
+        sensRotation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.selection.value!!.sensRotation = 2
+            } else {
+                viewModel.selection.value!!.sensRotation = 1
+            }
+        }
+        spinnerMnt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selection.value!!.remontageRoulement = position
+            }
+        }
+        spinnerCPA.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selection.value!!.collageRoulementPorteeArbre = position
+            }
+        }
+        spinnerCIF.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selection.value!!.collageRoulementFlasque = position
+            }
+        }
+        fixCouronne.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.verificationFixationCouronne = isChecked
+        }
+        isoPBRB.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.verificationIsolementPorteBalais = isChecked
+        }
+        tensionStatorInducteurs.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.tensionStatorInducteurs = isChecked
+        }
+        intensiteStatorInducteurs.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.intensiteStatorInducteurs = isChecked
+        }
+        tensionInduitRotor.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.tensionInduitRotor = isChecked
+        }
+
         btnenregistrer.setOnClickListener {
+            var fiche = viewModel.selection.value!!
+            if (fiche.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 2L
+            fiche.isolementPorteBalaisV =  isoPBV.text.toString().toInt()
+            fiche.isolementPorteBalaisOhm =  risoPBV.text.toString().toInt()
+            fiche.tensionStatorInducteursU = tensionStatorInducteursU.text.toString().toFloat()
+            fiche.tensionStatorInducteursV = tensionStatorInducteursV.text.toString().toFloat()
+            fiche.tensionStatorInducteursW = tensionStatorInducteursW.text.toString().toFloat()
+            fiche.intensiteStatorInducteursU = intensiteStatorInducteursU.text.toString().toFloat()
+            fiche.intensiteStatorInducteursV = intensiteStatorInducteursV.text.toString().toFloat()
+            fiche.intensiteStatorInducteursW = intensiteStatorInducteursW.text.toString().toFloat()
+            fiche.tensionInduitRotorU = tensionInduitRotorU.text.toString().toFloat()
+            fiche.tensionInduitRotorV = tensionInduitRotorV.text.toString().toFloat()
+            fiche.tensionInduitRotorW = tensionInduitRotorW.text.toString().toFloat()
+            fiche.intensiteInduitU = intensiteInduitU.text.toString().toFloat()
+            fiche.vitesseU = vitesseU.text.toString().toFloat()
+            fiche.puissanceU = puissanceU.text.toString().toFloat()
+            fiche.dureeEssai = dureeEssai.text.toString().toFloat()
+            /*if(V1V.is) fiche.vitesse1V
+            if(fiche.vitesse1H !== null) V1H.setText(fiche.vitesse1H!!.toString())
+            if(fiche.vitesse2V !== null) V2V.setText(fiche.vitesse2V!!.toString())
+            if(fiche.vitesse2A !== null) V2A.setText(fiche.vitesse2A!!.toString())
+            if(fiche.acceleration1V !== null) A1V.setText(fiche.acceleration1V!!.toString())
+            if(fiche.acceleration1H !== null) A1H.setText(fiche.acceleration1H!!.toString())
+            if(fiche.acceleration2V !== null) A2V.setText(fiche.acceleration2V!!.toString())
+            if(fiche.acceleration2H !== null) A2H.setText(fiche.acceleration2H!!.toString())
+            if(fiche.acceleration2A !== null) A2A.setText(fiche.acceleration2A!!.toString())*/
             viewModel.enregistrer(layout)
         }
 

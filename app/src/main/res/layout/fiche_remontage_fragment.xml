@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.ficheRemontage.FicheRemontage">
 
+    <TextView
+        android:id="@+id/textView83"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inducteur"
+        app:layout_constraintBottom_toBottomOf="@+id/swTSI"
+        app:layout_constraintTop_toTopOf="@+id/swTSI"
+        tools:layout_editor_absoluteX="498dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -62,7 +71,7 @@
                 android:id="@+id/infoMoteur"
                 android:layout_width="549dp"
                 android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -298,14 +307,26 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible">
 
+                    <Switch
+                        android:id="@+id/swTSI2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="Stator"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreIntensité"
+                        app:layout_constraintStart_toEndOf="@+id/titreIntensité"
+                        app:layout_constraintTop_toTopOf="@+id/titreIntensité"
+                        app:layout_constraintVertical_bias="0.0" />
+
                     <TextView
                         android:id="@+id/titreTension"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="236dp"
-                        android:layout_marginLeft="236dp"
+                        android:layout_marginStart="160dp"
+                        android:layout_marginLeft="160dp"
                         android:layout_marginTop="80dp"
-                        android:text="Tension"
+                        android:text="Tension Stator/Inducteur"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -317,6 +338,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toEndOf="@+id/Tisop"
                         app:layout_constraintTop_toBottomOf="@+id/titreTension">
 
@@ -371,9 +393,10 @@
                         android:id="@+id/Tisop"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginLeft="150dp"
                         android:layout_marginTop="20dp"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titreTension">
 
@@ -390,7 +413,8 @@
                                 android:gravity="center"
                                 android:text="Stator"
                                 android:textColor="@color/white"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:visibility="invisible" />
                         </TableRow>
 
                         <TableRow
@@ -431,6 +455,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/TStat2"
                         app:layout_constraintStart_toEndOf="@+id/TStat2"
                         app:layout_constraintTop_toTopOf="@+id/TStat2">
@@ -486,8 +511,8 @@
                         android:id="@+id/TStat2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginLeft="150dp"
                         android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titreIntensité">
@@ -505,7 +530,8 @@
                                 android:gravity="center"
                                 android:text="Stator"
                                 android:textColor="@color/white"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:visibility="invisible" />
                         </TableRow>
 
                         <TableRow
@@ -544,10 +570,10 @@
                         android:id="@+id/titreIntensité"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="236dp"
-                        android:layout_marginLeft="236dp"
+                        android:layout_marginStart="160dp"
+                        android:layout_marginLeft="160dp"
                         android:layout_marginTop="12dp"
-                        android:text="Intensité"
+                        android:text="Intensité stator inducteur"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/Tisop" />
@@ -557,8 +583,8 @@
 "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginLeft="150dp"
                         android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView68">
@@ -576,7 +602,8 @@
                                 android:gravity="center"
                                 android:text="Induit"
                                 android:textColor="@color/white"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:visibility="invisible" />
                         </TableRow>
 
                         <TableRow
@@ -619,6 +646,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toEndOf="@+id/TIndV
 "
                         app:layout_constraintTop_toBottomOf="@+id/textView68">
@@ -675,10 +703,10 @@
                         android:id="@+id/textView68"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="240dp"
-                        android:layout_marginLeft="240dp"
+                        android:layout_marginStart="180dp"
+                        android:layout_marginLeft="180dp"
                         android:layout_marginTop="100dp"
-                        android:text="Tension"
+                        android:text="Tension Induit Rotor"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titreIntensité" />
@@ -696,7 +724,7 @@
 " />
 
                     <EditText
-                        android:id="@+id/editTextNumber6"
+                        android:id="@+id/IntIndu"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="12dp"
@@ -717,13 +745,13 @@
                         android:layout_marginLeft="48dp"
                         android:layout_marginBottom="10dp"
                         android:text="Vitesse"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber6"
-                        app:layout_constraintStart_toEndOf="@+id/editTextNumber6"
-                        app:layout_constraintTop_toTopOf="@+id/editTextNumber6"
+                        app:layout_constraintBottom_toBottomOf="@+id/IntIndu"
+                        app:layout_constraintStart_toEndOf="@+id/IntIndu"
+                        app:layout_constraintTop_toTopOf="@+id/IntIndu"
                         app:layout_constraintVertical_bias="1.0" />
 
                     <EditText
-                        android:id="@+id/editTextNumber7"
+                        android:id="@+id/vitesseRemo"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="28dp"
@@ -745,13 +773,13 @@
                         android:layout_marginLeft="48dp"
                         android:layout_marginTop="6dp"
                         android:text="Puissance"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextTime"
-                        app:layout_constraintStart_toEndOf="@+id/editTextTime"
-                        app:layout_constraintTop_toTopOf="@+id/editTextTime"
+                        app:layout_constraintBottom_toBottomOf="@+id/dureeEssaiRemoTri"
+                        app:layout_constraintStart_toEndOf="@+id/dureeEssaiRemoTri"
+                        app:layout_constraintTop_toTopOf="@+id/dureeEssaiRemoTri"
                         app:layout_constraintVertical_bias="0.333" />
 
                     <EditText
-                        android:id="@+id/editTextNumber8"
+                        android:id="@+id/pRemotri"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="12dp"
@@ -776,7 +804,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView69" />
 
                     <EditText
-                        android:id="@+id/editTextTime"
+                        android:id="@+id/dureeEssaiRemoTri"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="12dp"
@@ -790,7 +818,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView72" />
 
                     <ToggleButton
-                        android:id="@+id/toggleButton"
+                        android:id="@+id/sensRotationS"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -813,7 +841,73 @@
                         android:text="Sens de rotation vu depuis le bout d'arbre"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+                        app:layout_constraintTop_toBottomOf="@+id/dureeEssaiRemoTri" />
+
+                    <Switch
+                        android:id="@+id/swTSI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:text="Stator"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreTension"
+                        app:layout_constraintStart_toEndOf="@+id/titreTension"
+                        app:layout_constraintTop_toTopOf="@+id/titreTension" />
+
+                    <TextView
+                        android:id="@+id/textView85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Inducteur"
+                        app:layout_constraintBottom_toBottomOf="@+id/swTSI2"
+                        app:layout_constraintStart_toEndOf="@+id/swTSI2"
+                        app:layout_constraintTop_toTopOf="@+id/swTSI2" />
+
+                    <Switch
+                        android:id="@+id/swTSI3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="Stator"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView68"
+                        app:layout_constraintStart_toEndOf="@+id/textView68"
+                        app:layout_constraintTop_toTopOf="@+id/textView68" />
+
+                    <TextView
+                        android:id="@+id/textView82"
+                        android:layout_width="wrap_content"
+                        android:layout_height="19dp"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginLeft="14dp"
+                        android:text="Inducteur"
+                        app:layout_constraintBottom_toBottomOf="@+id/swTSI3"
+                        app:layout_constraintStart_toEndOf="@+id/swTSI3"
+                        app:layout_constraintTop_toTopOf="@+id/swTSI3" />
+
+                    <TextView
+                        android:id="@+id/textView84"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Inducteur"
+                        app:layout_constraintBottom_toBottomOf="@+id/swTSI"
+                        app:layout_constraintStart_toEndOf="@+id/swTSI"
+                        app:layout_constraintTop_toTopOf="@+id/swTSI" />
+
+                    <RadioButton
+                        android:id="@+id/Iindcut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginLeft="44dp"
+                        android:text="inducteur"
+                        app:layout_constraintBottom_toBottomOf="@+id/TIndV
+"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TIndV
+" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -929,35 +1023,35 @@
                                 android:text="vitesse" />
 
                             <EditText
-                                android:id="@+id/editTextNumber2"
+                                android:id="@+id/V1V"
                                 android:layout_width="80dp"
                                 android:layout_height="match_parent"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber3"
+                                android:id="@+id/V1H"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber4"
+                                android:id="@+id/V2V"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber"
+                                android:id="@+id/V2H"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber5"
+                                android:id="@+id/V2A"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
@@ -977,35 +1071,35 @@
                                 android:text="accélération" />
 
                             <EditText
-                                android:id="@+id/editTextNumber9"
+                                android:id="@+id/A1V"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber10"
+                                android:id="@+id/A1H"
                                 android:layout_width="80dp"
                                 android:layout_height="match_parent"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber11"
+                                android:id="@+id/A2V"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber12"
+                                android:id="@+id/A2H"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:inputType="number" />
 
                             <EditText
-                                android:id="@+id/editTextNumber13"
+                                android:id="@+id/A2A"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
@@ -1046,7 +1140,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="quitter"
-                    app:backgroundTint="@color/bleu_stb" />
+                    app:backgroundTint="@color/gray_600" />
 
                 <Button
                     android:id="@+id/enregistrer"
@@ -1054,6 +1148,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="enregistrer"
+                    app:backgroundTint="@color/gray_600" />
+
+                <Button
+                    android:id="@+id/termRemo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:text="Terminer"
                     app:backgroundTint="@color/bleu_stb" />
             </LinearLayout>
 
