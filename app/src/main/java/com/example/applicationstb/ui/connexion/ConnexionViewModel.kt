@@ -281,6 +281,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             })
                                     }
                                 }
+                                var listRCC: List<RemontageCCEntity> =
+                                    repository.getAllRemontageCCLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches RemontageCC: ${listRCC.size}")
+                                if (listRCC.size > 0) {
+                                    for (fiche in listRCC) {
+                                        var rc = fiche.toRCourantC()
+                                        val resp = repository.patchRemontageCC(
+                                            user!!.token!!,
+                                            rc._id,
+                                            rc,
+                                            object : Callback<RemontageCCResponse> {
+                                                override fun onResponse(
+                                                    call: Call<RemontageCCResponse>,
+                                                    response: Response<RemontageCCResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteRemontageCCLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<RemontageCCResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
                             }
                             if (action != null) {
                                 Navigation.findNavController(view).navigate(action)
