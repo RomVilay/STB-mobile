@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="U"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPMSV"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="V"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPMSW"
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="W"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
             </TableRow>
 
             <TableRow
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="U"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPMRV"
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="V"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPMRW"
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="W"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
             </TableRow>
 
         </TableLayout>
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="UV"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPSVW"
@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="VW"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPSUW"
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="UW"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
             </TableRow>
 
             <TableRow
@@ -225,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="UV"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPRVW"
@@ -233,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="VW"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/isoPRUW"
@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="UW"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
             </TableRow>
 
         </TableLayout>
@@ -288,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="U"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/ResV"
@@ -296,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="V"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
 
                 <EditText
                     android:id="@+id/ResW"
@@ -304,7 +304,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="W"
-                    android:inputType="number" />
+                    android:inputType="numberSigned|number|text" />
             </TableRow>
 
         </TableLayout>

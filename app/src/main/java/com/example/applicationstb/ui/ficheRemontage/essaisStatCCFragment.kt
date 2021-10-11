@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.applicationstb.R
 import android.widget.*
+import androidx.fragment.app.activityViewModels
 
 
 class essaisStatCCFragment : Fragment() {
-
+    private val viewModel: FicheRemontageViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

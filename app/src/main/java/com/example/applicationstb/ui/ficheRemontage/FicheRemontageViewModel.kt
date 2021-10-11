@@ -59,6 +59,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     fun enregistrer(view:View){
         if (selection.value!!.typeFicheRemontage == 1)  {
             var t = selection.value!! as RemontageTriphase
+            Log.i("Info","ispmsu : ${t.isolementPMStatorU}")
             if (isOnline(context))   {
                 val resp = repository.patchRemontageTriphase(
                     token!!,

@@ -40,30 +40,6 @@ class FicheRemontage : Fragment() {
         //var essaisDynamiques = layout.findViewById<CardView>(R.id.essaisDynamiques)
         var essaisStats = layout.findViewById<FrameLayout>(R.id.essaisStatiqueslayout)
         val fragmentManager = childFragmentManager
-        btnDemontage.setOnClickListener {
-            //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
-            viewModel.start.value = Date()
-            viewModel.selection.value = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
-            var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
-            when (viewModel.selection.value){
-                is RemontageTriphase -> fragmentManager.commit {
-                    replace<essaisStatTriFragment>(R.id.essaisStatiqueslayout)
-                }
-                is RemontageCourantC ->
-                {   fragmentManager.commit {
-                    replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
-                    }
-                }
-            }
-            layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
-            layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
-            layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
-            layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
-            layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
-            layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
-            //infoMoteur.visibility = View.VISIBLE
-            //essaisDynamiques.visibility = View.VISIBLE
-        }
         //infos moteur
         var titre = layout.findViewById<TextView>(R.id.titreRemontage)
         var spinnerMnt = layout.findViewById<Spinner>(R.id.spinnerMntRll)
@@ -107,6 +83,32 @@ class FicheRemontage : Fragment() {
          var obs = layout.findViewById<EditText>(R.id.observations)
         viewModel.selection.observe(viewLifecycleOwner, {
             Log.i("INFO","fiche ${viewModel.selection.value!!.intensiteStatorInducteursV}")
+
+        })
+
+        btnDemontage.setOnClickListener {
+            //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
+            viewModel.start.value = Date()
+            var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
+            if ( demo!!.typeFicheRemontage == 1) {
+                viewModel.selection.value = demo as RemontageTriphase
+                fragmentManager.commit {
+                    replace<essaisStatTriFragment>(R.id.essaisStatiqueslayout)
+                }
+            }
+            if ( demo!!.typeFicheRemontage == 2) {
+                viewModel.selection.value = demo as RemontageCourantC
+                fragmentManager.commit {
+                    replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
+                }
+            }
+            layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
+            layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
+            layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+            layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
+            layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
+            layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
+
             var fiche = viewModel.selection.value!!
             if(fiche.remontageRoulement !== null) spinnerMnt.setSelection(fiche.remontageRoulement!!)
             if(fiche.collageRoulementPorteeArbre !== null) spinnerCPA.setSelection(fiche.collageRoulementPorteeArbre!!)
@@ -144,7 +146,9 @@ class FicheRemontage : Fragment() {
             if(fiche.acceleration2H !== null) A2H.setText(fiche.acceleration2H!!.toString())
             if(fiche.acceleration2A !== null) A2A.setText(fiche.acceleration2A!!.toString())
             if(fiche.sensRotation !== null && fiche.sensRotation == 2 ) sensRotation.setChecked(true) else sensRotation.setChecked(false)
-        })
+            //infoMoteur.visibility = View.VISIBLE
+            //essaisDynamiques.visibility = View.VISIBLE
+        }
 
         titre.setOnClickListener{
         }

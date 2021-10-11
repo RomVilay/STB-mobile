@@ -7,15 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.ficheRemontage.FicheRemontage">
 
-    <TextView
-        android:id="@+id/textView83"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Inducteur"
-        app:layout_constraintBottom_toBottomOf="@+id/swTSI"
-        app:layout_constraintTop_toTopOf="@+id/swTSI"
-        tools:layout_editor_absoluteX="498dp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

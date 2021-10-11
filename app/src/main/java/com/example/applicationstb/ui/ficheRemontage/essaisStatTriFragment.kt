@@ -54,8 +54,6 @@ class essaisStatTriFragment : Fragment() {
         var resU = layout.findViewById<EditText>(R.id.ResU)
         var resV = layout.findViewById<EditText>(R.id.ResV)
         var resW = layout.findViewById<EditText>(R.id.ResW)
-        viewModel.selection.observe(viewLifecycleOwner, {
-            var fiche = viewModel.selection.value!! as RemontageTriphase
             if (fiche.isolementPhase !== null) spiIsoP.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementPhase!!.toInt().toString()))
             if (fiche.isolementPhaseMasse !== null) spiIsoPM.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementPhaseMasse!!.toInt().toString()))
             if (fiche.isolementPMStatorU !== null) isoPMSU.setText(fiche.isolementPMStatorU.toString())
@@ -73,7 +71,6 @@ class essaisStatTriFragment : Fragment() {
             if (fiche.resistanceStatorU !== null) resU.setText(fiche.resistanceStatorU.toString())
             if (fiche.resistanceStatorV !== null) resV.setText(fiche.resistanceStatorV.toString())
             if (fiche.resistanceStatorW !== null) resW.setText(fiche.resistanceStatorW.toString())
-        })
         spiIsoPM.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -88,67 +85,68 @@ class essaisStatTriFragment : Fragment() {
                 if(spiIsoP.selectedItem.toString() !== " ") fiche.isolementPhase = spiIsoP.selectedItem.toString().toFloat()
             }
         }
-        var regex = Regex.fromLiteral("\\d{0,2}(\\.\\d{1,2})?)")
-        /*isoPMSU.doAfterTextChanged {
-            if (isoPMSU.text.isNotEmpty() && isoPMSU.text.matches(regex)) fiche.isolementPMStatorU = isoPMSU.text.toString().toFloat()
+        var regex = Regex.fromLiteral("""\d{0,2}(\.\d{1,2})?""")
+        isoPMSU.doAfterTextChanged {
+            if (isoPMSU.text.isNotEmpty()) fiche.isolementPMStatorU = isoPMSU.text.toString().toFloat()
+            Log.i("INFO","Isopmsu stat = ${fiche.isolementPMStatorU}")
             viewModel.selection.value = fiche
         }
         isoPMSV.doAfterTextChanged {
-            if (isoPMSV.text.isNotEmpty() && isoPMSV.text.matches(regex)) fiche.isolementPMStatorV = isoPMSV.text.toString().toFloat()
+            if (isoPMSV.text.isNotEmpty()) fiche.isolementPMStatorV = isoPMSV.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPMSW.doAfterTextChanged {
-            if (isoPMSW.text.isNotEmpty() && isoPMSW.text.matches(regex)) fiche.isolementPMStatorV = isoPMSV.text.toString().toFloat()
+            if (isoPMSW.text.isNotEmpty()) fiche.isolementPMStatorW = isoPMSW.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPMRU.doAfterTextChanged {
-            if (isoPMRU.text.isNotEmpty() && isoPMRU.text.matches(regex)) fiche.isolementPMRotorU = isoPMRU.text.toString().toFloat()
+            if (isoPMRU.text.isNotEmpty()) fiche.isolementPMRotorU = isoPMRU.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPMRV.doAfterTextChanged {
-            if (isoPMRV.text.isNotEmpty() && isoPMRV.text.matches(regex)) fiche.isolementPMRotorU = isoPMRV.text.toString().toFloat()
+            if (isoPMRV.text.isNotEmpty()) fiche.isolementPMRotorV = isoPMRV.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPMRW.doAfterTextChanged {
-            if (isoPMRW.text.isNotEmpty() && isoPMRW.text.matches(regex)) fiche.isolementPMRotorU = isoPMRW.text.toString().toFloat()
+            if (isoPMRW.text.isNotEmpty()) fiche.isolementPMRotorW = isoPMRW.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPSUV.doAfterTextChanged {
-            if (isoPSUV.text.isNotEmpty() && isoPSUV.text.matches(regex)) fiche.isolementPhaseStatorUV = isoPSUV.text.toString().toFloat()
+            if (isoPSUV.text.isNotEmpty()) fiche.isolementPhaseStatorUV = isoPSUV.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPSUW.doAfterTextChanged {
-            if (isoPSUW.text.isNotEmpty() && isoPSUW.text.matches(regex)) fiche.isolementPhaseStatorUW = isoPSUW.text.toString().toFloat()
+            if (isoPSUW.text.isNotEmpty()) fiche.isolementPhaseStatorUW = isoPSUW.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPSVW.doAfterTextChanged {
-            if (isoPSVW.text.isNotEmpty() && isoPSVW.text.matches(regex)) fiche.isolementPhaseStatorVW = isoPSVW.text.toString().toFloat()
+            if (isoPSVW.text.isNotEmpty() ) fiche.isolementPhaseStatorVW = isoPSVW.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPRUV.doAfterTextChanged {
-            if (isoPRUV.text.isNotEmpty() && isoPRUV.text.matches(regex)) fiche.isolementPhaseRotorUV = isoPRUV.text.toString().toFloat()
+            if (isoPRUV.text.isNotEmpty() ) fiche.isolementPhaseRotorUV = isoPRUV.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPRUW.doAfterTextChanged {
-            if (isoPRUW.text.isNotEmpty() && isoPRUW.text.matches(regex)) fiche.isolementPhaseRotorUW = isoPRUW.text.toString().toFloat()
+            if (isoPRUW.text.isNotEmpty() ) fiche.isolementPhaseRotorUW = isoPRUW.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         isoPRVW.doAfterTextChanged {
-            if (isoPSVW.text.isNotEmpty() && isoPSVW.text.matches(regex)) fiche.isolementPhaseStatorVW = isoPSVW.text.toString().toFloat()
+            if (isoPRVW.text.isNotEmpty() ) fiche.isolementPhaseRotorVW = isoPRVW.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         resV.doAfterTextChanged {
-            if (resV.text.isNotEmpty() && resV.text.matches(regex)) fiche.resistanceStatorV = resV.text.toString().toFloat()
+            if (resV.text.isNotEmpty() ) fiche.resistanceStatorV = resV.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         resU.doAfterTextChanged {
-            if (resU.text.isNotEmpty() && resU.text.matches(regex)) fiche.resistanceStatorU = resU.text.toString().toFloat()
+            if (resU.text.isNotEmpty() ) fiche.resistanceStatorU = resU.text.toString().toFloat()
             viewModel.selection.value = fiche
         }
         resW.doAfterTextChanged {
-            if (resW.text.isNotEmpty() && resW.text.matches(regex)) fiche.resistanceStatorW = resW.text.toString().toFloat()
+            if (resW.text.isNotEmpty() ) fiche.resistanceStatorW = resW.text.toString().toFloat()
             viewModel.selection.value = fiche
-        }*/
+        }
         return layout
     }
 
