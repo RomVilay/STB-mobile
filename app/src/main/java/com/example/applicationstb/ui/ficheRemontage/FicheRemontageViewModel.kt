@@ -112,7 +112,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
         }
-        if (selection.value!!.typeFicheRemontage == 5)  {
+        if (selection.value!!.typeFicheRemontage == 2)  {
             var c = selection.value!! as RemontageCourantC
             if (isOnline(context))   {
                 val resp = repository.patchRemontageCC(
