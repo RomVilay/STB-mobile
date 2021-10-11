@@ -13,10 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
-import com.example.applicationstb.localdatabase.BobinageEntity
-import com.example.applicationstb.localdatabase.ChantierEntity
-import com.example.applicationstb.localdatabase.DemontageCCEntity
-import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
+import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.User
 import com.example.applicationstb.repository.*
@@ -232,6 +229,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                                                 override fun onFailure(
                                                     call: Call<DemontageCCResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listRT: List<RemontageTriphaseEntity> =
+                                    repository.getAllRemontageTriLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
+                                if (listRT.size > 0) {
+                                    for (fiche in listRT) {
+                                        var dt = fiche.toRTriphase()
+                                        val resp = repository.patchRemontageTriphase(
+                                            user!!.token!!,
+                                            dt._id,
+                                            dt,
+                                            object : Callback<RemontageTriphaseResponse> {
+                                                override fun onResponse(
+                                                    call: Call<RemontageTriphaseResponse>,
+                                                    response: Response<RemontageTriphaseResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteRemontageTriphaseLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<RemontageTriphaseResponse>,
                                                     t: Throwable
                                                 ) {
                                                     Log.e("Error", "${t.stackTraceToString()}")
