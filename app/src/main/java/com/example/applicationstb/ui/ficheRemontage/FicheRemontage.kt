@@ -234,6 +234,7 @@ class FicheRemontage : Fragment() {
             if(A2V.text.isNotEmpty()) fiche.acceleration2V = A2V.text.toString().toFloat()
             if(A2H.text.isNotEmpty()) fiche.acceleration2H = A2H.text.toString().toFloat()
             if(A2A.text.isNotEmpty()) fiche.acceleration2A = A2A.text.toString().toFloat()
+            if (obs.text.isNotEmpty()) fiche.observations = obs.text.toString()
             viewModel.selection.value = fiche
             viewModel.enregistrer(layout)
         }

@@ -537,7 +537,8 @@ class BodyDemontageCC ( var status: Long?,
     }
 }
 
-class BodyRemontageTriphase (  var remontageRoulement: Int?,
+class BodyRemontageTriphase (  var observations:String?,
+                               var remontageRoulement: Int?,
                                var collageRoulementPorteeArbre: Int?,
                                var collageRoulementPorteeFlasque: Int?,
                                var verificationFixationCouronne: Boolean?,
@@ -591,6 +592,7 @@ class BodyRemontageTriphase (  var remontageRoulement: Int?,
                                var isolementPhaseRotorUW: Float?,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -647,6 +649,7 @@ class BodyRemontageTriphase (  var remontageRoulement: Int?,
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(observations!!)
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
         parcel.writeInt(collageRoulementPorteeFlasque!!)
@@ -716,7 +719,8 @@ class BodyRemontageTriphase (  var remontageRoulement: Int?,
     }
 }
 
-class BodyRemontageCC (  var remontageRoulement: Int?,
+class BodyRemontageCC (        var observations:String?,
+                               var remontageRoulement: Int?,
                                var collageRoulementPorteeArbre: Int?,
                                var collageRoulementPorteeFlasque: Int?,
                                var verificationFixationCouronne: Boolean?,
@@ -761,6 +765,7 @@ class BodyRemontageCC (  var remontageRoulement: Int?,
                          var releveIsoInduitInducteurs: Float?,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -808,6 +813,7 @@ class BodyRemontageCC (  var remontageRoulement: Int?,
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(observations!!)
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
         parcel.writeInt(collageRoulementPorteeFlasque!!)
@@ -1120,6 +1126,7 @@ class Repository (var context:Context) {
 
     fun patchRemontageCC(token:String,ficheId:String, fiche:RemontageCourantC, callback:Callback<RemontageCCResponse>){
         var body = BodyRemontageCC(
+            fiche.observations,
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
             fiche.collageRoulementFlasque,
@@ -1177,6 +1184,7 @@ class Repository (var context:Context) {
 
     fun patchRemontageTriphase(token:String,ficheId:String, fiche:RemontageTriphase, callback:Callback<RemontageTriphaseResponse>){
         var body = BodyRemontageTriphase(
+            fiche.observations,
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
             fiche.collageRoulementFlasque,
