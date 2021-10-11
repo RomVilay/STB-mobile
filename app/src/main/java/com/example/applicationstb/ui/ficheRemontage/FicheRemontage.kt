@@ -2,7 +2,6 @@ package com.example.applicationstb.ui.ficheRemontage
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,9 @@ import com.example.applicationstb.R
 import android.util.Log
 import android.widget.*
 import com.example.applicationstb.model.*
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontageViewModel
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.*
 import java.util.*
 
 class FicheRemontage : Fragment() {
@@ -23,13 +20,13 @@ class FicheRemontage : Fragment() {
         fun newInstance() = FicheRemontage()
     }
 
-    private lateinit var viewModel: FicheRemontageViewModel
+    private val viewModel: FicheRemontageViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(FicheRemontageViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(FicheRemontageViewModel::class.java)
         var list = arguments?.get("listRemontages") as Array<Remontage>
         viewModel.token = arguments?.get("token") as String
         viewModel.listeRemontages = list.toCollection(ArrayList())
@@ -134,9 +131,11 @@ class FicheRemontage : Fragment() {
             if(fiche.intensiteInduitU !== null) intensiteInduitU.setText(fiche.intensiteInduitU!!.toString())
             if(fiche.vitesseU !== null) vitesseU.setText(fiche.vitesseU!!.toString())
             if(fiche.dureeEssai !== null) dureeEssai.setText(fiche.dureeEssai!!.toString())
+            if(fiche.puissanceU !== null) puissanceU.setText(fiche.puissanceU!!.toString())
             if(fiche.observations !== null) obs.setText(fiche.observations!!.toString())
             if(fiche.vitesse1V !== null) V1V.setText(fiche.vitesse1V!!.toString())
             if(fiche.vitesse1H !== null) V1H.setText(fiche.vitesse1H!!.toString())
+            if(fiche.vitesse2H !== null) V2H.setText(fiche.vitesse2H!!.toString())
             if(fiche.vitesse2V !== null) V2V.setText(fiche.vitesse2V!!.toString())
             if(fiche.vitesse2A !== null) V2A.setText(fiche.vitesse2A!!.toString())
             if(fiche.acceleration1V !== null) A1V.setText(fiche.acceleration1V!!.toString())
@@ -207,30 +206,31 @@ class FicheRemontage : Fragment() {
                 fiche.dureeTotale = Date().time - viewModel.start.value!!.time
             }
             fiche.status = 2L
-            fiche.isolementPorteBalaisV =  isoPBV.text.toString().toInt()
-            fiche.isolementPorteBalaisOhm =  risoPBV.text.toString().toInt()
-            fiche.tensionStatorInducteursU = tensionStatorInducteursU.text.toString().toFloat()
-            fiche.tensionStatorInducteursV = tensionStatorInducteursV.text.toString().toFloat()
-            fiche.tensionStatorInducteursW = tensionStatorInducteursW.text.toString().toFloat()
-            fiche.intensiteStatorInducteursU = intensiteStatorInducteursU.text.toString().toFloat()
-            fiche.intensiteStatorInducteursV = intensiteStatorInducteursV.text.toString().toFloat()
-            fiche.intensiteStatorInducteursW = intensiteStatorInducteursW.text.toString().toFloat()
-            fiche.tensionInduitRotorU = tensionInduitRotorU.text.toString().toFloat()
-            fiche.tensionInduitRotorV = tensionInduitRotorV.text.toString().toFloat()
-            fiche.tensionInduitRotorW = tensionInduitRotorW.text.toString().toFloat()
-            fiche.intensiteInduitU = intensiteInduitU.text.toString().toFloat()
-            fiche.vitesseU = vitesseU.text.toString().toFloat()
-            fiche.puissanceU = puissanceU.text.toString().toFloat()
-            fiche.dureeEssai = dureeEssai.text.toString().toFloat()
-            /*if(V1V.is) fiche.vitesse1V
-            if(fiche.vitesse1H !== null) V1H.setText(fiche.vitesse1H!!.toString())
-            if(fiche.vitesse2V !== null) V2V.setText(fiche.vitesse2V!!.toString())
-            if(fiche.vitesse2A !== null) V2A.setText(fiche.vitesse2A!!.toString())
-            if(fiche.acceleration1V !== null) A1V.setText(fiche.acceleration1V!!.toString())
-            if(fiche.acceleration1H !== null) A1H.setText(fiche.acceleration1H!!.toString())
-            if(fiche.acceleration2V !== null) A2V.setText(fiche.acceleration2V!!.toString())
-            if(fiche.acceleration2H !== null) A2H.setText(fiche.acceleration2H!!.toString())
-            if(fiche.acceleration2A !== null) A2A.setText(fiche.acceleration2A!!.toString())*/
+            if (isoPBV.text.isNotEmpty()) fiche.isolementPorteBalaisV =  isoPBV.text.toString().toInt()
+            if (risoPBV.text.isNotEmpty()) fiche.isolementPorteBalaisOhm =  risoPBV.text.toString().toInt()
+            if (tensionStatorInducteursU.text.isNotEmpty()) fiche.tensionStatorInducteursU = tensionStatorInducteursU.text.toString().toFloat()
+            if (tensionStatorInducteursV.text.isNotEmpty())fiche.tensionStatorInducteursV = tensionStatorInducteursV.text.toString().toFloat()
+            if (tensionStatorInducteursW.text.isNotEmpty()) fiche.tensionStatorInducteursW = tensionStatorInducteursW.text.toString().toFloat()
+            if (intensiteStatorInducteursV.text.isNotEmpty()) fiche.intensiteStatorInducteursU = intensiteStatorInducteursU.text.toString().toFloat()
+            if (intensiteStatorInducteursU.text.isNotEmpty()) fiche.intensiteStatorInducteursV = intensiteStatorInducteursV.text.toString().toFloat()
+            if (intensiteStatorInducteursW.text.isNotEmpty()) fiche.intensiteStatorInducteursW = intensiteStatorInducteursW.text.toString().toFloat()
+            if (tensionInduitRotorU.text.isNotEmpty()) fiche.tensionInduitRotorU = tensionInduitRotorU.text.toString().toFloat()
+            if (tensionInduitRotorV.text.isNotEmpty()) fiche.tensionInduitRotorV = tensionInduitRotorV.text.toString().toFloat()
+            if (tensionInduitRotorW.text.isNotEmpty()) fiche.tensionInduitRotorW = tensionInduitRotorW.text.toString().toFloat()
+            if (intensiteInduitU.text.isNotEmpty()) fiche.intensiteInduitU = intensiteInduitU.text.toString().toFloat()
+            if (vitesseU.text.isNotEmpty()) fiche.vitesseU = vitesseU.text.toString().toFloat()
+            if (puissanceU.text.isNotEmpty())fiche.puissanceU = puissanceU.text.toString().toFloat()
+            if (dureeEssai.text.isNotEmpty()) fiche.dureeEssai = dureeEssai.text.toString().toFloat()
+            if(V1V.text.isNotEmpty()) fiche.vitesse1V = V1V.text.toString().toFloat()
+            if(V1H.text.isNotEmpty()) fiche.vitesse1H = V1H.text.toString().toFloat()
+            if(V2V.text.isNotEmpty()) fiche.vitesse2V = V2V.text.toString().toFloat()
+            if(V2A.text.isNotEmpty()) fiche.vitesse2A = V1V.text.toString().toFloat()
+            if(A1V.text.isNotEmpty()) fiche.acceleration1V = A1V.text.toString().toFloat()
+            if(A1H.text.isNotEmpty()) fiche.acceleration1H = A1H.text.toString().toFloat()
+            if(A2V.text.isNotEmpty()) fiche.acceleration2V = A2V.text.toString().toFloat()
+            if(A2H.text.isNotEmpty()) fiche.acceleration2H = A2H.text.toString().toFloat()
+            if(A2A.text.isNotEmpty()) fiche.acceleration2A = A2A.text.toString().toFloat()
+            viewModel.selection.value = fiche
             viewModel.enregistrer(layout)
         }
 
@@ -240,7 +240,6 @@ class FicheRemontage : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FicheRemontageViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
