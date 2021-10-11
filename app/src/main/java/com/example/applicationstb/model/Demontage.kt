@@ -2,6 +2,7 @@ package com.example.applicationstb.model
 
 import android.net.Uri
 import android.util.Log
+import com.example.applicationstb.localdatabase.DemoPompeEntity
 import com.example.applicationstb.localdatabase.DemontageCCEntity
 import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
 import kotlinx.serialization.json.Json
@@ -102,11 +103,11 @@ open class DemontageMoteur(
 
 class DemontagePompe(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -114,8 +115,55 @@ class DemontagePompe(
     dateDebut: Date?,
     dureeTotale: Long?,
     observation: String?,
-    photo: Array<String>?
-) : Fiche(
+    photo: Array<String>?,
+    marque: String?,
+    numSerie: Int?,
+    puissance: Float?,
+    bride: Float?,
+    vitesse: Float?,
+    arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    accouplement: Boolean?,
+    coteAccouplement: String?,
+    clavette: Boolean?,
+    aspect: Int?,
+    aspectInterieur: Int?,
+    couplage: String?,
+    flasqueAvant: Int?,
+    flasqueArriere: Int?,
+    porteeRAvant: Int?,
+    porteeRArriere: Int?,
+    boutArbre: Boolean?,
+    rondelleElastique: Boolean?,
+    refRoulementAvant: String?,
+    refRoulementArriere: String?,
+    typeRoulementAvant: String?,
+    typeRoulementArriere: String?,
+    refJointAvant: String?,
+    refJointArriere: String?,
+    typeJointAvant: Boolean?,
+    typeJointArriere: Boolean?,
+    ventilateur: Int?,
+    capotV: Int?,
+    socleBoiteABorne: Int?,
+    capotBoiteABorne: Int?,
+    plaqueABorne: Int?,
+    presenceSondes: Boolean?,
+    typeSondes: String?,
+    equilibrage: Boolean?,
+    peinture: String?,
+    var fluide: String?,
+    var sensRotation: String?,
+    var typeRessort: String?,
+    var typeJoint: String?,
+    var matiere: Int?,
+    var diametreArbre:Float?,
+    var diametreExtPR:Float?,
+    var diametreExtPF:Float?,
+    var epaisseurPF:Float?,
+    var longueurRotativeNonComprimee:Float?,
+    var longueurRotativeComprimee:Float?,
+    var longueurRotativeTravail:Float?
+) : DemontageMoteur(
     idFiche,
     numDevis,
     numFiche,
@@ -129,21 +177,75 @@ class DemontagePompe(
     dateDebut,
     dureeTotale,
     observation,
-    photo
-) {
-    var numSerie: String? = null;
-    var fluide: String? = null;
-    var sensRotation: Rotation? = null;
-    var typeP: TypePompe? = null;
-    var typeJoint: String? = null;
-    var matiere: Matiere? = null;
-    var diametreA: Int? = null;
-    var diametreExtPR: Int? = null;
-    var longueurNC: Int? = null;
-    var longueurC: Int? = null;
-    var longueurPRT: Int? = null;
-    var diametreEPF: Int? = null;
-    var epaisseurPF: Int? = null;
+    photo,
+    1,
+    marque,
+    numSerie,
+    puissance,
+    bride,
+    vitesse,
+    arbreSortantEntrant, //arbre sortant ou rentrant
+    accouplement,
+    coteAccouplement,
+    clavette,
+    aspect,
+    aspectInterieur,
+    couplage,
+    flasqueAvant,
+    flasqueArriere,
+    porteeRAvant,
+    porteeRArriere,
+    boutArbre,
+    rondelleElastique,
+    refRoulementAvant,
+    refRoulementArriere,
+    typeRoulementAvant,
+    typeRoulementArriere,
+    refJointAvant,
+    refJointArriere,
+    typeJointAvant,
+    typeJointArriere,
+    ventilateur,
+    capotV,
+    socleBoiteABorne,
+    capotBoiteABorne,
+    plaqueABorne,
+    presenceSondes,
+    typeSondes,
+    equilibrage,
+    peinture
+)
+    {
+    fun toEntity(): DemoPompeEntity{
+        return DemoPompeEntity(
+            _id,
+            numDevis,
+            numFiche,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale,
+            observations,
+            1,
+            marque,
+            numSerie,
+            fluide,
+            sensRotation,
+            typeRessort,
+            typeJoint,
+            matiere,
+            diametreArbre,
+            diametreExtPR,
+            diametreExtPF,
+            epaisseurPF,
+            longueurRotativeNonComprimee,
+            longueurRotativeComprimee,
+            longueurRotativeTravail
+
+        )
+    }
 }
 
 /*class Monophase(

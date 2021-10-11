@@ -1,6 +1,7 @@
 package com.example.applicationstb.localdatabase
 
 import androidx.room.*
+import com.example.applicationstb.model.DemontagePompe
 
 @Dao
 interface DemontageTriphaseDao {
@@ -36,4 +37,21 @@ interface DemontageCCDao{
 
     @Update
     fun update(vararg fiches:DemontageCCEntity)
+}
+@Dao
+interface DemontagePDao{
+    @Insert
+    fun insertAll(vararg fiches:DemoPompeEntity)
+
+    @Delete
+    fun delete(fiche: DemoPompeEntity)
+
+    @Query("SELECT * FROM demontage_pompe")
+    fun getAll(): List<DemoPompeEntity>
+
+    @Query("SELECT * FROM demontage_pompe WHERE _id LIKE :id")
+    fun getById(id: String) : DemoPompeEntity
+
+    @Update
+    fun update(vararg fiches:DemoPompeEntity)
 }

@@ -907,6 +907,9 @@ class DemontageTriphaseResponse(
 class DemontageCCResponse(
     var fiche: CourantContinu?
 )
+class DemontagePompeResponse(
+    var fiche: DemontagePompe?
+)
 class RemontageTriphaseResponse(
     var fiche: RemontageTriphase?
 )
@@ -962,6 +965,7 @@ class Repository (var context:Context) {
     var bobinageDao : BobinageDao ? = null;
     var demontageTriphaseDao : DemontageTriphaseDao? = null;
     var demontageCCDao : DemontageCCDao? = null;
+    var demontagePDao : DemontagePDao? = null;
     var remontageTriphaseDao: RemontageTriphaseDao? = null;
     var remontageCourantCDao: RemontageCCDao? = null;
 
@@ -999,6 +1003,11 @@ class Repository (var context:Context) {
     fun getDemontageTriphase(token:String,ficheId:String, callback: Callback<DemontageTriphaseResponse>){
         var call = service.getDemontageTriphase(token,ficheId)
         var fiche:Triphase? = null
+        call.enqueue(callback)
+    }
+    fun getDemontagePompe(token:String,ficheId:String, callback: Callback<DemontagePompeResponse>){
+        var call = service.getDemoPompe(token,ficheId)
+        var fiche:DemontagePompe? = null
         call.enqueue(callback)
     }
     fun patchDemontageTriphase(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
@@ -1339,6 +1348,7 @@ class Repository (var context:Context) {
       remontageCourantCDao = db!!.remontageCCDao()
       demontageTriphaseDao = db!!.demontageTriphaseDao()
       demontageCCDao = db!!.demontageCCDao()
+      demontagePDao = db!!.demontagePDao()
         Log.i("INFO","db créée")
     }
 
