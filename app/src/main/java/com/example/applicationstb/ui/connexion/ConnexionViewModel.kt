@@ -284,7 +284,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 var listRCC: List<RemontageCCEntity> =
                                     repository.getAllRemontageCCLocalDatabase()
                                 //Log.i("INFO", "token : ${user!!.token}")
-                                Log.i("INFO", "nb de fiches RemontageCC: ${listRCC.size}")
+                                Log.i("INFO", "nb de fiches DemontagePompe: ${listRCC.size}")
                                 if (listRCC.size > 0) {
                                     for (fiche in listRCC) {
                                         var rc = fiche.toRCourantC()
@@ -317,6 +317,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                                                 override fun onFailure(
                                                     call: Call<RemontageCCResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listDP: List<DemoPompeEntity> =
+                                    repository.getAllDemontagePompeLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
+                                if (listDP.size > 0) {
+                                    for (fiche in listDP) {
+                                        var rc = fiche.toDemoPompe()
+                                        val resp = repository.patchDemontagePompe(
+                                            user!!.token!!,
+                                            rc._id,
+                                            rc,
+                                            object : Callback<DemontagePompeResponse> {
+                                                override fun onResponse(
+                                                    call: Call<DemontagePompeResponse>,
+                                                    response: Response<DemontagePompeResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteDemontagePompeLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<DemontagePompeResponse>,
                                                     t: Throwable
                                                 ) {
                                                     Log.e("Error", "${t.stackTraceToString()}")
