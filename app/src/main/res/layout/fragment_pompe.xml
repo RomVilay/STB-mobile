@@ -87,10 +87,10 @@
                         app:layout_constraintTop_toTopOf="@+id/numSerie"
                         app:layout_constraintVertical_bias="0.518" />
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/typeFluide"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="33dp"
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         app:layout_constraintBottom_toBottomOf="@+id/txtV"
@@ -143,8 +143,8 @@
                         android:id="@+id/textView48"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="44dp"
-                        android:layout_marginLeft="44dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
                         android:text="Type:"
                         app:layout_constraintBottom_toBottomOf="@+id/textView47"
                         app:layout_constraintStart_toEndOf="@+id/textView47"

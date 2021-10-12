@@ -49,7 +49,6 @@ class TriphaseFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var layout = inflater.inflate(R.layout.fragment_triphase, container, false)
-        var start : Date? = null;
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
         var infos = layout.findViewById<FrameLayout>(R.id.infoLayout)
         var btnPhoto = layout.findViewById<Button>(R.id.photo)

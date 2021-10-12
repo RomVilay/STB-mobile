@@ -54,6 +54,10 @@ class FicheDemontage : Fragment() {
                     replace<TriphaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
+                is DemontagePompe -> fragmentManager.commit {
+                    replace<PompeFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
                 /*is Monophase -> fragmentManager.commit {
                     replace<MonophaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
@@ -67,10 +71,7 @@ class FicheDemontage : Fragment() {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontagePompe -> fragmentManager.commit {
-                    replace<PompeFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }*/
+                */
             }
         }
         return layout

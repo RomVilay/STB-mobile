@@ -67,5 +67,8 @@ interface APIstb  {
     @GET("/fiches/{ficheId}")
     fun getDemoPompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontagePompeResponse>
 
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontagePompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemoPompe ): Call<DemontagePompeResponse>
+
 
 }

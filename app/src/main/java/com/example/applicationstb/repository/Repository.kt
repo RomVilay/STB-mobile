@@ -537,6 +537,79 @@ class BodyDemontageCC ( var status: Long?,
     }
 }
 
+
+class BodyDemoPompe(
+    var status: Long?,
+    var marque: String?,
+    var numSerie: Int?,
+    var fluide: String?,
+    var sensRotation: Boolean?,
+    var typeRessort: Int?,
+    var typeJoint: String?,
+    var matiere: Int?,
+    var diametreArbre:Float?,
+    var diametreExtPR:Float?,
+    var diametreExtPF:Float?,
+    var epaisseurPF:Float?,
+    var longueurRotativeNonComprimee:Float?,
+    var longueurRotativeComprimee:Float?,
+    var longueurRotativeTravail:Float?,
+    var observations:String?
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readString(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
+        parcel.writeString(marque!!)
+        parcel.writeInt(numSerie!!)
+        parcel.writeString(fluide!!)
+        parcel.writeBoolean(sensRotation!!)
+        parcel.writeInt(typeRessort!!)
+        parcel.writeString(typeJoint!!)
+        parcel.writeInt(matiere!!)
+        parcel.writeFloat(diametreArbre!!)
+        parcel.writeFloat(diametreExtPR!!)
+        parcel.writeFloat(diametreExtPF!!)
+        parcel.writeFloat(epaisseurPF!!)
+        parcel.writeFloat(longueurRotativeNonComprimee!!)
+        parcel.writeFloat(longueurRotativeComprimee!!)
+        parcel.writeFloat(longueurRotativeTravail!!)
+        parcel.writeString(observations!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemoPompe> {
+        override fun createFromParcel(parcel: Parcel): BodyDemoPompe {
+            return BodyDemoPompe(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemoPompe?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 class BodyRemontageTriphase (  var status:Int?,
                                var dureeTotale: Long?,
                                 var observations:String?,
@@ -1198,6 +1271,30 @@ class Repository (var context:Context) {
         var fiche:RemontageCourantC? = null
         call.enqueue(callback)
     }
+    fun patchDemontagePompe(token:String,ficheId:String, fiche:DemontagePompe, callback:Callback<DemontagePompeResponse>){
+        var body = BodyDemoPompe(
+            fiche.status,
+            fiche.marque,
+            fiche.numSerie,
+            fiche.fluide,
+            fiche.sensRotation,
+            fiche.typeRessort,
+            fiche.typeJoint,
+            fiche.matiere,
+            fiche.diametreArbre,
+            fiche.diametreExtPR,
+            fiche.diametreExtPF,
+            fiche.epaisseurPF,
+            fiche.longueurRotativeNonComprimee,
+            fiche.longueurRotativeComprimee,
+            fiche.longueurRotativeTravail,
+            fiche.observations
+        )
+        var call = service.patchDemontagePompe(token,ficheId,body)
+        var fiche:DemontagePompe? = null
+        call.enqueue(callback)
+
+    }
 
     fun getRemontageTriphase(token:String,ficheId:String, callback: Callback<RemontageTriphaseResponse>){
         var call = service.getRemontageTriphase(token,ficheId)
@@ -1351,7 +1448,7 @@ class Repository (var context:Context) {
       demontagePDao = db!!.demontagePDao()
         Log.i("INFO","db créée")
     }
-
+    //requêtes chantier
     suspend fun insertChantierLocalDatabase(chantier: Chantier){
         chantierDao!!.insertAll(chantier.toEntity())
     }
@@ -1369,6 +1466,7 @@ class Repository (var context:Context) {
     suspend fun deleteChantierLocalDatabse( chantier: ChantierEntity){
         chantierDao!!.delete(chantier)
     }
+    //requêtes bobinage
     suspend fun insertBobinageLocalDatabase(bobinage: Bobinage){
         bobinageDao!!.insertAll(bobinage.toEntity())
     }
@@ -1437,6 +1535,29 @@ class Repository (var context:Context) {
     }
     suspend fun deleteDemontageCCLocalDatabse( demo: DemontageCCEntity){
         demontageCCDao!!.delete(demo)
+    }
+    //demo pompes
+    suspend fun insertDemoPompeLocalDatabase(demo: DemontagePompe){
+        demontagePDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontagePompeLocalDatabase(): List<DemoPompeEntity >{
+        return demontagePDao!!.getAll()
+    }
+    suspend fun getByIdDemoPompeLocalDatabse(id: String) : DemontagePompe? {
+        try {
+            if (demontagePDao!!.getById(id) !== null) {
+                return demontagePDao!!.getById(id).toDemoPompe()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoPompeLocalDatabse( demo: DemoPompeEntity){
+        demontagePDao!!.update(demo)
+    }
+    suspend fun deleteDemontagePompeLocalDatabse( demo: DemoPompeEntity){
+        demontagePDao!!.delete(demo)
     }
 
     //dao remontage triphase

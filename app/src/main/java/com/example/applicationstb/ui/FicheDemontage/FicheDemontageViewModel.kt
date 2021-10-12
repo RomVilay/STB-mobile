@@ -16,10 +16,7 @@ import android.util.Log
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.applicationstb.repository.BobinageResponse
-import com.example.applicationstb.repository.DemontageCCResponse
-import com.example.applicationstb.repository.DemontageTriphaseResponse
-import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -145,6 +142,60 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         Navigation.findNavController(view).navigate(action)
     }
     fun enregistrer(view:View){
+        if (selection.value!!.typeFicheDemontage == 1)  {
+            var p = selection.value!! as DemontagePompe
+            if (isOnline(context))   {
+                val resp = repository.patchDemontagePompe(
+                    token!!,
+                    selection.value!!._id,
+                    p,
+                    object : Callback<DemontagePompeResponse> {
+                        override fun onResponse(
+                            call: Call<DemontagePompeResponse>,
+                            response: Response<DemontagePompeResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+                                }
+                            } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DemontagePompeResponse>, t: Throwable) {
+                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.e("Error", "erreur ${t.message} - body request ${
+                                call.request().body().toString()
+                            }\"")
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var pmp = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                    if (pmp !== null ) {
+                        repository.updateDemoPompeLocalDatabse(p.toEntity())
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "patch local")
+                    } else  {
+                        repository.insertDemoPompeLocalDatabase(p)
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "enregistré local")
+                    }
+                }
+            }
+        }
         if (selection.value!!.typeFicheDemontage == 6)  {
             var t = selection.value!! as Triphase
             if (isOnline(context))   {

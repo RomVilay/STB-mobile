@@ -83,7 +83,50 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     if ( response.code() == 200 ) {
                                         val resp = response.body()
                                         if (resp != null) {
-
+                                            // fiche demontage pompe
+                                            if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 1) {
+                                                val demoTri = repository.getDemontagePompe(token, resp.fiche!!._id, object: Callback<DemontagePompeResponse>{
+                                                    override fun onResponse(call: Call<DemontagePompeResponse>, response: Response<DemontagePompeResponse>) {
+                                                        if ( response.code() == 200 ) {
+                                                            val resp2 = response.body()
+                                                            if (resp2 != null) {
+                                                                Log.i("INFO","fiche DemontagePompe :${resp.fiche!!.numFiche}")
+                                                                //demontages!!.add(resp.fiche!!)
+                                                                viewModelScope.launch(Dispatchers.IO) {
+                                                                    var demoP =
+                                                                        repository.getByIdDemoPompeLocalDatabse(
+                                                                            resp2.fiche!!._id
+                                                                        )
+                                                                    if (demoP == null) {
+                                                                        repository.insertDemoPompeLocalDatabase(
+                                                                            resp2!!.fiche!!
+                                                                        )
+                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "ajout demo pompe en bdd locale"
+                                                                        )
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "fiche déjà en bdd"
+                                                                        )
+                                                                        demontages!!.add(demoP)
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                Log.i(
+                                                                    "INFO",
+                                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<DemontagePompeResponse>, t: Throwable) {
+                                                        Log.e("Error","erreur ${t.message}")
+                                                    }
+                                                })
+                                            }
                                             //fiche demontage triphase
                                             if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 6) {
                                                 val demoTri = repository.getDemontageTriphase(token, resp.fiche!!._id, object: Callback<DemontageTriphaseResponse>{

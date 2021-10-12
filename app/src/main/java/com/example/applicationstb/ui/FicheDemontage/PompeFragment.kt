@@ -14,17 +14,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import com.example.applicationstb.R
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.model.DemontagePompe
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
@@ -51,17 +51,104 @@ class PompeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_pompe, container, false)
+        var marque = layout.findViewById<TextView>(R.id.marc)
+        var numSerie = layout.findViewById<TextView>(R.id.numSerie)
+        var fluide = layout.findViewById<EditText>(R.id.typeFluide)
+        var sensRotation = layout.findViewById<Switch>(R.id.sensRotation)
+        var typeRessort = layout.findViewById<Spinner>(R.id.typePompe)
+        var typeJoint = layout.findViewById<EditText>(R.id.tjoint)
+        typeRessort.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","entraînement par vis","ressort coaxial conique","ressort coaxial cylindrique","soufflet"))
+        var matiere = layout.findViewById<Spinner>(R.id.matJoint)
+        matiere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","ceramique","carbone scilicium","carbone","tungstène"))
         var i4 = layout.findViewById<TextView>(R.id.i4)
         var d7 = layout.findViewById<TextView>(R.id.d7)
         var d3 = layout.findViewById<TextView>(R.id.d3)
         var i3 = layout.findViewById<TextView>(R.id.i3)
         var d1 = layout.findViewById<TextView>(R.id.titreD1)
-        var epf = layout.findViewById<EditText>(R.id.ePF)
-        var arbre = layout.findViewById<EditText>(R.id.dArbre)
+        var diametreArbre = layout.findViewById<EditText>(R.id.dArbre)
+        var diametreExtPR = layout.findViewById<EditText>(R.id.dEPR)
+        var longueurRotativeComprimee = layout.findViewById<EditText>(R.id.LC)
+        var longueurRotativeTravail = layout.findViewById<EditText>(R.id.LPRT)
+        var diametreExtPF = layout.findViewById<EditText>(R.id.dExt)
+        var longueurRotativeNonComprimee = layout.findViewById<EditText>(R.id.LNC)
+        var epaisseurPF = layout.findViewById<EditText>(R.id.ePF)
+        var obs = layout.findViewById<EditText>(R.id.obs2)
+        var fiche = viewModel.selection.value!! as DemontagePompe
+        Log.i("INFO","sensRoation: ${fiche.sensRotation} - matiere joint: ${fiche.matiere}")
+        if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
+        if (fiche.marque !== null) marque.setText(fiche.marque!!.toString())
+        if (fiche.fluide !== null) fluide.setText(fiche.fluide!!.toString())
+        if (fiche.sensRotation !== null ) sensRotation.setChecked(!fiche.sensRotation!!)
+        if (fiche.typeRessort !== null) typeRessort.setSelection(fiche.typeRessort!!)
+        if (fiche.matiere !== null) matiere.setSelection(fiche.matiere!!)
+        if (fiche.typeJoint !== null) typeJoint.setText(fiche.typeJoint.toString())
+        if (fiche.diametreArbre !== null) diametreArbre.setText(fiche.diametreArbre!!.toString())
+        if (fiche.diametreExtPR !== null) diametreExtPR.setText(fiche.diametreExtPR!!.toString())
+        if (fiche.diametreExtPF !== null) diametreExtPF.setText(fiche.diametreExtPF!!.toString())
+        if (fiche.epaisseurPF !== null) epaisseurPF.setText(fiche.epaisseurPF!!.toString())
+        if (fiche.longueurRotativeNonComprimee !== null) longueurRotativeNonComprimee.setText(fiche.longueurRotativeNonComprimee!!.toString())
+        if (fiche.longueurRotativeComprimee !== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee!!.toString())
+        if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString())
+        if (fiche.observations !== null) obs.setText(fiche.observations!!)
+        var retour = layout.findViewById<Button>(R.id.retourPompe)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
+        marque.doAfterTextChanged {
+            fiche.marque = marque.text.toString()
+        }
+        numSerie.doAfterTextChanged {
+            fiche.numSerie = numSerie.text.toString().toInt()
+        }
+        fluide.doAfterTextChanged {
+            fiche.fluide = fluide.text.toString()
+        }
+        sensRotation.setOnCheckedChangeListener { _, isChecked ->
+            fiche.sensRotation = !isChecked
+        }
+        typeRessort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(typeRessort.selectedItem.toString() !== " ") fiche.typeRessort = position
+            }
+        }
+        matiere.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(matiere.selectedItem.toString() !== " ") fiche.matiere = position
+                Log.i("INFO","matiere ${fiche.matiere}")
+            }
+        }
+        typeJoint.doAfterTextChanged {
+            fiche.typeJoint = typeJoint.text.toString()
+        }
+        diametreArbre.doAfterTextChanged {
+            fiche.diametreArbre = diametreArbre.text.toString().toFloat()
+        }
+        diametreExtPF.doAfterTextChanged {
+            fiche.diametreExtPF = diametreExtPF.text.toString().toFloat()
+        }
+        diametreExtPR.doAfterTextChanged {
+            fiche.diametreExtPR = diametreExtPR.text.toString().toFloat()
+        }
+        epaisseurPF.doAfterTextChanged {
+            fiche.epaisseurPF = epaisseurPF.text.toString().toFloat()
+        }
+        longueurRotativeNonComprimee.doAfterTextChanged {
+            fiche.longueurRotativeNonComprimee = longueurRotativeNonComprimee.text.toString().toFloat()
+        }
+        longueurRotativeComprimee.doAfterTextChanged {
+            fiche.longueurRotativeComprimee = longueurRotativeComprimee.text.toString().toFloat()
+        }
+        longueurRotativeTravail.doAfterTextChanged {
+            fiche.longueurRotativeTravail = longueurRotativeTravail.text.toString().toFloat()
+        }
+        obs.doAfterTextChanged {
+            fiche.observations = obs.text.toString()
+        }
+
+
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
-        var depr = layout.findViewById<EditText>(R.id.dEPR)
-        var lprt = layout.findViewById<EditText>(R.id.LPRT)
-        var dext = layout.findViewById<EditText>(R.id.dExt)
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -74,30 +161,28 @@ class PompeFragment : Fragment() {
             sAdapter.update(it)
         })
 
-        var retour = layout.findViewById<Button>(R.id.retourPompe)
-        var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
 
-        epf.setOnFocusChangeListener { view, hasFocus ->
+
+        epaisseurPF.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_i4)
-                i4.setBackgroundResource(R.color.bleu_stb)
                 //i4.setTextColor(Color.WHITE)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
             }
         }
         i4.setOnClickListener {
-            epf.requestFocus()
+            epaisseurPF.requestFocus()
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
         d7.setOnClickListener {
-            dext.requestFocus()
+            diametreExtPF.requestFocus()
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
 
-        arbre.setOnFocusChangeListener { view, hasFocus ->
+        diametreArbre.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d1)
             } else {
@@ -105,7 +190,7 @@ class PompeFragment : Fragment() {
             }
         }
 
-        depr.setOnFocusChangeListener { view, hasFocus ->
+        diametreExtPR.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d3select)
             } else {
@@ -113,11 +198,11 @@ class PompeFragment : Fragment() {
             }
         }
         d3.setOnClickListener {
-            depr.requestFocus()
+            diametreExtPR.requestFocus()
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
-        lprt.setOnFocusChangeListener { view, hasFocus ->
+        longueurRotativeTravail.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_i3_select)
             } else {
@@ -125,11 +210,11 @@ class PompeFragment : Fragment() {
             }
         }
         i3.setOnClickListener {
-            lprt.requestFocus()
+            longueurRotativeTravail.requestFocus()
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
-        dext.setOnFocusChangeListener { view, hasFocus ->
+        diametreExtPF.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d7)
             } else {
@@ -137,7 +222,7 @@ class PompeFragment : Fragment() {
             }
         }
         d1.setOnClickListener {
-            arbre.requestFocus()
+            diametreArbre.requestFocus()
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
@@ -175,7 +260,15 @@ class PompeFragment : Fragment() {
             viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
-
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
 
 
