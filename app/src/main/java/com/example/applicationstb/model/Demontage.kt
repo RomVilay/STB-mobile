@@ -2,9 +2,7 @@ package com.example.applicationstb.model
 
 import android.net.Uri
 import android.util.Log
-import com.example.applicationstb.localdatabase.DemoPompeEntity
-import com.example.applicationstb.localdatabase.DemontageCCEntity
-import com.example.applicationstb.localdatabase.DemontageTriphaseEntity
+import com.example.applicationstb.localdatabase.*
 import kotlinx.serialization.json.Json
 import java.util.*
 
@@ -243,18 +241,17 @@ class DemontagePompe(
             longueurRotativeNonComprimee,
             longueurRotativeComprimee,
             longueurRotativeTravail
-
         )
     }
 }
 
-/*class Monophase(
+class DemontageMonophase(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    statut: Long,
-    type: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -263,7 +260,6 @@ class DemontagePompe(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
-    typeFicheDemontage: Int,
     marque: String?,
     numSerie: Int?,
     puissance: Float?,
@@ -299,6 +295,12 @@ class DemontagePompe(
     typeSondes: String?,
     equilibrage: Boolean?,
     peinture: String?,
+    var isolementPhaseMasse: Float?,
+    var resistanceTravail	: Float?,
+    var resistanceDemarrage	: Float?,
+    var valeurCondensateur	: Float?,
+    var tension	: Float?,
+    var intensite	: Float?
 ) : DemontageMoteur(
     idFiche,
     numDevis,
@@ -314,7 +316,7 @@ class DemontagePompe(
     dureeTotale,
     observation,
     photo,
-    typeFicheDemontage,
+    2,
     marque,
     numSerie,
     puissance,
@@ -351,13 +353,63 @@ class DemontagePompe(
     equilibrage,
     peinture
 ) {
-    var isoPM: Int? = null; // isolement phase/masse
-    var rt: Int? = null;    // resistance travail
-    var rd: Int? = null;    //resistance démarrage
-    var cnds: Int? = null; //valeur condenseur
-    var tension: Int? = null;
-    var Intensité: Int? = null;
-}*/
+    fun toEntity() : DemontageMonophaseEntity{
+        return DemontageMonophaseEntity(
+            _id,
+            numDevis,
+            numFiche,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale,
+            observations,
+            2,
+            marque,
+            numSerie,
+            puissance,
+            bride,
+            vitesse,
+            arbreSortantEntrant,
+            accouplement,
+            coteAccouplement,
+            clavette,
+            aspect,
+            aspectInterieur,
+            couplage,
+            flasqueAvant,
+            flasqueArriere,
+            porteeRArriere,
+            porteeRAvant,
+            boutArbre,
+            rondelleElastique,
+            refRoulementAvant,
+            refRoulementArriere,
+            typeRoulementAvant,
+            typeRoulementArriere,
+            refJointAvant,
+            refJointArriere,
+            typeJointAvant,
+            typeJointArriere,
+            ventilateur,
+            capotV,
+            socleBoiteABorne,
+            capotBoiteABorne,
+            plaqueABorne,
+            presenceSondes,
+            typeSondes,
+            equilibrage,
+            peinture,
+            isolementPhaseMasse,
+            resistanceTravail	,
+            resistanceDemarrage	,
+            valeurCondensateur	,
+            tension	,
+            intensite
+        )
+    }
+}
 
 class Triphase(
     idFiche: String,
@@ -608,13 +660,13 @@ class Triphase(
     }
 }
 
-/*class RotorBobine(
+class DemontageRotorBobine(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -623,7 +675,6 @@ class Triphase(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
-    typeFicheDemontage: Int,
     marque: String?,
     numSerie: Int?,
     puissance: Float?,
@@ -659,6 +710,31 @@ class Triphase(
     typeSondes: String?,
     equilibrage: Boolean?,
     peinture: String?,
+    var isolementPhaseMasseStatorUM	: Float?,
+    var isolementPhaseMasseStatorVM	: Float?,
+    var isolementPhaseMasseStatorWM	: Float?,
+    var isolementPhaseMasseRotorB1M	: Float?,
+    var isolementPhaseMasseRotorB2M	: Float?,
+    var isolementPhaseMasseRotorB3M	: Float?,
+    var isolementPhaseMassePorteBalaisM	: Float?,
+    var isolementPhasePhaseStatorUV	: Float?,
+    var isolementPhasePhaseStatorVW	: Float?,
+    var isolementPhasePhaseStatorUW	: Float?,
+    var resistanceStatorU	: Float?,
+    var resistanceStatorV	: Float?,
+    var resistanceStatorW	: Float?,
+    var resistanceRotorB1B2	: Float?,
+    var resistanceRotorB2B2	: Float?,
+    var resistanceRotorB1B3	: Float?,
+    var tensionU	: Float?,
+    var tensionV	: Float?,
+    var tensionW	: Float?,
+    var tensionRotor	: Float?,
+    var intensiteU	: Float?,
+    var intensiteV	: Float?,
+    var intensiteW	: Float?,
+    var intensiteRotor	: Float?,
+    var dureeEssai	: Int?
 ) : DemontageMoteur(
     idFiche,
     numDevis,
@@ -674,7 +750,7 @@ class Triphase(
     dureeTotale,
     observation,
     photo,
-    typeFicheDemontage,
+    4,
     marque,
     numSerie,
     puissance,
@@ -711,19 +787,82 @@ class Triphase(
     equilibrage,
     peinture
 ) {
-    //partie statique
-    var isoPMS: Array<Int>? = null; //iso phase/masse stator UT VT WT
-    var isoPMR: Array<Int>? = null;  //iso phase/masse rotor B1T B2T B3T
-    var isoPB: Int? = null;         //iso porte balais
-    var isoPPS: Array<Int>? = null; //iso phase/phase stator
-    var resS: Array<Int>? = null;   //resistance stator UVW
-    var resR: Array<Int>? = null;    //resistance rotor B1/B2 B2/B2 B1/B3
-
-    //partie dynamique
-    var tension: Array<Int>? = null; //tension UVW
-    var intensité: Array<Int>? = null; //intensité UVW rotor
-    var dureeEssai: Int? = null;
-}*/
+    fun toEntity(): DemontageRotorBEntity{
+        return DemontageRotorBEntity(
+            _id,
+            numDevis,
+            numFiche,
+            2,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale,
+            observations,
+            4,
+            marque,
+            numSerie,
+            puissance,
+            bride,
+            vitesse,
+            arbreSortantEntrant,
+            accouplement,
+            coteAccouplement,
+            clavette,
+            aspect,
+            aspectInterieur,
+            couplage,
+            flasqueAvant,
+            flasqueArriere,
+            porteeRArriere,
+            porteeRAvant,
+            boutArbre,
+            rondelleElastique,
+            refRoulementAvant,
+            refRoulementArriere,
+            typeRoulementAvant,
+            typeRoulementArriere,
+            refJointAvant,
+            refJointArriere,
+            typeJointAvant,
+            typeJointArriere,
+            ventilateur,
+            capotV,
+            socleBoiteABorne,
+            capotBoiteABorne,
+            plaqueABorne,
+            presenceSondes,
+            typeSondes,
+            equilibrage,
+            peinture,
+            isolementPhaseMasseStatorUM	,
+            isolementPhaseMasseStatorVM	,
+            isolementPhaseMasseStatorWM	,
+            isolementPhaseMasseRotorB1M	,
+            isolementPhaseMasseRotorB2M	,
+            isolementPhaseMasseRotorB3M	,
+            isolementPhaseMassePorteBalaisM	,
+            isolementPhasePhaseStatorUV	,
+            isolementPhasePhaseStatorVW	,
+            isolementPhasePhaseStatorUW	,
+            resistanceStatorU	,
+            resistanceStatorV	,
+            resistanceStatorW	,
+            resistanceRotorB1B2	,
+            resistanceRotorB2B2	,
+            resistanceRotorB1B3	,
+            tensionU	,
+            tensionV	,
+            tensionW	,
+            tensionRotor	,
+            intensiteU	,
+            intensiteV	,
+            intensiteW	,
+            intensiteRotor	,
+            dureeEssai
+        )
+    }
+}
 
 class CourantContinu(
     idFiche: String,
@@ -907,13 +1046,13 @@ class CourantContinu(
         }
     }
 
-/*class Alternateur(
+class DemontageAlternateur(
     idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
     contact: String?,
     telContact: String?,
     techniciens: Array<User>?,
@@ -922,7 +1061,6 @@ class CourantContinu(
     dureeTotale: Long?,
     observation: String?,
     photo: Array<String>?,
-    typeFicheDemontage: Int,
     marque: String?,
     numSerie: Int?,
     puissance: Float?,
@@ -958,6 +1096,33 @@ class CourantContinu(
     typeSondes: String?,
     equilibrage: Boolean?,
     peinture: String?,
+    var isolementMasseStatorPrincipalU: Float?,
+    var isolementMasseStatorPrincipalV: Float?,
+    var isolementMasseStatorPrincipalW	: Float?,
+    var isolementMasseRotorPrincipal	: Float?,
+    var isolementMasseStatorExcitation	: Float?,
+    var resistanceStatorPrincipalU	: Float?,
+    var resistanceStatorPrincipalV	: Float?,
+    var resistanceStatorPrincipalW	: Float?,
+    var resistanceRotorPrincipal	: Float?,
+    var resistanceStatorExcitation	: Float?,
+    var resistanceRotorExcitation	: Float?,
+    var isolementPhasePhaseStatorPrincipalUV	: Float?,
+    var isolementPhasePhaseStatorPrincipalVW	: Float?,
+    var isolementPhasePhaseStatorPrincipalUW	: Float?,
+    var testDiode : Boolean?,
+    var tensionU	: Float?,
+    var tensionV	: Float?,
+    var tensionW	: Float?,
+    var intensiteU	: Float?,
+    var intensiteV	: Float?,
+    var intensiteW	: Float?,
+    var tensionUExcitation	: Float?,
+    var tensionVExcitation	: Float?,
+    var tensionWExcitation	: Float?,
+    var intensiteUExcitation	: Float?,
+    var intensiteVExcitation	: Float?,
+    var intensiteWExcitation	: Float?
 ) : DemontageMoteur(
     idFiche,
     numDevis,
@@ -973,7 +1138,7 @@ class CourantContinu(
     dureeTotale,
     observation,
     photo,
-    typeFicheDemontage,
+    3,
     marque,
     numSerie,
     puissance,
@@ -1008,22 +1173,82 @@ class CourantContinu(
     presenceSondes,
     typeSondes,
     equilibrage,
-    peinture
-) {
-    var imsp: Array<Int>? = null; //iso masse stator
-    var imrp: Array<Int>? = null; //iso masse rotor
-    var imse: Int? = null; //iso masse stator exitation
-    var imre: Int? = null; //iso masse rotor exitation
-    var rsp: Array<Int>? = null; // res stator principal
-    var rrp: Int? = null; // res rotor principal
-    var rse: Int? = null; // res stator extitation
-    var rre: Int? = null; // res rotor exitation
-    var ipps: Array<Int>? = null; //iso phase phase stator
-    var testDiode: Boolean? = null;
-
-    //essais dynamiques
-    var tensions: Array<Int>? = null; //tensions U,V,W
-    var intensite: Array<Int>? = null; //intensité U,V,V
-    var tensionE: Array<Int>? = null; //tension exitation U,V,W
-    var intensiteE: Array<Int>? = null; // intensité exitation U,V,W
-}*/
+    peinture) {
+    fun toEntity(): DemontageAlternateurEntity {
+        return DemontageAlternateurEntity(
+            _id,
+            numDevis,
+            numFiche,
+            2,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale,
+            observations,
+            3,
+            marque,
+            numSerie,
+            puissance,
+            bride,
+            vitesse,
+            arbreSortantEntrant,
+            accouplement,
+            coteAccouplement,
+            clavette,
+            aspect,
+            aspectInterieur,
+            couplage,
+            flasqueAvant,
+            flasqueArriere,
+            porteeRArriere,
+            porteeRAvant,
+            boutArbre,
+            rondelleElastique,
+            refRoulementAvant,
+            refRoulementArriere,
+            typeRoulementAvant,
+            typeRoulementArriere,
+            refJointAvant,
+            refJointArriere,
+            typeJointAvant,
+            typeJointArriere,
+            ventilateur,
+            capotV,
+            socleBoiteABorne,
+            capotBoiteABorne,
+            plaqueABorne,
+            presenceSondes,
+            typeSondes,
+            equilibrage,
+            peinture,
+            isolementMasseStatorPrincipalU,
+            isolementMasseStatorPrincipalV,
+            isolementMasseStatorPrincipalW,
+            isolementMasseRotorPrincipal,
+            isolementMasseStatorExcitation,
+            resistanceStatorPrincipalU,
+            resistanceStatorPrincipalV,
+            resistanceStatorPrincipalW,
+            resistanceRotorPrincipal,
+            resistanceStatorExcitation,
+            resistanceRotorExcitation,
+            isolementPhasePhaseStatorPrincipalUV,
+            isolementPhasePhaseStatorPrincipalVW,
+            isolementPhasePhaseStatorPrincipalUW,
+            testDiode,
+            tensionU,
+            tensionV,
+            tensionW,
+            intensiteU,
+            intensiteV,
+            intensiteW,
+            tensionUExcitation,
+            tensionVExcitation,
+            tensionWExcitation,
+            intensiteUExcitation,
+            intensiteVExcitation,
+            intensiteWExcitation
+        )
+    }
+}

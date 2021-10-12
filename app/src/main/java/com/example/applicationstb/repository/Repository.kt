@@ -537,6 +537,586 @@ class BodyDemontageCC ( var status: Long?,
     }
 }
 
+class BodyDemontageAlternateur (
+    var status: Long?,
+    var marque: String?,
+    var numSerie: Int?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse : Float?,
+    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
+    var accouplement:Boolean?,
+    var coteAccouplement:String?,
+    var clavette: Boolean?,
+    var aspect:Int?,
+    var aspectInterieur:Int?,
+    var couplage:String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere:  Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: String?,
+    var refRoulementArriere: String?,
+    var typeRoulementAvant: String ?,
+    var typeRoulementArriere: String ?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne : Int?,
+    var capotBoiteABorne : Int?,
+    var plaqueABorne : Int?,
+    var presenceSondes: Boolean ?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture : String?,
+    var isolementMasseStatorPrincipalU: Float?,
+    var isolementMasseStatorPrincipalV: Float?,
+    var isolementMasseStatorPrincipalW	: Float?,
+    var isolementMasseRotorPrincipal	: Float?,
+    var isolementMasseStatorExcitation	: Float?,
+    var resistanceStatorPrincipalU	: Float?,
+    var resistanceStatorPrincipalV	: Float?,
+    var resistanceStatorPrincipalW	: Float?,
+    var resistanceRotorPrincipal	: Float?,
+    var resistanceStatorExcitation	: Float?,
+    var resistanceRotorExcitation	: Float?,
+    var isolementPhasePhaseStatorPrincipalUV	: Float?,
+    var isolementPhasePhaseStatorPrincipalVW	: Float?,
+    var isolementPhasePhaseStatorPrincipalUW	: Float?,
+    var testDiode : Boolean?,
+    var tensionU	: Float?,
+    var tensionV	: Float?,
+    var tensionW	: Float?,
+    var intensiteU	: Float?,
+    var intensiteV	: Float?,
+    var intensiteW	: Float?,
+    var tensionUExcitation	: Float?,
+    var tensionVExcitation	: Float?,
+    var tensionWExcitation	: Float?,
+    var intensiteUExcitation	: Float?,
+    var intensiteVExcitation	: Float?,
+    var intensiteWExcitation	: Float?,
+    var dureeTotale: Int?
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readInt(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
+        parcel.writeString(marque!!)
+        parcel.writeInt(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeInt(aspect!!)
+        parcel.writeInt(aspectInterieur!!)
+        parcel.writeString(couplage!!)
+        parcel.writeInt(flasqueAvant!!)
+        parcel.writeInt(flasqueArriere!!)
+        parcel.writeInt(porteeRAvant!!)
+        parcel.writeInt(porteeRArriere!!)
+        parcel.writeBoolean(boutArbre!!)
+        parcel.writeBoolean(rondelleElastique!!)
+        parcel.writeString(refRoulementAvant!!)
+        parcel.writeString(refRoulementArriere!!)
+        parcel.writeString(typeRoulementAvant!!)
+        parcel.writeString(typeRoulementArriere!!)
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeInt(ventilateur!!)
+        parcel.writeInt(capotV!!)
+        parcel.writeInt(socleBoiteABorne!!)
+        parcel.writeInt(capotBoiteABorne!!)
+        parcel.writeInt(plaqueABorne!!)
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes!!)
+        parcel.writeBoolean(equilibrage!!)
+        parcel.writeString(peinture!!)
+        parcel.writeFloat(isolementMasseStatorPrincipalU!!)
+        parcel.writeFloat(isolementMasseStatorPrincipalV!!)
+        parcel.writeFloat(isolementMasseStatorPrincipalW!!)
+        parcel.writeFloat(isolementMasseRotorPrincipal!!)
+        parcel.writeFloat(isolementMasseStatorExcitation!!)
+        parcel.writeFloat(resistanceStatorPrincipalU!!)
+        parcel.writeFloat(resistanceStatorPrincipalV!!)
+        parcel.writeFloat(resistanceStatorPrincipalW!!)
+        parcel.writeFloat(resistanceRotorPrincipal!!)
+        parcel.writeFloat(resistanceStatorExcitation!!)
+        parcel.writeFloat(resistanceRotorExcitation!!)
+        parcel.writeFloat(isolementPhasePhaseStatorPrincipalUV!!)
+        parcel.writeFloat(isolementPhasePhaseStatorPrincipalVW!!)
+        parcel.writeFloat(isolementPhasePhaseStatorPrincipalUW!!)
+        parcel.writeBoolean(testDiode!!)
+        parcel.writeFloat(tensionU!!)
+        parcel.writeFloat(tensionV!!)
+        parcel.writeFloat(tensionW!!)
+        parcel.writeFloat(intensiteU!!)
+        parcel.writeFloat(intensiteV!!)
+        parcel.writeFloat(intensiteW!!)
+        parcel.writeFloat(tensionUExcitation!!)
+        parcel.writeFloat(tensionVExcitation!!)
+        parcel.writeFloat(tensionWExcitation!!)
+        parcel.writeFloat(intensiteUExcitation!!)
+        parcel.writeFloat(intensiteVExcitation!!)
+        parcel.writeFloat(intensiteWExcitation!!)
+        parcel.writeInt(dureeTotale!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemontageAlternateur> {
+        override fun createFromParcel(parcel: Parcel): BodyDemontageAlternateur {
+            return BodyDemontageAlternateur(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemontageAlternateur?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyDemontageRotorBobine (
+    var status: Long?,
+    var marque: String?,
+    var numSerie: Int?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse : Float?,
+    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
+    var accouplement:Boolean?,
+    var coteAccouplement:String?,
+    var clavette: Boolean?,
+    var aspect:Int?,
+    var aspectInterieur:Int?,
+    var couplage:String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere:  Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: String?,
+    var refRoulementArriere: String?,
+    var typeRoulementAvant: String ?,
+    var typeRoulementArriere: String ?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne : Int?,
+    var capotBoiteABorne : Int?,
+    var plaqueABorne : Int?,
+    var presenceSondes: Boolean ?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture : String?,
+    var isolementPhaseMasseStatorUM	: Float?,
+    var isolementPhaseMasseStatorVM	: Float?,
+    var isolementPhaseMasseStatorWM	: Float?,
+    var isolementPhaseMasseRotorB1M	: Float?,
+    var isolementPhaseMasseRotorB2M	: Float?,
+    var isolementPhaseMasseRotorB3M	: Float?,
+    var isolementPhaseMassePorteBalaisM	: Float?,
+    var isolementPhasePhaseStatorUV	: Float?,
+    var isolementPhasePhaseStatorVW	: Float?,
+    var isolementPhasePhaseStatorUW	: Float?,
+    var resistanceStatorU	: Float?,
+    var resistanceStatorV	: Float?,
+    var resistanceStatorW	: Float?,
+    var resistanceRotorB1B2	: Float?,
+    var resistanceRotorB2B2	: Float?,
+    var resistanceRotorB1B3	: Float?,
+    var tensionU	: Float?,
+    var tensionV	: Float?,
+    var tensionW	: Float?,
+    var tensionRotor	: Float?,
+    var intensiteU	: Float?,
+    var intensiteV	: Float?,
+    var intensiteW	: Float?,
+    var intensiteRotor	: Float?,
+    var dureeEssai	: Int?,
+    var dureeTotale: Int?
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readInt(),
+        parcel.readInt(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
+        parcel.writeString(marque!!)
+        parcel.writeInt(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeInt(aspect!!)
+        parcel.writeInt(aspectInterieur!!)
+        parcel.writeString(couplage!!)
+        parcel.writeInt(flasqueAvant!!)
+        parcel.writeInt(flasqueArriere!!)
+        parcel.writeInt(porteeRAvant!!)
+        parcel.writeInt(porteeRArriere!!)
+        parcel.writeBoolean(boutArbre!!)
+        parcel.writeBoolean(rondelleElastique!!)
+        parcel.writeString(refRoulementAvant!!)
+        parcel.writeString(refRoulementArriere!!)
+        parcel.writeString(typeRoulementAvant!!)
+        parcel.writeString(typeRoulementArriere!!)
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeInt(ventilateur!!)
+        parcel.writeInt(capotV!!)
+        parcel.writeInt(socleBoiteABorne!!)
+        parcel.writeInt(capotBoiteABorne!!)
+        parcel.writeInt(plaqueABorne!!)
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes!!)
+        parcel.writeBoolean(equilibrage!!)
+        parcel.writeString(peinture!!)
+        parcel.writeFloat(isolementPhaseMasseStatorUM!!)
+        parcel.writeFloat(isolementPhaseMasseStatorVM!!)
+        parcel.writeFloat(isolementPhaseMasseStatorWM!!)
+        parcel.writeFloat(isolementPhaseMasseRotorB1M!!)
+        parcel.writeFloat(isolementPhaseMasseRotorB2M!!)
+        parcel.writeFloat(isolementPhaseMasseRotorB3M!!)
+        parcel.writeFloat(isolementPhaseMassePorteBalaisM!!)
+        parcel.writeFloat(isolementPhasePhaseStatorUV!!)
+        parcel.writeFloat(isolementPhasePhaseStatorVW!!)
+        parcel.writeFloat(isolementPhasePhaseStatorUW!!)
+        parcel.writeFloat(resistanceStatorU!!)
+        parcel.writeFloat(resistanceStatorV!!)
+        parcel.writeFloat(resistanceStatorW!!)
+        parcel.writeFloat(resistanceRotorB1B2!!)
+        parcel.writeFloat(resistanceRotorB2B2!!)
+        parcel.writeFloat(resistanceRotorB1B3!!)
+        parcel.writeFloat(tensionU!!)
+        parcel.writeFloat(tensionV!!)
+        parcel.writeFloat(tensionW!!)
+        parcel.writeFloat(intensiteV!!)
+        parcel.writeFloat(intensiteW!!)
+        parcel.writeFloat(tensionRotor!!)
+        parcel.writeFloat(intensiteU!!)
+        parcel.writeFloat(intensiteV!!)
+        parcel.writeFloat(intensiteW!!)
+        parcel.writeFloat(intensiteRotor!!)
+        parcel.writeInt(dureeEssai!!)
+        parcel.writeInt(dureeTotale!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemontageRotorBobine> {
+        override fun createFromParcel(parcel: Parcel): BodyDemontageRotorBobine {
+            return BodyDemontageRotorBobine(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemontageRotorBobine?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyDemontageMonophase (
+    var status: Long?,
+    var marque: String?,
+    var numSerie: Int?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse : Float?,
+    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
+    var accouplement:Boolean?,
+    var coteAccouplement:String?,
+    var clavette: Boolean?,
+    var aspect:Int?,
+    var aspectInterieur:Int?,
+    var couplage:String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere:  Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: String?,
+    var refRoulementArriere: String?,
+    var typeRoulementAvant: String ?,
+    var typeRoulementArriere: String ?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne : Int?,
+    var capotBoiteABorne : Int?,
+    var plaqueABorne : Int?,
+    var presenceSondes: Boolean ?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture : String?,
+    var isolementPhaseMasse: Float?,
+    var resistanceTravail	: Float?,
+    var resistanceDemarrage	: Float?,
+    var valeurCondensateur	: Float?,
+    var tension	: Float?,
+    var intensite	: Float?,
+    var dureeTotale: Int?
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readInt(),
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
+        parcel.writeString(marque!!)
+        parcel.writeInt(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeInt(aspect!!)
+        parcel.writeInt(aspectInterieur!!)
+        parcel.writeString(couplage!!)
+        parcel.writeInt(flasqueAvant!!)
+        parcel.writeInt(flasqueArriere!!)
+        parcel.writeInt(porteeRAvant!!)
+        parcel.writeInt(porteeRArriere!!)
+        parcel.writeBoolean(boutArbre!!)
+        parcel.writeBoolean(rondelleElastique!!)
+        parcel.writeString(refRoulementAvant!!)
+        parcel.writeString(refRoulementArriere!!)
+        parcel.writeString(typeRoulementAvant!!)
+        parcel.writeString(typeRoulementArriere!!)
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeInt(ventilateur!!)
+        parcel.writeInt(capotV!!)
+        parcel.writeInt(socleBoiteABorne!!)
+        parcel.writeInt(capotBoiteABorne!!)
+        parcel.writeInt(plaqueABorne!!)
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes!!)
+        parcel.writeBoolean(equilibrage!!)
+        parcel.writeString(peinture!!)
+        parcel.writeFloat(isolementPhaseMasse!!)
+        parcel.writeFloat(resistanceTravail!!)
+        parcel.writeFloat(resistanceDemarrage!!)
+        parcel.writeFloat(valeurCondensateur!!)
+        parcel.writeFloat(tension!!)
+        parcel.writeFloat(intensite!!)
+        parcel.writeInt(dureeTotale!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemontageMonophase> {
+        override fun createFromParcel(parcel: Parcel): BodyDemontageMonophase {
+            return BodyDemontageMonophase(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemontageMonophase?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class BodyDemoPompe(
     var status: Long?,
@@ -554,7 +1134,8 @@ class BodyDemoPompe(
     var longueurRotativeNonComprimee:Float?,
     var longueurRotativeComprimee:Float?,
     var longueurRotativeTravail:Float?,
-    var observations:String?
+    var observations:String?,
+    var dureeTotale:Long?,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -573,6 +1154,7 @@ class BodyDemoPompe(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readString(),
+        parcel.readLong(),
     ) {
     }
 
@@ -593,6 +1175,7 @@ class BodyDemoPompe(
         parcel.writeFloat(longueurRotativeComprimee!!)
         parcel.writeFloat(longueurRotativeTravail!!)
         parcel.writeString(observations!!)
+        parcel.writeLong(dureeTotale!!)
     }
 
     override fun describeContents(): Int {
@@ -995,6 +1578,15 @@ class VehiculesResponse(
 class DemontageResponse(
     var fiche:DemontageMoteur?
 )
+class DemontageAlternateurResponse(
+    var fiche:DemontageAlternateur?
+)
+class DemontageMonophaseResponse(
+    var fiche:DemontageMonophase?
+)
+class DemontageRotorBobineResponse(
+    var fiche:DemontageRotorBobine?
+)
 class RemontageResponse(
     var fiche:Remontage?
 )
@@ -1038,6 +1630,9 @@ class Repository (var context:Context) {
     var bobinageDao : BobinageDao ? = null;
     var demontageTriphaseDao : DemontageTriphaseDao? = null;
     var demontageCCDao : DemontageCCDao? = null;
+    var demontageMonoDao : DemontageMonophaseDao? = null;
+    var demontageRBDao : DemontageRotorBobineDao? = null;
+    var demontageAlterDao : DemontageAlternateurDao? = null;
     var demontagePDao : DemontagePDao? = null;
     var remontageTriphaseDao: RemontageTriphaseDao? = null;
     var remontageCourantCDao: RemontageCCDao? = null;
@@ -1288,7 +1883,8 @@ class Repository (var context:Context) {
             fiche.longueurRotativeNonComprimee,
             fiche.longueurRotativeComprimee,
             fiche.longueurRotativeTravail,
-            fiche.observations
+            fiche.observations,
+            fiche.dureeTotale
         )
         var call = service.patchDemontagePompe(token,ficheId,body)
         var fiche:DemontagePompe? = null
@@ -1446,6 +2042,9 @@ class Repository (var context:Context) {
       demontageTriphaseDao = db!!.demontageTriphaseDao()
       demontageCCDao = db!!.demontageCCDao()
       demontagePDao = db!!.demontagePDao()
+      demontageMonoDao = db!!.demontageMonophaseDao()
+      demontageAlterDao = db!!.demontageAlternateurDao()
+      demontageRBDao = db!!.demontageRotorBobineDao()
         Log.i("INFO","db créée")
     }
     //requêtes chantier
@@ -1558,6 +2157,76 @@ class Repository (var context:Context) {
     }
     suspend fun deleteDemontagePompeLocalDatabse( demo: DemoPompeEntity){
         demontagePDao!!.delete(demo)
+    }
+
+    //demo mono
+    suspend fun insertDemoMonoLocalDatabase(demo: DemontageMonophase){
+        demontageMonoDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageMonoLocalDatabase(): List<DemontageMonophaseEntity>{
+        return demontageMonoDao!!.getAll()
+    }
+    suspend fun getByIdDemoMonoLocalDatabse(id: String) : DemontageMonophase? {
+        try {
+            if (demontageMonoDao!!.getById(id) !== null) {
+                return demontageMonoDao!!.getById(id).toMonophase()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoPompeLocalDatabse( demo: DemontageMonophaseEntity){
+        demontageMonoDao!!.update(demo)
+    }
+    suspend fun deleteDemontagePompeLocalDatabse( demo: DemontageMonophaseEntity){
+        demontageMonoDao!!.delete(demo)
+    }
+    //demo Alternateur
+    suspend fun insertDemoAlterLocalDatabase(demo: DemontageAlternateur){
+        demontageAlterDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageAlterLocalDatabase(): List<DemontageAlternateurEntity>{
+        return demontageAlterDao!!.getAll()
+    }
+    suspend fun getByIdDemoAlterLocalDatabse(id: String) : DemontageAlternateur? {
+        try {
+            if (demontageAlterDao!!.getById(id) !== null) {
+                return demontageAlterDao!!.getById(id).toDemontageAlternateur()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoAlterLocalDatabse( demo: DemontageAlternateurEntity){
+        demontageAlterDao!!.update(demo)
+    }
+    suspend fun deleteDemontageAlterLocalDatabse( demo: DemontageAlternateurEntity){
+        demontageAlterDao!!.delete(demo)
+    }
+    //demo Rotor
+    suspend fun insertDemoRBLocalDatabase(demo: DemontageRotorBobine){
+        demontageRBDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageRBLocalDatabase(): List<DemontageRotorBEntity>{
+        return demontageRBDao!!.getAll()
+    }
+    suspend fun getByIdDemoRBLocalDatabse(id: String) : DemontageRotorBobine? {
+        try {
+            if (demontageRBDao!!.getById(id) !== null) {
+                return demontageRBDao!!.getById(id).toDemoRotorB()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoRBLocalDatabse( demo: DemontageRotorBEntity){
+        demontageRBDao!!.update(demo)
+    }
+    suspend fun deleteDemontageRBLocalDatabse( demo: DemontageRotorBEntity){
+        demontageRBDao!!.delete(demo)
     }
 
     //dao remontage triphase

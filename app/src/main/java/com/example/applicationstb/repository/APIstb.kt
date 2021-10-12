@@ -70,5 +70,22 @@ interface APIstb  {
     @PATCH("/fiches/{ficheId}")
     fun patchDemontagePompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemoPompe ): Call<DemontagePompeResponse>
 
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageAlternateur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageAlternateur ): Call<DemontageAlternateurResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemoAlternateur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageAlternateurResponse>
+
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageMonophase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageMonophase ): Call<DemontageMonophaseResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemoMonophase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageMonophaseResponse>
+
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageRotorBobine(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageRotorBobine ): Call<DemontageRotorBobineResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemontageRotorBobine(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageRotorBobineResponse>
 
 }
