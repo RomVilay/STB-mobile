@@ -348,7 +348,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 viewModelScope.launch(Dispatchers.IO){
                     var rotor = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
                     if (rotor !== null ) {
-                        repository.updateDemoRBLocalDatabse(rotor.toEntity())
+                        repository.updateDemoRBLocalDatabse(rb.toEntity())
                         val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                         mySnackbar.show()
                         Log.i("INFO", "patch local")

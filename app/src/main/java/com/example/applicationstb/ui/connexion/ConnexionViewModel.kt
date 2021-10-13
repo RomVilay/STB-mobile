@@ -36,7 +36,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         var action = ConnexionDirections.versAccueil(user!!.token!!, user!!.username!!)
         Navigation.findNavController(view).navigate(action)
     }
-    fun login(username: String,psw: String, view: View){
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun login(username: String, psw: String, view: View){
         if (isOnline(context) == true) {
             val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
                 override fun onResponse(
@@ -394,7 +395,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     } else {
                                                         Log.i(
                                                             "INFO",
-                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                            "erreur mono code : ${response.code()} - erreur : ${response.message()}"
                                                         )
                                                     }
                                                 }
@@ -438,7 +439,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     } else {
                                                         Log.i(
                                                             "INFO",
-                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                            "erreur alter code : ${response.code()} - erreur : ${response.message()}"
                                                         )
                                                     }
                                                 }
@@ -482,7 +483,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     } else {
                                                         Log.i(
                                                             "INFO",
-                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
                                                         )
                                                     }
                                                 }

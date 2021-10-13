@@ -103,8 +103,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/round_textview"
                         android:ems="10"
-                        android:hint="val"
-                        android:inputType="textShortMessage"
+                        android:gravity="center"
+                        android:hint="S"
+                        android:inputType="numberSigned|number|text"
                         android:padding="5dp"
                         app:layout_constraintBottom_toBottomOf="@+id/essaistitre"
                         app:layout_constraintStart_toEndOf="@+id/essaistitre"
@@ -400,7 +401,6 @@
                         android:layout_marginStart="455dp"
                         android:layout_marginLeft="455dp"
                         android:layout_marginTop="32dp"
-                        android:background="@drawable/round_textview"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/essaistatiques">
 
@@ -518,7 +518,6 @@
                         android:layout_marginStart="50dp"
                         android:layout_marginLeft="50dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/round_textview"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titreR2">
 
@@ -570,7 +569,6 @@
                         android:layout_marginStart="50dp"
                         android:layout_marginLeft="50dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/round_textview"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tableRow6">
 
@@ -693,13 +691,24 @@
                         android:id="@+id/retourTri"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="168dp"
-                        android:layout_marginLeft="168dp"
+                        android:layout_marginStart="112dp"
+                        android:layout_marginLeft="112dp"
                         android:layout_marginTop="192dp"
                         android:text="Retour"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/termRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginLeft="48dp"
+                        android:text="Terminer"
+                        app:layout_constraintBottom_toBottomOf="@+id/enregistrerTRi"
+                        app:layout_constraintStart_toEndOf="@+id/enregistrerTRi"
+                        app:layout_constraintTop_toTopOf="@+id/enregistrerTRi" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>

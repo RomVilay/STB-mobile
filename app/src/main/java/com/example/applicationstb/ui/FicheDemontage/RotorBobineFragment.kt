@@ -13,14 +13,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.DemontageRotorBobine
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
@@ -55,12 +59,171 @@ class RotorBobineFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var layout = inflater.inflate(R.layout.fragment_rotor_bobine, container, false)
+        var isolementPhaseMasseStatorUM = layout.findViewById<EditText>(R.id.upm)
+        var isolementPhaseMasseStatorVM = layout.findViewById<EditText>(R.id.vpm)
+        var isolementPhaseMasseStatorWM = layout.findViewById<EditText>(R.id.wpm)
+        var isolementPhaseMasseRotorB1M = layout.findViewById<EditText>(R.id.impRP)
+        var isolementPhaseMasseRotorB2M = layout.findViewById<EditText>(R.id.b2)
+        var isolementPhaseMasseRotorB3M = layout.findViewById<EditText>(R.id.b3)
+        var isolementPhaseMassePorteBalaisM = layout.findViewById<EditText>(R.id.ipmSE)
+        var isolementPhasePhaseStatorUV = layout.findViewById<EditText>(R.id.u)
+        var isolementPhasePhaseStatorVW = layout.findViewById<EditText>(R.id.v2)
+        var isolementPhasePhaseStatorUW = layout.findViewById<EditText>(R.id.w)
+        var resistanceStatorU = layout.findViewById<EditText>(R.id.U)
+        var resistanceStatorV = layout.findViewById<EditText>(R.id.V)
+        var resistanceStatorW = layout.findViewById<EditText>(R.id.W)
+        var resistanceRotorB1B2 = layout.findViewById<EditText>(R.id.b1b2)
+        var resistanceRotorB2B2 = layout.findViewById<EditText>(R.id.b2b3)
+        var resistanceRotorB1B3 = layout.findViewById<EditText>(R.id.b1b3)
+        var tensionU = layout.findViewById<EditText>(R.id.tu)
+        var tensionV = layout.findViewById<EditText>(R.id.tv)
+        var tensionW = layout.findViewById<EditText>(R.id.tw)
+        var tensionRotor = layout.findViewById<EditText>(R.id.tr)
+        var intensiteU = layout.findViewById<EditText>(R.id.iu)
+        var intensiteV = layout.findViewById<EditText>(R.id.iv)
+        var intensiteW = layout.findViewById<EditText>(R.id.iw)
+        var intensiteRotor = layout.findViewById<EditText>(R.id.irotor)
+        var dureeEssai = layout.findViewById<EditText>(R.id.tpse)
+        var observations = layout.findViewById<EditText>(R.id.obs2)
+        var fiche = viewModel.selection.value!! as DemontageRotorBobine
+        if (fiche.isolementPhaseMasseStatorUM !== null) isolementPhaseMasseStatorUM.setText(fiche.isolementPhaseMasseStatorUM.toString())
+        if (fiche.isolementPhaseMasseStatorVM !== null) isolementPhaseMasseStatorVM.setText(fiche.isolementPhaseMasseStatorVM.toString())
+        if (fiche.isolementPhaseMasseStatorWM !== null) isolementPhaseMasseStatorWM.setText(fiche.isolementPhaseMasseStatorWM.toString())
+        if (fiche.isolementPhaseMasseRotorB1M !== null) isolementPhaseMasseRotorB1M.setText(fiche.isolementPhaseMasseRotorB1M.toString())
+        if (fiche.isolementPhaseMasseRotorB2M !== null) isolementPhaseMasseRotorB2M.setText(fiche.isolementPhaseMasseRotorB2M.toString())
+        if (fiche.isolementPhaseMasseRotorB3M !== null) isolementPhaseMasseRotorB3M.setText(fiche.isolementPhaseMasseRotorB3M.toString())
+        if (fiche.isolementPhaseMassePorteBalaisM !== null) isolementPhaseMassePorteBalaisM.setText(fiche.isolementPhaseMassePorteBalaisM.toString())
+        if (fiche.isolementPhasePhaseStatorUV !== null) isolementPhasePhaseStatorUV.setText(fiche.isolementPhasePhaseStatorUV.toString())
+        if (fiche.isolementPhasePhaseStatorVW !== null) isolementPhasePhaseStatorVW.setText(fiche.isolementPhasePhaseStatorVW.toString())
+        if (fiche.isolementPhasePhaseStatorUW !== null) isolementPhasePhaseStatorUW.setText(fiche.isolementPhasePhaseStatorUW.toString())
+        if (fiche.resistanceStatorU !== null) resistanceStatorU.setText(fiche.resistanceStatorU.toString())
+        if (fiche.resistanceStatorV !== null) resistanceStatorV.setText(fiche.resistanceStatorV.toString())
+        if (fiche.resistanceStatorW !== null) resistanceStatorW.setText(fiche.resistanceStatorW.toString())
+        if (fiche.resistanceRotorB1B2 !== null) resistanceRotorB1B2.setText(fiche.resistanceRotorB1B2.toString())
+        if (fiche.resistanceRotorB2B2 !== null) resistanceRotorB2B2.setText(fiche.resistanceRotorB2B2.toString())
+        if (fiche.resistanceRotorB1B3 !== null) resistanceRotorB1B3.setText(fiche.resistanceRotorB1B3.toString())
+        if (fiche.tensionU !== null) tensionU.setText(fiche.tensionU.toString())
+        if (fiche.tensionV !== null) tensionV.setText(fiche.tensionV.toString())
+        if (fiche.tensionW !== null) tensionW.setText(fiche.tensionW.toString())
+        if (fiche.tensionRotor !== null) tensionRotor.setText(fiche.tensionRotor.toString())
+        if (fiche.intensiteU !== null) intensiteU.setText(fiche.intensiteU.toString())
+        if (fiche.intensiteV !== null) intensiteV.setText(fiche.intensiteV.toString())
+        if (fiche.intensiteW !== null) intensiteW.setText(fiche.intensiteW.toString())
+        if (fiche.intensiteRotor !== null) intensiteRotor.setText(fiche.intensiteRotor.toString())
+        if (fiche.dureeEssai !== null) dureeEssai.setText(fiche.dureeEssai.toString())
+        if (fiche.observations !== null) observations.setText(fiche.observations.toString())
+        isolementPhaseMasseStatorUM.doAfterTextChanged {
+         if(isolementPhaseMasseStatorUM.text.isNotEmpty())   fiche.isolementPhaseMasseStatorUM = isolementPhaseMasseStatorUM.text.toString().toFloat()
+        }
+        isolementPhaseMasseStatorVM.doAfterTextChanged {
+            if(isolementPhaseMasseStatorVM.text.isNotEmpty())fiche.isolementPhaseMasseStatorVM = isolementPhaseMasseStatorVM.text.toString().toFloat()
+        }
+        isolementPhaseMasseStatorWM.doAfterTextChanged {
+            if(isolementPhaseMasseStatorWM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorWM = isolementPhaseMasseStatorWM.text.toString().toFloat()
+        }
+        isolementPhaseMasseRotorB1M.doAfterTextChanged {
+            if(isolementPhaseMasseRotorB1M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB1M = isolementPhaseMasseRotorB1M.text.toString().toFloat()
+        }
+        isolementPhaseMasseRotorB2M.doAfterTextChanged {
+            if(isolementPhaseMasseRotorB2M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB2M = isolementPhaseMasseRotorB2M.text.toString().toFloat()
+        }
+        isolementPhaseMasseRotorB3M.doAfterTextChanged {
+            if(isolementPhaseMasseRotorB3M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB3M = isolementPhaseMasseRotorB3M.text.toString().toFloat()
+        }
+        isolementPhaseMassePorteBalaisM.doAfterTextChanged {
+            if(isolementPhaseMassePorteBalaisM.text.isNotEmpty())  fiche.isolementPhaseMassePorteBalaisM = isolementPhaseMassePorteBalaisM.text.toString().toFloat()
+        }
+        isolementPhasePhaseStatorUV.doAfterTextChanged {
+            if(isolementPhasePhaseStatorUV.text.isNotEmpty())  fiche.isolementPhasePhaseStatorUV = isolementPhasePhaseStatorUV.text.toString().toFloat()
+        }
+        isolementPhasePhaseStatorUW.doAfterTextChanged {
+            if(isolementPhasePhaseStatorUW.text.isNotEmpty())  fiche.isolementPhasePhaseStatorUW = isolementPhasePhaseStatorUW.text.toString().toFloat()
+        }
+        isolementPhasePhaseStatorVW.doAfterTextChanged {
+            if(isolementPhasePhaseStatorVW.text.isNotEmpty())  fiche.isolementPhasePhaseStatorVW = isolementPhasePhaseStatorVW.text.toString().toFloat()
+        }
+        resistanceStatorU.doAfterTextChanged {
+            if(resistanceStatorU.text.isNotEmpty())  fiche.resistanceStatorU = resistanceStatorU.text.toString().toFloat()
+        }
+        resistanceStatorV.doAfterTextChanged {
+            if(resistanceStatorV.text.isNotEmpty())  fiche.resistanceStatorV = resistanceStatorV.text.toString().toFloat()
+        }
+        resistanceStatorW.doAfterTextChanged {
+            if(resistanceStatorW.text.isNotEmpty())  fiche.resistanceStatorW = resistanceStatorW.text.toString().toFloat()
+        }
+        resistanceRotorB1B2.doAfterTextChanged {
+            if(resistanceRotorB1B2.text.isNotEmpty())  fiche.resistanceRotorB1B2 = resistanceRotorB1B2.text.toString().toFloat()
+        }
+        resistanceRotorB1B3.doAfterTextChanged {
+            if(resistanceRotorB1B3.text.isNotEmpty())  fiche.resistanceRotorB1B3 = resistanceRotorB1B3.text.toString().toFloat()
+        }
+        resistanceRotorB2B2.doAfterTextChanged {
+            if(resistanceRotorB2B2.text.isNotEmpty())  fiche.resistanceRotorB2B2 = resistanceRotorB2B2.text.toString().toFloat()
+        }
+        tensionU.doAfterTextChanged {
+            if(tensionU.text.isNotEmpty())  fiche.tensionU = tensionU.text.toString().toFloat()
+        }
+        tensionV.doAfterTextChanged {
+            if(tensionV.text.isNotEmpty())  fiche.tensionV = tensionV.text.toString().toFloat()
+        }
+        tensionW.doAfterTextChanged {
+            if(tensionW.text.isNotEmpty())  fiche.tensionW = tensionW.text.toString().toFloat()
+        }
+        tensionRotor.doAfterTextChanged {
+            if(tensionRotor.text.isNotEmpty())  fiche.tensionRotor = tensionRotor.text.toString().toFloat()
+        }
+        intensiteU.doAfterTextChanged {
+            if(intensiteU.text.isNotEmpty())  fiche.intensiteU = intensiteU.text.toString().toFloat()
+        }
+        intensiteV.doAfterTextChanged {
+            if(intensiteV.text.isNotEmpty())  fiche.intensiteV = intensiteV.text.toString().toFloat()
+        }
+        intensiteW.doAfterTextChanged {
+            if(intensiteW.text.isNotEmpty())  fiche.intensiteW = intensiteW.text.toString().toFloat()
+        }
+        intensiteRotor.doAfterTextChanged {
+            if(intensiteRotor.text.isNotEmpty())  fiche.intensiteRotor = intensiteRotor.text.toString().toFloat()
+        }
+        dureeEssai.doAfterTextChanged {
+            fiche.dureeEssai = dureeEssai.text.toString().toInt()
+        }
+        observations.doAfterTextChanged {
+            fiche.observations = observations.text.toString()
+        }
+        var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
+        var retour = layout.findViewById<Button>(R.id.retourTri)
+        var term = layout.findViewById<Button>(R.id.termRB)
+        enr.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        term.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 3L
+            viewModel.selection.value = fiche
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+
         var btnPhoto = layout.findViewById<Button>(R.id.photo3)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            Log.i("INFO",test.toString())
             if (test == false) {
                 requestPermissions(arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -69,7 +232,7 @@ class RotorBobineFragment : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -81,7 +244,7 @@ class RotorBobineFragment : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
@@ -126,14 +289,31 @@ class RotorBobineFragment : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
         }
+    }
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 }
