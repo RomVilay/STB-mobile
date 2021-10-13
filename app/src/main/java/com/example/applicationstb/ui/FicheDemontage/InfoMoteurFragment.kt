@@ -61,25 +61,25 @@ class InfoMoteurFragment : Fragment() {
         })
 
         marque.doAfterTextChanged {
-            viewModel.selection.value!!.marque = marque.text.toString()
+            if(marque.text.isNotEmpty()) viewModel.selection.value!!.marque = marque.text.toString()
         }
         num.doAfterTextChanged {
-            viewModel.selection.value!!.numSerie = num.text.toString().toInt()
+           if(num.text.isNotEmpty()) viewModel.selection.value!!.numSerie = num.text.toString().toInt()
         }
         puissance.doAfterTextChanged {
-            viewModel.selection.value!!.puissance = puissance.text.toString().toFloat()
+          if (puissance.text.isNotEmpty())  viewModel.selection.value!!.puissance = puissance.text.toString().toFloat()
         }
         bride.doAfterTextChanged {
-            viewModel.selection.value!!.bride = bride.text.toString().toFloat()
+          if (bride.text.isNotEmpty())  viewModel.selection.value!!.bride = bride.text.toString().toFloat()
         }
         cote.doAfterTextChanged {
-            viewModel.selection.value!!.coteAccouplement = cote.text.toString()
+          if (cote.text.isNotEmpty())  viewModel.selection.value!!.coteAccouplement = cote.text.toString()
         }
         vitesse.doAfterTextChanged {
-            viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
+           if (cote.text.isNotEmpty()) viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
         }
         cote.doAfterTextChanged {
-            viewModel.selection.value!!.coteAccouplement = cote.text.toString()
+           if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
         }
         clavette.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.clavette = isChecked
