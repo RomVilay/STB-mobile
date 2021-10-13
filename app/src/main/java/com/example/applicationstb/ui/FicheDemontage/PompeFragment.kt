@@ -1,8 +1,10 @@
 package com.example.applicationstb.ui.FicheDemontage
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +18,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.applicationstb.R
 import androidx.core.content.ContextCompat
@@ -228,6 +231,13 @@ class PompeFragment : Fragment() {
         }
 
         btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
@@ -268,7 +278,7 @@ class PompeFragment : Fragment() {
             }
             fiche.status = 2L
             viewModel.selection.value = fiche
-            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
 
 
@@ -289,15 +299,32 @@ class PompeFragment : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
         }
+    }
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 
 }

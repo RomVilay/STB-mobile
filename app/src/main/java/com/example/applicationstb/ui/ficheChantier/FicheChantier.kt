@@ -113,7 +113,7 @@ class FicheChantier : Fragment() {
         })
 
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             if (test == false) {
                 requestPermissions(arrayOf(
@@ -243,7 +243,7 @@ class FicheChantier : Fragment() {
             //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
             //Log.i("INFO",t.toString())
             Log.i("INFO","duree: ${viewModel.chantier.value!!.dureeTotale}")
-            viewModel.save(context!!, layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
             //viewModel.back(layout)
         }
         return layout
