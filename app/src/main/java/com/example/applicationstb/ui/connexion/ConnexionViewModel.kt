@@ -4,20 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Bundle
+import android.os.Build
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
-import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.*
-import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.User
 import com.example.applicationstb.repository.*
-import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -284,7 +280,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 var listRCC: List<RemontageCCEntity> =
                                     repository.getAllRemontageCCLocalDatabase()
                                 //Log.i("INFO", "token : ${user!!.token}")
-                                Log.i("INFO", "nb de fiches DemontagePompe: ${listRCC.size}")
+                                Log.i("INFO", "nb de fiches DemontageCC: ${listRCC.size}")
                                 if (listRCC.size > 0) {
                                     for (fiche in listRCC) {
                                         var rc = fiche.toRCourantC()
@@ -369,6 +365,138 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             })
                                     }
                                 }
+                                var listDM: List<DemontageMonophaseEntity> =
+                                    repository.getAllDemontageMonoLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches Demontage monophase: ${listDM.size}")
+                                if (listDM.size > 0) {
+                                    for (fiche in listDM) {
+                                        var rc = fiche.toMonophase()
+                                        val resp = repository.patchDemontageMono(
+                                            user!!.token!!,
+                                            rc._id,
+                                            rc,
+                                            object : Callback<DemontageMonophaseResponse> {
+                                                override fun onResponse(
+                                                    call: Call<DemontageMonophaseResponse>,
+                                                    response: Response<DemontageMonophaseResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteDemontageMonoLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<DemontageMonophaseResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listDA: List<DemontageAlternateurEntity> =
+                                    repository.getAllDemontageAlterLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches Demontage Alternateur: ${listDA.size}")
+                                if (listDA.size > 0) {
+                                    for (fiche in listDA) {
+                                        var rc = fiche.toDemontageAlternateur()
+                                        val resp = repository.patchDemontageAlter(
+                                            user!!.token!!,
+                                            rc._id,
+                                            rc,
+                                            object : Callback<DemontageAlternateurResponse> {
+                                                override fun onResponse(
+                                                    call: Call<DemontageAlternateurResponse>,
+                                                    response: Response<DemontageAlternateurResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteDemontageAlterLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<DemontageAlternateurResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
+                                var listDRB: List<DemontageRotorBEntity> =
+                                    repository.getAllDemontageRBLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches Demontage Rotor Bobine: ${listDRB.size}")
+                                if (listDRB.size > 0) {
+                                    for (fiche in listDRB) {
+                                        var rc = fiche.toDemoRotorB()
+                                        val resp = repository.patchDemontageRotor(
+                                            user!!.token!!,
+                                            rc._id,
+                                            rc,
+                                            object : Callback<DemontageRotorBobineResponse> {
+                                                override fun onResponse(
+                                                    call: Call<DemontageRotorBobineResponse>,
+                                                    response: Response<DemontageRotorBobineResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteDemontageRBLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<DemontageRotorBobineResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
                             }
                             if (action != null) {
                                 Navigation.findNavController(view).navigate(action)
@@ -398,6 +526,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager

@@ -1,26 +1,20 @@
 package com.example.applicationstb.repository
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
-import kotlinx.parcelize.Parcelize
-import org.json.JSONArray
-import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 class BodyLogin(var username: String?, var password: String?): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -1158,6 +1152,7 @@ class BodyDemoPompe(
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
@@ -1249,6 +1244,7 @@ class BodyRemontageTriphase (  var status:Int?,
                                var isolementPhaseRotorVW: Float?,
                                var isolementPhaseRotorUW: Float?,
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
@@ -1308,6 +1304,7 @@ class BodyRemontageTriphase (  var status:Int?,
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(status!!)
         parcel.writeLong(dureeTotale!!)
@@ -1428,6 +1425,7 @@ class BodyRemontageCC (        var status:Int?,
                          var releveIsoInduitMasse: Float?,
                          var releveIsoInduitInducteurs: Float?,
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
@@ -1668,6 +1666,21 @@ class Repository (var context:Context) {
         var fiche:DemontageMoteur?=null
         call.enqueue(callback)
     }
+    fun getDemontageMono(token:String,ficheId:String, callback:Callback<DemontageMonophaseResponse>){
+        val call = service.getDemontageMonophase(token,ficheId)
+        var fiche:DemontageMonophase?=null
+        call.enqueue(callback)
+    }
+    fun getDemontageAlternateur(token:String,ficheId:String, callback:Callback<DemontageAlternateurResponse>){
+        val call = service.getDemontageAlternateur(token,ficheId)
+        var fiche:DemontageAlternateur?=null
+        call.enqueue(callback)
+    }
+    fun getDemontageRB(token:String,ficheId:String, callback:Callback<DemontageRotorBobineResponse>){
+        val call = service.getDemontageRotorBobine(token,ficheId)
+        var fiche:DemontageRotorBobine?=null
+        call.enqueue(callback)
+    }
     fun getDemontageTriphase(token:String,ficheId:String, callback: Callback<DemontageTriphaseResponse>){
         var call = service.getDemontageTriphase(token,ficheId)
         var fiche:Triphase? = null
@@ -1892,6 +1905,203 @@ class Repository (var context:Context) {
 
     }
 
+    fun patchDemontageMono(token:String,ficheId:String, fiche:DemontageMonophase, callback:Callback<DemontageMonophaseResponse>){
+        var body = BodyDemontageMonophase(
+            fiche.status,
+            fiche.marque,
+            fiche.numSerie,
+            fiche.puissance,
+            fiche.bride,
+            fiche.vitesse,
+            fiche.arbreSortantEntrant,
+            fiche.accouplement,
+            fiche.coteAccouplement,
+            fiche.clavette,
+            fiche.aspect,
+            fiche.aspectInterieur,
+            fiche.couplage,
+            fiche.flasqueAvant,
+            fiche.flasqueArriere,
+            fiche.porteeRAvant,
+            fiche.porteeRArriere,
+            fiche.boutArbre,
+            fiche.rondelleElastique,
+            fiche.refRoulementAvant,
+            fiche.refRoulementArriere,
+            fiche.typeRoulementAvant,
+            fiche.typeRoulementArriere,
+            fiche.refJointAvant,
+            fiche.refJointAvant,
+            fiche.typeJointAvant,
+            fiche.typeJointArriere,
+            fiche.ventilateur,
+            fiche.capotV,
+            fiche.socleBoiteABorne,
+            fiche.capotBoiteABorne,
+            fiche.plaqueABorne,
+            fiche.presenceSondes,
+            fiche.typeSondes,
+            fiche.equilibrage,
+            fiche.peinture,
+            fiche.isolementPhaseMasse,
+            fiche.resistanceTravail,
+            fiche.resistanceDemarrage,
+            fiche.valeurCondensateur,
+            fiche.tension,
+            fiche.intensite,
+            fiche.dureeTotale!!.toInt()
+        )
+        var call = service.patchDemontageMonophase(token,ficheId,body)
+        var fiche:DemontageMonophase? = null
+        call.enqueue(callback)
+
+    }
+    fun patchDemontageAlter(
+        token:String,
+        ficheId:String, fiche:DemontageAlternateur, callback: Callback<DemontageAlternateurResponse>
+    ){
+        var body = BodyDemontageAlternateur(
+            fiche.status,
+            fiche.marque,
+            fiche.numSerie,
+            fiche.puissance,
+            fiche.bride,
+            fiche.vitesse,
+            fiche.arbreSortantEntrant,
+            fiche.accouplement,
+            fiche.coteAccouplement,
+            fiche.clavette,
+            fiche.aspect,
+            fiche.aspectInterieur,
+            fiche.couplage,
+            fiche.flasqueAvant,
+            fiche.flasqueArriere,
+            fiche.porteeRAvant,
+            fiche.porteeRArriere,
+            fiche.boutArbre,
+            fiche.rondelleElastique,
+            fiche.refRoulementAvant,
+            fiche.refRoulementArriere,
+            fiche.typeRoulementAvant,
+            fiche.typeRoulementArriere,
+            fiche.refJointAvant,
+            fiche.refJointAvant,
+            fiche.typeJointAvant,
+            fiche.typeJointArriere,
+            fiche.ventilateur,
+            fiche.capotV,
+            fiche.socleBoiteABorne,
+            fiche.capotBoiteABorne,
+            fiche.plaqueABorne,
+            fiche.presenceSondes,
+            fiche.typeSondes,
+            fiche.equilibrage,
+            fiche.peinture,
+            fiche.isolementMasseStatorPrincipalU,
+            fiche.isolementMasseStatorPrincipalV,
+            fiche.isolementMasseStatorPrincipalW,
+            fiche.isolementMasseRotorPrincipal,
+            fiche.isolementMasseStatorExcitation,
+            fiche.resistanceStatorPrincipalU,
+            fiche.resistanceStatorPrincipalV,
+            fiche.resistanceStatorPrincipalW,
+            fiche.resistanceRotorPrincipal,
+            fiche.resistanceStatorExcitation,
+            fiche.resistanceRotorExcitation,
+            fiche.isolementPhasePhaseStatorPrincipalUV,
+            fiche.isolementPhasePhaseStatorPrincipalVW,
+            fiche.isolementPhasePhaseStatorPrincipalUW,
+            fiche.testDiode,
+            fiche.tensionU,
+            fiche.tensionV,
+            fiche.tensionW,
+            fiche.intensiteU,
+            fiche.intensiteV,
+            fiche.intensiteW,
+            fiche.tensionUExcitation,
+            fiche.tensionVExcitation,
+            fiche.tensionWExcitation,
+            fiche.intensiteUExcitation,
+            fiche.intensiteVExcitation,
+            fiche.intensiteWExcitation,
+            fiche.dureeTotale!!.toInt()
+        )
+        var call = service.patchDemontageAlternateur(token,ficheId,body)
+        var fiche:DemontageAlternateur? = null
+        call.enqueue(callback)
+
+    }
+    fun patchDemontageRotor(token:String,ficheId:String, fiche:DemontageRotorBobine, callback:Callback<DemontageRotorBobineResponse>){
+        var body = BodyDemontageRotorBobine(
+            fiche.status,
+            fiche.marque,
+            fiche.numSerie,
+            fiche.puissance,
+            fiche.bride,
+            fiche.vitesse,
+            fiche.arbreSortantEntrant,
+            fiche.accouplement,
+            fiche.coteAccouplement,
+            fiche.clavette,
+            fiche.aspect,
+            fiche.aspectInterieur,
+            fiche.couplage,
+            fiche.flasqueAvant,
+            fiche.flasqueArriere,
+            fiche.porteeRAvant,
+            fiche.porteeRArriere,
+            fiche.boutArbre,
+            fiche.rondelleElastique,
+            fiche.refRoulementAvant,
+            fiche.refRoulementArriere,
+            fiche.typeRoulementAvant,
+            fiche.typeRoulementArriere,
+            fiche.refJointAvant,
+            fiche.refJointAvant,
+            fiche.typeJointAvant,
+            fiche.typeJointArriere,
+            fiche.ventilateur,
+            fiche.capotV,
+            fiche.socleBoiteABorne,
+            fiche.capotBoiteABorne,
+            fiche.plaqueABorne,
+            fiche.presenceSondes,
+            fiche.typeSondes,
+            fiche.equilibrage,
+            fiche.peinture,
+            fiche.isolementPhaseMasseStatorUM	,
+            fiche.isolementPhaseMasseStatorVM	,
+            fiche.isolementPhaseMasseStatorWM	,
+            fiche.isolementPhaseMasseRotorB1M	,
+            fiche.isolementPhaseMasseRotorB2M	,
+            fiche.isolementPhaseMasseRotorB3M	,
+            fiche.isolementPhaseMassePorteBalaisM	,
+            fiche.isolementPhasePhaseStatorUV	,
+            fiche.isolementPhasePhaseStatorVW	,
+            fiche.isolementPhasePhaseStatorUW	,
+            fiche.resistanceStatorU	,
+            fiche.resistanceStatorV	,
+            fiche.resistanceStatorW	,
+            fiche.resistanceRotorB1B2	,
+            fiche.resistanceRotorB2B2	,
+            fiche.resistanceRotorB1B3	,
+            fiche.tensionU	,
+            fiche.tensionV	,
+            fiche.tensionW	,
+            fiche.tensionRotor	,
+            fiche.intensiteU	,
+            fiche.intensiteV	,
+            fiche.intensiteW	,
+            fiche.intensiteRotor	,
+            fiche.dureeEssai,
+            fiche.dureeTotale!!.toInt()
+        )
+        var call = service.patchDemontageRotorBobine(token,ficheId,body)
+        var fiche:DemontageRotorBobine? = null
+        call.enqueue(callback)
+
+    }
+
     fun getRemontageTriphase(token:String,ficheId:String, callback: Callback<RemontageTriphaseResponse>){
         var call = service.getRemontageTriphase(token,ficheId)
         var fiche:RemontageTriphase? = null
@@ -2048,6 +2258,7 @@ class Repository (var context:Context) {
         Log.i("INFO","db créée")
     }
     //requêtes chantier
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun insertChantierLocalDatabase(chantier: Chantier){
         chantierDao!!.insertAll(chantier.toEntity())
     }
@@ -2176,10 +2387,10 @@ class Repository (var context:Context) {
             return null
         }
     }
-    suspend fun updateDemoPompeLocalDatabse( demo: DemontageMonophaseEntity){
+    suspend fun updateDemoMonoLocalDatabse( demo: DemontageMonophaseEntity){
         demontageMonoDao!!.update(demo)
     }
-    suspend fun deleteDemontagePompeLocalDatabse( demo: DemontageMonophaseEntity){
+    suspend fun deleteDemontageMonoLocalDatabse( demo: DemontageMonophaseEntity){
         demontageMonoDao!!.delete(demo)
     }
     //demo Alternateur

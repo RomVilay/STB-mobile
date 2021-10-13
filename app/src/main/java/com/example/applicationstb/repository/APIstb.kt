@@ -74,13 +74,13 @@ interface APIstb  {
     fun patchDemontageAlternateur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageAlternateur ): Call<DemontageAlternateurResponse>
 
     @GET("/fiches/{ficheId}")
-    fun getDemoAlternateur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageAlternateurResponse>
+    fun getDemontageAlternateur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageAlternateurResponse>
 
     @PATCH("/fiches/{ficheId}")
     fun patchDemontageMonophase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageMonophase ): Call<DemontageMonophaseResponse>
 
     @GET("/fiches/{ficheId}")
-    fun getDemoMonophase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageMonophaseResponse>
+    fun getDemontageMonophase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageMonophaseResponse>
 
     @PATCH("/fiches/{ficheId}")
     fun patchDemontageRotorBobine(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageRotorBobine ): Call<DemontageRotorBobineResponse>
