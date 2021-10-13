@@ -50,6 +50,36 @@ class AlternateurFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_alternateur, container, false)
+        /*var isolementMasseStatorPrincipalU = layout.findViewById<>()
+        var isolementMasseStatorPrincipalV: Float?,
+        var isolementMasseStatorPrincipalW	: Float?,
+        var isolementMasseRotorPrincipal	: Float?,
+        var isolementMasseStatorExcitation	: Float?,
+        var resistanceStatorPrincipalU	: Float?,
+        var resistanceStatorPrincipalV	: Float?,
+        var resistanceStatorPrincipalW	: Float?,
+        var resistanceRotorPrincipal	: Float?,
+        var resistanceStatorExcitation	: Float?,
+        var resistanceRotorExcitation	: Float?,
+        var isolementPhasePhaseStatorPrincipalUV	: Float?,
+        var isolementPhasePhaseStatorPrincipalVW	: Float?,
+        var isolementPhasePhaseStatorPrincipalUW	: Float?,
+        var testDiode : Boolean?,
+        var tensionU	: Float?,
+        var tensionV	: Float?,
+        var tensionW	: Float?,
+        var intensiteU	: Float?,
+        var intensiteV	: Float?,
+        var intensiteW	: Float?,
+        var tensionUExcitation	: Float?,
+        var tensionVExcitation	: Float?,
+        var tensionWExcitation	: Float?,
+        var intensiteUExcitation	: Float?,
+        var intensiteVExcitation	: Float?,
+        var intensiteWExcitation	: Float?*/
+
+
+
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var retour = layout.findViewById<Button>(R.id.retourAlt)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerAlt)
