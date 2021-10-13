@@ -101,6 +101,7 @@ class BodyBobinage(var marqueMoteur : String?,
     var tension:Long?,
     var dureeTotale: Long?
                   ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -287,6 +288,7 @@ class BodyDemontageTriphase (
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
@@ -409,6 +411,7 @@ class BodyDemontageCC ( var status: Long?,
                         var intensiteExcitation: Int?,
                         var dureeTotale: Int?
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString(),
@@ -532,6 +535,7 @@ class BodyDemontageCC ( var status: Long?,
 }
 
 class BodyDemontageAlternateur (
+    var observations: String?,
     var status: Long?,
     var marque: String?,
     var numSerie: Int?,
@@ -598,6 +602,7 @@ class BodyDemontageAlternateur (
     var dureeTotale: Int?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
         parcel.readInt(),
@@ -665,7 +670,9 @@ class BodyDemontageAlternateur (
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(observations!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
@@ -748,6 +755,7 @@ class BodyDemontageAlternateur (
 }
 
 class BodyDemontageRotorBobine (
+    var observations: String?,
     var status: Long?,
     var marque: String?,
     var numSerie: Int?,
@@ -811,7 +819,9 @@ class BodyDemontageRotorBobine (
     var dureeEssai	: Int?,
     var dureeTotale: Int?
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
         parcel.readInt(),
@@ -878,6 +888,7 @@ class BodyDemontageRotorBobine (
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(observations!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
@@ -960,6 +971,7 @@ class BodyDemontageRotorBobine (
 }
 
 class BodyDemontageMonophase (
+    var observations: String?,
     var status: Long?,
     var marque: String?,
     var numSerie: Int?,
@@ -1005,6 +1017,7 @@ class BodyDemontageMonophase (
     var dureeTotale: Int?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
         parcel.readInt(),
@@ -1051,7 +1064,9 @@ class BodyDemontageMonophase (
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(observations!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
@@ -1476,6 +1491,7 @@ class BodyRemontageCC (        var status:Int?,
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(status!!)
         parcel.writeLong(dureeTotale!!)
@@ -1907,6 +1923,7 @@ class Repository (var context:Context) {
 
     fun patchDemontageMono(token:String,ficheId:String, fiche:DemontageMonophase, callback:Callback<DemontageMonophaseResponse>){
         var body = BodyDemontageMonophase(
+            fiche.observations,
             fiche.status,
             fiche.marque,
             fiche.numSerie,
@@ -1961,6 +1978,7 @@ class Repository (var context:Context) {
         ficheId:String, fiche:DemontageAlternateur, callback: Callback<DemontageAlternateurResponse>
     ){
         var body = BodyDemontageAlternateur(
+            fiche.observations,
             fiche.status,
             fiche.marque,
             fiche.numSerie,
@@ -2033,6 +2051,7 @@ class Repository (var context:Context) {
     }
     fun patchDemontageRotor(token:String,ficheId:String, fiche:DemontageRotorBobine, callback:Callback<DemontageRotorBobineResponse>){
         var body = BodyDemontageRotorBobine(
+            fiche.observations,
             fiche.status,
             fiche.marque,
             fiche.numSerie,

@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 import org.json.JSONArray
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -141,6 +143,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun enregistrer(view:View){
         if (selection.value!!.typeFicheDemontage == 1)  {
             var p = selection.value!! as DemontagePompe
@@ -193,6 +196,216 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         mySnackbar.show()
                         Log.i("INFO", "enregistré local")
                     }
+                }
+            }
+        }
+        if (selection.value!!.typeFicheDemontage == 2)  {
+            var m = selection.value!! as DemontageMonophase
+            if (isOnline(context))   {
+                val resp = repository.patchDemontageMono(
+                    token!!,
+                    selection.value!!._id,
+                    m,
+                    object : Callback<DemontageMonophaseResponse> {
+                        override fun onResponse(
+                            call: Call<DemontageMonophaseResponse>,
+                            response: Response<DemontageMonophaseResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+                                }
+                            } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DemontageMonophaseResponse>, t: Throwable) {
+                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.e("Error", "erreur ${t.message} - body request ${
+                                call.request().body().toString()
+                            }\"")
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var mono = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
+                    if (mono !== null ) {
+                        repository.updateDemoMonoLocalDatabse(m.toEntity())
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "patch local")
+                    } else  {
+                        repository.insertDemoMonoLocalDatabase(m)
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "enregistré local")
+                    }
+                }
+            }
+        }
+        if (selection.value!!.typeFicheDemontage == 3)  {
+            var a = selection.value!! as DemontageAlternateur
+            if (isOnline(context))   {
+                val resp = repository.patchDemontageAlter(
+                    token!!,
+                    selection.value!!._id,
+                    a,
+                    object : Callback<DemontageAlternateurResponse> {
+                        override fun onResponse(
+                            call: Call<DemontageAlternateurResponse>,
+                            response: Response<DemontageAlternateurResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+                                }
+                            } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DemontageAlternateurResponse>, t: Throwable) {
+                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.e("Error", "erreur ${t.message} - body request ${
+                                call.request().body().toString()
+                            }\"")
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var alter = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
+                    if (alter !== null ) {
+                        repository.updateDemoAlterLocalDatabse(a.toEntity())
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "patch local")
+                    } else  {
+                        repository.insertDemoAlterLocalDatabase(a)
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "enregistré local")
+                    }
+                }
+            }
+        }
+        if (selection.value!!.typeFicheDemontage == 4)  {
+            var rb = selection.value!! as DemontageRotorBobine
+            if (isOnline(context))   {
+                val resp = repository.patchDemontageRotor(
+                    token!!,
+                    selection.value!!._id,
+                    rb,
+                    object : Callback<DemontageRotorBobineResponse> {
+                        override fun onResponse(
+                            call: Call<DemontageRotorBobineResponse>,
+                            response: Response<DemontageRotorBobineResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+                                }
+                            } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DemontageRotorBobineResponse>, t: Throwable) {
+                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.e("Error", "erreur ${t.message} - body request ${
+                                call.request().body().toString()
+                            }\"")
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var rotor = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
+                    if (rotor !== null ) {
+                        repository.updateDemoRBLocalDatabse(rotor.toEntity())
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "patch local")
+                    } else  {
+                        repository.insertDemoRBLocalDatabase(rb)
+                        val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                        mySnackbar.show()
+                        Log.i("INFO", "enregistré local")
+                    }
+                }
+            }
+        }
+        if (selection.value!!.typeFicheDemontage == 5)  {
+            var c = selection.value!! as CourantContinu
+            if (isOnline(context))   {
+                val resp = repository.patchDemontageCC(
+                    token!!,
+                    selection.value!!._id,
+                    c,
+                    object : Callback<DemontageCCResponse> {
+                        override fun onResponse(
+                            call: Call<DemontageCCResponse>,
+                            response: Response<DemontageCCResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "demontage enregistré")
+                                }
+                            } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.errorBody()!!.charStream().readText()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DemontageCCResponse>, t: Throwable) {
+                            Log.e("Error", "erreur ${t.message}")
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var tri = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                    if (tri !== null ) {
+                        repository.updateDemoCCLocalDatabse(c.toEntity())
+                    } else  {
+                        repository.insertDemoCCLocalDatabase(c)
+                    }
+                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                    mySnackbar.show()
                 }
             }
         }
@@ -250,56 +463,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     }
                 }
             }
-        if (selection.value!!.typeFicheDemontage == 5)  {
-            var c = selection.value!! as CourantContinu
-            if (isOnline(context))   {
-                val resp = repository.patchDemontageCC(
-                    token!!,
-                    selection.value!!._id,
-                    c,
-                    object : Callback<DemontageCCResponse> {
-                        override fun onResponse(
-                            call: Call<DemontageCCResponse>,
-                            response: Response<DemontageCCResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                val resp = response.body()
-                                if (resp != null) {
-                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
-                                    mySnackbar.show()
-                                    Log.i("INFO", "demontage enregistré")
-                                }
-                            } else {
-                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
-                                mySnackbar.show()
-                                Log.i(
-                                    "INFO",
-                                    "code : ${response.code()} - erreur : ${response.errorBody()!!.charStream().readText()}"
-                                )
-                            }
-                        }
-
-                        override fun onFailure(call: Call<DemontageCCResponse>, t: Throwable) {
-                            Log.e("Error", "erreur ${t.message}")
-                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
-                            mySnackbar.show()
-                        }
-                    })
-            } else {
-                viewModelScope.launch(Dispatchers.IO){
-                    var tri = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
-                    if (tri !== null ) {
-                        repository.updateDemoCCLocalDatabse(c.toEntity())
-                    } else  {
-                        repository.insertDemoCCLocalDatabase(c)
-                    }
-                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
-                    mySnackbar.show()
-                }
-            }
-        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager

@@ -72,7 +72,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/V"
@@ -82,7 +82,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="V"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/W"
@@ -92,7 +92,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b1b3"
@@ -101,7 +101,7 @@
                             android:background="@drawable/cell"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b1b2"
@@ -110,7 +110,7 @@
                             android:background="@drawable/cell"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b2b3"
@@ -119,7 +119,7 @@
                             android:background="@drawable/cell"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TextView
@@ -216,25 +216,31 @@
                                 android:id="@+id/tu"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/tv"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/tw"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                             <TextView
                                 android:id="@+id/titreT2"
@@ -249,9 +255,11 @@
                                 android:id="@+id/tw2"
                                 android:layout_width="90dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                         </TableRow>
 
@@ -272,25 +280,31 @@
                                 android:id="@+id/iu"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/iv"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/iw"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                             <TextView
                                 android:id="@+id/titreT3"
@@ -305,9 +319,11 @@
                                 android:id="@+id/tw3"
                                 android:layout_width="70dp"
                                 android:layout_height="50dp"
+                                android:layout_gravity="center"
                                 android:background="@drawable/cell"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
 
                         </TableRow>
 
@@ -348,7 +364,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U/V"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/v2"
@@ -358,7 +374,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="V/W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/w"
@@ -368,7 +384,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U/W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </LinearLayout>
 
                     <TextView
@@ -383,12 +399,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/donnees2" />
 
                     <Switch
-                        android:id="@+id/switch10"
+                        android:id="@+id/switchDiode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
-                        android:text="OK"
+                        android:text="HS"
                         app:layout_constraintBottom_toBottomOf="@+id/textView44"
                         app:layout_constraintStart_toEndOf="@+id/textView44"
                         app:layout_constraintTop_toTopOf="@+id/textView44"
@@ -398,13 +414,14 @@
                         android:id="@+id/textView45"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:text="HS"
-                        app:layout_constraintBottom_toBottomOf="@+id/switch10"
-                        app:layout_constraintStart_toEndOf="@+id/switch10"
-                        app:layout_constraintTop_toTopOf="@+id/switch10"
-                        app:layout_constraintVertical_bias="0.75" />
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"
+                        android:text="OK"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/switchDiode"
+                        app:layout_constraintStart_toEndOf="@+id/switchDiode"
+                        app:layout_constraintTop_toTopOf="@+id/switchDiode"
+                        app:layout_constraintVertical_bias="0.375" />
 
                     <TextView
                         android:id="@+id/titrePM"
@@ -438,7 +455,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/vpm"
@@ -448,7 +465,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="V"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/wpm"
@@ -458,7 +475,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/impRP"
@@ -467,7 +484,7 @@
                             android:background="@drawable/cell"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/ipmSE"
@@ -476,7 +493,7 @@
                             android:background="@drawable/cell"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/ipmSE3"
@@ -485,7 +502,7 @@
                             android:background="@drawable/cell"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TableRow
@@ -1360,13 +1377,24 @@
                         android:id="@+id/retourAlt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="168dp"
-                        android:layout_marginLeft="168dp"
+                        android:layout_marginStart="96dp"
+                        android:layout_marginLeft="96dp"
                         android:layout_marginTop="192dp"
                         android:text="Retour"
                         app:backgroundTint="#164081"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/termA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="92dp"
+                        android:layout_marginLeft="92dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Terminer"
+                        app:layout_constraintStart_toEndOf="@+id/enregistrerAlt"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
