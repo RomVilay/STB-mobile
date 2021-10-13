@@ -14,8 +14,10 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -23,6 +25,7 @@ import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.DemontageMonophase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
@@ -47,16 +50,46 @@ class MonophaseFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_monophase, container, false)
-        var titre1 = layout.findViewById<TextView>(R.id.titreMono)
-        var titre2 = layout.findViewById<TextView>(R.id.titre2)
-        var titre3 = layout.findViewById<TextView>(R.id.titre3)
+        var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmU)
+        var resistanceTravail = layout.findViewById<EditText>(R.id.isopmV)
+        var resistanceDemarrage	= layout.findViewById<EditText>(R.id.rdem)
+        var valeurCondensateur	= layout.findViewById<EditText>(R.id.condens)
+        var tension	= layout.findViewById<EditText>(R.id.vV)
+        var intensite	= layout.findViewById<EditText>(R.id.vW)
+        var observations = layout.findViewById<EditText>(R.id.obs2)
+        var fiche = viewModel.selection.value as DemontageMonophase
+        if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
+        if( fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
+        if( fiche.resistanceDemarrage !== null ) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
+        if( fiche.valeurCondensateur !== null ) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
+        if( fiche.tension !== null ) tension.setText(fiche.tension.toString())
+        if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
+        isolementPhaseMasse.doAfterTextChanged {
+            if(isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse = isolementPhaseMasse.text.toString().toFloat()
+        }
+        resistanceTravail.doAfterTextChanged {
+           if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
+        }
+        resistanceDemarrage.doAfterTextChanged {
+           if (resistanceDemarrage.text.isNotEmpty()) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
+        }
+        valeurCondensateur.doAfterTextChanged {
+           if (valeurCondensateur.text.isNotEmpty()) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
+        }
+        tension.doAfterTextChanged {
+           if (tension.text.isNotEmpty()) fiche.tension = tension.text.toString().toFloat()
+        }
+        intensite.doAfterTextChanged {
+           if (intensite.text.isNotEmpty()) fiche.intensite = intensite.text.toString().toFloat()
+        }
+        observations.doAfterTextChanged {
+            fiche.observations = observations.text.toString()
+        }
 
         //
-        var infos = layout.findViewById<CardView>(R.id.infoMoteur)
-        var essais = layout.findViewById<CardView>(R.id.essais)
-        var meca = layout.findViewById<CardView>(R.id.meca)
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
+        var terminer = layout.findViewById<Button>(R.id.termMo)
 
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
 
@@ -77,13 +110,27 @@ class MonophaseFragment : Fragment() {
             viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
-
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
-        /*var listePhotos = layout.findViewById<Button>(R.id.recyclerPhoto2)
-        listePhotos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        listePhotos.adapter = schemaAdapter(viewModel.photos.schemas,{ item ->
-           Log.i("INFO","photo 1")
-        })*/
+        terminer.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 3L
+            viewModel.selection.value = fiche
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
 
         val fmanager = childFragmentManager
         fmanager.commit {
@@ -94,41 +141,8 @@ class MonophaseFragment : Fragment() {
             replace<InfoMoteurFragment>(R.id.infosLayout)
             setReorderingAllowed(true)
         }
-        titre1.setOnClickListener {
-            var layout = infos.layoutParams
-            if (layout.height == 100){
-                layout.height = WRAP_CONTENT
-                Log.i("INFO","out")
-            } else{
-                layout.height = 100
-                Log.i("INFO","in")
-            }
-            infos.layoutParams = layout
-        }
-        titre2.setOnClickListener {
-            var layout = essais.layoutParams
-            if (layout.height == 130){
-                layout.height = WRAP_CONTENT
-                Log.i("INFO","out")
-            } else{
-                layout.height = 130
-                Log.i("INFO","in")
-            }
-            essais.layoutParams = layout
-        }
-        titre3.setOnClickListener {
-            var layout = meca.layoutParams
-            if (layout.height == 100){
-                layout.height = WRAP_CONTENT
-                Log.i("INFO","out")
-            } else{
-                layout.height = 100
-                Log.i("INFO","in")
-            }
-            meca.layoutParams = layout
-        }
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             Log.i("INFO",test.toString())
             if (test == false) {
@@ -139,7 +153,7 @@ class MonophaseFragment : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -151,7 +165,7 @@ class MonophaseFragment : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
@@ -178,15 +192,32 @@ class MonophaseFragment : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
         }
+    }
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 
 
