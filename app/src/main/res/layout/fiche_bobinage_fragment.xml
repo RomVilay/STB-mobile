@@ -109,7 +109,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="frequence"
-                    android:inputType="textShortMessage"
+                    android:inputType="numberSigned|number|text"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/vitesse" />
@@ -124,6 +124,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="courant"
+                    android:inputType="numberSigned|number|text"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/frequence"
                     app:layout_constraintTop_toBottomOf="@+id/details" />
@@ -138,6 +139,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="phase"
+                    android:inputType="number"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@+id/type"
                     app:layout_constraintTop_toBottomOf="@+id/client" />
@@ -153,6 +155,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="puissance"
+                    android:inputType="numberSigned|number|text"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/dates"
                     app:layout_constraintStart_toEndOf="@+id/vitesse"
@@ -169,6 +172,7 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="vitesse"
+                    android:inputType="numberSigned|number|text"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/marque" />

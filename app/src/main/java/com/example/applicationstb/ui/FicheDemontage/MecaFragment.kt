@@ -113,6 +113,7 @@ class MecaFragment : Fragment() {
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
+        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null) refRoul.setText(fiche.refRoulementArriere) else if( fiche.refRoulementAvant !== null) refRoul.setText(fiche.refRoulementAvant)
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!!)
@@ -140,7 +141,7 @@ class MecaFragment : Fragment() {
         }
         refRoul.doAfterTextChanged {
                 if (switchRoullements.isChecked) {
-                    viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
+                   if (refRoul.text.isNotEmpty()) viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
                 } else  {
                     viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
                 }
@@ -150,6 +151,7 @@ class MecaFragment : Fragment() {
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("simple lèvre","double lèvre"))
         var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
         var refJoints = layout.findViewById<EditText>(R.id.refJoints)
+        if (switchJoints.isChecked && fiche.typeJointArriere !== null) refJoints.setText(fiche.refJointArriere) else if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 var type = if (viewModel.selection.value!!.typeJointArriere == null) {
@@ -191,12 +193,22 @@ class MecaFragment : Fragment() {
                 }
             }
         }
+        /*refJoints.setOnFocusChangeListener { _, hasFocus ->
+            if (switchJoints.isChecked) {
+                Log.i("INFO","update ar")
+                viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
+            } else {
+                Log.i("INFO","update av")
+                viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
+            }
+        }*/
         refJoints.doAfterTextChanged {
+                Log.i("INFO", "position ${if (switchJoints.isChecked) "ar" else "av"}")
                 if (switchJoints.isChecked) {
-                    Log.i("INFO","update ar")
+                    Log.i("INFO", "set ar")
                     viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
                 } else {
-                    Log.i("INFO","update av")
+                    Log.i("INFO", "set av")
                     viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
                 }
         }

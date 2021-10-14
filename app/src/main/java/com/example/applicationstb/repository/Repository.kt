@@ -132,6 +132,7 @@ class BodyBobinage(var marqueMoteur : String?,
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(marqueMoteur!!)
         parcel.writeString(typeBobinage!!)
@@ -166,6 +167,7 @@ class BodyBobinage(var marqueMoteur : String?,
     }
 
     companion object CREATOR : Parcelable.Creator<BodyBobinage> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyBobinage {
             return BodyBobinage(parcel)
         }
@@ -229,8 +231,10 @@ class BodyDemontageTriphase (
                       var intensiteV: Int?,
                       var intensiteW: Int?,
                       var dureeEssai: Int?,
-                      var dureeTotale: Int?
+                      var dureeTotale: Int?,
+                      var observations: String?
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString(),
@@ -285,6 +289,7 @@ class BodyDemontageTriphase (
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readString()
     ) {
     }
 
@@ -343,6 +348,7 @@ class BodyDemontageTriphase (
         parcel.writeInt(intensiteW!!)
         parcel.writeInt(dureeEssai!!)
         parcel.writeInt(dureeTotale!!)
+        parcel.writeString(observations!!)
     }
 
     override fun describeContents(): Int {
@@ -350,6 +356,7 @@ class BodyDemontageTriphase (
     }
 
     companion object CREATOR : Parcelable.Creator<BodyDemontageTriphase> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyDemontageTriphase {
             return BodyDemontageTriphase(parcel)
         }
@@ -466,6 +473,7 @@ class BodyDemontageCC ( var status: Long?,
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
@@ -524,6 +532,7 @@ class BodyDemontageCC ( var status: Long?,
     }
 
     companion object CREATOR : Parcelable.Creator<BodyDemontageCC> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyDemontageCC {
             return BodyDemontageCC(parcel)
         }
@@ -601,6 +610,7 @@ class BodyDemontageAlternateur (
     var intensiteWExcitation	: Float?,
     var dureeTotale: Int?
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readLong(),
@@ -744,6 +754,7 @@ class BodyDemontageAlternateur (
     }
 
     companion object CREATOR : Parcelable.Creator<BodyDemontageAlternateur> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyDemontageAlternateur {
             return BodyDemontageAlternateur(parcel)
         }
@@ -887,6 +898,7 @@ class BodyDemontageRotorBobine (
     ) {
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(observations!!)
         parcel.writeLong(status!!)
@@ -960,6 +972,7 @@ class BodyDemontageRotorBobine (
     }
 
     companion object CREATOR : Parcelable.Creator<BodyDemontageRotorBobine> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyDemontageRotorBobine {
             return BodyDemontageRotorBobine(parcel)
         }
@@ -1016,6 +1029,7 @@ class BodyDemontageMonophase (
     var intensite	: Float?,
     var dureeTotale: Int?
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readLong(),
@@ -1117,6 +1131,7 @@ class BodyDemontageMonophase (
     }
 
     companion object CREATOR : Parcelable.Creator<BodyDemontageMonophase> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyDemontageMonophase {
             return BodyDemontageMonophase(parcel)
         }
@@ -1146,6 +1161,7 @@ class BodyDemoPompe(
     var observations:String?,
     var dureeTotale:Long?,
 ): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString(),
@@ -1193,6 +1209,7 @@ class BodyDemoPompe(
     }
 
     companion object CREATOR : Parcelable.Creator<BodyDemoPompe> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyDemoPompe {
             return BodyDemoPompe(parcel)
         }
@@ -1383,6 +1400,7 @@ class BodyRemontageTriphase (  var status:Int?,
     }
 
     companion object CREATOR : Parcelable.Creator<BodyRemontageTriphase> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyRemontageTriphase {
             return BodyRemontageTriphase(parcel)
         }
@@ -1546,6 +1564,7 @@ class BodyRemontageCC (        var status:Int?,
     }
 
     companion object CREATOR : Parcelable.Creator<BodyRemontageCC> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): BodyRemontageCC {
             return BodyRemontageCC(parcel)
         }
@@ -1733,7 +1752,7 @@ class Repository (var context:Context) {
             triphase.typeRoulementAvant,
             triphase.typeRoulementArriere,
             triphase.refJointAvant,
-            triphase.refJointAvant,
+            triphase.refJointArriere,
             triphase.typeJointAvant,
             triphase.typeJointArriere,
             triphase.ventilateur,
@@ -1761,10 +1780,11 @@ class Repository (var context:Context) {
             triphase.intensiteV,
             triphase.intensiteW,
             triphase.dureeEssai,
-            triphase.dureeTotale!!.toInt()
+            triphase.dureeTotale!!.toInt(),
+            triphase.observations
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
-        var fiche:Chantier? = null
+        var fiche:Triphase? = null
         call.enqueue(callback)
     }
 
@@ -1800,7 +1820,7 @@ class Repository (var context:Context) {
             fiche.typeRoulementAvant,
             fiche.typeRoulementArriere,
             fiche.refJointAvant,
-            fiche.refJointAvant,
+            fiche.refJointArriere,
             fiche.typeJointAvant,
             fiche.typeJointArriere,
             fiche.ventilateur,
@@ -1948,7 +1968,7 @@ class Repository (var context:Context) {
             fiche.typeRoulementAvant,
             fiche.typeRoulementArriere,
             fiche.refJointAvant,
-            fiche.refJointAvant,
+            fiche.refJointArriere,
             fiche.typeJointAvant,
             fiche.typeJointArriere,
             fiche.ventilateur,
@@ -2003,7 +2023,7 @@ class Repository (var context:Context) {
             fiche.typeRoulementAvant,
             fiche.typeRoulementArriere,
             fiche.refJointAvant,
-            fiche.refJointAvant,
+            fiche.refJointArriere,
             fiche.typeJointAvant,
             fiche.typeJointArriere,
             fiche.ventilateur,
@@ -2076,7 +2096,7 @@ class Repository (var context:Context) {
             fiche.typeRoulementAvant,
             fiche.typeRoulementArriere,
             fiche.refJointAvant,
-            fiche.refJointAvant,
+            fiche.refJointArriere,
             fiche.typeJointAvant,
             fiche.typeJointArriere,
             fiche.ventilateur,

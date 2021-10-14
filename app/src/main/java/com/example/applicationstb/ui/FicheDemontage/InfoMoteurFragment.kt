@@ -72,20 +72,17 @@ class InfoMoteurFragment : Fragment() {
         bride.doAfterTextChanged {
           if (bride.text.isNotEmpty())  viewModel.selection.value!!.bride = bride.text.toString().toFloat()
         }
-        cote.doAfterTextChanged {
-          if (cote.text.isNotEmpty())  viewModel.selection.value!!.coteAccouplement = cote.text.toString()
-        }
         vitesse.doAfterTextChanged {
-           if (cote.text.isNotEmpty()) viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
-        }
-        cote.doAfterTextChanged {
-           if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
+            if (vitesse.text.isNotEmpty()) viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
         }
         clavette.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.clavette = isChecked
         }
         arbre.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.arbreSortantEntrant = isChecked
+        }
+        cote.doAfterTextChanged {
+           if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
         }
         accouplement.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.accouplement = isChecked
@@ -104,9 +101,6 @@ class InfoMoteurFragment : Fragment() {
                 viewModel.selection.value!!.aspect = position+1
             }
         }
-
-
-
         return layout
     }
     companion object {

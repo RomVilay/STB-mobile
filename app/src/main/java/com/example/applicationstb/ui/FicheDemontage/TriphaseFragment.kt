@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -46,6 +48,7 @@ class TriphaseFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var layout = inflater.inflate(R.layout.fragment_triphase, container, false)
@@ -93,64 +96,62 @@ class TriphaseFragment : Fragment() {
             if (fiche.observations !== null) obs.setText(fiche.observations)
         })
         UM.doAfterTextChanged {
-            fiche.isolementPhaseMasseStatorUM = UM.text.toString().toInt()
+           if (UM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM = UM.text.toString().toInt()
         }
         VM.doAfterTextChanged {
-            fiche.isolementPhaseMasseStatorVM = VM.text.toString().toInt()
+            if (VM.text.isNotEmpty())  fiche.isolementPhaseMasseStatorVM = VM.text.toString().toInt()
         }
         WM.doAfterTextChanged {
-            fiche.isolementPhaseMasseStatorWM = WM.text.toString().toInt()
+            if (WM.text.isNotEmpty())   fiche.isolementPhaseMasseStatorWM = WM.text.toString().toInt()
         }
         UV.doAfterTextChanged {
-            fiche.isolementPhasePhaseStatorUV = UV.text.toString().toInt()
+            if (UV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUV = UV.text.toString().toInt()
         }
         UW.doAfterTextChanged {
-            fiche.isolementPhasePhaseStatorUW = UW.text.toString().toInt()
+            if (UW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUW = UW.text.toString().toInt()
         }
         iVW.doAfterTextChanged {
-            fiche.isolementPhasePhaseStatorVW = iVW.text.toString().toInt()
+            if (iVW.text.isNotEmpty())   fiche.isolementPhasePhaseStatorVW = iVW.text.toString().toInt()
         }
         RU.doAfterTextChanged {
-            fiche.resistanceStatorU = RU.text.toString().toInt()
+            if (RU.text.isNotEmpty()) fiche.resistanceStatorU = RU.text.toString().toInt()
         }
         RV.doAfterTextChanged {
-            fiche.resistanceStatorV = RV.text.toString().toInt()
+            if (RV.text.isNotEmpty())  fiche.resistanceStatorV = RV.text.toString().toInt()
         }
         RW.doAfterTextChanged {
-            fiche.resistanceStatorW = RW.text.toString().toInt()
+            if (RW.text.isNotEmpty()) fiche.resistanceStatorW = RW.text.toString().toInt()
         }
         VU.doAfterTextChanged {
-            fiche.tensionU = VU.text.toString().toInt()
+            if (VU.text.isNotEmpty())  fiche.tensionU = VU.text.toString().toInt()
         }
         VV.doAfterTextChanged {
-            fiche.tensionV = VV.text.toString().toInt()
+            if (VV.text.isNotEmpty())  fiche.tensionV = VV.text.toString().toInt()
         }
         VW.doAfterTextChanged {
-            fiche.tensionW = VW.text.toString().toInt()
+            if (VW.text.isNotEmpty())  fiche.tensionW = VW.text.toString().toInt()
         }
         VUI.doAfterTextChanged {
-            fiche.intensiteU = VUI.text.toString().toInt()
+            if (VUI.text.isNotEmpty())  fiche.intensiteU = VUI.text.toString().toInt()
         }
         VVI.doAfterTextChanged {
-            fiche.intensiteV = VVI.text.toString().toInt()
+            if (VVI.text.isNotEmpty())  fiche.intensiteV = VVI.text.toString().toInt()
         }
         VWI.doAfterTextChanged {
-            fiche.intensiteW = VWI.text.toString().toInt()
+            if (VWI.text.isNotEmpty()) fiche.intensiteW = VWI.text.toString().toInt()
         }
         VU.doAfterTextChanged {
-            fiche.tensionU = VU.text.toString().toInt()
+            if (VU.text.isNotEmpty()) fiche.tensionU = VU.text.toString().toInt()
         }
         dessai.doAfterTextChanged {
-            fiche.dureeEssai = dessai.text.toString().toInt()
+            if (dessai.text.isNotEmpty())  fiche.dureeEssai = dessai.text.toString().toInt()
         }
         obs.doAfterTextChanged {
-            fiche.observations = obs.text.toString()
-        }
-        dessai.doAfterTextChanged {
-            fiche.dureeEssai = dessai.text.toString().toInt()
+            if (obs.text.isNotEmpty()) fiche.observations = obs.text.toString()
         }
 
         enr.setOnClickListener {
+            Log.i("INFO","ref jAr : ${viewModel.selection.value!!.refJointArriere} ")
             if (viewModel.selection.value!!.dureeTotale !== null) {
                 viewModel.selection.value!!.dureeTotale =
                     (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
@@ -159,7 +160,7 @@ class TriphaseFragment : Fragment() {
             }
             viewModel.selection.value!!.status = 2L
             Log.i("INFO","duree:${viewModel.selection.value!!.dureeTotale}")
-            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
             if (viewModel.selection.value!!.dureeTotale !== null) {
@@ -170,7 +171,7 @@ class TriphaseFragment : Fragment() {
             }
             viewModel.selection.value!!.status = 3L
             Log.i("INFO","duree:${viewModel.selection.value!!.dureeTotale}")
-            viewModel.enregistrer(activity!!.findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         retour.setOnClickListener {
             viewModel.back(layout)
@@ -188,7 +189,7 @@ class TriphaseFragment : Fragment() {
             sAdapter.update(it)
         })
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             Log.i("INFO",test.toString())
             if (test == false) {
@@ -199,7 +200,7 @@ class TriphaseFragment : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -211,7 +212,7 @@ class TriphaseFragment : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )

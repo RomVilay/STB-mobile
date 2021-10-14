@@ -24,11 +24,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
@@ -78,6 +75,7 @@ class FicheChantier : Fragment() {
         val showDetails = layout.findViewById<TextView>(R.id.details)
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
+        val term = layout.findViewById<Button>(R.id.termC)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
 
         var visibility = View.VISIBLE
@@ -123,7 +121,7 @@ class FicheChantier : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -135,7 +133,7 @@ class FicheChantier : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
@@ -204,24 +202,10 @@ class FicheChantier : Fragment() {
         }
         selectButton.setOnClickListener {
             var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
-            //Log.i("INFO","${viewModel.listeChantiers}")
             viewModel.chantier.value = chantier
             start = Date()
-            /*materiel.setText(chantier?.materiel)
-            objet.setText(chantier?.objet)
-            observation.setText(chantier?.observations)
-            client.setText(chantier?.client?.enterprise)
-            vehicule.setText(chantier?.vehicule?.nom)
-            contact.setText(chantier?.contact)
-            numero.setText(chantier?.telContact.toString())
-            //adresse.setText(chantier?.adresse)
-            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-            dateDebut.setText(LocalDateTime.now().format(format))*/
         }
         quit.setOnClickListener {
-            //stech = generateBitmapFromView(sview)
-
-            //Log.i("INFO",stech?.let { it1 -> saveImageToInternalStorage(it1) }.toString())
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
@@ -231,20 +215,31 @@ class FicheChantier : Fragment() {
             chantier.observations = observation.text.toString()
             chantier.status = 2L
             chantier.dureeTotale = chantier.dateDebut!!.getTime() - Date.from(Instant.now()).getTime()
-            //chantier.dateDebut = Date.from(dateDebut.text.toString())
             viewModel.chantier.value = chantier
-            var t = viewModel.chantier.value
             if (viewModel.chantier.value!!.dureeTotale !== null) {
                 viewModel.chantier.value!!.dureeTotale =
                     (Date().time - start!!.time ) + viewModel.chantier.value!!.dureeTotale!!
             } else {
                 viewModel.chantier.value!!.dureeTotale = Date().time - start!!.time
             }
-            //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
-            //Log.i("INFO",t.toString())
             Log.i("INFO","duree: ${viewModel.chantier.value!!.dureeTotale}")
             viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
-            //viewModel.back(layout)
+        }
+        term.setOnClickListener {
+            var chantier = viewModel.chantier!!.value!!
+            chantier.materiel = materiel.text.toString()
+            chantier.objet = objet.text.toString()
+            chantier.observations = observation.text.toString()
+            chantier.status = 3L
+            chantier.dureeTotale = chantier.dateDebut!!.getTime() - Date.from(Instant.now()).getTime()
+            viewModel.chantier.value = chantier
+            if (viewModel.chantier.value!!.dureeTotale !== null) {
+                viewModel.chantier.value!!.dureeTotale =
+                    (Date().time - start!!.time ) + viewModel.chantier.value!!.dureeTotale!!
+            } else {
+                viewModel.chantier.value!!.dureeTotale = Date().time - start!!.time
+            }
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
         }
         return layout
     }

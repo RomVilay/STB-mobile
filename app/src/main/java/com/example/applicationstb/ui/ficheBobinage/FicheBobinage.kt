@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Fiche
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -212,13 +213,20 @@ class FicheBobinage : Fragment() {
             Log.i("INFO", "change")
         }
         btnfils.setOnClickListener {
-            viewModel.addSection(nbBrins.text.toString().toLong(),diam.text.toString().toDouble())
-            var s = viewModel.somme(viewModel.sections.value!!)
-            som.setText(s.toString())
-            //Log.i("INFO",viewModel.somme(viewModel.sections.value!!).toString())
+            if (nbBrins.text.isNotEmpty() && diam.text.isNotEmpty()) {
+                viewModel.addSection(
+                    nbBrins.text.toString().toLong(),
+                    diam.text.toString().toDouble()
+                )
+                var s = viewModel.somme(viewModel.sections.value!!)
+                som.setText(s.toString())
+            } else {
+                val mySnackbar = Snackbar.make(layout,"Veuillez préciser le nombre de brins et le diamètre de la section", 3600)
+                mySnackbar.show()
+            }
         }
         addschema.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             Log.i("INFO",test.toString())
             if (test == false) {
@@ -228,7 +236,7 @@ class FicheBobinage : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -240,66 +248,16 @@ class FicheBobinage : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                        //viewModel.addSchema(photoURI)
                         Log.i("INFO",currentPhotoPath)
                     }
                 }
             }
-            /*if ()
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
-                        // Ensure that there's a camera activity to handle the intent
-                        cameraIntent.resolveActivity(activity!!.packageManager).also {
-                            // Create the File where the photo should go
-                            val photoFile: File? = try {
-                                createImageFile()
-                            } catch (ex: IOException ) {
-                                // Error occurred while creating the File
-                                Log.i("INFO","error while creating file: "+ ex)
-                                null
-                            }
-                            // Continue only if the File was successfully created
-                            photoFile?.also {
-                                val photoURI: Uri = FileProvider.getUriForFile(
-                                    context!!,
-                                    "com.example.applicationstb.fileprovider",
-                                    it
-                                )
-                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                                //viewModel.addSchema(photoURI)
-                                Log.i("INFO",currentPhotoPath)
-                            }
-                        } ()
-                }
-
-                ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )  -> {
-                        //requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-
-                else -> {
-                        requestPermissionLauncher.launch(
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                }
-            }
-
-
-            }
-            //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
         }
         quit.setOnClickListener {
             viewModel.back(layout)
@@ -343,7 +301,7 @@ class FicheBobinage : Fragment() {
             }
             viewModel.bobinage.value = bobi
             Log.i("INFO","duree: ${bobi.dureeTotale}")
-            viewModel.save(context!!, layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
 
         term.setOnClickListener {
@@ -385,7 +343,7 @@ class FicheBobinage : Fragment() {
                 }
                 viewModel.bobinage.value = bobi
                 Log.i("INFO","duree: ${bobi.dureeTotale}")
-                viewModel.save(context!!, layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
+                viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
         return layout
     }

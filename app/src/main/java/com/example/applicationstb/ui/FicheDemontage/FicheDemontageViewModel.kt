@@ -433,13 +433,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                     mySnackbar.show()
                                     Log.i(
                                         "INFO",
-                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()!!.charStream().readText()}"
+                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${response.errorBody()}"
                                     )
                                 }
                             }
 
                             override fun onFailure(call: Call<DemontageTriphaseResponse>, t: Throwable) {
-                                val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
                                 mySnackbar.show()
                                 Log.e("Error", "erreur ${t.message} - body request ${
                                     call.request().body().toString()
@@ -465,7 +465,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
