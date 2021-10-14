@@ -10,11 +10,14 @@ import androidx.room.Room
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import okhttp3.OkHttpClient
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class BodyLogin(var username: String?, var password: String?): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -1220,61 +1223,62 @@ class BodyDemoPompe(
     }
 }
 
-class BodyRemontageTriphase (  var status:Int?,
-                               var dureeTotale: Long?,
-                                var observations:String?,
-                               var remontageRoulement: Int?,
-                               var collageRoulementPorteeArbre: Int?,
-                               var collageRoulementPorteeFlasque: Int?,
-                               var verificationFixationCouronne: Boolean?,
-                               var verificationIsolementPorteBalais: Boolean?,
-                               var isolementPorteBalaisV: Int?,
-                               var isolementPorteBalaisOhm: Int?,
-                               var tensionStatorInducteurs: Boolean?,
-                               var tensionStatorInducteursU: Float?,
-                               var tensionStatorInducteursV: Float?,
-                               var tensionStatorInducteursW: Float?,
-                               var intensiteStatorInducteurs: Boolean?,
-                               var intensiteStatorInducteursU: Float?,
-                               var intensiteStatorInducteursV: Float?,
-                               var intensiteStatorInducteursW: Float?,
-                               var tensionInduitRotor: Boolean?,
-                               var tensionInduitRotorU: Float?,
-                               var tensionInduitRotorV: Float?,
-                               var tensionInduitRotorW: Float?,
-                               var intensiteInduit: Boolean,
-                               var intensiteInduitU: Float?,
-                               var vitesseU: Float?,
-                               var puissanceU: Float?,
-                               var dureeEssai: Float?,
-                               var sensRotation: Int?,
-                               var vitesse1V: Float?,  // vitesse 1v
-                               var acceleration1V: Float?,  //accélération 1v
-                               var vitesse2V: Float?,  // vitesse 2v
-                               var acceleration2V: Float?,  //accélération 2v
-                               var vitesse1H: Float?,  // vitesse 1H
-                               var acceleration1H: Float?,  //accélération 1H
-                               var vitesse2H: Float?,  // vitesse 2H
-                               var acceleration2H: Float?,  //accélération 2H
-                               var vitesse2A: Float?,  // vitesse 2A
-                               var acceleration2A: Float?,  //accélération 2A
-                               var isolementPhaseMasse: Float?,
-                               var isolementPhase: Float?,
-                               var resistanceStatorU: Float?,
-                               var resistanceStatorV: Float?,
-                               var resistanceStatorW: Float?,
-                               var isolementPMStatorU: Float?,
-                               var isolementPMStatorV: Float?,
-                               var isolementPMStatorW: Float?,
-                               var isolementPMRotorU: Float?,
-                               var isolementPMRotorV: Float?,
-                               var isolementPMRotorW: Float?,
-                               var isolementPhaseStatorUV: Float?,
-                               var isolementPhaseStatorVW: Float?,
-                               var isolementPhaseStatorUW: Float?,
-                               var isolementPhaseRotorUV: Float?,
-                               var isolementPhaseRotorVW: Float?,
-                               var isolementPhaseRotorUW: Float?,
+class BodyRemontageTriphase(
+    var status: Int?,
+    var dureeTotale: Long?,
+    var observations: String?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementPorteeFlasque: Int?,
+    var verificationFixationCouronne: Boolean?,
+    var verificationIsolementPorteBalais: Boolean?,
+    var isolementPorteBalaisV: Int?,
+    var isolementPorteBalaisOhm: Int?,
+    var tensionStatorInducteurs: Boolean?,
+    var tensionStatorInducteursU: Float?,
+    var tensionStatorInducteursV: Float?,
+    var tensionStatorInducteursW: Float?,
+    var intensiteStatorInducteurs: Boolean?,
+    var intensiteStatorInducteursU: Float?,
+    var intensiteStatorInducteursV: Float?,
+    var intensiteStatorInducteursW: Float?,
+    var tensionInduitRotor: Boolean?,
+    var tensionInduitRotorU: Float?,
+    var tensionInduitRotorV: Float?,
+    var tensionInduitRotorW: Float?,
+    var intensiteInduit: Boolean,
+    var intensiteInduitU: Float?,
+    var vitesseU: Float?,
+    var puissanceU: Float?,
+    var dureeEssai: Float?,
+    var sensRotation: Int?,
+    var vitesse1V: Float?,  // vitesse 1v
+    var acceleration1V: Float?,  //accélération 1v
+    var vitesse2V: Float?,  // vitesse 2v
+    var acceleration2V: Float?,  //accélération 2v
+    var vitesse1H: Float?,  // vitesse 1H
+    var acceleration1H: Float?,  //accélération 1H
+    var vitesse2H: Float?,  // vitesse 2H
+    var acceleration2H: Float?,  //accélération 2H
+    var vitesse2A: Float?,  // vitesse 2A
+    var acceleration2A: Float?,  //accélération 2A
+    var isolementPhaseMasse: Float?,
+    var isolementPhase: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var isolementPMStatorU: Float?,
+    var isolementPMStatorV: Float?,
+    var isolementPMStatorW: Float?,
+    var isolementPMRotorU: Float?,
+    var isolementPMRotorV: Float?,
+    var isolementPMRotorW: Float?,
+    var isolementPhaseStatorUV: Float?,
+    var isolementPhaseStatorVW: Float?,
+    var isolementPhaseStatorUW: Float?,
+    var isolementPhaseRotorUV: Float?,
+    var isolementPhaseRotorVW: Float?,
+    var isolementPhaseRotorUW: Float?,
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1411,52 +1415,53 @@ class BodyRemontageTriphase (  var status:Int?,
     }
 }
 
-class BodyRemontageCC (        var status:Int?,
-                               var dureeTotale: Long?,
-                               var observations:String?,
-                               var remontageRoulement: Int?,
-                               var collageRoulementPorteeArbre: Int?,
-                               var collageRoulementPorteeFlasque: Int?,
-                               var verificationFixationCouronne: Boolean?,
-                               var verificationIsolementPorteBalais: Boolean?,
-                               var isolementPorteBalaisV: Int?,
-                               var isolementPorteBalaisOhm: Int?,
-                               var tensionStatorInducteurs: Boolean?,
-                               var tensionStatorInducteursU: Float?,
-                               var tensionStatorInducteursV: Float?,
-                               var tensionStatorInducteursW: Float?,
-                               var intensiteStatorInducteurs: Boolean?,
-                               var intensiteStatorInducteursU: Float?,
-                               var intensiteStatorInducteursV: Float?,
-                               var intensiteStatorInducteursW: Float?,
-                               var tensionInduitRotor: Boolean?,
-                               var tensionInduitRotorU: Float?,
-                               var tensionInduitRotorV: Float?,
-                               var tensionInduitRotorW: Float?,
-                               var intensiteInduit: Boolean,
-                               var intensiteInduitU: Float?,
-                               var vitesseU: Float?,
-                               var puissanceU: Float?,
-                               var dureeEssai: Float?,
-                               var sensRotation: Int?,
-                               var vitesse1V: Float?,  // vitesse 1v
-                               var acceleration1V: Float?,  //accélération 1v
-                               var vitesse2V: Float?,  // vitesse 2v
-                               var acceleration2V: Float?,  //accélération 2v
-                               var vitesse1H: Float?,  // vitesse 1H
-                               var acceleration1H: Float?,  //accélération 1H
-                               var vitesse2H: Float?,  // vitesse 2H
-                               var acceleration2H: Float?,  //accélération 2H
-                               var vitesse2A: Float?,  // vitesse 2A
-                               var acceleration2A: Float?,  //accélération 2A
-                         var resistanceInducteurs: Float?,
-                         var resistanceInduit: Float?,
-                         var isolementInducteursMasse: Float?,
-                         var isolementInduitMasse: Float?,
-                         var isolementInduitInducteurs: Float?,
-                         var releveIsoInducteursMasse: Float?,
-                         var releveIsoInduitMasse: Float?,
-                         var releveIsoInduitInducteurs: Float?,
+class BodyRemontageCC(
+    var status: Int?,
+    var dureeTotale: Long?,
+    var observations: String?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementPorteeFlasque: Int?,
+    var verificationFixationCouronne: Boolean?,
+    var verificationIsolementPorteBalais: Boolean?,
+    var isolementPorteBalaisV: Int?,
+    var isolementPorteBalaisOhm: Int?,
+    var tensionStatorInducteurs: Boolean?,
+    var tensionStatorInducteursU: Float?,
+    var tensionStatorInducteursV: Float?,
+    var tensionStatorInducteursW: Float?,
+    var intensiteStatorInducteurs: Boolean?,
+    var intensiteStatorInducteursU: Float?,
+    var intensiteStatorInducteursV: Float?,
+    var intensiteStatorInducteursW: Float?,
+    var tensionInduitRotor: Boolean?,
+    var tensionInduitRotorU: Float?,
+    var tensionInduitRotorV: Float?,
+    var tensionInduitRotorW: Float?,
+    var intensiteInduit: Boolean,
+    var intensiteInduitU: Float?,
+    var vitesseU: Float?,
+    var puissanceU: Float?,
+    var dureeEssai: Float?,
+    var sensRotation: Int?,
+    var vitesse1V: Float?,  // vitesse 1v
+    var acceleration1V: Float?,  //accélération 1v
+    var vitesse2V: Float?,  // vitesse 2v
+    var acceleration2V: Float?,  //accélération 2v
+    var vitesse1H: Float?,  // vitesse 1H
+    var acceleration1H: Float?,  //accélération 1H
+    var vitesse2H: Float?,  // vitesse 2H
+    var acceleration2H: Float?,  //accélération 2H
+    var vitesse2A: Float?,  // vitesse 2A
+    var acceleration2A: Float?,  //accélération 2A
+    var resistanceInducteurs: Float?,
+    var resistanceInduit: Float?,
+    var isolementInducteursMasse: Float?,
+    var isolementInduitMasse: Float?,
+    var isolementInduitInducteurs: Float?,
+    var releveIsoInducteursMasse: Float?,
+    var releveIsoInduitMasse: Float?,
+    var releveIsoInduitInducteurs: Float?,
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1653,8 +1658,15 @@ class CustomDateAdapter : JsonAdapter <Date>() {
 class Repository (var context:Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter())
     val url = "http://195.154.107.195:4000"
+    var okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(2, TimeUnit.MINUTES)
+        .readTimeout(2, TimeUnit.MINUTES)
+        .writeTimeout(2, TimeUnit.MINUTES)
+        .build()
+
     val retrofit = Retrofit.Builder()
         .baseUrl(url)
+        .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }

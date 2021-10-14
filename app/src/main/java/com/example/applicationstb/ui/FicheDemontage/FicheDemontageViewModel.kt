@@ -143,7 +143,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun enregistrer(view:View){
         if (selection.value!!.typeFicheDemontage == 1)  {
             var p = selection.value!! as DemontagePompe
@@ -175,7 +176,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
 
                         override fun onFailure(call: Call<DemontagePompeResponse>, t: Throwable) {
-                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
                             mySnackbar.show()
                             Log.e("Error", "erreur ${t.message} - body request ${
                                 call.request().body().toString()
@@ -229,7 +230,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
 
                         override fun onFailure(call: Call<DemontageMonophaseResponse>, t: Throwable) {
-                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
                             mySnackbar.show()
                             Log.e("Error", "erreur ${t.message} - body request ${
                                 call.request().body().toString()
@@ -283,7 +284,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
 
                         override fun onFailure(call: Call<DemontageAlternateurResponse>, t: Throwable) {
-                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
                             mySnackbar.show()
                             Log.e("Error", "erreur ${t.message} - body request ${
                                 call.request().body().toString()
@@ -337,7 +338,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
 
                         override fun onFailure(call: Call<DemontageRotorBobineResponse>, t: Throwable) {
-                            val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"erreur d'enregistrement", 3600)
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
                             mySnackbar.show()
                             Log.e("Error", "erreur ${t.message} - body request ${
                                 call.request().body().toString()

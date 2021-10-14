@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Triphase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -140,9 +142,6 @@ class TriphaseFragment : Fragment() {
         VWI.doAfterTextChanged {
             if (VWI.text.isNotEmpty()) fiche.intensiteW = VWI.text.toString().toInt()
         }
-        VU.doAfterTextChanged {
-            if (VU.text.isNotEmpty()) fiche.tensionU = VU.text.toString().toInt()
-        }
         dessai.doAfterTextChanged {
             if (dessai.text.isNotEmpty())  fiche.dureeEssai = dessai.text.toString().toInt()
         }
@@ -151,15 +150,15 @@ class TriphaseFragment : Fragment() {
         }
 
         enr.setOnClickListener {
-            Log.i("INFO","ref jAr : ${viewModel.selection.value!!.refJointArriere} ")
             if (viewModel.selection.value!!.dureeTotale !== null) {
                 viewModel.selection.value!!.dureeTotale =
                     (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
             } else {
                 viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
             }
-            viewModel.selection.value!!.status = 2L
-            Log.i("INFO","duree:${viewModel.selection.value!!.dureeTotale}")
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            Log.i("INFO","vU: ${fiche.tensionU}")
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
@@ -169,8 +168,8 @@ class TriphaseFragment : Fragment() {
             } else {
                 viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
             }
-            viewModel.selection.value!!.status = 3L
-            Log.i("INFO","duree:${viewModel.selection.value!!.dureeTotale}")
+            fiche.status = 3L
+            viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         retour.setOnClickListener {
