@@ -158,7 +158,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
             if ( selection.value!!.typeFicheDemontage == 2 ) {
                 var fiche = selection.value!! as DemontageMonophase
-                var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoMonoLocalDatabse(fiche.toEntity())
                     Log.i("INFO", "patch local")
