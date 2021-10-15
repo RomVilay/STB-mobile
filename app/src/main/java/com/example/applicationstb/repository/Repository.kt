@@ -419,7 +419,8 @@ class BodyDemontageCC ( var status: Long?,
                         var intensiteInduit: Int?,
                         var tensionExcitation: Int?,
                         var intensiteExcitation: Int?,
-                        var dureeTotale: Int?
+                        var dureeTotale: Int?,
+                        var observations: String?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -473,6 +474,7 @@ class BodyDemontageCC ( var status: Long?,
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readString()
     ) {
     }
 
@@ -528,6 +530,7 @@ class BodyDemontageCC ( var status: Long?,
         parcel.writeInt(tensionExcitation!!)
         parcel.writeInt(intensiteExcitation!!)
         parcel.writeInt(dureeTotale!!)
+        parcel.writeString(observations!!)
     }
 
     override fun describeContents(): Int {
@@ -1659,8 +1662,9 @@ class Repository (var context:Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter())
     val url = "http://195.154.107.195:4000"
     var okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(2, TimeUnit.MINUTES)
-        .readTimeout(2, TimeUnit.MINUTES)
+        .callTimeout(1,TimeUnit.MINUTES)
+        .connectTimeout(1, TimeUnit.MINUTES)
+        .readTimeout(1, TimeUnit.MINUTES)
         .writeTimeout(2, TimeUnit.MINUTES)
         .build()
 
@@ -1799,6 +1803,67 @@ class Repository (var context:Context) {
         var fiche:Triphase? = null
         call.enqueue(callback)
     }
+    fun patchDemontageMeca(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
+        var body = BodyDemontageTriphase(
+            triphase.status,
+            triphase.marque,
+            triphase.numSerie,
+            triphase.puissance,
+            triphase.bride,
+            triphase.vitesse,
+            triphase.arbreSortantEntrant,
+            triphase.accouplement,
+            triphase.coteAccouplement,
+            triphase.clavette,
+            triphase.aspect,
+            triphase.aspectInterieur,
+            triphase.couplage,
+            triphase.flasqueAvant,
+            triphase.flasqueArriere,
+            triphase.porteeRAvant,
+            triphase.porteeRArriere,
+            triphase.boutArbre,
+            triphase.rondelleElastique,
+            triphase.refRoulementAvant,
+            triphase.refRoulementArriere,
+            triphase.typeRoulementAvant,
+            triphase.typeRoulementArriere,
+            triphase.refJointAvant,
+            triphase.refJointArriere,
+            triphase.typeJointAvant,
+            triphase.typeJointArriere,
+            triphase.ventilateur,
+            triphase.capotV,
+            triphase.socleBoiteABorne,
+            triphase.capotBoiteABorne,
+            triphase.plaqueABorne,
+            triphase.presenceSondes,
+            triphase.typeSondes,
+            triphase.equilibrage,
+            triphase.peinture,
+            triphase.isolementPhaseMasseStatorUM,
+            triphase.isolementPhaseMasseStatorVM,
+            triphase.isolementPhaseMasseStatorWM,
+            triphase.isolementPhasePhaseStatorUV,
+            triphase.isolementPhasePhaseStatorVW,
+            triphase.isolementPhasePhaseStatorUW,
+            triphase.resistanceStatorU,
+            triphase.resistanceStatorV,
+            triphase.resistanceStatorW,
+            triphase.tensionU,
+            triphase.tensionV,
+            triphase.tensionW,
+            triphase.intensiteU,
+            triphase.intensiteV,
+            triphase.intensiteW,
+            triphase.dureeEssai,
+            triphase.dureeTotale!!.toInt(),
+            triphase.observations
+        )
+        var call = service.patchDemontageTriphase(token,ficheId,body)
+        var fiche:Triphase? = null
+        call.enqueue(callback)
+    }
 
     fun getDemontageCC(token:String,ficheId:String, callback: Callback<DemontageCCResponse>){
         var call = service.getDemontageCC(token,ficheId)
@@ -1857,7 +1922,8 @@ class Repository (var context:Context) {
             fiche.intensiteInduit,
             fiche.tensionExcitation,
             fiche.intensiteExcitation,
-            fiche.dureeTotale!!.toInt()
+            fiche.dureeTotale!!.toInt(),
+            fiche.observations
         )
         var call = service.patchDemontageCC(token,ficheId,body)
         var fiche:CourantContinu? = null

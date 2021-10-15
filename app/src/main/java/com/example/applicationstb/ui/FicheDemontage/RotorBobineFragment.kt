@@ -185,7 +185,7 @@ class RotorBobineFragment : Fragment() {
             if(intensiteRotor.text.isNotEmpty())  fiche.intensiteRotor = intensiteRotor.text.toString().toFloat()
         }
         dureeEssai.doAfterTextChanged {
-            fiche.dureeEssai = dureeEssai.text.toString().toInt()
+            if(dureeEssai.text.isNotEmpty()) fiche.dureeEssai = dureeEssai.text.toString().toInt()
         }
         observations.doAfterTextChanged {
             fiche.observations = observations.text.toString()

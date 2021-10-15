@@ -74,6 +74,7 @@ class CCFragment : Fragment() {
         var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
         var enr = layout.findViewById<Button>(R.id.enregistrerCC)
         var ter = layout.findViewById<Button>(R.id.termCC)
+        var observations = layout.findViewById<EditText>(R.id.observations)
         var retour = layout.findViewById<Button>(R.id.retourCC)
         retour.setOnClickListener {
             viewModel.back(layout)
@@ -101,46 +102,50 @@ class CCFragment : Fragment() {
              if (fiche.tensionInduit !== null) vU.setText(fiche.tensionInduit.toString())    //tension induit
              if (fiche.tensionExcitation !== null) vV.setText(fiche.tensionExcitation.toString())   //tension excitation
              if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
-             if (fiche.intensiteExcitation != null )vVI.setText(fiche.intensiteExcitation.toString())
+             if (fiche.intensiteExcitation !== null )vVI.setText(fiche.intensiteExcitation.toString())
+            if (fiche.observations !== null) observations.setText(fiche.observations.toString())
         })
         isopmu.doAfterTextChanged {
-            fiche.isolationMasseInduit = isopmu.text.toString().toInt()
+           if (isopmu.text.isNotEmpty()) fiche.isolationMasseInduit = isopmu.text.toString().toInt()
         }
         isopmv.doAfterTextChanged {
-            fiche.isolationMassePolesPrincipaux = isopmv.text.toString().toInt()
+            if (isopmv.text.isNotEmpty()) fiche.isolationMassePolesPrincipaux = isopmv.text.toString().toInt()
         }
         isopmw.doAfterTextChanged {
-            fiche.isolationMassePolesAuxilliaires = isopmw.text.toString().toInt()
+            if (isopmw.text.isNotEmpty()) fiche.isolationMassePolesAuxilliaires = isopmw.text.toString().toInt()
         }
         isoppU.doAfterTextChanged {
-            fiche.isolationMassePolesCompensatoires = isoppU.text.toString().toInt()
+            if (isoppU.text.isNotEmpty())  fiche.isolationMassePolesCompensatoires = isoppU.text.toString().toInt()
         }
         isoppV.doAfterTextChanged {
-            fiche.isolationMassePorteBalais = isoppV.text.toString().toInt()
+            if (isoppV.text.isNotEmpty())  fiche.isolationMassePorteBalais = isoppV.text.toString().toInt()
         }
          rU.doAfterTextChanged {
-            fiche.resistanceInduit = rU.text.toString().toInt()
+             if (rU.text.isNotEmpty()) fiche.resistanceInduit = rU.text.toString().toInt()
         }
         rI.doAfterTextChanged {
-            fiche.resistancePA = rI.text.toString().toInt()
+            if (rI.text.isNotEmpty())  fiche.resistancePA = rI.text.toString().toInt()
         }
         rV.doAfterTextChanged {
-            fiche.resistancePP = rV.text.toString().toInt()
+            if (rV.text.isNotEmpty()) fiche.resistancePP = rV.text.toString().toInt()
         }
         rPP.doAfterTextChanged {
-            fiche.resistancePC = rPP.text.toString().toInt()
+            if (rPP.text.isNotEmpty())  fiche.resistancePC = rPP.text.toString().toInt()
         }
         vU.doAfterTextChanged {
-            fiche.tensionInduit = vU.text.toString().toInt()
+            if (vU.text.isNotEmpty())  fiche.tensionInduit = vU.text.toString().toInt()
         }
         vV.doAfterTextChanged {
-            fiche.tensionExcitation = vV.text.toString().toInt()
+            if (vV.text.isNotEmpty())  fiche.tensionExcitation = vV.text.toString().toInt()
         }
         vUI.doAfterTextChanged {
-            fiche.intensiteInduit = vUI.text.toString().toInt()
+            if (vUI.text.isNotEmpty())  fiche.intensiteInduit = vUI.text.toString().toInt()
         }
         vVI.doAfterTextChanged {
-            fiche.intensiteExcitation = vVI.text.toString().toInt()
+            if (vVI.text.isNotEmpty())  fiche.intensiteExcitation = vVI.text.toString().toInt()
+        }
+        observations.doAfterTextChanged {
+            fiche.observations = observations.text.toString()
         }
         enr.setOnClickListener {
             if (viewModel.selection.value!!.dureeTotale !== null) {

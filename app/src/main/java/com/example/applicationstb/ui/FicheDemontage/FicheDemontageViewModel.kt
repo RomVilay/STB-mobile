@@ -266,6 +266,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             call: Call<DemontageAlternateurResponse>,
                             response: Response<DemontageAlternateurResponse>
                         ) {
+
                             if (response.code() == 200) {
                                 val resp = response.body()
                                 if (resp != null) {
