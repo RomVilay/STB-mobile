@@ -48,6 +48,7 @@ class MecaFragment : Fragment() {
                 } else {
                     txtclp.visibility = View.GONE
                     viewModel.selection.value!!.couplage = selection
+                    viewModel.localSave()
                 }
             }
         }
@@ -59,6 +60,7 @@ class MecaFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.flasqueAvant = position + 1
+                viewModel.localSave()
             }
         }
         etatFlasqueAvant.setOnFocusChangeListener{ view, hasFocus ->
@@ -75,6 +77,7 @@ class MecaFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.flasqueArriere = position + 1
+                viewModel.localSave()
             }
         }
         // portée roulements
@@ -88,6 +91,7 @@ class MecaFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementAvant.selectedItem.toString()
                 viewModel.selection.value!!.porteeRAvant = position + 1
+                viewModel.localSave()
                     //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -101,6 +105,7 @@ class MecaFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = roulementArriere.selectedItem.toString()
                 viewModel.selection.value!!.porteeRArriere = position + 1
+                viewModel.localSave()
                 //Log.i("INFO", "roulement arrière:"+)
             }
         }
@@ -109,12 +114,14 @@ class MecaFragment : Fragment() {
         if(fiche.boutArbre !== null) etatBA.setChecked(fiche.boutArbre!!)
         etatBA.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.selection.value!!.boutArbre = isChecked
+                viewModel.localSave()
         }
         //rondelle élastique
         var PRE = layout.findViewById<Switch>(R.id.switchPRE)
         if(fiche.rondelleElastique !== null) PRE.setChecked(fiche.rondelleElastique!!)
         PRE.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.rondelleElastique = isChecked
+            viewModel.localSave()
         }
         //roulements
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
@@ -141,17 +148,25 @@ class MecaFragment : Fragment() {
                 var selection = typeRoulement.selectedItem.toString()
                 if (switchRoullements.isChecked) {
                     viewModel.selection.value!!.typeRoulementArriere =  selection
+                    viewModel.localSave()
                 } else {
                     viewModel.selection.value!!.typeRoulementAvant = selection
+                    viewModel.localSave()
                 }
             }
 
         }
         refRoul.doAfterTextChanged {
                 if (switchRoullements.isChecked) {
-                   if (refRoul.text.isNotEmpty()) viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
+                   if (refRoul.text.isNotEmpty()) {
+                       viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
+                       viewModel.localSave()
+                   }
                 } else  {
-                    viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
+                    if (refRoul.text.isNotEmpty()) {
+                        viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
+                        viewModel.localSave()
+                    }
                 }
         }
         //joints
@@ -193,7 +208,13 @@ class MecaFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeJoints.selectedItem.toString()
                 if (switchJoints.isChecked) {
-                    if (position == 1 ) viewModel.selection.value!!.typeJointArriere = true else viewModel.selection.value!!.typeJointArriere = false
+                    if (position == 1 ) {
+                        viewModel.selection.value!!.typeJointArriere = true
+                        viewModel.localSave()
+                    } else {
+                        viewModel.selection.value!!.typeJointArriere = false
+                        viewModel.localSave()
+                    }
                     Log.i("INFO", "position:${position} - valeur: ${selection} - type joint arrière : ${viewModel.selection.value!!.typeJointArriere!!.toString()}")
                 } else {
                     if (position == 1 ) viewModel.selection.value!!.typeJointAvant = true else viewModel.selection.value!!.typeJointAvant = false
@@ -215,9 +236,11 @@ class MecaFragment : Fragment() {
                 if (switchJoints.isChecked) {
                     Log.i("INFO", "set ar")
                     viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
+                    viewModel.localSave()
                 } else {
                     Log.i("INFO", "set av")
                     viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
+                    viewModel.localSave()
                 }
         }
         //capot ventilateur
@@ -231,6 +254,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                viewModel.selection.value!!.capotV = position + 1
+                viewModel.localSave()
             }
         }
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
@@ -242,6 +266,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
               viewModel.selection.value!!.ventilateur = position +1
+                viewModel.localSave()
             }
 
         }
@@ -255,6 +280,7 @@ class MecaFragment : Fragment() {
                }
                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     viewModel.selection.value!!.socleBoiteABorne = position + 1
+                   viewModel.localSave()
                }
            }
         var capot = layout.findViewById<Spinner>(R.id.spiCap)
@@ -265,6 +291,7 @@ class MecaFragment : Fragment() {
              }
              override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.capotBoiteABorne = position+1
+                 viewModel.localSave()
              }
 
          }
@@ -277,6 +304,7 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.plaqueABorne = position + 1
+                viewModel.localSave()
             }
         }
         var sondes = layout.findViewById<Switch>(R.id.switchSondes)
@@ -288,21 +316,25 @@ class MecaFragment : Fragment() {
         }
         sondes.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.presenceSondes = isChecked
+            viewModel.localSave()
         }
         var typeSondes = layout.findViewById<EditText>(R.id.typeSonde)
         typeSondes.setText(viewModel.selection.value!!.typeSondes)
         typeSondes.doAfterTextChanged {
             viewModel.selection.value!!.typeSondes = typeSondes.text.toString()
+            viewModel.localSave()
         }
         var equi = layout.findViewById<Switch>(R.id.swEqui)
         if (viewModel.selection.value!!.equilibrage !== null) equi.setChecked(viewModel.selection.value!!.equilibrage!!)
         equi.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.equilibrage = isChecked
+            viewModel.localSave()
         }
         var peint = layout.findViewById<EditText>(R.id.coul)
         if (viewModel.selection.value!!.peinture !== null) peint.setText(viewModel.selection.value!!.peinture)
         peint.doAfterTextChanged {
             viewModel.selection.value!!.peinture = peint.text.toString()
+            viewModel.localSave()
         }
         return layout
     }

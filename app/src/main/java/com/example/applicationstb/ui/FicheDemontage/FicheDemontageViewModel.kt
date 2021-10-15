@@ -143,6 +143,76 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
+    fun localSave(){
+        viewModelScope.launch(Dispatchers.IO){
+            if ( selection.value!!.typeFicheDemontage == 1 ) {
+                var fiche = selection.value!! as DemontagePompe
+                var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                if (f !== null ) {
+                    repository.updateDemoPompeLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local")
+                } else  {
+                    repository.insertDemoPompeLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local")
+                }
+            }
+            if ( selection.value!!.typeFicheDemontage == 2 ) {
+                var fiche = selection.value!! as DemontageMonophase
+                var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                if (f !== null ) {
+                    repository.updateDemoMonoLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local")
+                } else  {
+                    repository.insertDemoMonoLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local")
+                }
+            }
+            if ( selection.value!!.typeFicheDemontage == 3 ) {
+                var fiche = selection.value!! as DemontageAlternateur
+                var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
+                if (f !== null ) {
+                    repository.updateDemoAlterLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local")
+                } else  {
+                    repository.insertDemoAlterLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local")
+                }
+            }
+            if ( selection.value!!.typeFicheDemontage == 4 ) {
+                var fiche = selection.value!! as DemontageRotorBobine
+                var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
+                if (f !== null ) {
+                    repository.updateDemoRBLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local")
+                } else  {
+                    repository.insertDemoRBLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local")
+                }
+            }
+            if ( selection.value!!.typeFicheDemontage == 5 ) {
+                var fiche = selection.value!! as CourantContinu
+                var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                if (f !== null ) {
+                    repository.updateDemoCCLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local")
+                } else  {
+                    repository.insertDemoCCLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local")
+                }
+            }
+            if ( selection.value!!.typeFicheDemontage == 6 ) {
+                var fiche = selection.value!! as Triphase
+                var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                if (f !== null ) {
+                    repository.updateDemoTriLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local")
+                } else  {
+                    repository.insertDemoTriLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local")
+                }
+            }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun enregistrer(view:View){

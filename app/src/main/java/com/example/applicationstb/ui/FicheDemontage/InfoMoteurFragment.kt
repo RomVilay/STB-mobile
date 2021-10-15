@@ -62,36 +62,46 @@ class InfoMoteurFragment : Fragment() {
 
         marque.doAfterTextChanged {
             if(marque.text.isNotEmpty()) viewModel.selection.value!!.marque = marque.text.toString()
+            viewModel.localSave()
         }
         num.doAfterTextChanged {
            if(num.text.isNotEmpty()) viewModel.selection.value!!.numSerie = num.text.toString().toInt()
+            viewModel.localSave()
         }
         puissance.doAfterTextChanged {
           if (puissance.text.isNotEmpty())  viewModel.selection.value!!.puissance = puissance.text.toString().toFloat()
+            viewModel.localSave()
         }
         bride.doAfterTextChanged {
           if (bride.text.isNotEmpty())  viewModel.selection.value!!.bride = bride.text.toString().toFloat()
+            viewModel.localSave()
         }
         vitesse.doAfterTextChanged {
             if (vitesse.text.isNotEmpty()) viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
+            viewModel.localSave()
         }
         clavette.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.clavette = isChecked
+            viewModel.localSave()
         }
         arbre.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.arbreSortantEntrant = isChecked
+            viewModel.localSave()
         }
         cote.doAfterTextChanged {
            if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
+            viewModel.localSave()
         }
         accouplement.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.accouplement = isChecked
+            viewModel.localSave()
         }
         aspectBte.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.aspectInterieur = position+1
+                viewModel.localSave()
             }
         }
         aspectExt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -99,6 +109,7 @@ class InfoMoteurFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.aspect = position+1
+                viewModel.localSave()
             }
         }
         return layout
