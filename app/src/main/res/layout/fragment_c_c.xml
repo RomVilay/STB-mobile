@@ -1219,7 +1219,7 @@
                         android:layout_marginStart="50dp"
                         android:layout_marginLeft="50dp"
                         android:text="Enregistrer"
-                        app:backgroundTint="@color/gray_600"
+                        app:backgroundTint="@color/gray_400"
                         app:layout_constraintStart_toEndOf="@+id/retourCC"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
 
@@ -1241,7 +1241,7 @@
                         android:layout_marginStart="120dp"
                         android:layout_marginLeft="120dp"
                         android:text="Retour"
-                        app:backgroundTint="@color/gray_600"
+                        app:backgroundTint="@color/gray_400"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerPhoto3" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

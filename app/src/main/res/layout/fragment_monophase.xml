@@ -1017,7 +1017,7 @@
                         android:layout_marginLeft="56dp"
                         android:layout_marginTop="188dp"
                         android:text="Enregistrer"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_400"
                         app:layout_constraintStart_toEndOf="@+id/retourTri"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
@@ -1029,7 +1029,7 @@
                         android:layout_marginLeft="84dp"
                         android:layout_marginTop="188dp"
                         android:text="Retour"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_400"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
