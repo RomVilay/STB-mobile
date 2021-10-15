@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
@@ -44,6 +46,7 @@ class MonophaseFragment : Fragment() {
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,24 +69,38 @@ class MonophaseFragment : Fragment() {
         if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
         isolementPhaseMasse.doAfterTextChanged {
             if(isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse = isolementPhaseMasse.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceTravail.doAfterTextChanged {
            if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceDemarrage.doAfterTextChanged {
            if (resistanceDemarrage.text.isNotEmpty()) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         valeurCondensateur.doAfterTextChanged {
            if (valeurCondensateur.text.isNotEmpty()) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         tension.doAfterTextChanged {
            if (tension.text.isNotEmpty()) fiche.tension = tension.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         intensite.doAfterTextChanged {
            if (intensite.text.isNotEmpty()) fiche.intensite = intensite.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         observations.doAfterTextChanged {
             fiche.observations = observations.text.toString()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
 
         //
