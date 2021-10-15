@@ -101,21 +101,31 @@ class PompeFragment : Fragment() {
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
         marque.doAfterTextChanged {
             fiche.marque = marque.text.toString()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         numSerie.doAfterTextChanged {
             fiche.numSerie = numSerie.text.toString().toInt()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         fluide.doAfterTextChanged {
             fiche.fluide = fluide.text.toString()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         sensRotation.setOnCheckedChangeListener { _, isChecked ->
             fiche.sensRotation = !isChecked
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         typeRessort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(typeRessort.selectedItem.toString() !== " ") fiche.typeRessort = position
+                viewModel.selection.value = fiche
+                viewModel.localSave()
             }
         }
         matiere.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -123,35 +133,55 @@ class PompeFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(matiere.selectedItem.toString() !== " ") fiche.matiere = position
+                viewModel.selection.value = fiche
+                viewModel.localSave()
                 Log.i("INFO","matiere ${fiche.matiere}")
             }
         }
         typeJoint.doAfterTextChanged {
           if(typeJoint.text.isNotEmpty())  fiche.typeJoint = typeJoint.text.toString()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         diametreArbre.doAfterTextChanged {
             if(diametreArbre.text.isNotEmpty())  fiche.diametreArbre = diametreArbre.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         diametreExtPF.doAfterTextChanged {
             if(diametreExtPF.text.isNotEmpty())  fiche.diametreExtPF = diametreExtPF.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         diametreExtPR.doAfterTextChanged {
             if(diametreExtPR.text.isNotEmpty())  fiche.diametreExtPR = diametreExtPR.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         epaisseurPF.doAfterTextChanged {
             if(epaisseurPF.text.isNotEmpty())  fiche.epaisseurPF = epaisseurPF.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         longueurRotativeNonComprimee.doAfterTextChanged {
             if(longueurRotativeNonComprimee.text.isNotEmpty())  fiche.longueurRotativeNonComprimee = longueurRotativeNonComprimee.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         longueurRotativeComprimee.doAfterTextChanged {
             if(longueurRotativeComprimee.text.isNotEmpty()) fiche.longueurRotativeComprimee = longueurRotativeComprimee.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         longueurRotativeTravail.doAfterTextChanged {
             if(longueurRotativeTravail.text.isNotEmpty()) fiche.longueurRotativeTravail = longueurRotativeTravail.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         obs.doAfterTextChanged {
             fiche.observations = obs.text.toString()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
 
 
