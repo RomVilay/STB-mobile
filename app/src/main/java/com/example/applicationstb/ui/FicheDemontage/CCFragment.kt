@@ -213,7 +213,7 @@ class CCFragment : Fragment() {
         })
 
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             Log.i("INFO",test.toString())
             if (test == false) {
@@ -224,7 +224,7 @@ class CCFragment : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -236,7 +236,7 @@ class CCFragment : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
