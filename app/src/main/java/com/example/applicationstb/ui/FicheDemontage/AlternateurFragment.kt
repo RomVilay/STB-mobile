@@ -53,7 +53,8 @@ class AlternateurFragment : Fragment() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -114,75 +115,123 @@ class AlternateurFragment : Fragment() {
         if (fiche.observations !== null) obs.setText(fiche.observations!!.toString())
         isolementMasseStatorPrincipalU.doAfterTextChanged {
             if (isolementMasseStatorPrincipalU.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalU = isolementMasseStatorPrincipalU.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementMasseStatorPrincipalV.doAfterTextChanged {
             if (isolementMasseStatorPrincipalV.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalV = isolementMasseStatorPrincipalV.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementMasseStatorPrincipalW.doAfterTextChanged {
             if (isolementMasseStatorPrincipalW.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalW = isolementMasseStatorPrincipalW.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementMasseStatorExcitation.doAfterTextChanged {
             if (isolementMasseStatorExcitation.text.isNotEmpty())  fiche.isolementMasseStatorExcitation = isolementMasseStatorExcitation.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementMasseRotorPrincipal.doAfterTextChanged {
             if (isolementMasseRotorPrincipal.text.isNotEmpty())  fiche.isolementMasseRotorPrincipal = isolementMasseRotorPrincipal.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceStatorPrincipalU.doAfterTextChanged {
             if (resistanceStatorPrincipalU.text.isNotEmpty()) fiche.resistanceStatorPrincipalU = resistanceStatorPrincipalU.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceStatorPrincipalV.doAfterTextChanged {
             if (resistanceStatorPrincipalV.text.isNotEmpty()) fiche.resistanceStatorPrincipalV = resistanceStatorPrincipalV.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceStatorPrincipalW.doAfterTextChanged {
             if (resistanceStatorPrincipalW.text.isNotEmpty()) fiche.resistanceStatorPrincipalW = resistanceStatorPrincipalW.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceRotorPrincipal.doAfterTextChanged {
             if (resistanceRotorPrincipal.text.isNotEmpty()) fiche.resistanceRotorPrincipal = resistanceRotorPrincipal.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceStatorExcitation.doAfterTextChanged {
             if (resistanceStatorExcitation.text.isNotEmpty()) fiche.resistanceStatorExcitation = resistanceStatorExcitation.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         resistanceRotorExcitation.doAfterTextChanged {
             if (resistanceRotorExcitation.text.isNotEmpty()) fiche.resistanceRotorExcitation = resistanceRotorExcitation.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementPhasePhaseStatorPrincipalUV.doAfterTextChanged {
             if (isolementPhasePhaseStatorPrincipalUV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorPrincipalUV = isolementPhasePhaseStatorPrincipalUV.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementPhasePhaseStatorPrincipalUW.doAfterTextChanged {
             if (isolementPhasePhaseStatorPrincipalUW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorPrincipalUW = isolementPhasePhaseStatorPrincipalUW.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         isolementPhasePhaseStatorPrincipalVW.doAfterTextChanged {
             if (isolementPhasePhaseStatorPrincipalVW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorPrincipalVW = isolementPhasePhaseStatorPrincipalVW.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         testDiode.setOnCheckedChangeListener { _, isChecked ->
             fiche.testDiode = isChecked
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         tensionU.doAfterTextChanged {
             if (tensionU.text.isNotEmpty()) fiche.tensionU = tensionU.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         tensionV.doAfterTextChanged {
             if (tensionV.text.isNotEmpty()) fiche.tensionV = tensionV.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         tensionW.doAfterTextChanged {
             if (tensionW.text.isNotEmpty()) fiche.tensionW = tensionW.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         intensiteU.doAfterTextChanged {
             if (intensiteU.text.isNotEmpty()) fiche.intensiteU = intensiteU.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         intensiteV.doAfterTextChanged {
             if (intensiteV.text.isNotEmpty()) fiche.intensiteV = intensiteV.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         intensiteW.doAfterTextChanged {
             if (intensiteW.text.isNotEmpty()) fiche.intensiteW = intensiteW.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         tensionUExcitation.doAfterTextChanged {
           if (tensionUExcitation.text.isNotEmpty())  fiche.tensionUExcitation = tensionUExcitation.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         tensionVExcitation.doAfterTextChanged {
             if (tensionVExcitation.text.isNotEmpty())  fiche.tensionVExcitation = tensionVExcitation.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
         obs.doAfterTextChanged {
             fiche.observations = obs.text.toString()
+            viewModel.selection.value = fiche
+            viewModel.localSave()
         }
 
         var term = layout.findViewById<Button>(R.id.termA)
