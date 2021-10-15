@@ -33,10 +33,12 @@ class MecaFragment : Fragment() {
         //couplage
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
         var txtclp = layout.findViewById<EditText>(R.id.autreCpl)
+        if (fiche.couplage !== null && arrayOf<String>("Y","Δ","Autre").indexOf(fiche.couplage) == -1) txtclp.setText(fiche.couplage)
         txtclp.doAfterTextChanged {
-           viewModel.selection.value!!.couplage = txtclp.text.toString()
+           if(txtclp.text.isNotEmpty()) viewModel.selection.value!!.couplage = txtclp.text.toString()
         }
         couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Y","Δ","Autre"))
+        if (fiche.couplage !== null) couplage.setSelection(if (arrayOf<String>("Y","Δ","Autre").indexOf(fiche.couplage) >=0 ) arrayOf<String>("Y","Δ","Autre").indexOf(fiche.couplage) else 2)
         couplage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -45,13 +47,14 @@ class MecaFragment : Fragment() {
                     txtclp.visibility = View.VISIBLE
                 } else {
                     txtclp.visibility = View.GONE
-                    viewModel.selection.value!!.couplage = selection + 1
+                    viewModel.selection.value!!.couplage = selection
                 }
             }
         }
         //etats flasque
         var etatFlasqueAvant = layout.findViewById<Spinner>(R.id.spiFA)
         etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        if (fiche.flasqueAvant !== null) etatFlasqueAvant.setSelection(fiche.flasqueAvant!!-1)
         etatFlasqueAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -67,6 +70,7 @@ class MecaFragment : Fragment() {
         }
         var etatFlasqueArrière = layout.findViewById<Spinner>(R.id.spiFAr)
         etatFlasqueArrière.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        if (fiche.flasqueArriere !== null) etatFlasqueArrière.setSelection(fiche.flasqueArriere!!-1)
         etatFlasqueArrière.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -76,6 +80,7 @@ class MecaFragment : Fragment() {
         // portée roulements
         var roulementAvant = layout.findViewById<Spinner>(R.id.spiRAv)
         roulementAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        if (fiche.porteeRAvant !== null) roulementAvant.setSelection(fiche.porteeRAvant!!-1)
         roulementAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -88,6 +93,7 @@ class MecaFragment : Fragment() {
         }
         var roulementArriere = layout.findViewById<Spinner>(R.id.spiRAr)
         roulementArriere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
+        if (fiche.porteeRArriere!== null) roulementArriere.setSelection(fiche.porteeRArriere!!-1)
         roulementArriere.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -100,11 +106,13 @@ class MecaFragment : Fragment() {
         }
         //etat bout arbre
         var etatBA = layout.findViewById<Switch>(R.id.switchBA)
+        if(fiche.boutArbre !== null) etatBA.setChecked(fiche.boutArbre!!)
         etatBA.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.selection.value!!.boutArbre = isChecked
         }
         //rondelle élastique
         var PRE = layout.findViewById<Switch>(R.id.switchPRE)
+        if(fiche.rondelleElastique !== null) PRE.setChecked(fiche.rondelleElastique!!)
         PRE.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.rondelleElastique = isChecked
         }
@@ -216,6 +224,7 @@ class MecaFragment : Fragment() {
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
         cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
            //if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
+        if (fiche.capotV !== null) cvent.setSelection(arrayOf<String>("Bon état","Cassé","Absent").indexOf(fiche.capotV))
         cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -226,6 +235,7 @@ class MecaFragment : Fragment() {
         }
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
         vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Absent"))
+        if (fiche.ventilateur !== null) vent.setSelection(arrayOf<String>("Bon état","A changer","Absent").indexOf(fiche.ventilateur))
         vent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
