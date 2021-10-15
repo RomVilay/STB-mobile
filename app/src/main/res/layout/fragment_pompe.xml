@@ -506,23 +506,36 @@
                         android:id="@+id/enregistrerPompe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="80dp"
-                        android:layout_marginLeft="80dp"
-                        android:layout_marginTop="192dp"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginLeft="56dp"
                         android:text="Enregistrer"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintBottom_toBottomOf="@+id/retourPompe"
                         app:layout_constraintStart_toEndOf="@+id/retourPompe"
-                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+                        app:layout_constraintTop_toTopOf="@+id/retourPompe"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <Button
+                        android:id="@+id/termP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="270dp"
+                        android:layout_marginLeft="270dp"
+                        android:text="terminer"
+                        app:backgroundTint="#164081"
+                        app:layout_constraintBottom_toBottomOf="@+id/enregistrerPompe"
+                        app:layout_constraintStart_toEndOf="@+id/retourPompe"
+                        app:layout_constraintTop_toTopOf="@+id/enregistrerPompe" />
 
                     <Button
                         android:id="@+id/retourPompe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="168dp"
-                        android:layout_marginLeft="168dp"
-                        android:layout_marginTop="192dp"
+                        android:layout_marginStart="108dp"
+                        android:layout_marginLeft="108dp"
+                        android:layout_marginTop="190dp"
                         android:text="Retour"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_400"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/obs2" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

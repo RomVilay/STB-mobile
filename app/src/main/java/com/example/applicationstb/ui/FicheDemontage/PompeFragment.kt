@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.SystemClock
@@ -17,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -48,6 +50,7 @@ class PompeFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -76,6 +79,7 @@ class PompeFragment : Fragment() {
         var longueurRotativeNonComprimee = layout.findViewById<EditText>(R.id.LNC)
         var epaisseurPF = layout.findViewById<EditText>(R.id.ePF)
         var obs = layout.findViewById<EditText>(R.id.obs2)
+        var termP = layout.findViewById<Button>(R.id.termP)
         var fiche = viewModel.selection.value!! as DemontagePompe
         Log.i("INFO","sensRoation: ${fiche.sensRotation} - matiere joint: ${fiche.matiere}")
         if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
@@ -123,28 +127,28 @@ class PompeFragment : Fragment() {
             }
         }
         typeJoint.doAfterTextChanged {
-            fiche.typeJoint = typeJoint.text.toString()
+          if(typeJoint.text.isNotEmpty())  fiche.typeJoint = typeJoint.text.toString()
         }
         diametreArbre.doAfterTextChanged {
-            fiche.diametreArbre = diametreArbre.text.toString().toFloat()
+            if(diametreArbre.text.isNotEmpty())  fiche.diametreArbre = diametreArbre.text.toString().toFloat()
         }
         diametreExtPF.doAfterTextChanged {
-            fiche.diametreExtPF = diametreExtPF.text.toString().toFloat()
+            if(diametreExtPF.text.isNotEmpty())  fiche.diametreExtPF = diametreExtPF.text.toString().toFloat()
         }
         diametreExtPR.doAfterTextChanged {
-            fiche.diametreExtPR = diametreExtPR.text.toString().toFloat()
+            if(diametreExtPR.text.isNotEmpty())  fiche.diametreExtPR = diametreExtPR.text.toString().toFloat()
         }
         epaisseurPF.doAfterTextChanged {
-            fiche.epaisseurPF = epaisseurPF.text.toString().toFloat()
+            if(epaisseurPF.text.isNotEmpty())  fiche.epaisseurPF = epaisseurPF.text.toString().toFloat()
         }
         longueurRotativeNonComprimee.doAfterTextChanged {
-            fiche.longueurRotativeNonComprimee = longueurRotativeNonComprimee.text.toString().toFloat()
+            if(longueurRotativeNonComprimee.text.isNotEmpty())  fiche.longueurRotativeNonComprimee = longueurRotativeNonComprimee.text.toString().toFloat()
         }
         longueurRotativeComprimee.doAfterTextChanged {
-            fiche.longueurRotativeComprimee = longueurRotativeComprimee.text.toString().toFloat()
+            if(longueurRotativeComprimee.text.isNotEmpty()) fiche.longueurRotativeComprimee = longueurRotativeComprimee.text.toString().toFloat()
         }
         longueurRotativeTravail.doAfterTextChanged {
-            fiche.longueurRotativeTravail = longueurRotativeTravail.text.toString().toFloat()
+            if(longueurRotativeTravail.text.isNotEmpty()) fiche.longueurRotativeTravail = longueurRotativeTravail.text.toString().toFloat()
         }
         obs.doAfterTextChanged {
             fiche.observations = obs.text.toString()
@@ -241,7 +245,7 @@ class PompeFragment : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -253,7 +257,7 @@ class PompeFragment : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
@@ -277,6 +281,17 @@ class PompeFragment : Fragment() {
                 fiche.dureeTotale = Date().time - viewModel.start.value!!.time
             }
             fiche.status = 2L
+            viewModel.selection.value = fiche
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        termP.setOnClickListener {
+            if (viewModel.selection.value!!.dureeTotale !== null) {
+                fiche.dureeTotale =
+                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+            } else {
+                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            }
+            fiche.status = 3L
             viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
