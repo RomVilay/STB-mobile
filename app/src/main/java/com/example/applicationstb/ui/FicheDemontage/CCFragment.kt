@@ -110,90 +110,94 @@ class CCFragment : Fragment() {
         isopmu.doAfterTextChanged {
            if (isopmu.text.isNotEmpty()) fiche.isolationMasseInduit = isopmu.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isopmv.doAfterTextChanged {
             if (isopmv.text.isNotEmpty()) fiche.isolationMassePolesPrincipaux = isopmv.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isopmw.doAfterTextChanged {
             if (isopmw.text.isNotEmpty()) fiche.isolationMassePolesAuxilliaires = isopmw.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isoppU.doAfterTextChanged {
             if (isoppU.text.isNotEmpty())  fiche.isolationMassePolesCompensatoires = isoppU.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isoppV.doAfterTextChanged {
             if (isoppV.text.isNotEmpty())  fiche.isolationMassePorteBalais = isoppV.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
          rU.doAfterTextChanged {
              if (rU.text.isNotEmpty()) fiche.resistanceInduit = rU.text.toString().toInt()
              viewModel.selection.value = fiche
+             viewModel.getTime()
              viewModel.localSave()
         }
         rI.doAfterTextChanged {
             if (rI.text.isNotEmpty())  fiche.resistancePA = rI.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         rV.doAfterTextChanged {
             if (rV.text.isNotEmpty()) fiche.resistancePP = rV.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         rPP.doAfterTextChanged {
             if (rPP.text.isNotEmpty())  fiche.resistancePC = rPP.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         vU.doAfterTextChanged {
             if (vU.text.isNotEmpty())  fiche.tensionInduit = vU.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         vV.doAfterTextChanged {
             if (vV.text.isNotEmpty())  fiche.tensionExcitation = vV.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         vUI.doAfterTextChanged {
             if (vUI.text.isNotEmpty())  fiche.intensiteInduit = vUI.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         vVI.doAfterTextChanged {
             if (vVI.text.isNotEmpty())  fiche.intensiteExcitation = vVI.text.toString().toInt()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         observations.doAfterTextChanged {
             fiche.observations = observations.text.toString()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         enr.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                viewModel.selection.value!!.dureeTotale =
-                    ( Date().time -  viewModel.start.value!!.time ) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
+            viewModel.getTime()
             viewModel.selection.value!!.status = 2L
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                viewModel.selection.value!!.dureeTotale =
-                    ( Date().time -  viewModel.start.value!!.time ) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                viewModel.selection.value!!.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
+            viewModel.getTime()
             viewModel.selection.value!!.status = 3L
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
