@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.applicationstb.model.*
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
@@ -33,6 +36,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var signatures = arrayListOf<Uri?>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
+    var start = MutableLiveData<Date>()
     init {
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -84,7 +88,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     val resp = response.body()
                     if (resp != null) {
                         //Log.i("INFO","${resp.fiche!!.client.enterprise}")
-                        chantier.value = resp.fiche
+                        chantier.value = resp.fiche!!
                         getVehicule(resp!!.fiche!!.vehicule!!)
                     }
                 } else {
@@ -127,6 +131,36 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
+
+    fun getTime(){
+        Log.i("INFO","duree avant : ${chantier.value?.dureeTotale}")
+        var now = Date()
+        if (chantier.value!!.dureeTotale !== null) {
+            chantier.value!!.dureeTotale =
+                (now.time - start.value!!.time ) + chantier.value!!.dureeTotale!!
+        } else {
+            chantier.value!!.dureeTotale = now.time - start.value!!.time
+        }
+        start.value = now
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun quickSave(){
+        Log.i("INFO","quick save")
+        getTime()
+        Log.i("INFO","duree après : ${chantier.value?.dureeTotale}")
+        viewModelScope.launch(Dispatchers.IO){
+            var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
+            //Log.i("INFO","${ch}")
+            if (ch !== null) {
+                repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
+                //Log.i("INFO","patch ${chantier.value!!._id}")
+            } else {
+                repository.insertChantierLocalDatabase(chantier.value!!)
+                //Log.i("INFO","insert ${chantier.value!!._id}")
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
     fun localSave(view:View){
         Log.i("INFO","local save")
         viewModelScope.launch(Dispatchers.IO){
@@ -146,6 +180,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view: View){
         if (isOnline(context)){
             val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
@@ -175,6 +210,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
