@@ -16,14 +16,8 @@ import com.example.applicationstb.R
 
 class InfoMoteurFragment : Fragment() {
     private val viewModel: FicheDemontageViewModel by activityViewModels()
-
-    // TODO: Rename and change types of parameters
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,38 +56,47 @@ class InfoMoteurFragment : Fragment() {
 
         marque.doAfterTextChanged {
             if(marque.text.isNotEmpty()) viewModel.selection.value!!.marque = marque.text.toString()
+            viewModel.getTime()
             viewModel.localSave()
         }
         num.doAfterTextChanged {
            if(num.text.isNotEmpty()) viewModel.selection.value!!.numSerie = num.text.toString().toInt()
+            viewModel.getTime()
             viewModel.localSave()
         }
         puissance.doAfterTextChanged {
           if (puissance.text.isNotEmpty())  viewModel.selection.value!!.puissance = puissance.text.toString().toFloat()
+            viewModel.getTime()
             viewModel.localSave()
         }
         bride.doAfterTextChanged {
           if (bride.text.isNotEmpty())  viewModel.selection.value!!.bride = bride.text.toString().toFloat()
+            viewModel.getTime()
             viewModel.localSave()
         }
         vitesse.doAfterTextChanged {
             if (vitesse.text.isNotEmpty()) viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
+            viewModel.getTime()
             viewModel.localSave()
         }
         clavette.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.clavette = isChecked
+            viewModel.getTime()
             viewModel.localSave()
         }
         arbre.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.arbreSortantEntrant = isChecked
+            viewModel.getTime()
             viewModel.localSave()
         }
         cote.doAfterTextChanged {
            if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
+            viewModel.getTime()
             viewModel.localSave()
         }
         accouplement.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.accouplement = isChecked
+            viewModel.getTime()
             viewModel.localSave()
         }
         aspectBte.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -101,6 +104,7 @@ class InfoMoteurFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.aspectInterieur = position+1
+                viewModel.getTime()
                 viewModel.localSave()
             }
         }
@@ -109,24 +113,11 @@ class InfoMoteurFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.aspect = position+1
+                viewModel.getTime()
                 viewModel.localSave()
             }
         }
         return layout
-    }
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TriphaseFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TriphaseFragment()
     }
 
 

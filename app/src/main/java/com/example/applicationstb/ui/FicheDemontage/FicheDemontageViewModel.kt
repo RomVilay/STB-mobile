@@ -143,6 +143,17 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
         Navigation.findNavController(view).navigate(action)
     }
+    fun getTime() {
+        Log.i("INFO","duree avant : ${selection.value?.dureeTotale}")
+        var now = Date()
+        if (selection.value!!.dureeTotale !== null) {
+            selection.value!!.dureeTotale =
+                (Date().time - start.value!!.time) + selection.value!!.dureeTotale!!
+        } else {
+            selection.value!!.dureeTotale = now.time - start.value!!.time
+        }
+        start.value = now
+    }
     fun localSave(){
         viewModelScope.launch(Dispatchers.IO){
             if ( selection.value!!.typeFicheDemontage == 1 ) {
@@ -201,6 +212,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
             if ( selection.value!!.typeFicheDemontage == 6 ) {
+                Log.i("INFO","duree: ${selection.value!!.dureeTotale}")
                 var fiche = selection.value!! as Triphase
                 var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
