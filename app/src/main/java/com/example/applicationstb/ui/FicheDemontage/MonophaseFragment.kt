@@ -70,36 +70,43 @@ class MonophaseFragment : Fragment() {
         isolementPhaseMasse.doAfterTextChanged {
             if(isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse = isolementPhaseMasse.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceTravail.doAfterTextChanged {
            if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceDemarrage.doAfterTextChanged {
            if (resistanceDemarrage.text.isNotEmpty()) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         valeurCondensateur.doAfterTextChanged {
            if (valeurCondensateur.text.isNotEmpty()) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         tension.doAfterTextChanged {
            if (tension.text.isNotEmpty()) fiche.tension = tension.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         intensite.doAfterTextChanged {
            if (intensite.text.isNotEmpty()) fiche.intensite = intensite.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         observations.doAfterTextChanged {
             fiche.observations = observations.text.toString()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
 
@@ -127,23 +134,13 @@ class MonophaseFragment : Fragment() {
             viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
+            viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         terminer.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
+            viewModel.getTime()
             fiche.status = 3L
             viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
