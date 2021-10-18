@@ -319,23 +319,13 @@ class PompeFragment : Fragment() {
             viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
+            viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         termP.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
+            viewModel.getTime()
             fiche.status = 3L
             viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
