@@ -116,121 +116,145 @@ class AlternateurFragment : Fragment() {
         isolementMasseStatorPrincipalU.doAfterTextChanged {
             if (isolementMasseStatorPrincipalU.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalU = isolementMasseStatorPrincipalU.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementMasseStatorPrincipalV.doAfterTextChanged {
             if (isolementMasseStatorPrincipalV.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalV = isolementMasseStatorPrincipalV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementMasseStatorPrincipalW.doAfterTextChanged {
             if (isolementMasseStatorPrincipalW.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalW = isolementMasseStatorPrincipalW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementMasseStatorExcitation.doAfterTextChanged {
             if (isolementMasseStatorExcitation.text.isNotEmpty())  fiche.isolementMasseStatorExcitation = isolementMasseStatorExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementMasseRotorPrincipal.doAfterTextChanged {
             if (isolementMasseRotorPrincipal.text.isNotEmpty())  fiche.isolementMasseRotorPrincipal = isolementMasseRotorPrincipal.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceStatorPrincipalU.doAfterTextChanged {
             if (resistanceStatorPrincipalU.text.isNotEmpty()) fiche.resistanceStatorPrincipalU = resistanceStatorPrincipalU.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceStatorPrincipalV.doAfterTextChanged {
             if (resistanceStatorPrincipalV.text.isNotEmpty()) fiche.resistanceStatorPrincipalV = resistanceStatorPrincipalV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceStatorPrincipalW.doAfterTextChanged {
             if (resistanceStatorPrincipalW.text.isNotEmpty()) fiche.resistanceStatorPrincipalW = resistanceStatorPrincipalW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceRotorPrincipal.doAfterTextChanged {
             if (resistanceRotorPrincipal.text.isNotEmpty()) fiche.resistanceRotorPrincipal = resistanceRotorPrincipal.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceStatorExcitation.doAfterTextChanged {
             if (resistanceStatorExcitation.text.isNotEmpty()) fiche.resistanceStatorExcitation = resistanceStatorExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         resistanceRotorExcitation.doAfterTextChanged {
             if (resistanceRotorExcitation.text.isNotEmpty()) fiche.resistanceRotorExcitation = resistanceRotorExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementPhasePhaseStatorPrincipalUV.doAfterTextChanged {
             if (isolementPhasePhaseStatorPrincipalUV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorPrincipalUV = isolementPhasePhaseStatorPrincipalUV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementPhasePhaseStatorPrincipalUW.doAfterTextChanged {
             if (isolementPhasePhaseStatorPrincipalUW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorPrincipalUW = isolementPhasePhaseStatorPrincipalUW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         isolementPhasePhaseStatorPrincipalVW.doAfterTextChanged {
             if (isolementPhasePhaseStatorPrincipalVW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorPrincipalVW = isolementPhasePhaseStatorPrincipalVW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         testDiode.setOnCheckedChangeListener { _, isChecked ->
             fiche.testDiode = isChecked
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         tensionU.doAfterTextChanged {
             if (tensionU.text.isNotEmpty()) fiche.tensionU = tensionU.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         tensionV.doAfterTextChanged {
             if (tensionV.text.isNotEmpty()) fiche.tensionV = tensionV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         tensionW.doAfterTextChanged {
             if (tensionW.text.isNotEmpty()) fiche.tensionW = tensionW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         intensiteU.doAfterTextChanged {
             if (intensiteU.text.isNotEmpty()) fiche.intensiteU = intensiteU.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         intensiteV.doAfterTextChanged {
             if (intensiteV.text.isNotEmpty()) fiche.intensiteV = intensiteV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         intensiteW.doAfterTextChanged {
             if (intensiteW.text.isNotEmpty()) fiche.intensiteW = intensiteW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         tensionUExcitation.doAfterTextChanged {
           if (tensionUExcitation.text.isNotEmpty())  fiche.tensionUExcitation = tensionUExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         tensionVExcitation.doAfterTextChanged {
             if (tensionVExcitation.text.isNotEmpty())  fiche.tensionVExcitation = tensionVExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
         obs.doAfterTextChanged {
             fiche.observations = obs.text.toString()
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
         }
 
@@ -288,25 +312,15 @@ class AlternateurFragment : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         term.setOnClickListener {
-            if (viewModel.selection.value!!.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
-            }
             fiche.status = 3L
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         val fmanager = childFragmentManager
