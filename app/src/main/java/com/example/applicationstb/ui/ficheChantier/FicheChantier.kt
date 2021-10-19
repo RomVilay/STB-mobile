@@ -88,7 +88,7 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.objet !== null)  objet.setText(viewModel.chantier.value!!.objet)
             if (viewModel.chantier.value!!.observations !== null)  observation.setText(viewModel.chantier.value!!.observations)
             if (viewModel.chantier.value!!.client !== null)  client.setText(viewModel.chantier.value!!.client!!.enterprise)
-            if (viewModel.chantier.value!!.vehicule !== null)  vehicule.setText(viewModel.chantier.value!!.vehicule)
+            if (viewModel.chantier.value!!.vehicule !== null) viewModel.getVehicule(viewModel.chantier.value!!.vehicule!!, vehicule)
             if (viewModel.chantier.value!!.contact !== null)  contact.setText(viewModel.chantier.value!!.contact)
             if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)

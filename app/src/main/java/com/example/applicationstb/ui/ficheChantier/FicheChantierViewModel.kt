@@ -11,6 +11,8 @@ import androidx.navigation.Navigation
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -89,7 +91,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     if (resp != null) {
                         //Log.i("INFO","${resp.fiche!!.client.enterprise}")
                         chantier.value = resp.fiche!!
-                        getVehicule(resp!!.fiche!!.vehicule!!)
                     }
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
@@ -100,16 +101,20 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         })
     }
-    fun getVehicule(id:String){
-        val resp = repository.getVehiculeById(token!!, id, object: Callback<VehiculesResponse> {
-            override fun onResponse(call: Call<VehiculesResponse>, response: Response<VehiculesResponse>) {
+    fun getVehicule(id:String, textView: TextView) : String? {
+        var nom : String? = null;
+        viewModelScope.launch(Dispatchers.IO){
+            var v = repository.getByIdVehiculesLocalDatabse(id)
+            textView.setText(v!!.nom)
+        }
+        Log.i("INFO","vehicule ${nom}")
+        /*val resp = repository.getVehiculeById(token!!, id, object: Callback<VehiculesResponse> {
+            override fun onResponse(call: Call<VehiculesResponse>, response: Response<VehiculesResponse>){
                 if ( response.code() == 200 ) {
                     val resp = response.body()
                     if (resp != null) {
-                       // Log.i("INFO","${resp.vehicule!!.nom}")
-                        var c = chantier.value!!
-                        c.vehicule = resp!!.vehicule!!.nom.toString()
-                        chantier.value = c
+                        nom = resp!!.vehicule!!.nom.toString()
+                        Log.i("INFO","vehicule ${nom}")
                     }
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
@@ -119,6 +124,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 Log.e("Error","erreur ${t.message}")
             }
         })
+        Log.i("INFO","vehicule ${nom}")*/
+        return nom
     }
     /*fun setSignature(sign:Bitmap){
         signature.value = sign
