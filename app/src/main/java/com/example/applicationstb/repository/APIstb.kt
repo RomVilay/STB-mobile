@@ -19,9 +19,6 @@ interface APIstb  {
     @GET("/fiches/user/{userid}")
     fun getFichesUser( @Header("auth-token") token:String, @Path("userid") userid:String ): Call<FichesResponse>
 
-    @GET("/vehicules/{vehiculesId}")
-    fun getVehiculeById(@Header("auth-token") token:String, @Path("vehiculesId") userid:String): Call<VehiculesResponse>
-
     @GET("/fiches/{ficheId}")
     fun getChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<ChantierResponse>
 
@@ -87,5 +84,13 @@ interface APIstb  {
 
     @GET("/fiches/{ficheId}")
     fun getDemontageRotorBobine(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageRotorBobineResponse>
+    @GET("/vehicules")
+    fun getAllVehicules(@Header("auth-token") token:String): Call<VehiculesResponse>
+    @GET("/vehicules/{id}")
+    fun getVehiculeById(@Header("auth-token") token:String, @Path("id") id:String ): Call<VehiculesResponse>
+    @GET("/clients")
+    fun getAllClients(@Header("auth-token") token:String): Call<ClientsResponse>
+    @GET("/clients/{id}")
+    fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
 
 }

@@ -1631,6 +1631,9 @@ class DemontageRotorBobineResponse(
 class RemontageResponse(
     var fiche:Remontage?
 )
+class ClientsResponse(
+    var client:Client?
+)
 
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
@@ -1685,6 +1688,8 @@ class Repository (var context:Context) {
     var demontagePDao : DemontagePDao? = null;
     var remontageTriphaseDao: RemontageTriphaseDao? = null;
     var remontageCourantCDao: RemontageCCDao? = null;
+    var vehiculeDao: VehiculeDao? = null;
+    var clientDao: ClientsDao? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -1740,6 +1745,21 @@ class Repository (var context:Context) {
     fun getDemontagePompe(token:String,ficheId:String, callback: Callback<DemontagePompeResponse>){
         var call = service.getDemoPompe(token,ficheId)
         var fiche:DemontagePompe? = null
+        call.enqueue(callback)
+    }
+    fun getAllVehicules(token:String, callback: Callback<VehiculesResponse>){
+        var call = service.getAllVehicules(token)
+        var vehicules:Array<Vehicule>? = null
+        call.enqueue(callback)
+    }
+    fun getVehiculesById(token:String, id:String, callback: Callback<VehiculesResponse>){
+        var call = service.getVehiculeById(token,id)
+        var vehicule:Vehicule? = null
+        call.enqueue(callback)
+    }
+    fun getAllClients(token:String, callback: Callback<ClientsResponse>){
+        var call = service.getAllClients(token)
+        var vehicules:Array<Client>? = null
         call.enqueue(callback)
     }
     fun patchDemontageTriphase(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
@@ -2372,9 +2392,41 @@ class Repository (var context:Context) {
       demontageMonoDao = db!!.demontageMonophaseDao()
       demontageAlterDao = db!!.demontageAlternateurDao()
       demontageRBDao = db!!.demontageRotorBobineDao()
+      vehiculeDao = db!!.vehiculesDao()
+      clientDao = db!!.clientDao()
         Log.i("INFO","db créée")
     }
     //requêtes chantier
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getAllVehiculesLocalDatabase(): List<VehiculeEntity>{
+        return vehiculeDao!!.getAll()
+    }
+    suspend fun insertVehiculesLocalDatabase(vehicule: Vehicule){
+        vehiculeDao!!.insertAll(vehicule.toEntity())
+    }
+    suspend fun getByIdVehiculesLocalDatabse( id: String): Vehicule? {
+        if (vehiculeDao!!.getById(id) !== null) {
+            return vehiculeDao!!.getById(id).toVehicule()
+        } else return null
+    }
+    suspend fun updateVehiculesLocalDatabse( vehicule: VehiculeEntity){
+        vehiculeDao!!.update(vehicule)
+    }
+    suspend fun deleteVehiculeLocalDatabse( vehicule: VehiculeEntity){
+        vehiculeDao!!.delete(vehicule)
+    }
+    suspend fun getAllClientsLocalDatabase(): List<ClientEntity>{
+        return clientDao!!.getAll()
+    }
+    suspend fun insertClientsLocalDatabase(client: Client){
+        clientDao!!.insertAll(client.toEntity())
+    }
+    suspend fun updateClientsLocalDatabse( client: ClientEntity){
+        clientDao!!.update(client)
+    }
+    suspend fun deleteClientsLocalDatabse( client: ClientEntity){
+        clientDao!!.delete(client)
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun insertChantierLocalDatabase(chantier: Chantier){
         chantierDao!!.insertAll(chantier.toEntity())
@@ -2382,7 +2434,8 @@ class Repository (var context:Context) {
    suspend fun getAllChantierLocalDatabase(): List<ChantierEntity>{
         return chantierDao!!.getAll()
     }
-    suspend fun getByIdChantierLocalDatabse( id: String): Chantier? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getByIdChantierLocalDatabse(id: String): Chantier? {
         if (chantierDao!!.getById(id) !== null) {
             return chantierDao!!.getById(id).toChantier()
         } else return null

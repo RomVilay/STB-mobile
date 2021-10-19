@@ -62,6 +62,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 var ch = repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
                                                 if (ch == null) {
                                                     repository.insertChantierLocalDatabase(resp!!.fiche!!)
+                                                    getVehicule(resp!!.fiche!!.vehicule!!)
                                                     chantiers!!.add(resp!!.fiche!!)
                                                     Log.i("INFO","ajout en bdd locale")
                                                 } else {
@@ -493,6 +494,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     fun listeFicheLocal(){
         viewModelScope.launch(Dispatchers.IO){
             var listChantier = repository.getAllChantierLocalDatabase()
@@ -540,8 +542,35 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     fun toDeconnexion(view: View){
         Navigation.findNavController(view).navigate(R.id.versConnexion)
     }
+    fun getVehicule(id:String){
+        var vehicule = repository.getVehiculeById(token!!,id, object: Callback<VehiculesResponse>{
+            override fun onResponse(
+                call: Call<VehiculesResponse>,
+                response: Response<VehiculesResponse>
+            ) {
+                if ( response.code() == 200){
+                    val resp = response.body()
+                    Log.i("INFO","vehicule ${resp!!.vehicule!!.nom}")
+                    viewModelScope.launch(Dispatchers.IO){
+                       var local =  repository.getByIdVehiculesLocalDatabse(resp!!.vehicule!!._id)
+                        if (local == null){
+                            Log.i("INFO","ajout ${resp!!.vehicule!!.nom} en bdd locale")
+                            repository.insertVehiculesLocalDatabase(resp!!.vehicule!!)
+                        }
+                    }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                }
+
+            }
+
+            override fun onFailure(call: Call<VehiculesResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
