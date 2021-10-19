@@ -134,19 +134,44 @@ class MecaFragment : Fragment() {
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
-        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null) refRoul.setText(fiche.refRoulementArriere) else if( fiche.refRoulementAvant !== null) refRoul.setText(fiche.refRoulementAvant)
+        var roulement = layout.findViewById<TextView>(R.id.valRoulement)
+        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null){
+            Log.i("INFO","roulAr = ${fiche.typeRoulementArriere!![0]}")
+            var s = "roulement arrière :"
+            for ( i in 0..fiche.typeRoulementArriere!!.size-1){
+                s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
+            }
+            refRoul.setText(fiche.refRoulementArriere!![0])
+        } else if( fiche.refRoulementAvant !== null) {
+            var s = "roulement avant :"
+            for ( i in 0..fiche.typeRoulementAvant!!.size-1){
+                s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
+            }
+            roulement.setText(s)
+                refRoul.setText(fiche.refRoulementAvant!![0])}
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!!)
+                var s = "roulement arrière :"
+                var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
                 typeRoulement.setSelection(type)
-                refRoul.setText(viewModel.selection.value!!.refRoulementArriere)
+                refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
+                for ( i in 0..fiche.typeRoulementArriere!!.size-1){
+                    s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
+                }
+                roulement.setText(s)
             } else {
-                var type = if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementAvant!!)
+                var s = "roulement avant :"
+                var type = if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
                 typeRoulement.setSelection(type)
-                refRoul.setText(viewModel.selection.value!!.refRoulementAvant)
+                refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
+                for ( i in 0..fiche.typeRoulementAvant!!.size-1){
+                    s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
+                }
+                Log.i("INFO","av")
+                roulement.setText(s)
             }
         }
-        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        /*typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
@@ -178,7 +203,7 @@ class MecaFragment : Fragment() {
                         viewModel.localSave()
                     }
                 }
-        }
+        }*/
         //joints
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("simple lèvre","double lèvre"))

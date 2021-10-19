@@ -201,10 +201,10 @@ class BodyDemontageTriphase (
                       var porteeRArriere:  Int?,
                       var boutArbre: Boolean?,
                       var rondelleElastique: Boolean?,
-                      var refRoulementAvant: String?,
-                      var refRoulementArriere: String?,
-                      var typeRoulementAvant: String ?,
-                      var typeRoulementArriere: String ?,
+                      var refRoulementAvant: Array<String>?,
+                      var refRoulementArriere: Array<String>?,
+                      var typeRoulementAvant: Array<String>?,
+                      var typeRoulementArriere: Array<String>?,
                       var refJointAvant: String?,
                       var refJointArriere: String?,
                       var typeJointAvant: Boolean?,
@@ -258,10 +258,18 @@ class BodyDemontageTriphase (
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readBoolean(),
@@ -317,10 +325,18 @@ class BodyDemontageTriphase (
         parcel.writeInt(porteeRArriere!!)
         parcel.writeBoolean(boutArbre!!)
         parcel.writeBoolean(rondelleElastique!!)
-        parcel.writeString(refRoulementAvant!!)
-        parcel.writeString(refRoulementArriere!!)
-        parcel.writeString(typeRoulementAvant!!)
-        parcel.writeString(typeRoulementArriere!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
         parcel.writeString(refJointAvant!!)
         parcel.writeString(refJointArriere!!)
         parcel.writeBoolean(typeJointAvant!!)
@@ -389,10 +405,10 @@ class BodyDemontageCC ( var status: Long?,
                         var porteeRArriere:  Int?,
                         var boutArbre: Boolean?,
                         var rondelleElastique: Boolean?,
-                        var refRoulementAvant: String?,
-                        var refRoulementArriere: String?,
-                        var typeRoulementAvant: String ?,
-                        var typeRoulementArriere: String ?,
+                        var refRoulementAvant: Array<String>?,
+                        var refRoulementArriere: Array<String>?,
+                        var typeRoulementAvant: Array<String>?,
+                        var typeRoulementArriere: Array<String>?,
                         var refJointAvant: String?,
                         var refJointArriere: String?,
                         var typeJointAvant: Boolean?,
@@ -443,10 +459,18 @@ class BodyDemontageCC ( var status: Long?,
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readBoolean(),
@@ -499,10 +523,18 @@ class BodyDemontageCC ( var status: Long?,
         parcel.writeInt(porteeRArriere!!)
         parcel.writeBoolean(boutArbre!!)
         parcel.writeBoolean(rondelleElastique!!)
-        parcel.writeString(refRoulementAvant!!)
-        parcel.writeString(refRoulementArriere!!)
-        parcel.writeString(typeRoulementAvant!!)
-        parcel.writeString(typeRoulementArriere!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
         parcel.writeString(refJointAvant!!)
         parcel.writeString(refJointArriere!!)
         parcel.writeBoolean(typeJointAvant!!)
@@ -570,10 +602,10 @@ class BodyDemontageAlternateur (
     var porteeRArriere:  Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
-    var refRoulementAvant: String?,
-    var refRoulementArriere: String?,
-    var typeRoulementAvant: String ?,
-    var typeRoulementArriere: String ?,
+   var refRoulementAvant: Array<String>?,
+                      var refRoulementArriere: Array<String>?,
+                      var typeRoulementAvant: Array<String>?,
+                      var typeRoulementArriere: Array<String>?,
     var refJointAvant: String?,
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
@@ -638,10 +670,18 @@ class BodyDemontageAlternateur (
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readBoolean(),
@@ -708,10 +748,18 @@ class BodyDemontageAlternateur (
         parcel.writeInt(porteeRArriere!!)
         parcel.writeBoolean(boutArbre!!)
         parcel.writeBoolean(rondelleElastique!!)
-        parcel.writeString(refRoulementAvant!!)
-        parcel.writeString(refRoulementArriere!!)
-        parcel.writeString(typeRoulementAvant!!)
-        parcel.writeString(typeRoulementArriere!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
         parcel.writeString(refJointAvant!!)
         parcel.writeString(refJointArriere!!)
         parcel.writeBoolean(typeJointAvant!!)
@@ -792,10 +840,10 @@ class BodyDemontageRotorBobine (
     var porteeRArriere:  Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
-    var refRoulementAvant: String?,
-    var refRoulementArriere: String?,
-    var typeRoulementAvant: String ?,
-    var typeRoulementArriere: String ?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
     var refJointAvant: String?,
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
@@ -858,10 +906,18 @@ class BodyDemontageRotorBobine (
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readBoolean(),
@@ -926,10 +982,18 @@ class BodyDemontageRotorBobine (
         parcel.writeInt(porteeRArriere!!)
         parcel.writeBoolean(boutArbre!!)
         parcel.writeBoolean(rondelleElastique!!)
-        parcel.writeString(refRoulementAvant!!)
-        parcel.writeString(refRoulementArriere!!)
-        parcel.writeString(typeRoulementAvant!!)
-        parcel.writeString(typeRoulementArriere!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
         parcel.writeString(refJointAvant!!)
         parcel.writeString(refJointArriere!!)
         parcel.writeBoolean(typeJointAvant!!)
@@ -1010,10 +1074,10 @@ class BodyDemontageMonophase (
     var porteeRArriere:  Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
-    var refRoulementAvant: String?,
-    var refRoulementArriere: String?,
-    var typeRoulementAvant: String ?,
-    var typeRoulementArriere: String ?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
     var refJointAvant: String?,
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
@@ -1057,10 +1121,18 @@ class BodyDemontageMonophase (
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readBoolean(),
@@ -1106,10 +1178,18 @@ class BodyDemontageMonophase (
         parcel.writeInt(porteeRArriere!!)
         parcel.writeBoolean(boutArbre!!)
         parcel.writeBoolean(rondelleElastique!!)
-        parcel.writeString(refRoulementAvant!!)
-        parcel.writeString(refRoulementArriere!!)
-        parcel.writeString(typeRoulementAvant!!)
-        parcel.writeString(typeRoulementArriere!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
         parcel.writeString(refJointAvant!!)
         parcel.writeString(refJointArriere!!)
         parcel.writeBoolean(typeJointAvant!!)

@@ -66,67 +66,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         fichemot.couplage = type
         selection.value = fichemot
     }
-    fun setFlasques(etat:Int, position: String){
-        var fichemot = selection.value as DemontageMoteur
-        if (position == "av") {
-            fichemot.flasqueAvant = etat
-        } else {
-            fichemot.flasqueArriere = etat
-        }
-        selection.value = fichemot
-    }
-    fun setPRoulements(position:String,etat:Int){
-        var fichemot = selection.value as DemontageMoteur
-        if (position == "av") {
-            fichemot.porteeRAvant = etat
-        } else {
-            fichemot.porteeRArriere = etat
-        }
-        selection.value = fichemot
-    }
-    fun setEtatBA(etat:Boolean){
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.boutArbre = etat
-        selection.value = fichemot
-    }
-    fun setRoulAr(type:String){
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.typeRoulementArriere = type
-        selection.value = fichemot
-    }
-    fun setRoulAv(type:String){
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.typeRoulementAvant = type
-        selection.value = fichemot
-    }
-    fun setRefRoul(position:String,ref:String){
-        var fichemot = selection.value as DemontageMoteur
-        if (position == "av") {
-            fichemot.refRoulementAvant = ref
-        } else {
-            fichemot.refRoulementArriere = ref
-        }
-        selection.value = fichemot
-    }
-    fun setJointAr(type:Boolean){
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.typeJointArriere = type
-        selection.value = fichemot
-    }
-    fun setJointAv(type:Boolean){
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.typeJointAvant = type
-        selection.value = fichemot
-    }
-    fun setRefJoint(position:String,ref:String){
-        var fichemot = selection.value as DemontageMoteur
-        if (position == "av") {
-            fichemot.refJointAvant = ref
-        } else {
-            fichemot.refJointArriere = ref
-        }
-        selection.value = fichemot
-    }
+
 
     fun addPhoto(index:Int,photo: Uri) {
         photos.value!!.add(photo.toString())
