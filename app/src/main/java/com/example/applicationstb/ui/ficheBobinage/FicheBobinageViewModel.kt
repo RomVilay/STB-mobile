@@ -5,8 +5,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -36,6 +39,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var token: String? = null;
     var username: String? = null;
     var context = getApplication<Application>().applicationContext
+    var start = MutableLiveData<Date>()
 
     init {
         viewModelScope.launch(Dispatchers.IO){
@@ -67,6 +71,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //bobinage.value = listeBobinage[0]
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun selectBobinage(id: String) {
         if (isOnline(context)) {
             val resp = repository.getBobinage(token!!, id, object : Callback<BobinageResponse> {
@@ -78,8 +83,8 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         val resp = response.body()
                         if (resp != null) {
                             Log.i("INFO", "${resp.fiche!!._id}")
-                            bobinage.value = resp.fiche
-                            sections.value = bobinage.value!!.sectionsFils
+                            bobinage.value = resp.fiche!!
+                            sections.value = bobinage.value!!.sectionsFils!!
                             schemas.value = mutableListOf()
                         }
                     } else {
@@ -100,7 +105,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         var list = sections.value
         var section = Section(nbBrins, diametre)
         list!!.add(section)
-        sections.value = list
+        sections.value = list!!
         //Log.i("INFO", "add section $brins - $longueur")
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
@@ -141,6 +146,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun save(context: Context, view:View) {
         Log.i("INFO", "iso: ${bobinage.value!!.isolementUT}")
         if (isOnline(context)) {
@@ -200,6 +206,36 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+    fun getTime(){
+        Log.i("INFO","duree avant : ${bobinage.value?.dureeTotale}")
+        var now = Date()
+        if (bobinage.value!!.dureeTotale !== null) {
+            bobinage.value!!.dureeTotale =
+                (now.time - start.value!!.time ) + bobinage.value!!.dureeTotale!!
+        } else {
+            bobinage.value!!.dureeTotale = now.time - start.value!!.time
+        }
+        start.value = now
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun quickSave(){
+        Log.i("INFO","quick save")
+        getTime()
+        Log.i("INFO","duree après : ${bobinage.value?.dureeTotale}")
+        viewModelScope.launch(Dispatchers.IO){
+            var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            //Log.i("INFO","${ch}")
+            if (ch !== null) {
+                repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
+                //Log.i("INFO","patch ${bobinage.value!!._id}")
+            } else {
+                repository.insertBobinageLocalDatabase(bobinage.value!!)
+                //Log.i("INFO","insert ${chantier.value!!._id}")
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

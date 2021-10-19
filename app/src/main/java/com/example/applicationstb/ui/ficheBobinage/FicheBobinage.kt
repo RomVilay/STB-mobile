@@ -19,6 +19,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,18 +48,6 @@ class FicheBobinage : Fragment() {
     private  val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
-
-    /*private val requestPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Log.i("Permission: ", "Granted")
-            } else {
-                Log.i("Permission: ", "Denied")
-            }
-        }*/
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +59,7 @@ class FicheBobinage : Fragment() {
         viewModel.listeBobinage = list.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
-        var start : Date? = null;
+
         //viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
 
         //champs détails
@@ -146,11 +135,19 @@ class FicheBobinage : Fragment() {
                 viewModel.schemas.value = mutableListOf()
             }
         })
-        viewModel.bobinage.observe(viewLifecycleOwner,{
-            var bobinage = viewModel.bobinage.value
+
+            /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
+            dateDebut.setText(LocalDateTime.now().format(format))*/
+
+        btnSelect.setOnClickListener {
+            viewModel.start.value = Date()
+            var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
+            viewModel.bobinage.value = bobinage
+            viewModel.sections.value = bobinage?.sectionsFils
+            viewModel.schemas.value = bobinage?.schemas
             if (bobinage != null) {
                 marque.setText(bobinage?.marqueMoteur)
-                if (bobinage.courant!== null) {courant.setText(bobinage?.courant.toString())} //
+                if (bobinage.courant !== null) {courant.setText(bobinage?.courant.toString())} //
                 if (bobinage.vitesse!== null) {vitesse.setText(bobinage?.vitesse.toString())} //
                 type.setText(bobinage?.typeBobinage)
                 client.setText(bobinage?.client?.enterprise)
@@ -175,16 +172,6 @@ class FicheBobinage : Fragment() {
                 var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
                 dated.setText( bobinage?.dateDebut!!.toLocaleString())
             }
-            /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
-            dateDebut.setText(LocalDateTime.now().format(format))*/
-        })
-
-        btnSelect.setOnClickListener {
-            start = Date()
-            var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
-            viewModel.bobinage.value = bobinage
-            viewModel.sections.value = bobinage?.sectionsFils
-            viewModel.schemas.value = bobinage?.schemas
             //viewModel.selectBobinage(bobinage!!._id)
             /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
             dated.setText(LocalDateTime.now().format(format))*/
@@ -220,6 +207,7 @@ class FicheBobinage : Fragment() {
                 )
                 var s = viewModel.somme(viewModel.sections.value!!)
                 som.setText(s.toString())
+                viewModel.quickSave()
             } else {
                 val mySnackbar = Snackbar.make(layout,"Veuillez préciser le nombre de brins et le diamètre de la section", 3600)
                 mySnackbar.show()
@@ -259,91 +247,103 @@ class FicheBobinage : Fragment() {
                 }
             }
         }
+        marque.doAfterTextChanged {
+            if (marque.text.isNotEmpty()) viewModel.bobinage.value!!.marqueMoteur = marque.text.toString()
+            viewModel.quickSave()
+        }
+        type.doAfterTextChanged {
+            if (type.text.isNotEmpty()) viewModel.bobinage.value!!.typeBobinage = type.text.toString()
+            viewModel.quickSave()
+        }
+        vitesse.doAfterTextChanged {
+                if (vitesse.text.isNotEmpty()) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        puissance.doAfterTextChanged {
+            if (puissance.text.isNotEmpty()) viewModel.bobinage.value!!.puissance = puissance.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        phases.doAfterTextChanged {
+            if (phases.text.isNotEmpty()) viewModel.bobinage.value!!.phases = phases.text.toString().toLong()
+            viewModel.quickSave()
+        }
+        frequence.doAfterTextChanged {
+            if (frequence.text.isNotEmpty()) viewModel.bobinage.value!!.frequences = frequence.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        courant.doAfterTextChanged {
+            if (courant.text.isNotEmpty()) viewModel.bobinage.value!!.courant = courant.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        spire.doAfterTextChanged {
+            if (spire.text.isNotEmpty()) viewModel.bobinage.value!!.nbSpires = spire.text.toString().toLong()
+            viewModel.quickSave()
+        }
+        poids.doAfterTextChanged {
+            if (poids.text.isNotEmpty()) viewModel.bobinage.value!!.poids = poids.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        RU.doAfterTextChanged {
+            if(RU.text.isNotEmpty()) viewModel.bobinage.value!!.resistanceU = RU.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        RV.doAfterTextChanged {
+            if(RV.text.isNotEmpty()) viewModel.bobinage.value!!.resistanceV = RV.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        RW.doAfterTextChanged {
+            if (RW.text.isNotEmpty()) viewModel.bobinage.value!!.resistanceW = RW.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        IU.doAfterTextChanged {
+            if (IU.text.isNotEmpty()) viewModel.bobinage.value!!.isolementUT = IU.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        IV.doAfterTextChanged {
+             if (IV.text.isNotEmpty()) viewModel.bobinage.value!!.isolementVT = IV.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        IW.doAfterTextChanged {
+            if (IW.text.isNotEmpty()) viewModel.bobinage.value!!.isolementWT = IW.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+         IIU.doAfterTextChanged {
+             if (IIU.text.isNotEmpty()) viewModel.bobinage.value!!.isolementUV =  IIU.text.toString().toFloat()
+             viewModel.quickSave()
+         }
+        IIV.doAfterTextChanged {
+            if (IIV.text.isNotEmpty()) viewModel.bobinage.value!!.isolementUW =   IIV.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+         IIW.doAfterTextChanged {
+             if (IIW.text.isNotEmpty()) viewModel.bobinage.value!!.isolementVW =  IIW.text.toString().toFloat()
+             viewModel.quickSave()
+         }
+        obs.doAfterTextChanged {
+            viewModel.bobinage.value!!.observations = obs.text.toString()
+            viewModel.quickSave()
+        }
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.bobinage.value!!.calageEncoches = isChecked
+            viewModel.quickSave()
+        }
         quit.setOnClickListener {
             viewModel.back(layout)
         }
         enrg.setOnClickListener {
-            /*if (IU == null) {
-                Snackbar.make(
-                    layout.findViewById(R.id.FicheBobinageLayout),
-                    "veuilleza définir une valeur pour la résistance",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }*/
-            var bobi = viewModel.bobinage.value
-            bobi!!.marqueMoteur = if (marque.text.isNotEmpty()) marque.text.toString() else bobi!!.marqueMoteur
-            bobi!!.typeBobinage = if (type.text.isNotEmpty()) type.text.toString() else bobi!!.typeBobinage
-            bobi!!.vitesse = if (vitesse.text.isNotEmpty()) vitesse.text.toString().toFloat() else bobi!!.vitesse
-            bobi!!.puissance = if (puissance.text.isNotEmpty()) puissance.text.toString().toFloat() else bobi!!.puissance
-            bobi!!.phases = if (phases.text.isNotEmpty()) phases.text.toString().toLong() else bobi!!.phases
-            bobi!!.frequences = if (frequence.text.isNotEmpty()) frequence.text.toString().toFloat() else bobi!!.frequences
-            bobi!!.courant = if (courant.text.isNotEmpty()) courant.text.toString().toFloat() else bobi!!.courant
-            bobi!!.nbSpires = if (spire.text.isNotEmpty()) spire.text.toString().toLong() else bobi!!.nbSpires
-            bobi!!.poids = if (poids.text.isNotEmpty()) poids.text.toString().toFloat() else bobi!!.poids
-            bobi!!.resistanceU = if(RU.text.isNotEmpty()) RU.text.toString().toFloat() else bobi!!.resistanceU
-            bobi!!.resistanceV = if(RV.text.isNotEmpty()) RV.text.toString().toFloat() else bobi!!.resistanceV
-            bobi!!.resistanceW = if (RW.text.isNotEmpty()) RW.text.toString().toFloat() else bobi!!.resistanceW
-            bobi!!.isolementUT = if (IU.text.isNotEmpty()) IU.text.toString().toFloat() else bobi!!.isolementUT
-            bobi!!.isolementVT = if (IV.text.isNotEmpty()) IV.text.toString().toFloat() else bobi!!.isolementVT
-            bobi!!.isolementWT = if (IW.text.isNotEmpty()) IW.text.toString().toFloat() else bobi!!.isolementWT
-            bobi!!.isolementUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toFloat() else bobi!!.isolementUV
-            bobi!!.isolementUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toFloat() else bobi!!.isolementUW
-            bobi!!.isolementVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toFloat() else bobi!!.isolementVW
-            bobi!!.observations = obs.text.toString()
-            bobi!!.status = 2L
-            bobi!!.calageEncoches = switch.isChecked()
-            bobi!!.sectionsFils = viewModel.sections.value
-            if (bobi!!.dureeTotale !== null) {
-               bobi!!.dureeTotale =
-                    (Date().time - start!!.time ) + bobi!!.dureeTotale!!
-            } else {
-                bobi!!.dureeTotale = Date().time - start!!.time
-            }
-            viewModel.bobinage.value = bobi
-            Log.i("INFO","duree: ${bobi.dureeTotale}")
+            viewModel.bobinage.value!!.status = 2L
+            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
+            viewModel.getTime()
+            Log.i("INFO","duree: ${viewModel.bobinage.value!!.dureeTotale}")
             viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
 
         term.setOnClickListener {
-                /*if (IU == null) {
-                    Snackbar.make(
-                        layout.findViewById(R.id.FicheBobinageLayout),
-                        "veuilleza définir une valeur pour la résistance",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }*/
-                var bobi = viewModel.bobinage.value
-                bobi!!.marqueMoteur = marque.text.toString()
-                bobi!!.typeBobinage = type.text.toString()
-                bobi!!.vitesse = if (vitesse.text.isNotEmpty()) vitesse.text.toString().toFloat() else bobi!!.vitesse
-                bobi!!.puissance = if (puissance.text.isNotEmpty()) puissance.text.toString().toFloat() else bobi!!.puissance
-                bobi!!.phases = if (phases.text.isNotEmpty()) phases.text.toString().toLong() else bobi!!.phases
-                bobi!!.frequences = if (frequence.text.isNotEmpty()) frequence.text.toString().toFloat() else bobi!!.frequences
-                bobi!!.courant = if (courant.text.isNotEmpty()) courant.text.toString().toFloat() else bobi!!.courant
-                bobi!!.nbSpires = if (spire.text.isNotEmpty()) spire.text.toString().toLong() else bobi!!.nbSpires
-                bobi!!.poids = if (poids.text.isNotEmpty()) poids.text.toString().toFloat() else bobi!!.poids
-                bobi!!.resistanceU = if(RU.text.isNotEmpty()) RU.text.toString().toFloat() else bobi!!.resistanceU
-                bobi!!.resistanceV = if(RV.text.isNotEmpty()) RV.text.toString().toFloat() else bobi!!.resistanceV
-                bobi!!.resistanceW = if (RW.text.isNotEmpty()) RW.text.toString().toFloat() else bobi!!.resistanceW
-                bobi!!.isolementUT = if (IU.text.isNotEmpty()) IU.text.toString().toFloat() else bobi!!.isolementUT
-                bobi!!.isolementVT = if (IV.text.isNotEmpty()) IV.text.toString().toFloat() else bobi!!.isolementVT
-                bobi!!.isolementWT = if (IW.text.isNotEmpty()) IW.text.toString().toFloat() else bobi!!.isolementWT
-                bobi!!.isolementUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toFloat() else bobi!!.isolementUV
-                bobi!!.isolementUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toFloat() else bobi!!.isolementUW
-                bobi!!.isolementVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toFloat() else bobi!!.isolementVW
-                bobi!!.observations = obs.text.toString()
-                bobi!!.status = 3L
-                bobi!!.calageEncoches = switch.isChecked()
-                bobi!!.sectionsFils = viewModel.sections.value
-                if (bobi!!.dureeTotale !== null) {
-                    bobi!!.dureeTotale =
-                        (Date().time - start!!.time ) + bobi!!.dureeTotale!!
-                } else {
-                    bobi!!.dureeTotale = Date().time - start!!.time
-                }
-                viewModel.bobinage.value = bobi
-                Log.i("INFO","duree: ${bobi.dureeTotale}")
-                viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
+            viewModel.bobinage.value!!.status = 3L
+            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
+            viewModel.getTime()
+            Log.i("INFO","duree: ${viewModel.bobinage.value!!.dureeTotale}")
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
         return layout
     }
