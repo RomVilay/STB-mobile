@@ -137,12 +137,14 @@ class MecaFragment : Fragment() {
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
-        var roulement = layout.findViewById<TextView>(R.id.valRoulement)
         var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
         specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
         var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
             viewModel.selection.value!!.typeRoulementArriere =
                 removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+            viewModel.getTime()
+            viewModel.localSave()
         }
         specsRoul.adapter = adapter
         viewModel.selection.observe(viewLifecycleOwner,{
@@ -158,20 +160,9 @@ class MecaFragment : Fragment() {
                 )
             }
         })
-        specsRoul.adapter
         if (switchRoullements.isChecked && fiche.refRoulementArriere !== null){
-            Log.i("INFO","roulAr = ${fiche.typeRoulementArriere!![0]}")
-            var s = "roulement arrière :"
-            for ( i in 0..fiche.typeRoulementArriere!!.size-1){
-                s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
-            }
             refRoul.setText(fiche.refRoulementArriere!![0])
         } else if( fiche.refRoulementAvant !== null) {
-            var s = "roulement avant :"
-            for ( i in 0..fiche.typeRoulementAvant!!.size-1){
-                s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
-            }
-            roulement.setText(s)
                 refRoul.setText(fiche.refRoulementAvant!![0])}
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -179,28 +170,26 @@ class MecaFragment : Fragment() {
                 var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
                 typeRoulement.setSelection(type)
                 refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
-                for ( i in 0..fiche.typeRoulementArriere!!.size-1){
-                    s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
-                }
-                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!, { item ->
+                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
                     viewModel.selection.value!!.typeRoulementArriere =
                         removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                })
-                roulement.setText(s)
+                    viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
             } else {
                 var s = "roulement avant :"
                 var type = if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
                 typeRoulement.setSelection(type)
                 refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
-                for ( i in 0..fiche.typeRoulementAvant!!.size-1){
-                    s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
-                }
                 Log.i("INFO","av")
-                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementAvant!!,viewModel.selection.value!!.refRoulementAvant!!, { item ->
+                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementAvant!!,viewModel.selection.value!!.refRoulementAvant!!) { item ->
                     viewModel.selection.value!!.typeRoulementAvant =
                         removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                })
-                roulement.setText(s)
+                    viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
             }
         }
         typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -225,15 +214,13 @@ class MecaFragment : Fragment() {
                         viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
                         viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
                     }*/
-                    var s = "roulement(s) arriere :"
-                    for ( i in 0..fiche.typeRoulementArriere!!.size-1){
-                        s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
-                    }
-                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!,{ item ->
+                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
                         viewModel.selection.value!!.typeRoulementArriere =
                             removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                    })
-                    roulement.setText(s)
+                        viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
                     viewModel.getTime()
                     viewModel.localSave()
                 } else {
@@ -252,15 +239,13 @@ class MecaFragment : Fragment() {
                         viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
                         viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
                     }*/
-                    var s = "roulement(s) avant :"
-                    for ( i in 0..fiche.typeRoulementAvant!!.size-1){
-                        s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
-                    }
-                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!,{ item ->
+                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
                         viewModel.selection.value!!.typeRoulementAvant =
                             removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                    })
-                    roulement.setText(s)
+                        viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
                     viewModel.getTime()
                     viewModel.localSave()
                 }
@@ -274,16 +259,18 @@ class MecaFragment : Fragment() {
             } else {
                 index = viewModel.selection.value!!.typeRoulementAvant!!.indexOf(typeRoulement.selectedItem)
             }
-            Log.i("INFO","type ${typeRoulement.selectedItem} - position ${index} ")
             if (index !== -1) {
                 if (switchRoullements.isChecked) {
                     if (refRoul.text.isNotEmpty()) {
                         viewModel.selection.value!!.refRoulementArriere!![index] =
                             refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!,{ item ->
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
                             viewModel.selection.value!!.typeRoulementArriere =
                                 removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        })
+                            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
                         viewModel.getTime()
                         viewModel.localSave()
                     }
@@ -291,10 +278,13 @@ class MecaFragment : Fragment() {
                     if (refRoul.text.isNotEmpty()) {
                         viewModel.selection.value!!.refRoulementAvant!![index] =
                             refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!,{ item ->
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
                             viewModel.selection.value!!.typeRoulementAvant =
                                 removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                        })
+                            viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
                         viewModel.getTime()
                         viewModel.localSave()
                     }
