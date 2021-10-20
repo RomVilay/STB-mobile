@@ -183,6 +183,7 @@ class BodyBobinage(var marqueMoteur : String?,
 
 class BodyDemontageTriphase (
                       var status: Long?,
+                      var typeMoteur: String?,
                       var marque: String?,
                       var numSerie: Int?,
                       var puissance: Float?,
@@ -240,6 +241,7 @@ class BodyDemontageTriphase (
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
         parcel.readFloat(),
@@ -307,6 +309,7 @@ class BodyDemontageTriphase (
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
+        parcel.writeString(typeMoteur!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
         parcel.writeFloat(puissance!!)
@@ -387,6 +390,7 @@ class BodyDemontageTriphase (
 }
 
 class BodyDemontageCC ( var status: Long?,
+                        var typeMoteur: String?,
                         var marque: String?,
                         var numSerie: Int?,
                         var puissance: Float?,
@@ -441,6 +445,7 @@ class BodyDemontageCC ( var status: Long?,
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
         parcel.readFloat(),
@@ -505,6 +510,7 @@ class BodyDemontageCC ( var status: Long?,
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
+        parcel.writeString(typeMoteur!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
         parcel.writeFloat(puissance!!)
@@ -583,6 +589,7 @@ class BodyDemontageCC ( var status: Long?,
 
 class BodyDemontageAlternateur (
     var observations: String?,
+    var typeMoteur: String?,
     var status: Long?,
     var marque: String?,
     var numSerie: Int?,
@@ -624,6 +631,7 @@ class BodyDemontageAlternateur (
     var isolementMasseStatorPrincipalW	: Float?,
     var isolementMasseRotorPrincipal	: Float?,
     var isolementMasseStatorExcitation	: Float?,
+    var isolementMasseRotorExcitation	: Float?,
     var resistanceStatorPrincipalU	: Float?,
     var resistanceStatorPrincipalV	: Float?,
     var resistanceStatorPrincipalW	: Float?,
@@ -640,16 +648,13 @@ class BodyDemontageAlternateur (
     var intensiteU	: Float?,
     var intensiteV	: Float?,
     var intensiteW	: Float?,
-    var tensionUExcitation	: Float?,
-    var tensionVExcitation	: Float?,
-    var tensionWExcitation	: Float?,
-    var intensiteUExcitation	: Float?,
-    var intensiteVExcitation	: Float?,
-    var intensiteWExcitation	: Float?,
+    var tensionExcitation	: Float?,
+    var intensiteExcitation	: Float?,
     var dureeTotale: Int?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
@@ -709,11 +714,8 @@ class BodyDemontageAlternateur (
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -729,6 +731,7 @@ class BodyDemontageAlternateur (
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(observations!!)
+        parcel.writeString(typeMoteur!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
@@ -794,12 +797,8 @@ class BodyDemontageAlternateur (
         parcel.writeFloat(intensiteU!!)
         parcel.writeFloat(intensiteV!!)
         parcel.writeFloat(intensiteW!!)
-        parcel.writeFloat(tensionUExcitation!!)
-        parcel.writeFloat(tensionVExcitation!!)
-        parcel.writeFloat(tensionWExcitation!!)
-        parcel.writeFloat(intensiteUExcitation!!)
-        parcel.writeFloat(intensiteVExcitation!!)
-        parcel.writeFloat(intensiteWExcitation!!)
+        parcel.writeFloat(tensionExcitation!!)
+        parcel.writeFloat(intensiteExcitation!!)
         parcel.writeInt(dureeTotale!!)
     }
 
@@ -821,6 +820,7 @@ class BodyDemontageAlternateur (
 
 class BodyDemontageRotorBobine (
     var observations: String?,
+    var typeMoteur: String?,
     var status: Long?,
     var marque: String?,
     var numSerie: Int?,
@@ -887,6 +887,7 @@ class BodyDemontageRotorBobine (
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
+        parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
         parcel.readInt(),
@@ -963,6 +964,7 @@ class BodyDemontageRotorBobine (
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(observations!!)
+        parcel.writeString(typeMoteur!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
@@ -1055,6 +1057,7 @@ class BodyDemontageRotorBobine (
 
 class BodyDemontageMonophase (
     var observations: String?,
+    var typeMoteur: String?,
     var status: Long?,
     var marque: String?,
     var numSerie: Int?,
@@ -1101,6 +1104,7 @@ class BodyDemontageMonophase (
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
@@ -1158,6 +1162,7 @@ class BodyDemontageMonophase (
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(typeMoteur!!)
         parcel.writeString(observations!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
@@ -1230,6 +1235,7 @@ class BodyDemontageMonophase (
 
 class BodyDemoPompe(
     var status: Long?,
+    var typeMoteur: String?,
     var marque: String?,
     var numSerie: Int?,
     var fluide: String?,
@@ -1250,6 +1256,7 @@ class BodyDemoPompe(
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
         parcel.readString(),
@@ -1272,6 +1279,7 @@ class BodyDemoPompe(
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
+        parcel.writeString(typeMoteur!!)
         parcel.writeString(marque!!)
         parcel.writeInt(numSerie!!)
         parcel.writeString(fluide!!)
@@ -1317,18 +1325,30 @@ class BodyRemontageTriphase(
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Int?,
     var isolementPorteBalaisOhm: Int?,
-    var tensionStatorInducteurs: Boolean?,
-    var tensionStatorInducteursU: Float?,
-    var tensionStatorInducteursV: Float?,
-    var tensionStatorInducteursW: Float?,
-    var intensiteStatorInducteurs: Boolean?,
-    var intensiteStatorInducteursU: Float?,
-    var intensiteStatorInducteursV: Float?,
-    var intensiteStatorInducteursW: Float?,
-    var tensionInduitRotor: Boolean?,
-    var tensionInduitRotorU: Float?,
-    var tensionInduitRotorV: Float?,
-    var tensionInduitRotorW: Float?,
+     var tensionStator:Boolean?,
+     var tensionStatorU:Float?,
+     var tensionStatorV:Float?,
+     var tensionStatorW:Float?,
+     var tensionInducteurs: Boolean?,
+     var tensionInducteursU: Float?,
+     var tensionInducteursV: Float?,
+     var tensionInducteursW: Float?,
+     var intensiteStator:Boolean?,
+     var intensiteStatorU:Float?,
+     var intensiteStatorV:Float?,
+     var intensiteStatorW:Float?,
+     var intensiteInducteurs: Boolean?,
+     var intensiteInducteursU: Float?,
+     var intensiteInducteursV: Float?,
+     var intensiteInducteursW: Float?,
+     var tensionInduit:Boolean?,
+     var tensionInduitU:Float?,
+     var tensionInduitV:Float?,
+     var tensionInduitW:Float?,
+     var tensionRotor: Boolean?,
+     var tensionRotorU: Float?,
+     var tensionRotorV: Float?,
+     var tensionRotorW: Float?,
     var intensiteInduit: Boolean,
     var intensiteInduitU: Float?,
     var vitesseU: Float?,
@@ -1391,6 +1411,18 @@ class BodyRemontageTriphase(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readFloat(),
         parcel.readInt(),
         parcel.readFloat(),
@@ -1435,18 +1467,30 @@ class BodyRemontageTriphase(
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
         parcel.writeInt(isolementPorteBalaisV!!)
         parcel.writeInt(isolementPorteBalaisOhm!!)
-        parcel.writeBoolean(tensionStatorInducteurs!!)
-        parcel.writeFloat(tensionStatorInducteursU!!)
-        parcel.writeFloat(tensionStatorInducteursV!!)
-        parcel.writeFloat(tensionStatorInducteursW!!)
-        parcel.writeBoolean(intensiteStatorInducteurs!!)
-        parcel.writeFloat(intensiteStatorInducteursU!!)
-        parcel.writeFloat(intensiteStatorInducteursV!!)
-        parcel.writeFloat(intensiteStatorInducteursW!!)
-        parcel.writeBoolean(tensionInduitRotor!!)
-        parcel.writeFloat(tensionInduitRotorU!!)
-        parcel.writeFloat(tensionInduitRotorV!!)
-        parcel.writeFloat(tensionInduitRotorW!!)
+        parcel.writeBoolean(tensionStator!!)
+        parcel.writeFloat(tensionStatorU!!)
+        parcel.writeFloat(tensionStatorV!!)
+        parcel.writeFloat(tensionStatorW!!)
+        parcel.writeBoolean(tensionInducteurs!!)
+        parcel.writeFloat(tensionInducteursU!!)
+        parcel.writeFloat(tensionInducteursV!!)
+        parcel.writeFloat(tensionInducteursW!!)
+        parcel.writeBoolean(intensiteStator!!)
+        parcel.writeFloat(intensiteStatorU!!)
+        parcel.writeFloat(intensiteStatorV!!)
+        parcel.writeFloat(intensiteStatorW!!)
+        parcel.writeBoolean(intensiteInducteurs!!)
+        parcel.writeFloat(intensiteInducteursU!!)
+        parcel.writeFloat(intensiteInducteursV!!)
+        parcel.writeFloat(intensiteInducteursW!!)
+        parcel.writeBoolean(tensionInduit!!)
+        parcel.writeFloat(tensionInduitU!!)
+        parcel.writeFloat(tensionInduitV!!)
+        parcel.writeFloat(tensionInduitW!!)
+        parcel.writeBoolean(tensionRotor!!)
+        parcel.writeFloat(tensionRotorU!!)
+        parcel.writeFloat(tensionRotorV!!)
+        parcel.writeFloat(tensionRotorW!!)
         parcel.writeBoolean(intensiteInduit!!)
         parcel.writeFloat(intensiteInduitU!!)
         parcel.writeFloat(vitesseU!!)
@@ -1509,18 +1553,30 @@ class BodyRemontageCC(
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Int?,
     var isolementPorteBalaisOhm: Int?,
-    var tensionStatorInducteurs: Boolean?,
-    var tensionStatorInducteursU: Float?,
-    var tensionStatorInducteursV: Float?,
-    var tensionStatorInducteursW: Float?,
-    var intensiteStatorInducteurs: Boolean?,
-    var intensiteStatorInducteursU: Float?,
-    var intensiteStatorInducteursV: Float?,
-    var intensiteStatorInducteursW: Float?,
-    var tensionInduitRotor: Boolean?,
-    var tensionInduitRotorU: Float?,
-    var tensionInduitRotorV: Float?,
-    var tensionInduitRotorW: Float?,
+    var tensionStator:Boolean?,
+    var tensionStatorU:Float?,
+    var tensionStatorV:Float?,
+    var tensionStatorW:Float?,
+    var tensionInducteurs: Boolean?,
+    var tensionInducteursU: Float?,
+    var tensionInducteursV: Float?,
+    var tensionInducteursW: Float?,
+    var intensiteStator:Boolean?,
+    var intensiteStatorU:Float?,
+    var intensiteStatorV:Float?,
+    var intensiteStatorW:Float?,
+    var intensiteInducteurs: Boolean?,
+    var intensiteInducteursU: Float?,
+    var intensiteInducteursV: Float?,
+    var intensiteInducteursW: Float?,
+    var tensionInduit:Boolean?,
+    var tensionInduitU:Float?,
+    var tensionInduitV:Float?,
+    var tensionInduitW:Float?,
+    var tensionRotor: Boolean?,
+    var tensionRotorU: Float?,
+    var tensionRotorV: Float?,
+    var tensionRotorW: Float?,
     var intensiteInduit: Boolean,
     var intensiteInduitU: Float?,
     var vitesseU: Float?,
@@ -1574,6 +1630,18 @@ class BodyRemontageCC(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readFloat(),
         parcel.readInt(),
         parcel.readFloat(),
@@ -1609,18 +1677,30 @@ class BodyRemontageCC(
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
         parcel.writeInt(isolementPorteBalaisV!!)
         parcel.writeInt(isolementPorteBalaisOhm!!)
-        parcel.writeBoolean(tensionStatorInducteurs!!)
-        parcel.writeFloat(tensionStatorInducteursU!!)
-        parcel.writeFloat(tensionStatorInducteursV!!)
-        parcel.writeFloat(tensionStatorInducteursW!!)
-        parcel.writeBoolean(intensiteStatorInducteurs!!)
-        parcel.writeFloat(intensiteStatorInducteursU!!)
-        parcel.writeFloat(intensiteStatorInducteursV!!)
-        parcel.writeFloat(intensiteStatorInducteursW!!)
-        parcel.writeBoolean(tensionInduitRotor!!)
-        parcel.writeFloat(tensionInduitRotorU!!)
-        parcel.writeFloat(tensionInduitRotorV!!)
-        parcel.writeFloat(tensionInduitRotorW!!)
+        parcel.writeBoolean(tensionStator!!)
+        parcel.writeFloat(tensionStatorU!!)
+        parcel.writeFloat(tensionStatorV!!)
+        parcel.writeFloat(tensionStatorW!!)
+        parcel.writeBoolean(tensionInducteurs!!)
+        parcel.writeFloat(tensionInducteursU!!)
+        parcel.writeFloat(tensionInducteursV!!)
+        parcel.writeFloat(tensionInducteursW!!)
+        parcel.writeBoolean(intensiteStator!!)
+        parcel.writeFloat(intensiteStatorU!!)
+        parcel.writeFloat(intensiteStatorV!!)
+        parcel.writeFloat(intensiteStatorW!!)
+        parcel.writeBoolean(intensiteInducteurs!!)
+        parcel.writeFloat(intensiteInducteursU!!)
+        parcel.writeFloat(intensiteInducteursV!!)
+        parcel.writeFloat(intensiteInducteursW!!)
+        parcel.writeBoolean(tensionInduit!!)
+        parcel.writeFloat(tensionInduitU!!)
+        parcel.writeFloat(tensionInduitV!!)
+        parcel.writeFloat(tensionInduitW!!)
+        parcel.writeBoolean(tensionRotor!!)
+        parcel.writeFloat(tensionRotorU!!)
+        parcel.writeFloat(tensionRotorV!!)
+        parcel.writeFloat(tensionRotorW!!)
         parcel.writeBoolean(intensiteInduit!!)
         parcel.writeFloat(intensiteInduitU!!)
         parcel.writeFloat(vitesseU!!)
@@ -1845,6 +1925,7 @@ class Repository (var context:Context) {
     fun patchDemontageTriphase(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
         var body = BodyDemontageTriphase(
             triphase.status,
+            triphase.typeMoteur,
             triphase.marque,
             triphase.numSerie,
             triphase.puissance,
@@ -1906,6 +1987,7 @@ class Repository (var context:Context) {
     fun patchDemontageMeca(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
         var body = BodyDemontageTriphase(
             triphase.status,
+            triphase.typeMoteur,
             triphase.marque,
             triphase.numSerie,
             triphase.puissance,
@@ -1974,6 +2056,7 @@ class Repository (var context:Context) {
     fun patchDemontageCC(token:String,ficheId:String, fiche:CourantContinu, callback:Callback<DemontageCCResponse>){
         var body = BodyDemontageCC(
             fiche.status,
+            fiche.typeMoteur,
             fiche.marque,
             fiche.numSerie,
             fiche.puissance,
@@ -2052,18 +2135,30 @@ class Repository (var context:Context) {
             fiche.verificationIsolementPorteBalais,
             fiche.isolementPorteBalaisV,
             fiche.isolementPorteBalaisOhm,
-            fiche.tensionStatorInducteurs,
-            fiche.tensionStatorInducteursU,
-            fiche.tensionStatorInducteursV,
-            fiche.tensionStatorInducteursW,
-            fiche.intensiteStatorInducteurs,
-            fiche.intensiteStatorInducteursU,
-            fiche.intensiteStatorInducteursV,
-            fiche.intensiteStatorInducteursW,
-            fiche.tensionInduitRotor,
-            fiche.tensionInduitRotorU,
-            fiche.tensionInduitRotorV,
-            fiche.tensionInduitRotorW,
+            fiche.tensionStator,
+            fiche.tensionStatorU,
+            fiche.tensionStatorV,
+            fiche.tensionStatorW,
+            fiche.tensionInducteurs,
+            fiche.tensionInducteursU,
+            fiche.tensionInducteursV,
+            fiche.tensionInducteursW,
+            fiche.intensiteStator,
+            fiche.intensiteStatorU,
+            fiche.intensiteStatorV,
+            fiche.intensiteStatorW,
+            fiche.intensiteInducteurs,
+            fiche.intensiteInducteursU,
+            fiche.intensiteInducteursV,
+            fiche.intensiteInducteursW,
+            fiche.tensionInduit,
+            fiche.tensionInduitU,
+            fiche.tensionInduitV,
+            fiche.tensionInduitW,
+            fiche.tensionRotor,
+            fiche.tensionRotorU,
+            fiche.tensionRotorV,
+            fiche.tensionRotorW,
             fiche.intensiteInduit,
             fiche.intensiteInduitU,
             fiche.vitesseU,
@@ -2093,9 +2188,90 @@ class Repository (var context:Context) {
         var fiche:RemontageCourantC? = null
         call.enqueue(callback)
     }
+    fun getRemontageTriphase(token:String,ficheId:String, callback: Callback<RemontageTriphaseResponse>){
+        var call = service.getRemontageTriphase(token,ficheId)
+        var fiche:RemontageTriphase? = null
+        call.enqueue(callback)
+    }
+
+    fun patchRemontageTriphase(token:String,ficheId:String, fiche:RemontageTriphase, callback:Callback<RemontageTriphaseResponse>){
+        var body = BodyRemontageTriphase(
+            fiche.status!!.toInt(),
+            fiche.dureeTotale,
+            fiche.observations,
+            fiche.remontageRoulement,
+            fiche.collageRoulementPorteeArbre,
+            fiche.collageRoulementFlasque,
+            fiche.verificationFixationCouronne,
+            fiche.verificationIsolementPorteBalais,
+            fiche.isolementPorteBalaisV,
+            fiche.isolementPorteBalaisOhm,
+            fiche.tensionStator,
+            fiche.tensionStatorU,
+            fiche.tensionStatorV,
+            fiche.tensionStatorW,
+            fiche.tensionInducteurs,
+            fiche.tensionInducteursU,
+            fiche.tensionInducteursV,
+            fiche.tensionInducteursW,
+            fiche.intensiteStator,
+            fiche.intensiteStatorU,
+            fiche.intensiteStatorV,
+            fiche.intensiteStatorW,
+            fiche.intensiteInducteurs,
+            fiche.intensiteInducteursU,
+            fiche.intensiteInducteursV,
+            fiche.intensiteInducteursW,
+            fiche.tensionInduit,
+            fiche.tensionInduitU,
+            fiche.tensionInduitV,
+            fiche.tensionInduitW,
+            fiche.tensionRotor,
+            fiche.tensionRotorU,
+            fiche.tensionRotorV,
+            fiche.tensionRotorW,
+            fiche.intensiteInduit,
+            fiche.intensiteInduitU,
+            fiche.vitesseU,
+            fiche.puissanceU,
+            fiche.dureeEssai,
+            fiche.sensRotation,
+            fiche.vitesse1V,
+            fiche.acceleration1V,
+            fiche.vitesse2V,
+            fiche.acceleration2V,
+            fiche.vitesse1H,
+            fiche.acceleration1H,
+            fiche.vitesse2H,
+            fiche.acceleration2H,
+            fiche.vitesse2A,
+            fiche.acceleration2A,
+            fiche.isolementPhaseMasse,
+            fiche.isolementPhase,
+            fiche.resistanceStatorU,
+            fiche.resistanceStatorV,
+            fiche.resistanceStatorW,
+            fiche.isolementPMStatorU,
+            fiche.isolementPMStatorV,
+            fiche.isolementPMStatorW,
+            fiche.isolementPMRotorU,
+            fiche.isolementPMRotorV,
+            fiche.isolementPMRotorW,
+            fiche.isolementPhaseStatorUV,
+            fiche.isolementPhaseStatorVW,
+            fiche.isolementPhaseStatorUW,
+            fiche.isolementPhaseRotorUV,
+            fiche.isolementPhaseRotorVW,
+            fiche.isolementPhaseRotorUW
+        )
+        var call = service.patchRemontageTriphase(token,ficheId,body)
+        var fiche:RemontageTriphase? = null
+        call.enqueue(callback)
+    }
     fun patchDemontagePompe(token:String,ficheId:String, fiche:DemontagePompe, callback:Callback<DemontagePompeResponse>){
         var body = BodyDemoPompe(
             fiche.status,
+            fiche.typeMoteur,
             fiche.marque,
             fiche.numSerie,
             fiche.fluide,
@@ -2122,6 +2298,7 @@ class Repository (var context:Context) {
     fun patchDemontageMono(token:String,ficheId:String, fiche:DemontageMonophase, callback:Callback<DemontageMonophaseResponse>){
         var body = BodyDemontageMonophase(
             fiche.observations,
+            fiche.typeMoteur,
             fiche.status,
             fiche.marque,
             fiche.numSerie,
@@ -2177,6 +2354,7 @@ class Repository (var context:Context) {
     ){
         var body = BodyDemontageAlternateur(
             fiche.observations,
+            fiche.typeMoteur,
             fiche.status,
             fiche.marque,
             fiche.numSerie,
@@ -2218,6 +2396,7 @@ class Repository (var context:Context) {
             fiche.isolementMasseStatorPrincipalW,
             fiche.isolementMasseRotorPrincipal,
             fiche.isolementMasseStatorExcitation,
+            fiche.isolementMasseRotorExcitation,
             fiche.resistanceStatorPrincipalU,
             fiche.resistanceStatorPrincipalV,
             fiche.resistanceStatorPrincipalW,
@@ -2234,12 +2413,8 @@ class Repository (var context:Context) {
             fiche.intensiteU,
             fiche.intensiteV,
             fiche.intensiteW,
-            fiche.tensionUExcitation,
-            fiche.tensionVExcitation,
-            fiche.tensionWExcitation,
-            fiche.intensiteUExcitation,
-            fiche.intensiteVExcitation,
-            fiche.intensiteWExcitation,
+            fiche.tensionExcitation,
+            fiche.intensiteExcitation,
             fiche.dureeTotale!!.toInt()
         )
         var call = service.patchDemontageAlternateur(token,ficheId,body)
@@ -2250,6 +2425,7 @@ class Repository (var context:Context) {
     fun patchDemontageRotor(token:String,ficheId:String, fiche:DemontageRotorBobine, callback:Callback<DemontageRotorBobineResponse>){
         var body = BodyDemontageRotorBobine(
             fiche.observations,
+            fiche.typeMoteur,
             fiche.status,
             fiche.marque,
             fiche.numSerie,
@@ -2317,75 +2493,6 @@ class Repository (var context:Context) {
         var fiche:DemontageRotorBobine? = null
         call.enqueue(callback)
 
-    }
-
-    fun getRemontageTriphase(token:String,ficheId:String, callback: Callback<RemontageTriphaseResponse>){
-        var call = service.getRemontageTriphase(token,ficheId)
-        var fiche:RemontageTriphase? = null
-        call.enqueue(callback)
-    }
-
-    fun patchRemontageTriphase(token:String,ficheId:String, fiche:RemontageTriphase, callback:Callback<RemontageTriphaseResponse>){
-        var body = BodyRemontageTriphase(
-            fiche.status!!.toInt(),
-            fiche.dureeTotale,
-            fiche.observations,
-            fiche.remontageRoulement,
-            fiche.collageRoulementPorteeArbre,
-            fiche.collageRoulementFlasque,
-            fiche.verificationFixationCouronne,
-            fiche.verificationIsolementPorteBalais,
-            fiche.isolementPorteBalaisV,
-            fiche.isolementPorteBalaisOhm,
-            fiche.tensionStatorInducteurs,
-            fiche.tensionStatorInducteursU,
-            fiche.tensionStatorInducteursV,
-            fiche.tensionStatorInducteursW,
-            fiche.intensiteStatorInducteurs,
-            fiche.intensiteStatorInducteursU,
-            fiche.intensiteStatorInducteursV,
-            fiche.intensiteStatorInducteursW,
-            fiche.tensionInduitRotor,
-            fiche.tensionInduitRotorU,
-            fiche.tensionInduitRotorV,
-            fiche.tensionInduitRotorW,
-            fiche.intensiteInduit,
-            fiche.intensiteInduitU,
-            fiche.vitesseU,
-            fiche.puissanceU,
-            fiche.dureeEssai,
-            fiche.sensRotation,
-            fiche.vitesse1V,
-            fiche.acceleration1V,
-            fiche.vitesse2V,
-            fiche.acceleration2V,
-            fiche.vitesse1H,
-            fiche.acceleration1H,
-            fiche.vitesse2H,
-            fiche.acceleration2H,
-            fiche.vitesse2A,
-            fiche.acceleration2A,
-            fiche.isolementPhaseMasse,
-            fiche.isolementPhase,
-            fiche.resistanceStatorU,
-            fiche.resistanceStatorV,
-            fiche.resistanceStatorW,
-            fiche.isolementPMStatorU,
-            fiche.isolementPMStatorV,
-            fiche.isolementPMStatorW,
-            fiche.isolementPMRotorU,
-            fiche.isolementPMRotorV,
-            fiche.isolementPMRotorW,
-            fiche.isolementPhaseStatorUV,
-            fiche.isolementPhaseStatorVW,
-            fiche.isolementPhaseStatorUW,
-            fiche.isolementPhaseRotorUV,
-            fiche.isolementPhaseRotorVW,
-            fiche.isolementPhaseRotorUW
-        )
-        var call = service.patchRemontageTriphase(token,ficheId,body)
-        var fiche:RemontageTriphase? = null
-        call.enqueue(callback)
     }
 
     fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){

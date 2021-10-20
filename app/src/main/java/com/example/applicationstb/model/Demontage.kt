@@ -230,6 +230,7 @@ class DemontagePompe(
             dureeTotale,
             observations,
             1,
+            typeMoteur,
             marque,
             numSerie,
             fluide,

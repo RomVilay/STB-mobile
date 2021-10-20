@@ -110,8 +110,8 @@ class AlternateurFragment : Fragment() {
         if (fiche.intensiteU !== null) intensiteU.setText(fiche.intensiteU.toString())
         if (fiche.intensiteV !== null) intensiteV.setText(fiche.intensiteV.toString())
         if (fiche.intensiteW !== null) intensiteW.setText(fiche.intensiteW.toString())
-        if (fiche.tensionUExcitation !== null) tensionUExcitation.setText(fiche.tensionUExcitation.toString())
-        if (fiche.tensionVExcitation !== null) tensionVExcitation.setText(fiche.tensionVExcitation.toString())
+        if (fiche.tensionExcitation !== null) tensionUExcitation.setText(fiche.tensionExcitation.toString())
+        if (fiche.intensiteExcitation !== null) tensionVExcitation.setText(fiche.intensiteExcitation.toString())
         if (fiche.observations !== null) obs.setText(fiche.observations!!.toString())
         isolementMasseStatorPrincipalU.doAfterTextChanged {
             if (isolementMasseStatorPrincipalU.text.isNotEmpty()) fiche.isolementMasseStatorPrincipalU = isolementMasseStatorPrincipalU.text.toString().toFloat()
@@ -240,13 +240,13 @@ class AlternateurFragment : Fragment() {
             viewModel.localSave()
         }
         tensionUExcitation.doAfterTextChanged {
-          if (tensionUExcitation.text.isNotEmpty())  fiche.tensionUExcitation = tensionUExcitation.text.toString().toFloat()
+          if (tensionUExcitation.text.isNotEmpty())  fiche.tensionExcitation = tensionUExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.localSave()
         }
         tensionVExcitation.doAfterTextChanged {
-            if (tensionVExcitation.text.isNotEmpty())  fiche.tensionVExcitation = tensionVExcitation.text.toString().toFloat()
+            if (tensionVExcitation.text.isNotEmpty())  fiche.intensiteExcitation = tensionVExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.localSave()

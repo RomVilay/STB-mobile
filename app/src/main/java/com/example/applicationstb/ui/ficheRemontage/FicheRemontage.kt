@@ -81,10 +81,6 @@ class FicheRemontage : Fragment() {
          var A2H = layout.findViewById<EditText>(R.id.A2H)
          var A2A = layout.findViewById<EditText>(R.id.A2A)
          var obs = layout.findViewById<EditText>(R.id.observations)
-        viewModel.selection.observe(viewLifecycleOwner, {
-            Log.i("INFO","fiche ${viewModel.selection.value!!.intensiteStatorInducteursV}")
-
-        })
 
         btnDemontage.setOnClickListener {
             //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
@@ -117,7 +113,7 @@ class FicheRemontage : Fragment() {
             if(fiche.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(fiche.verificationIsolementPorteBalais!!)
             if(fiche.isolementPorteBalaisV !== null) isoPBV.setText(fiche.isolementPorteBalaisV!!.toString())
             if(fiche.isolementPorteBalaisOhm !== null) risoPBV.setText(fiche.isolementPorteBalaisOhm!!.toString())
-            if(fiche.tensionStatorInducteurs !== null ) tensionStatorInducteurs.setChecked(fiche.tensionStatorInducteurs!!)
+            /*if(fiche.tensionStatorInducteurs !== null ) tensionStatorInducteurs.setChecked(fiche.tensionStatorInducteurs!!)
             if(fiche.tensionStatorInducteursU !== null) tensionStatorInducteursU.setText(fiche.tensionStatorInducteursU!!.toString())
             if(fiche.tensionStatorInducteursV !== null) tensionStatorInducteursV.setText(fiche.tensionStatorInducteursV!!.toString())
             if(fiche.tensionStatorInducteursW !== null) tensionStatorInducteursW.setText(fiche.tensionStatorInducteursW!!.toString())
@@ -128,7 +124,7 @@ class FicheRemontage : Fragment() {
             if(fiche.intensiteInduit !== null ) tensionStatorInducteurs.setChecked(fiche.intensiteInduit)
             if(fiche.tensionInduitRotorU !== null) tensionInduitRotorU.setText(fiche.tensionInduitRotorU!!.toString())
             if(fiche.tensionInduitRotorV !== null) tensionInduitRotorV.setText(fiche.tensionInduitRotorV!!.toString())
-            if(fiche.tensionInduitRotorW !== null) tensionInduitRotorW.setText(fiche.tensionInduitRotorW!!.toString())
+            if(fiche.tensionInduitRotorW !== null) tensionInduitRotorW.setText(fiche.tensionInduitRotorW!!.toString())*/
             if(fiche.intensiteInduit !== null ) tensionStatorInducteurs.setChecked(fiche.intensiteInduit!!)
             if(fiche.intensiteInduitU !== null) intensiteInduitU.setText(fiche.intensiteInduitU!!.toString())
             if(fiche.vitesseU !== null) vitesseU.setText(fiche.vitesseU!!.toString())
@@ -191,7 +187,7 @@ class FicheRemontage : Fragment() {
         isoPBRB.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.verificationIsolementPorteBalais = isChecked
         }
-        tensionStatorInducteurs.setOnCheckedChangeListener { _, isChecked ->
+        /*tensionStatorInducteurs.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.tensionStatorInducteurs = isChecked
         }
         intensiteStatorInducteurs.setOnCheckedChangeListener { _, isChecked ->
@@ -199,7 +195,7 @@ class FicheRemontage : Fragment() {
         }
         tensionInduitRotor.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.tensionInduitRotor = isChecked
-        }
+        }*/
 
         btnenregistrer.setOnClickListener {
             var fiche = viewModel.selection.value!!
@@ -212,7 +208,7 @@ class FicheRemontage : Fragment() {
             fiche.status = 2L
             if (isoPBV.text.isNotEmpty()) fiche.isolementPorteBalaisV =  isoPBV.text.toString().toInt()
             if (risoPBV.text.isNotEmpty()) fiche.isolementPorteBalaisOhm =  risoPBV.text.toString().toInt()
-            if (tensionStatorInducteursU.text.isNotEmpty()) fiche.tensionStatorInducteursU = tensionStatorInducteursU.text.toString().toFloat()
+            /*if (tensionStatorInducteursU.text.isNotEmpty()) fiche.tensionStatorInducteursU = tensionStatorInducteursU.text.toString().toFloat()
             if (tensionStatorInducteursV.text.isNotEmpty())fiche.tensionStatorInducteursV = tensionStatorInducteursV.text.toString().toFloat()
             if (tensionStatorInducteursW.text.isNotEmpty()) fiche.tensionStatorInducteursW = tensionStatorInducteursW.text.toString().toFloat()
             if (intensiteStatorInducteursV.text.isNotEmpty()) fiche.intensiteStatorInducteursU = intensiteStatorInducteursU.text.toString().toFloat()
@@ -220,7 +216,7 @@ class FicheRemontage : Fragment() {
             if (intensiteStatorInducteursW.text.isNotEmpty()) fiche.intensiteStatorInducteursW = intensiteStatorInducteursW.text.toString().toFloat()
             if (tensionInduitRotorU.text.isNotEmpty()) fiche.tensionInduitRotorU = tensionInduitRotorU.text.toString().toFloat()
             if (tensionInduitRotorV.text.isNotEmpty()) fiche.tensionInduitRotorV = tensionInduitRotorV.text.toString().toFloat()
-            if (tensionInduitRotorW.text.isNotEmpty()) fiche.tensionInduitRotorW = tensionInduitRotorW.text.toString().toFloat()
+            if (tensionInduitRotorW.text.isNotEmpty()) fiche.tensionInduitRotorW = tensionInduitRotorW.text.toString().toFloat()*/
             if (intensiteInduitU.text.isNotEmpty()) fiche.intensiteInduitU = intensiteInduitU.text.toString().toFloat()
             if (vitesseU.text.isNotEmpty()) fiche.vitesseU = vitesseU.text.toString().toFloat()
             if (puissanceU.text.isNotEmpty())fiche.puissanceU = puissanceU.text.toString().toFloat()
