@@ -8,8 +8,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import java.util.*
 
-class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array<String>):
+class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array<String>, var callback: (Int)->Unit):
     RecyclerView.Adapter<roulementAdapter.ViewHolder>(){
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val type: TextView
@@ -37,6 +38,8 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
             var tab2 = refRoulement.toMutableList()
             tab.removeAt(position)
             tab2.removeAt(position)
+            callback(position)
+            notifyItemRemoved(position)
             update(tab.toTypedArray(),tab2.toTypedArray())
         }
     }
@@ -47,6 +50,7 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
     fun update(types:Array<String>,refs:Array<String>){
         this.typeRoulement = types
         this.refRoulement = refs
+        Log.i("INFO","taille ${typeRoulement.size}")
         notifyDataSetChanged()
     }
 }

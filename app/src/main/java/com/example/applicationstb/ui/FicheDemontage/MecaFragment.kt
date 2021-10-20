@@ -115,6 +115,7 @@ class MecaFragment : Fragment() {
                 //Log.i("INFO", "roulement arrière:"+)
             }
         }
+
         //etat bout arbre
         var etatBA = layout.findViewById<Switch>(R.id.switchBA)
         if(fiche.boutArbre !== null) etatBA.setChecked(fiche.boutArbre!!)
@@ -139,7 +140,10 @@ class MecaFragment : Fragment() {
         var roulement = layout.findViewById<TextView>(R.id.valRoulement)
         var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
         specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
-        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!)
+        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
+            viewModel.selection.value!!.typeRoulementArriere =
+                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+        }
         specsRoul.adapter = adapter
         viewModel.selection.observe(viewLifecycleOwner,{
             if (switchRoullements.isChecked) {
@@ -154,6 +158,7 @@ class MecaFragment : Fragment() {
                 )
             }
         })
+        specsRoul.adapter
         if (switchRoullements.isChecked && fiche.refRoulementArriere !== null){
             Log.i("INFO","roulAr = ${fiche.typeRoulementArriere!![0]}")
             var s = "roulement arrière :"
@@ -177,7 +182,10 @@ class MecaFragment : Fragment() {
                 for ( i in 0..fiche.typeRoulementArriere!!.size-1){
                     s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
                 }
-                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!)
+                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!, { item ->
+                    viewModel.selection.value!!.typeRoulementArriere =
+                        removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                })
                 roulement.setText(s)
             } else {
                 var s = "roulement avant :"
@@ -188,7 +196,10 @@ class MecaFragment : Fragment() {
                     s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
                 }
                 Log.i("INFO","av")
-                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementAvant!!,viewModel.selection.value!!.refRoulementAvant!!)
+                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementAvant!!,viewModel.selection.value!!.refRoulementAvant!!, { item ->
+                    viewModel.selection.value!!.typeRoulementAvant =
+                        removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                })
                 roulement.setText(s)
             }
         }
@@ -218,7 +229,10 @@ class MecaFragment : Fragment() {
                     for ( i in 0..fiche.typeRoulementArriere!!.size-1){
                         s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
                     }
-                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!)
+                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!,{ item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                    })
                     roulement.setText(s)
                     viewModel.getTime()
                     viewModel.localSave()
@@ -242,7 +256,10 @@ class MecaFragment : Fragment() {
                     for ( i in 0..fiche.typeRoulementAvant!!.size-1){
                         s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
                     }
-                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!)
+                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!,{ item ->
+                        viewModel.selection.value!!.typeRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                    })
                     roulement.setText(s)
                     viewModel.getTime()
                     viewModel.localSave()
@@ -263,7 +280,10 @@ class MecaFragment : Fragment() {
                     if (refRoul.text.isNotEmpty()) {
                         viewModel.selection.value!!.refRoulementArriere!![index] =
                             refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!)
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!,{ item ->
+                            viewModel.selection.value!!.typeRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        })
                         viewModel.getTime()
                         viewModel.localSave()
                     }
@@ -271,7 +291,10 @@ class MecaFragment : Fragment() {
                     if (refRoul.text.isNotEmpty()) {
                         viewModel.selection.value!!.refRoulementAvant!![index] =
                             refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!)
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!,{ item ->
+                            viewModel.selection.value!!.typeRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                        })
                         viewModel.getTime()
                         viewModel.localSave()
                     }
@@ -461,4 +484,9 @@ class MecaFragment : Fragment() {
         return layout
     }
 
+    fun removeRef(i:Int, list:Array<String>):Array<String>{
+        var tab = list.toMutableList()
+        tab.removeAt(i)
+        return tab.toTypedArray()
+    }
 }
