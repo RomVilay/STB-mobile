@@ -13,7 +13,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="644dp"
-            android:layout_height="818dp">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
@@ -302,30 +302,16 @@
                     app:layout_constraintStart_toEndOf="@+id/switchRoullements"
                     app:layout_constraintTop_toTopOf="@+id/switchRoullements" />
 
-                <TextView
-                    android:id="@+id/valRoulement"
-                    android:layout_width="547dp"
-                    android:layout_height="29dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="92dp"
-                    android:background="@drawable/round_textview"
-                    android:gravity="center"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/specsRoul"
                     android:layout_width="547dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
                     android:background="@drawable/round_textview"
                     android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/valRoulement" />
+                    app:layout_constraintTop_toBottomOf="@+id/refRoullement" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
