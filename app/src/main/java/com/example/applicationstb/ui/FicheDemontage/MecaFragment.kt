@@ -206,6 +206,9 @@ class MecaFragment : Fragment() {
                         var tab2 = viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
                         tab2.add("")
                         viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
+                        refRoul.setText("")
+                    }else{
+                        refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection)])
                     } /*else {
                         var tab = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
                         var tab2 = viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
@@ -231,7 +234,11 @@ class MecaFragment : Fragment() {
                         var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
                         tab2.add("")
                         viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                    }/* else {
+                        refRoul.setText("")
+                    } else {
+                        refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection)])
+                    }
+                    /* else {
                         var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
                         var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
                         tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
