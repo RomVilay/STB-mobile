@@ -171,18 +171,57 @@ class MecaFragment : Fragment() {
                 roulement.setText(s)
             }
         }
-        /*typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeRoulement.selectedItem.toString()
                 if (switchRoullements.isChecked) {
-                    viewModel.selection.value!!.typeRoulementArriere =  selection
+                    if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1){
+                        var tab = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
+                        tab.add(selection)
+                        viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
+                        var tab2 = viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
+                        tab2.add("")
+                        viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
+                    } /*else {
+                        var tab = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
+                        var tab2 = viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
+                        tab.removeAt(viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection))
+                        tab2.removeAt(viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection))
+                        viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
+                        viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
+                    }*/
+                    var s = "roulement(s) arriere :"
+                    for ( i in 0..fiche.typeRoulementArriere!!.size-1){
+                        s = "$s ${fiche.typeRoulementArriere!![i]},${fiche.refRoulementArriere!![i]} - "
+                    }
+                    roulement.setText(s)
+                    Log.i("INFO","index roulements ${viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection)}")
                     viewModel.getTime()
                     viewModel.localSave()
                 } else {
-                    viewModel.selection.value!!.typeRoulementAvant = selection
+                    if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1){
+                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                        tab.add(selection)
+                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                        tab2.add("")
+                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                    }/* else {
+                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                        tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
+                        tab2.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
+                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                    }*/
+                    var s = "roulement(s) avant :"
+                    for ( i in 0..fiche.typeRoulementAvant!!.size-1){
+                        s = "$s ${fiche.typeRoulementAvant!![i]},${fiche.refRoulementAvant!![i]} - "
+                    }
+                    roulement.setText(s)
                     viewModel.getTime()
                     viewModel.localSave()
                 }
@@ -190,20 +229,25 @@ class MecaFragment : Fragment() {
 
         }
         refRoul.doAfterTextChanged {
+            var index =  viewModel.selection.value!!.typeRoulementArriere!!.indexOf(typeRoulement.selectedItem)
+            if (index !== -1) {
                 if (switchRoullements.isChecked) {
-                   if (refRoul.text.isNotEmpty()) {
-                       viewModel.selection.value!!.refRoulementArriere = refRoul.text.toString()
-                       viewModel.getTime()
-                       viewModel.localSave()
-                   }
-                } else  {
                     if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementAvant = refRoul.text.toString()
+                        viewModel.selection.value!!.refRoulementArriere!![index] =
+                            refRoul.text.toString()
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    if (refRoul.text.isNotEmpty()) {
+                        viewModel.selection.value!!.refRoulementAvant!![index] =
+                            refRoul.text.toString()
                         viewModel.getTime()
                         viewModel.localSave()
                     }
                 }
-        }*/
+            }
+        }
         //joints
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("simple lèvre","double lèvre"))
