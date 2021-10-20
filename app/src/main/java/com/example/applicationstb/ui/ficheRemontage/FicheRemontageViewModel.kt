@@ -5,8 +5,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -56,6 +58,50 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         Navigation.findNavController(view).navigate(action)
     }
 
+    fun getTime(){
+        Log.i("INFO","duree avant : ${selection.value?.dureeTotale}")
+        var now = Date()
+        if (selection.value!!.dureeTotale !== null) {
+            selection.value!!.dureeTotale =
+                (now.time - start.value!!.time ) + selection.value!!.dureeTotale!!
+        } else {
+            selection.value!!.dureeTotale = now.time - start.value!!.time
+        }
+        start.value = now
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun quickSave(){
+        Log.i("INFO","quick save")
+        getTime()
+        Log.i("INFO","duree après : ${selection.value?.dureeTotale}")
+        viewModelScope.launch(Dispatchers.IO){
+            if (selection.value!!.typeFicheRemontage == 1) {
+                var ch = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
+                //Log.i("INFO","${ch}")
+                if (ch !== null) {
+                    repository.updateRemoTriLocalDatabse(ch.toEntity())
+                    //Log.i("INFO","patch ${selection.value!!._id}")
+                } else {
+                    var t = selection.value as RemontageTriphase
+                    repository.insertRemoTriLocalDatabase(t)
+                    //Log.i("INFO","insert ${selection.value!!._id}")
+                }
+            }
+            if (selection.value!!.typeFicheRemontage == 2) {
+                var ch = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
+                //Log.i("INFO","${ch}")
+                if (ch !== null) {
+                    repository.updateRemoCCLocalDatabse(ch.toEntity())
+                    //Log.i("INFO","patch ${selection.value!!._id}")
+                } else {
+                    var t = selection.value as RemontageCourantC
+                    repository.insertRemoCCLocalDatabase(t)
+                    //Log.i("INFO","insert ${selection.value!!._id}")
+                }
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.M)
     fun enregistrer(view:View){
         if (selection.value!!.typeFicheRemontage == 1)  {
             var t = selection.value!! as RemontageTriphase
@@ -162,6 +208,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 }
+@RequiresApi(Build.VERSION_CODES.M)
 fun isOnline(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager

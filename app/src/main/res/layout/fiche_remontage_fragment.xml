@@ -298,25 +298,13 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible">
 
-                    <Switch
-                        android:id="@+id/swTSI2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:text="Stator"
-                        app:layout_constraintBottom_toBottomOf="@+id/titreIntensité"
-                        app:layout_constraintStart_toEndOf="@+id/titreIntensité"
-                        app:layout_constraintTop_toTopOf="@+id/titreIntensité"
-                        app:layout_constraintVertical_bias="0.0" />
-
                     <TextView
                         android:id="@+id/titreTension"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="160dp"
-                        android:layout_marginLeft="160dp"
-                        android:layout_marginTop="80dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginTop="84dp"
                         android:text="Tension Stator/Inducteur"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -329,7 +317,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintStart_toEndOf="@+id/Tisop"
                         app:layout_constraintTop_toBottomOf="@+id/titreTension">
 
@@ -384,8 +372,8 @@
                         android:id="@+id/Tisop"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="150dp"
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_marginTop="20dp"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
@@ -405,7 +393,7 @@
                                 android:text="Stator"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
-                                android:visibility="invisible" />
+                                android:visibility="visible" />
                         </TableRow>
 
                         <TableRow
@@ -415,7 +403,7 @@
 
                             <EditText
                                 android:id="@+id/TSVU"
-                                android:layout_width="80dp"
+                                android:layout_width="77dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:hint="U"
@@ -446,7 +434,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/TStat2"
                         app:layout_constraintStart_toEndOf="@+id/TStat2"
                         app:layout_constraintTop_toTopOf="@+id/TStat2">
@@ -502,8 +490,8 @@
                         android:id="@+id/TStat2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="150dp"
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titreIntensité">
@@ -522,7 +510,7 @@
                                 android:text="Stator"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
-                                android:visibility="invisible" />
+                                android:visibility="visible" />
                         </TableRow>
 
                         <TableRow
@@ -561,9 +549,9 @@
                         android:id="@+id/titreIntensité"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="160dp"
-                        android:layout_marginLeft="160dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginTop="16dp"
                         android:text="Intensité stator inducteur"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -574,8 +562,8 @@
 "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="150dp"
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView68">
@@ -594,7 +582,7 @@
                                 android:text="Induit"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
-                                android:visibility="invisible" />
+                                android:visibility="visible" />
                         </TableRow>
 
                         <TableRow
@@ -637,7 +625,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintStart_toEndOf="@+id/TIndV
 "
                         app:layout_constraintTop_toBottomOf="@+id/textView68">
@@ -694,9 +682,9 @@
                         android:id="@+id/textView68"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="180dp"
-                        android:layout_marginLeft="180dp"
-                        android:layout_marginTop="100dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginTop="108dp"
                         android:text="Tension Induit Rotor"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -834,71 +822,71 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dureeEssaiRemoTri" />
 
-                    <Switch
-                        android:id="@+id/swTSI"
+                    <RadioButton
+                        android:id="@+id/radioInduit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="22dp"
-                        android:layout_marginLeft="22dp"
-                        android:text="Stator"
-                        app:layout_constraintBottom_toBottomOf="@+id/titreTension"
-                        app:layout_constraintStart_toEndOf="@+id/titreTension"
-                        app:layout_constraintTop_toTopOf="@+id/titreTension" />
-
-                    <TextView
-                        android:id="@+id/textView85"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:text="Inducteur"
-                        app:layout_constraintBottom_toBottomOf="@+id/swTSI2"
-                        app:layout_constraintStart_toEndOf="@+id/swTSI2"
-                        app:layout_constraintTop_toTopOf="@+id/swTSI2" />
-
-                    <Switch
-                        android:id="@+id/swTSI3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:text="Stator"
+                        android:layout_marginStart="76dp"
+                        android:layout_marginLeft="76dp"
+                        android:text="induit"
                         app:layout_constraintBottom_toBottomOf="@+id/textView68"
                         app:layout_constraintStart_toEndOf="@+id/textView68"
-                        app:layout_constraintTop_toTopOf="@+id/textView68" />
-
-                    <TextView
-                        android:id="@+id/textView82"
-                        android:layout_width="wrap_content"
-                        android:layout_height="19dp"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginLeft="14dp"
-                        android:text="Inducteur"
-                        app:layout_constraintBottom_toBottomOf="@+id/swTSI3"
-                        app:layout_constraintStart_toEndOf="@+id/swTSI3"
-                        app:layout_constraintTop_toTopOf="@+id/swTSI3" />
-
-                    <TextView
-                        android:id="@+id/textView84"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Inducteur"
-                        app:layout_constraintBottom_toBottomOf="@+id/swTSI"
-                        app:layout_constraintStart_toEndOf="@+id/swTSI"
-                        app:layout_constraintTop_toTopOf="@+id/swTSI" />
+                        app:layout_constraintTop_toTopOf="@+id/textView68"
+                        app:layout_constraintVertical_bias="0.523" />
 
                     <RadioButton
-                        android:id="@+id/Iindcut"
+                        android:id="@+id/radioButtonS1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="44dp"
-                        android:layout_marginLeft="44dp"
-                        android:text="inducteur"
-                        app:layout_constraintBottom_toBottomOf="@+id/TIndV
-"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/TIndV
-" />
+                        android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:text="stator"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreTension"
+                        app:layout_constraintStart_toEndOf="@+id/titreTension"
+                        app:layout_constraintTop_toTopOf="@+id/titreTension"
+                        app:layout_constraintVertical_bias="0.476" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonI1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="26dp"
+                        android:layout_marginLeft="26dp"
+                        android:text="inducteurs"
+                        app:layout_constraintBottom_toBottomOf="@+id/radioButtonS1"
+                        app:layout_constraintStart_toEndOf="@+id/radioButtonS1"
+                        app:layout_constraintTop_toTopOf="@+id/radioButtonS1" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonS2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginLeft="28dp"
+                        android:text="stator"
+                        app:layout_constraintBottom_toBottomOf="@+id/titreIntensité"
+                        app:layout_constraintStart_toEndOf="@+id/titreIntensité"
+                        app:layout_constraintTop_toTopOf="@+id/titreIntensité"
+                        app:layout_constraintVertical_bias="0.38" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonI2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="inducteurs"
+                        tools:layout_editor_absoluteX="391dp"
+                        tools:layout_editor_absoluteY="204dp" />
+
+                    <RadioButton
+                        android:id="@+id/radioRotor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:text="rotor (ouvert)"
+                        app:layout_constraintBottom_toBottomOf="@+id/radioInduit"
+                        app:layout_constraintStart_toEndOf="@+id/radioInduit"
+                        app:layout_constraintTop_toTopOf="@+id/radioInduit" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -1121,7 +1109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <Button
                     android:id="@+id/quit"
