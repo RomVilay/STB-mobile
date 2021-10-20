@@ -20,6 +20,7 @@ data class DemontageAlternateurEntity(
     var dureeTotale: Long?,
     var observation: String?,
     var typeFicheDemontage: Int,
+    var typeMoteur:String?,
     var marque: String?,
     var numSerie: Int?,
     var puissance: Float?,
@@ -60,6 +61,7 @@ data class DemontageAlternateurEntity(
     var isolementMasseStatorPrincipalW	: Float?,
     var isolementMasseRotorPrincipal	: Float?,
     var isolementMasseStatorExcitation	: Float?,
+    var isolementMasseRotorExcitation:Float?,
     var resistanceStatorPrincipalU	: Float?,
     var resistanceStatorPrincipalV	: Float?,
     var resistanceStatorPrincipalW	: Float?,
@@ -76,12 +78,8 @@ data class DemontageAlternateurEntity(
     var intensiteU	: Float?,
     var intensiteV	: Float?,
     var intensiteW	: Float?,
-    var tensionUExcitation	: Float?,
-    var tensionVExcitation	: Float?,
-    var tensionWExcitation	: Float?,
-    var intensiteUExcitation	: Float?,
-    var intensiteVExcitation	: Float?,
-    var intensiteWExcitation	: Float?,
+    var tensionExcitation	: Float?,
+    var intensiteExcitation	: Float?,
 ) {
     fun toDemontageAlternateur(): DemontageAlternateur {
         var fiche = DemontageAlternateur(
@@ -99,6 +97,7 @@ data class DemontageAlternateurEntity(
             dureeTotale,
             observation,
             null,
+            typeMoteur,
             marque,
             numSerie,
             puissance,
@@ -139,6 +138,7 @@ data class DemontageAlternateurEntity(
          isolementMasseStatorPrincipalW,
          isolementMasseRotorPrincipal,
          isolementMasseStatorExcitation,
+         isolementMasseRotorExcitation,
          resistanceStatorPrincipalU,
          resistanceStatorPrincipalV,
          resistanceStatorPrincipalW,
@@ -155,12 +155,8 @@ data class DemontageAlternateurEntity(
          intensiteU,
          intensiteV,
          intensiteW,
-         tensionUExcitation,
-         tensionVExcitation,
-         tensionWExcitation,
-         intensiteUExcitation,
-         intensiteVExcitation,
-         intensiteWExcitation)
+         tensionExcitation,
+         intensiteExcitation)
         return fiche
     }
 }
