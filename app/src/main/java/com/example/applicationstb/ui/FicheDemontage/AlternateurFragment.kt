@@ -83,10 +83,6 @@ class AlternateurFragment : Fragment() {
         var intensiteW	 = layout.findViewById<EditText>(R.id.iw)
         var tensionUExcitation	 = layout.findViewById<EditText>(R.id.tw2)
         var tensionVExcitation	 = layout.findViewById<EditText>(R.id.tw3)
-        /*var tensionWExcitation	 = layout.findViewById<EditText>()
-        var intensiteUExcitation	 = layout.findViewById<EditText>()
-        var intensiteVExcitation	 = layout.findViewById<EditText>()
-        var intensiteWExcitation	 = layout.findViewById<EditText>()*/
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var fiche = viewModel.selection.value!! as DemontageAlternateur
         if (fiche.isolementMasseStatorPrincipalU !== null) isolementMasseStatorPrincipalU.setText(fiche.isolementMasseStatorPrincipalU.toString())
@@ -94,6 +90,7 @@ class AlternateurFragment : Fragment() {
         if (fiche.isolementMasseStatorPrincipalW !== null) isolementMasseStatorPrincipalW.setText(fiche.isolementMasseStatorPrincipalW.toString())
         if (fiche.isolementMasseRotorPrincipal !== null) isolementMasseRotorPrincipal.setText(fiche.isolementMasseRotorPrincipal.toString())
         if (fiche.isolementMasseStatorExcitation !== null) isolementMasseStatorExcitation.setText(fiche.isolementMasseStatorExcitation.toString())
+        if (fiche.isolementMasseRotorExcitation !== null) isolementMasseRotorExcitation.setText(fiche.isolementMasseRotorExcitation.toString())
         if (fiche.resistanceStatorPrincipalU !== null) resistanceStatorPrincipalU.setText(fiche.resistanceStatorPrincipalU.toString())
         if (fiche.resistanceStatorPrincipalV !== null) resistanceStatorPrincipalV.setText(fiche.resistanceStatorPrincipalV.toString())
         if (fiche.resistanceStatorPrincipalW !== null) resistanceStatorPrincipalW.setText(fiche.resistanceStatorPrincipalW.toString())
@@ -139,6 +136,12 @@ class AlternateurFragment : Fragment() {
         }
         isolementMasseRotorPrincipal.doAfterTextChanged {
             if (isolementMasseRotorPrincipal.text.isNotEmpty())  fiche.isolementMasseRotorPrincipal = isolementMasseRotorPrincipal.text.toString().toFloat()
+            viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.localSave()
+        }
+        isolementMasseRotorExcitation.doAfterTextChanged {
+            if(isolementMasseRotorExcitation.text.isNotEmpty()) fiche.isolementMasseRotorExcitation = isolementMasseRotorExcitation.text.toString().toFloat()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.localSave()
