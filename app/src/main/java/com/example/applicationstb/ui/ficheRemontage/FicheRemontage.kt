@@ -97,7 +97,7 @@ class FicheRemontage : Fragment() {
         var term = layout.findViewById<Button>(R.id.termRemo)
 
         btnDemontage.setOnClickListener {
-            //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
+            //Log.i("INFO","moteur ${viewModel.listeRemontages[spinner.selectedItemPosition].remontageRoulement}")
             viewModel.start.value = Date()
             var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
             if ( demo!!.typeFicheRemontage == 1) {
@@ -122,6 +122,7 @@ class FicheRemontage : Fragment() {
 
             }
             if( demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4 ||demo!!.typeFicheRemontage == 5 || demo!!.typeFicheRemontage == 6 ) {
+                viewModel.selection.value = demo
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
 
             }

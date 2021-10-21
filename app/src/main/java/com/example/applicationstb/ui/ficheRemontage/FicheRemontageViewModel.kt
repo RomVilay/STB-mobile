@@ -216,6 +216,54 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
         }
+        if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 ||selection.value!!.typeFicheRemontage == 5 ||selection.value!!.typeFicheRemontage == 6)  {
+            var c = selection.value!!
+            if (isOnline(context))   {
+                val resp = repository.patchRemontage(
+                    token!!,
+                    selection.value!!._id,
+                    c,
+                    object : Callback<RemontageResponse> {
+                        override fun onResponse(
+                            call: Call<RemontageResponse>,
+                            response: Response<RemontageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "Remontage enregistré")
+                                }
+                            } else {
+                                val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.errorBody()!!.charStream().readText()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<RemontageResponse>, t: Throwable) {
+                            Log.e("Error", "erreur ${t.message}")
+                            val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                        }
+                    })
+            } else {
+                viewModelScope.launch(Dispatchers.IO){
+                    var tri = repository.getByIdRemoLocalDatabse(selection.value!!._id)
+                    if (tri !== null ) {
+                        repository.updateRemoLocalDatabse(c.toRemoEntity())
+                    } else  {
+                        repository.insertRemoLocalDatabase(c)
+                    }
+                    val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                    mySnackbar.show()
+                }
+            }
+        }
     }
 }
 @RequiresApi(Build.VERSION_CODES.M)
