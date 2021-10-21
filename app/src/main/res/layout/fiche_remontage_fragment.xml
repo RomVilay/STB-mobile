@@ -181,7 +181,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titreCPA2" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/fixCouronne"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                         app:layout_constraintStart_toEndOf="@+id/RisoPBV"
                         app:layout_constraintTop_toTopOf="@+id/RisoPBV" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/isoPBRB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -822,7 +822,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dureeEssaiRemoTri" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/radioInduit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -834,7 +834,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView68"
                         app:layout_constraintVertical_bias="0.523" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/radioButtonS1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -846,7 +846,7 @@
                         app:layout_constraintTop_toTopOf="@+id/titreTension"
                         app:layout_constraintVertical_bias="0.476" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/radioButtonI1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -857,7 +857,7 @@
                         app:layout_constraintStart_toEndOf="@+id/radioButtonS1"
                         app:layout_constraintTop_toTopOf="@+id/radioButtonS1" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/radioButtonS2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -869,15 +869,18 @@
                         app:layout_constraintTop_toTopOf="@+id/titreIntensité"
                         app:layout_constraintVertical_bias="0.38" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/radioButtonI2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginLeft="27dp"
                         android:text="inducteurs"
-                        tools:layout_editor_absoluteX="391dp"
-                        tools:layout_editor_absoluteY="204dp" />
+                        app:layout_constraintBottom_toBottomOf="@+id/radioButtonS2"
+                        app:layout_constraintStart_toEndOf="@+id/radioButtonS2"
+                        app:layout_constraintTop_toTopOf="@+id/radioButtonS2" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/radioRotor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1109,7 +1112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/quit"

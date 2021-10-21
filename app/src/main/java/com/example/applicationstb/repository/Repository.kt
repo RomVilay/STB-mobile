@@ -1548,7 +1548,7 @@ class BodyRemontageCC(
     var observations: String?,
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
-    var collageRoulementPorteeFlasque: Int?,
+    var collageRoulementFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Int?,
@@ -1672,7 +1672,7 @@ class BodyRemontageCC(
         parcel.writeString(observations!!)
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
-        parcel.writeInt(collageRoulementPorteeFlasque!!)
+        parcel.writeInt(collageRoulementFlasque!!)
         parcel.writeBoolean(verificationFixationCouronne!!)
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
         parcel.writeInt(isolementPorteBalaisV!!)
@@ -2184,6 +2184,7 @@ class Repository (var context:Context) {
             fiche.releveIsoInduitMasse,
             fiche.releveIsoInduitInducteurs
         )
+        Log.i("INFO","tensioninducteurs : ${body.tensionInducteurs}")
         var call = service.patchRemontageCC(token,ficheId,body)
         var fiche:RemontageCourantC? = null
         call.enqueue(callback)

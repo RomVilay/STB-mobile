@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.ficheRemontage
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.annotation.RequiresApi
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +29,7 @@ class essaisStatTriFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +79,9 @@ class essaisStatTriFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                if(spiIsoPM.selectedItem.toString() !== " ") fiche.isolementPhaseMasse = spiIsoPM.selectedItem.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.quickSave()
             }
         }
         spiIsoP.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -83,6 +89,9 @@ class essaisStatTriFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(spiIsoP.selectedItem.toString() !== " ") fiche.isolementPhase = spiIsoP.selectedItem.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.quickSave()
             }
         }
         var regex = Regex.fromLiteral("""\d{0,2}(\.\d{1,2})?""")
@@ -90,62 +99,92 @@ class essaisStatTriFragment : Fragment() {
             if (isoPMSU.text.isNotEmpty()) fiche.isolementPMStatorU = isoPMSU.text.toString().toFloat()
             Log.i("INFO","Isopmsu stat = ${fiche.isolementPMStatorU}")
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPMSV.doAfterTextChanged {
             if (isoPMSV.text.isNotEmpty()) fiche.isolementPMStatorV = isoPMSV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPMSW.doAfterTextChanged {
             if (isoPMSW.text.isNotEmpty()) fiche.isolementPMStatorW = isoPMSW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPMRU.doAfterTextChanged {
             if (isoPMRU.text.isNotEmpty()) fiche.isolementPMRotorU = isoPMRU.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPMRV.doAfterTextChanged {
             if (isoPMRV.text.isNotEmpty()) fiche.isolementPMRotorV = isoPMRV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPMRW.doAfterTextChanged {
             if (isoPMRW.text.isNotEmpty()) fiche.isolementPMRotorW = isoPMRW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPSUV.doAfterTextChanged {
             if (isoPSUV.text.isNotEmpty()) fiche.isolementPhaseStatorUV = isoPSUV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPSUW.doAfterTextChanged {
             if (isoPSUW.text.isNotEmpty()) fiche.isolementPhaseStatorUW = isoPSUW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPSVW.doAfterTextChanged {
             if (isoPSVW.text.isNotEmpty() ) fiche.isolementPhaseStatorVW = isoPSVW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPRUV.doAfterTextChanged {
             if (isoPRUV.text.isNotEmpty() ) fiche.isolementPhaseRotorUV = isoPRUV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPRUW.doAfterTextChanged {
             if (isoPRUW.text.isNotEmpty() ) fiche.isolementPhaseRotorUW = isoPRUW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         isoPRVW.doAfterTextChanged {
             if (isoPRVW.text.isNotEmpty() ) fiche.isolementPhaseRotorVW = isoPRVW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         resV.doAfterTextChanged {
             if (resV.text.isNotEmpty() ) fiche.resistanceStatorV = resV.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         resU.doAfterTextChanged {
             if (resU.text.isNotEmpty() ) fiche.resistanceStatorU = resU.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         resW.doAfterTextChanged {
             if (resW.text.isNotEmpty() ) fiche.resistanceStatorW = resW.text.toString().toFloat()
             viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.quickSave()
         }
         return layout
     }

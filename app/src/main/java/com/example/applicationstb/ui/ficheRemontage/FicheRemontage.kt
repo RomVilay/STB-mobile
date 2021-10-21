@@ -2,6 +2,7 @@ package com.example.applicationstb.ui.ficheRemontage
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,31 +50,31 @@ class FicheRemontage : Fragment() {
         spinnerCPA.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","avant","arrière","aucun"))
         var spinnerCIF = layout.findViewById<Spinner>(R.id.spinnerCIF)
         spinnerCIF.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","avant","arrière","aucun"))
-        var fixCouronne = layout.findViewById<RadioButton>(R.id.fixCouronne)
-        var isoPBRB = layout.findViewById<RadioButton>(R.id.isoPBRB)
+        var fixCouronne = layout.findViewById<CheckBox>(R.id.fixCouronne)
+        var isoPBRB = layout.findViewById<CheckBox>(R.id.isoPBRB)
         var isoPBV = layout.findViewById<EditText>(R.id.isoPBV)
         var risoPBV = layout.findViewById<EditText>(R.id.RisoPBV)
-        var tensionStator = layout.findViewById<RadioButton>(R.id.radioButtonS1)
+        var tensionStator = layout.findViewById<CheckBox>(R.id.radioButtonS1)
          var tensionStatorU = layout.findViewById<EditText>(R.id.TSVU)
          var tensionStatorV = layout.findViewById<EditText>(R.id.TSVV)
          var tensionStatorW = layout.findViewById<EditText>(R.id.TSVW)
-        var tensionInducteurs = layout.findViewById<RadioButton>(R.id.radioButtonS2)
+        var tensionInducteurs = layout.findViewById<CheckBox>(R.id.radioButtonI1)
         var tensionInducteursU = layout.findViewById<EditText>(R.id.TIVU)
         var tensionInducteursV = layout.findViewById<EditText>(R.id.TIVV)
         var tensionInducteursW = layout.findViewById<EditText>(R.id.TIVW)
-        var intensiteStator = layout.findViewById<RadioButton>(R.id.radioButtonS2)
+        var intensiteStator = layout.findViewById<CheckBox>(R.id.radioButtonS2)
          var intensiteStatorU = layout.findViewById<EditText>(R.id.ISVU)
          var intensiteStatorV = layout.findViewById<EditText>(R.id.ISVV)
          var intensiteStatorW = layout.findViewById<EditText>(R.id.ISVW)
-        var intensiteInducteurs = layout.findViewById<RadioButton>(R.id.radioButtonI2)
+        var intensiteInducteurs = layout.findViewById<CheckBox>(R.id.radioButtonI2)
         var intensiteInducteursU = layout.findViewById<EditText>(R.id.IIVU)
         var intensiteInducteursV = layout.findViewById<EditText>(R.id.IIVV)
         var intensiteInducteursW = layout.findViewById<EditText>(R.id.IIVW)
-        var tensionInduit = layout.findViewById<RadioButton>(R.id.radioInduit)
+        var tensionInduit = layout.findViewById<CheckBox>(R.id.radioInduit)
         var tensionInduitU = layout.findViewById<EditText>(R.id.TIU)
          var tensionInduitV = layout.findViewById<EditText>(R.id.TIV)
          var tensionInduitW = layout.findViewById<EditText>(R.id.TIW)
-         var tensionRotor = layout.findViewById<RadioButton>(R.id.radioRotor)
+         var tensionRotor = layout.findViewById<CheckBox>(R.id.radioRotor)
         var tensionRotorU = layout.findViewById<EditText>(R.id.TRU)
         var tensionRotorV = layout.findViewById<EditText>(R.id.TRV)
         var tensionRotorW = layout.findViewById<EditText>(R.id.TRW)
@@ -150,7 +151,7 @@ class FicheRemontage : Fragment() {
             if(viewModel.selection.value!!.tensionRotorU !== null) tensionRotorU.setText(viewModel.selection.value!!.tensionRotorU!!.toString())
             if(viewModel.selection.value!!.tensionRotorV !== null) tensionRotorV.setText(viewModel.selection.value!!.tensionRotorV!!.toString())
             if(viewModel.selection.value!!.tensionRotorW !== null) tensionRotorW.setText(viewModel.selection.value!!.tensionRotorW!!.toString())
-            if(viewModel.selection.value!!.intensiteInduit !== null ) tensionStator.setChecked(viewModel.selection.value!!.intensiteInduit!!)
+            //if(viewModel.selection.value!!.intensiteInduit !== null ) inte.setChecked(viewModel.selection.value!!.intensiteInduit!!)
             if(viewModel.selection.value!!.intensiteInduitU !== null) intensiteInduitU.setText(viewModel.selection.value!!.intensiteInduitU!!.toString())
             if(viewModel.selection.value!!.vitesseU !== null) vitesseU.setText(viewModel.selection.value!!.vitesseU!!.toString())
             if(viewModel.selection.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.selection.value!!.dureeEssai!!.toString())
@@ -210,7 +211,6 @@ class FicheRemontage : Fragment() {
         spinnerCIF.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 viewModel.selection.value!!.collageRoulementFlasque = position
                 viewModel.getTime()
@@ -222,9 +222,9 @@ class FicheRemontage : Fragment() {
             viewModel.getTime()
             viewModel.quickSave()
         }
-        isoPBRB.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selection.value!!.verificationIsolementPorteBalais = isChecked
-            viewModel.getTime()
+        isoPBRB.setOnClickListener {
+            if (viewModel.selection.value!!.verificationIsolementPorteBalais == true) viewModel.selection.value!!.verificationIsolementPorteBalais = false else viewModel.selection.value!!.verificationIsolementPorteBalais = true
+                viewModel.getTime()
             viewModel.quickSave()
         }
         isoPBV.doAfterTextChanged {
@@ -260,6 +260,7 @@ class FicheRemontage : Fragment() {
         tensionInducteurs.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.tensionInducteurs = isChecked
             viewModel.getTime()
+            Log.i("Info",viewModel.selection.value!!.tensionInducteurs.toString())
             viewModel.quickSave()
         }
         tensionInducteursU.doAfterTextChanged {
@@ -281,12 +282,12 @@ class FicheRemontage : Fragment() {
             viewModel.selection.value!!.intensiteStator = isChecked
         }
         intensiteStatorU.doAfterTextChanged {
-            if (intensiteStatorU.text.isNotEmpty()) viewModel.selection.value!!.intensiteStatorV = intensiteStatorV.text.toString().toFloat()
+            if (intensiteStatorU.text.isNotEmpty()) viewModel.selection.value!!.intensiteStatorU = intensiteStatorU.text.toString().toFloat()
             viewModel.getTime()
             viewModel.quickSave()
         }
         intensiteStatorV.doAfterTextChanged {
-            if (intensiteStatorV.text.isNotEmpty()) viewModel.selection.value!!.intensiteStatorU = intensiteStatorU.text.toString().toFloat()
+            if (intensiteStatorV.text.isNotEmpty()) viewModel.selection.value!!.intensiteStatorV = intensiteStatorV.text.toString().toFloat()
             viewModel.getTime()
             viewModel.quickSave()
         }
@@ -320,7 +321,8 @@ class FicheRemontage : Fragment() {
             viewModel.getTime()
             viewModel.quickSave()
         }
-        tensionInduit.doAfterTextChanged {
+        tensionInduitU.doAfterTextChanged {
+            Log.i("INFO","change")
             if (tensionInduitU.text.isNotEmpty()) viewModel.selection.value!!.tensionInduitU = tensionInduitU.text.toString().toFloat()
             viewModel.getTime()
             viewModel.quickSave()
@@ -335,8 +337,34 @@ class FicheRemontage : Fragment() {
             viewModel.getTime()
             viewModel.quickSave()
         }
+        tensionRotor.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.tensionRotor = isChecked
+            viewModel.getTime()
+            viewModel.quickSave()
+        }
+        tensionRotorU.doAfterTextChanged {
+            if (tensionInduitU.text.isNotEmpty()) viewModel.selection.value!!.tensionRotorU = tensionRotorU.text.toString().toFloat()
+            viewModel.getTime()
+            viewModel.quickSave()
+        }
+        tensionRotorV.doAfterTextChanged {
+            if (tensionInduitV.text.isNotEmpty()) viewModel.selection.value!!.tensionRotorV = tensionRotorV.text.toString().toFloat()
+            viewModel.getTime()
+            viewModel.quickSave()
+        }
+        tensionRotorW.doAfterTextChanged {
+            if (tensionInduitW.text.isNotEmpty()) viewModel.selection.value!!.tensionRotorW = tensionRotorW.text.toString().toFloat()
+            viewModel.getTime()
+            viewModel.quickSave()
+        }
         intensiteInduitU.doAfterTextChanged {
-            if (intensiteInduitU.text.isNotEmpty()) viewModel.selection.value!!.intensiteInduitU = intensiteInduitU.text.toString().toFloat()
+            if (intensiteInduitU.text.isNotEmpty()) {
+                viewModel.selection.value!!.intensiteInduitU =
+                    intensiteInduitU.text.toString().toFloat()
+                viewModel.selection.value!!.intensiteInduit = true
+            } else {
+                viewModel.selection.value!!.intensiteInduit = false
+            }
             viewModel.getTime()
             viewModel.quickSave()
         }
@@ -412,6 +440,7 @@ class FicheRemontage : Fragment() {
         }
 
         btnenregistrer.setOnClickListener {
+            Log.i("INFO","collage inté flasque ${viewModel.selection.value!!.collageRoulementFlasque}")
             var fiche = viewModel.selection.value!!
             if (fiche.dureeTotale !== null) {
                 fiche.dureeTotale =

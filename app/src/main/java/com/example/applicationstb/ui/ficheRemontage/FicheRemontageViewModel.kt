@@ -73,7 +73,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     fun quickSave(){
         Log.i("INFO","quick save")
         getTime()
-        Log.i("INFO","duree après : ${selection.value?.dureeTotale}")
         viewModelScope.launch(Dispatchers.IO){
             if (selection.value!!.typeFicheRemontage == 1) {
                 var ch = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
