@@ -449,6 +449,82 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 })
                                             }
+                                            if (resp.fiche!!.typeFicheRemontage !== null && (resp.fiche!!.typeFicheRemontage == 3 || resp.fiche!!.typeFicheRemontage == 4 || resp.fiche!!.typeFicheRemontage == 5 || resp.fiche!!.typeFicheRemontage == 6))
+                                            {
+                                                val remo = repository.getRemontage(token, resp.fiche!!._id, object: Callback<RemontageResponse>{
+                                                    override fun onResponse(
+                                                        call: Call<RemontageResponse>,
+                                                        response: Response<RemontageResponse>
+                                                    ) {
+                                                        if ( response.code() == 200 ) {
+                                                            val resp2 = response.body()
+                                                            if (resp2 != null) {
+                                                                //Log.i("INFO","fiche RemontageCC :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                //demontages!!.add(resp.fiche!!)
+                                                                viewModelScope.launch(Dispatchers.IO) {
+                                                                    var demoT =
+                                                                        repository.getByIdRemoLocalDatabse(
+                                                                            resp2.fiche!!._id
+                                                                        )
+                                                                    if (demoT == null) {
+                                                                        var r = Autre(
+                                                                            resp2!!.fiche!!._id,
+                                                                            resp2!!.fiche!!.numDevis!!,
+                                                                            resp2!!.fiche!!.numFiche!!,
+                                                                            resp2!!.fiche!!.type!!,
+                                                                            resp2!!.fiche!!.status!!,
+                                                                            resp2!!.fiche!!.client!!,
+                                                                            resp2!!.fiche!!.contact,
+                                                                            resp2!!.fiche!!.telContact,
+                                                                            resp2!!.fiche!!.techniciens,
+                                                                            resp2!!.fiche!!.resp,
+                                                                            resp2!!.fiche!!.dateDebut,
+                                                                            resp2!!.fiche!!.dureeTotale,
+                                                                            resp2!!.fiche!!.observations,
+                                                                            resp2!!.fiche!!.photo,
+                                                                            resp2!!.fiche!!.typeFicheRemontage,
+                                                                            resp2!!.fiche!!.remontageRoulement,
+                                                                            resp2!!.fiche!!.collageRoulementPorteeArbre,
+                                                                            resp2!!.fiche!!.collageRoulementFlasque,
+                                                                            resp2!!.fiche!!.verificationFixationCouronne,
+                                                                            resp2!!.fiche!!.verificationIsolementPorteBalais,
+                                                                            resp2!!.fiche!!.isolementPorteBalaisV,
+                                                                            resp2!!.fiche!!.isolementPorteBalaisOhm,
+                                                                        )
+                                                                        repository.insertRemoLocalDatabase(
+                                                                            r
+                                                                        )
+                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "ajout remo en bdd locale"
+                                                                        )
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "fiche déjà en bdd"
+                                                                        )
+                                                                        remontages!!.add(demoT as Remontage)
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                Log.i(
+                                                                    "INFO",
+                                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+
+                                                    override fun onFailure(
+                                                        call: Call<RemontageResponse>,
+                                                        t: Throwable
+                                                    ) {
+                                                        Log.e("Error","erreur ${t.message}")
+                                                    }
+
+                                                })
+                                            }
                                         }
                                     }
                                 }

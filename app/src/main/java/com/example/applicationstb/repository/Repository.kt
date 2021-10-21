@@ -1910,6 +1910,7 @@ class Repository (var context:Context) {
     var remontageCourantCDao: RemontageCCDao? = null;
     var vehiculeDao: VehiculeDao? = null;
     var clientDao: ClientsDao? = null;
+    var remontageDao: RemontageDao? = null;
 
     fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
         var body = BodyLogin(username,psw)
@@ -2651,6 +2652,7 @@ class Repository (var context:Context) {
       bobinageDao = db!!.bobinageDao()
       remontageTriphaseDao = db!!.remontageTriphaseDao()
       remontageCourantCDao = db!!.remontageCCDao()
+      remontageDao = db!!.remontageDao()
       demontageTriphaseDao = db!!.demontageTriphaseDao()
       demontageCCDao = db!!.demontageCCDao()
       demontagePDao = db!!.demontagePDao()
@@ -2897,6 +2899,29 @@ class Repository (var context:Context) {
     }
     suspend fun deleteRemontageTriphaseLocalDatabse( remo: RemontageTriphaseEntity){
         remontageTriphaseDao!!.delete(remo)
+    }
+    //dao remontage
+    suspend fun insertRemoLocalDatabase(remo: Autre){
+        remontageDao!!.insertAll(remo.toEntity())
+    }
+    suspend fun getAllRemontageLocalDatabase(): List<RemontageEntity>{
+        return remontageDao!!.getAll()
+    }
+    suspend fun getByIdRemoLocalDatabse(id: String) : Autre? {
+        try {
+            if (remontageDao!!.getById(id) !== null) {
+                return remontageDao!!.getById(id).toRemo()
+            } else return null
+        } catch (e:Error){
+            Log.i("e",e.message!!)
+            return null
+        }
+    }
+    suspend fun updateRemoLocalDatabse( remo: RemontageEntity){
+        remontageDao!!.update(remo)
+    }
+    suspend fun deleteRemontageLocalDatabse( remo: RemontageEntity){
+        remontageDao!!.delete(remo)
     }
 
     // dao remo courant continu
