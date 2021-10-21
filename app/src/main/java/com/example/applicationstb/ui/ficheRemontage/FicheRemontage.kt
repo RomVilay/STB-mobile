@@ -135,101 +135,50 @@ class FicheRemontage : Fragment() {
             if(viewModel.selection.value!!.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(viewModel.selection.value!!.verificationIsolementPorteBalais!!)
             if(viewModel.selection.value!!.isolementPorteBalaisV !== null) isoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisV!!.toString())
             if(viewModel.selection.value!!.isolementPorteBalaisOhm !== null) risoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisOhm!!.toString())
-            if ( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2) {
-                if (viewModel.selection.value!!.tensionStator !== null) tensionStator.setChecked(
-                    viewModel.selection.value!!.tensionStator!!
-                )
-                if (viewModel.selection.value!!.tensionStatorU !== null) tensionStatorU.setText(
-                    viewModel.selection.value!!.tensionStatorU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionStatorV !== null) tensionStatorV.setText(
-                    viewModel.selection.value!!.tensionStatorV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionStatorW !== null) tensionStatorW.setText(
-                    viewModel.selection.value!!.tensionStatorW!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInducteurs !== null) tensionInducteurs.setChecked(
-                    viewModel.selection.value!!.tensionInducteurs!!
-                )
-                if (viewModel.selection.value!!.tensionInducteursU !== null) tensionInducteursU.setText(
-                    viewModel.selection.value!!.tensionInducteursU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInducteursV !== null) tensionInducteursV.setText(
-                    viewModel.selection.value!!.tensionInducteursV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInducteursW !== null) tensionInducteursW.setText(
-                    viewModel.selection.value!!.tensionInducteursW!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteStator !== null) intensiteStator.setChecked(
-                    viewModel.selection.value!!.intensiteStator!!
-                )
-                if (viewModel.selection.value!!.intensiteStatorU !== null) intensiteStatorU.setText(
-                    viewModel.selection.value!!.intensiteStatorU!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteStatorV !== null) intensiteStatorV.setText(
-                    viewModel.selection.value!!.intensiteStatorV!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteStatorW !== null) intensiteStatorW.setText(
-                    viewModel.selection.value!!.intensiteStatorW!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInducteurs !== null) intensiteInducteurs.setChecked(
-                    viewModel.selection.value!!.intensiteInducteurs!!
-                )
-                if (viewModel.selection.value!!.intensiteInducteursU !== null) intensiteInducteursU.setText(
-                    viewModel.selection.value!!.intensiteInducteursU!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInducteursV !== null) intensiteInducteursV.setText(
-                    viewModel.selection.value!!.intensiteInducteursV!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInducteursW !== null) intensiteInducteursW.setText(
-                    viewModel.selection.value!!.intensiteInducteursW!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInduit !== null) tensionInduit.setChecked(
-                    viewModel.selection.value!!.tensionInduit!!
-                )
-                if (viewModel.selection.value!!.tensionInduitU !== null) tensionInduitU.setText(
-                    viewModel.selection.value!!.tensionInduitU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInduitV !== null) tensionInduitV.setText(
-                    viewModel.selection.value!!.tensionInduitV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInduitW !== null) tensionInduitW.setText(
-                    viewModel.selection.value!!.tensionInduitW!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionRotor !== null) tensionRotor.setChecked(
-                    viewModel.selection.value!!.tensionRotor!!
-                )
-                if (viewModel.selection.value!!.tensionRotorU !== null) tensionRotorU.setText(
-                    viewModel.selection.value!!.tensionRotorU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionRotorV !== null) tensionRotorV.setText(
-                    viewModel.selection.value!!.tensionRotorV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionRotorW !== null) tensionRotorW.setText(
-                    viewModel.selection.value!!.tensionRotorW!!.toString()
-                )
-                //if(viewModel.selection.value!!.intensiteInduit !== null ) inte.setChecked(viewModel.selection.value!!.intensiteInduit!!)
-                if (viewModel.selection.value!!.intensiteInduitU !== null) intensiteInduitU.setText(
-                    viewModel.selection.value!!.intensiteInduitU!!.toString()
-                )
-                if (viewModel.selection.value!!.vitesseU !== null) vitesseU.setText(viewModel.selection.value!!.vitesseU!!.toString())
-                if (viewModel.selection.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.selection.value!!.dureeEssai!!.toString())
-                if (viewModel.selection.value!!.puissanceU !== null) puissanceU.setText(viewModel.selection.value!!.puissanceU!!.toString())
-                if (viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
-                if (viewModel.selection.value!!.vitesse1V !== null) V1V.setText(viewModel.selection.value!!.vitesse1V!!.toString())
-                if (viewModel.selection.value!!.vitesse1H !== null) V1H.setText(viewModel.selection.value!!.vitesse1H!!.toString())
-                if (viewModel.selection.value!!.vitesse2H !== null) V2H.setText(viewModel.selection.value!!.vitesse2H!!.toString())
-                if (viewModel.selection.value!!.vitesse2V !== null) V2V.setText(viewModel.selection.value!!.vitesse2V!!.toString())
-                if (viewModel.selection.value!!.vitesse2A !== null) V2A.setText(viewModel.selection.value!!.vitesse2A!!.toString())
-                if (viewModel.selection.value!!.acceleration1V !== null) A1V.setText(viewModel.selection.value!!.acceleration1V!!.toString())
-                if (viewModel.selection.value!!.acceleration1H !== null) A1H.setText(viewModel.selection.value!!.acceleration1H!!.toString())
-                if (viewModel.selection.value!!.acceleration2V !== null) A2V.setText(viewModel.selection.value!!.acceleration2V!!.toString())
-                if (viewModel.selection.value!!.acceleration2H !== null) A2H.setText(viewModel.selection.value!!.acceleration2H!!.toString())
-                if (viewModel.selection.value!!.acceleration2A !== null) A2A.setText(viewModel.selection.value!!.acceleration2A!!.toString())
-                if (viewModel.selection.value!!.sensRotation !== null && viewModel.selection.value!!.sensRotation == 2) sensRotation.setChecked(
-                    true
-                ) else sensRotation.setChecked(false)
-            }
+            if ( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2)
+                {
+            if(viewModel.selection.value!!.tensionStator !== null ) tensionStator.setChecked(viewModel.selection.value!!.tensionStator!!)
+            if(viewModel.selection.value!!.tensionStatorU !== null) tensionStatorU.setText(viewModel.selection.value!!.tensionStatorU!!.toString())
+            if(viewModel.selection.value!!.tensionStatorV !== null) tensionStatorV.setText(viewModel.selection.value!!.tensionStatorV!!.toString())
+            if(viewModel.selection.value!!.tensionStatorW !== null) tensionStatorW.setText(viewModel.selection.value!!.tensionStatorW!!.toString())
+            if(viewModel.selection.value!!.tensionInducteurs !== null ) tensionInducteurs.setChecked(viewModel.selection.value!!.tensionInducteurs!!)
+            if(viewModel.selection.value!!.tensionInducteursU !== null) tensionInducteursU.setText(viewModel.selection.value!!.tensionInducteursU!!.toString())
+            if(viewModel.selection.value!!.tensionInducteursV !== null) tensionInducteursV.setText(viewModel.selection.value!!.tensionInducteursV!!.toString())
+            if(viewModel.selection.value!!.tensionInducteursW !== null) tensionInducteursW.setText(viewModel.selection.value!!.tensionInducteursW!!.toString())
+            if(viewModel.selection.value!!.intensiteStator !== null ) intensiteStator.setChecked(viewModel.selection.value!!.intensiteStator!!)
+            if(viewModel.selection.value!!.intensiteStatorU !== null) intensiteStatorU.setText(viewModel.selection.value!!.intensiteStatorU!!.toString())
+            if(viewModel.selection.value!!.intensiteStatorV !== null) intensiteStatorV.setText(viewModel.selection.value!!.intensiteStatorV!!.toString())
+            if(viewModel.selection.value!!.intensiteStatorW !== null) intensiteStatorW.setText(viewModel.selection.value!!.intensiteStatorW!!.toString())
+            if(viewModel.selection.value!!.intensiteInducteurs !== null ) intensiteInducteurs.setChecked(viewModel.selection.value!!.intensiteInducteurs!!)
+            if(viewModel.selection.value!!.intensiteInducteursU !== null) intensiteInducteursU.setText(viewModel.selection.value!!.intensiteInducteursU!!.toString())
+            if(viewModel.selection.value!!.intensiteInducteursV !== null) intensiteInducteursV.setText(viewModel.selection.value!!.intensiteInducteursV!!.toString())
+            if(viewModel.selection.value!!.intensiteInducteursW !== null) intensiteInducteursW.setText(viewModel.selection.value!!.intensiteInducteursW!!.toString())
+            if(viewModel.selection.value!!.tensionInduit !== null ) tensionInduit.setChecked(viewModel.selection.value!!.tensionInduit!!)
+            if(viewModel.selection.value!!.tensionInduitU !== null) tensionInduitU.setText(viewModel.selection.value!!.tensionInduitU!!.toString())
+            if(viewModel.selection.value!!.tensionInduitV !== null) tensionInduitV.setText(viewModel.selection.value!!.tensionInduitV!!.toString())
+            if(viewModel.selection.value!!.tensionInduitW !== null) tensionInduitW.setText(viewModel.selection.value!!.tensionInduitW!!.toString())
+            if(viewModel.selection.value!!.tensionRotor !== null ) tensionRotor.setChecked(viewModel.selection.value!!.tensionRotor!!)
+            if(viewModel.selection.value!!.tensionRotorU !== null) tensionRotorU.setText(viewModel.selection.value!!.tensionRotorU!!.toString())
+            if(viewModel.selection.value!!.tensionRotorV !== null) tensionRotorV.setText(viewModel.selection.value!!.tensionRotorV!!.toString())
+            if(viewModel.selection.value!!.tensionRotorW !== null) tensionRotorW.setText(viewModel.selection.value!!.tensionRotorW!!.toString())
+            //if(viewModel.selection.value!!.intensiteInduit !== null ) inte.setChecked(viewModel.selection.value!!.intensiteInduit!!)
+            if(viewModel.selection.value!!.intensiteInduitU !== null) intensiteInduitU.setText(viewModel.selection.value!!.intensiteInduitU!!.toString())
+            if(viewModel.selection.value!!.vitesseU !== null) vitesseU.setText(viewModel.selection.value!!.vitesseU!!.toString())
+            if(viewModel.selection.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.selection.value!!.dureeEssai!!.toString())
+            if(viewModel.selection.value!!.puissanceU !== null) puissanceU.setText(viewModel.selection.value!!.puissanceU!!.toString())
+            if(viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
+            if(viewModel.selection.value!!.vitesse1V !== null) V1V.setText(viewModel.selection.value!!.vitesse1V!!.toString())
+            if(viewModel.selection.value!!.vitesse1H !== null) V1H.setText(viewModel.selection.value!!.vitesse1H!!.toString())
+            if(viewModel.selection.value!!.vitesse2H !== null) V2H.setText(viewModel.selection.value!!.vitesse2H!!.toString())
+            if(viewModel.selection.value!!.vitesse2V !== null) V2V.setText(viewModel.selection.value!!.vitesse2V!!.toString())
+            if(viewModel.selection.value!!.vitesse2A !== null) V2A.setText(viewModel.selection.value!!.vitesse2A!!.toString())
+            if(viewModel.selection.value!!.acceleration1V !== null) A1V.setText(viewModel.selection.value!!.acceleration1V!!.toString())
+            if(viewModel.selection.value!!.acceleration1H !== null) A1H.setText(viewModel.selection.value!!.acceleration1H!!.toString())
+            if(viewModel.selection.value!!.acceleration2V !== null) A2V.setText(viewModel.selection.value!!.acceleration2V!!.toString())
+            if(viewModel.selection.value!!.acceleration2H !== null) A2H.setText(viewModel.selection.value!!.acceleration2H!!.toString())
+            if(viewModel.selection.value!!.acceleration2A !== null) A2A.setText(viewModel.selection.value!!.acceleration2A!!.toString())
+            if(viewModel.selection.value!!.sensRotation !== null && viewModel.selection.value!!.sensRotation == 2 ) sensRotation.setChecked(true) else sensRotation.setChecked(false)
+                    }
             //infoMoteur.visibility = View.VISIBLE
             //essaisDynamiques.visibility = View.VISIBLE
         }

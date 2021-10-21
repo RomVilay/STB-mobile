@@ -1852,9 +1852,6 @@ class ClientsResponse(
     var client:Client?
 )
 
-class AutreResponse(
-    var fiche: Autre?
-)
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
@@ -2330,7 +2327,7 @@ class Repository (var context:Context) {
         var fiche:RemontageTriphase? = null
         call.enqueue(callback)
     }
-    fun patchAutre(token:String,ficheId:String, fiche:Autre, callback:Callback<AutreResponse>){
+    fun patchRemontage(token:String,ficheId:String, fiche:Remontage, callback:Callback<RemontageResponse>){
         var body = BodyRemontage(
             fiche.status!!.toInt(),
             fiche.dureeTotale,
@@ -2344,7 +2341,7 @@ class Repository (var context:Context) {
             fiche.isolementPorteBalaisOhm,
         )
         var call = service.patchRemontage(token,ficheId,body)
-        var fiche:Autre? = null
+        var fiche:Remontage? = null
         call.enqueue(callback)
     }
     fun patchDemontagePompe(token:String,ficheId:String, fiche:DemontagePompe, callback:Callback<DemontagePompeResponse>){
@@ -2901,13 +2898,13 @@ class Repository (var context:Context) {
         remontageTriphaseDao!!.delete(remo)
     }
     //dao remontage
-    suspend fun insertRemoLocalDatabase(remo: Autre){
-        remontageDao!!.insertAll(remo.toEntity())
+    suspend fun insertRemoLocalDatabase(remo: Remontage){
+        remontageDao!!.insertAll(remo.toRemoEntity())
     }
     suspend fun getAllRemontageLocalDatabase(): List<RemontageEntity>{
         return remontageDao!!.getAll()
     }
-    suspend fun getByIdRemoLocalDatabse(id: String) : Autre? {
+    suspend fun getByIdRemoLocalDatabse(id: String) : Remontage? {
         try {
             if (remontageDao!!.getById(id) !== null) {
                 return remontageDao!!.getById(id).toRemo()

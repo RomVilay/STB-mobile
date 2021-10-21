@@ -97,6 +97,18 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
+            if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 5 ||selection.value!!.typeFicheRemontage == 6 ) {
+                var remo = repository.getByIdRemoLocalDatabse(selection.value!!._id)
+                //Log.i("INFO","${ch}")
+                if (remo !== null) {
+                    repository.updateRemoLocalDatabse(remo.toRemoEntity())
+                    Log.i("INFO","patch ${selection.value!!._id}")
+                } else {
+                    var t = selection.value as Remontage
+                    repository.insertRemoLocalDatabase(t)
+                    Log.i("INFO","insert ${selection.value!!._id} ")
+                }
+            }
         }
     }
     @RequiresApi(Build.VERSION_CODES.M)

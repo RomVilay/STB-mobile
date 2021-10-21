@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Autre
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.Remontage
 
 @Entity(tableName = "remontage")
 data class RemontageEntity (
@@ -26,8 +27,8 @@ data class RemontageEntity (
     var isolementPorteBalaisV: Int?,
     var isolementPorteBalaisOhm: Int?
 ){
-    fun toRemo(): Autre{
-        return Autre(
+    fun toRemo(): Remontage{
+        return Remontage(
             _id,
             numDevis!!,
             numFiche!!,
@@ -50,6 +51,47 @@ data class RemontageEntity (
             verificationIsolementPorteBalais,
             isolementPorteBalaisV,
             isolementPorteBalaisOhm,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+
         )
     }
 }

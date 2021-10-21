@@ -467,32 +467,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             resp2.fiche!!._id
                                                                         )
                                                                     if (demoT == null) {
-                                                                        var r = Autre(
-                                                                            resp2!!.fiche!!._id,
-                                                                            resp2!!.fiche!!.numDevis!!,
-                                                                            resp2!!.fiche!!.numFiche!!,
-                                                                            resp2!!.fiche!!.type!!,
-                                                                            resp2!!.fiche!!.status!!,
-                                                                            resp2!!.fiche!!.client!!,
-                                                                            resp2!!.fiche!!.contact,
-                                                                            resp2!!.fiche!!.telContact,
-                                                                            resp2!!.fiche!!.techniciens,
-                                                                            resp2!!.fiche!!.resp,
-                                                                            resp2!!.fiche!!.dateDebut,
-                                                                            resp2!!.fiche!!.dureeTotale,
-                                                                            resp2!!.fiche!!.observations,
-                                                                            resp2!!.fiche!!.photo,
-                                                                            resp2!!.fiche!!.typeFicheRemontage,
-                                                                            resp2!!.fiche!!.remontageRoulement,
-                                                                            resp2!!.fiche!!.collageRoulementPorteeArbre,
-                                                                            resp2!!.fiche!!.collageRoulementFlasque,
-                                                                            resp2!!.fiche!!.verificationFixationCouronne,
-                                                                            resp2!!.fiche!!.verificationIsolementPorteBalais,
-                                                                            resp2!!.fiche!!.isolementPorteBalaisV,
-                                                                            resp2!!.fiche!!.isolementPorteBalaisOhm,
-                                                                        )
                                                                         repository.insertRemoLocalDatabase(
-                                                                            r
+                                                                            resp2.fiche!!
                                                                         )
                                                                         remontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(

@@ -87,7 +87,30 @@ open class Remontage(
     dureeTotale,
     observation,
     photo
-) {}
+) {
+    fun toRemoEntity():RemontageEntity{
+        return RemontageEntity(
+            _id,
+            numDevis,
+            numFiche,
+            type,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dureeTotale,
+            observations,
+            typeFicheRemontage,
+            remontageRoulement,
+            collageRoulementPorteeArbre,
+            collageRoulementFlasque,
+            verificationFixationCouronne,
+            verificationIsolementPorteBalais,
+            isolementPorteBalaisV,
+            isolementPorteBalaisOhm
+        )
+    }
+}
 
 class RemontageTriphase(
     idFiche: String,
