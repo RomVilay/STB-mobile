@@ -222,9 +222,9 @@ class FicheRemontage : Fragment() {
             viewModel.getTime()
             viewModel.quickSave()
         }
-        isoPBRB.setOnClickListener {
-            if (viewModel.selection.value!!.verificationIsolementPorteBalais == true) viewModel.selection.value!!.verificationIsolementPorteBalais = false else viewModel.selection.value!!.verificationIsolementPorteBalais = true
-                viewModel.getTime()
+        isoPBRB.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selection.value!!.verificationIsolementPorteBalais = isChecked
+            viewModel.getTime()
             viewModel.quickSave()
         }
         isoPBV.doAfterTextChanged {

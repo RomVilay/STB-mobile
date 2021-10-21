@@ -281,7 +281,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 var listRCC: List<RemontageCCEntity> =
                                     repository.getAllRemontageCCLocalDatabase()
                                 //Log.i("INFO", "token : ${user!!.token}")
-                                Log.i("INFO", "nb de fiches DemontageCC: ${listRCC.size}")
+                                Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
                                 if (listRCC.size > 0) {
                                     for (fiche in listRCC) {
                                         var rc = fiche.toRCourantC()

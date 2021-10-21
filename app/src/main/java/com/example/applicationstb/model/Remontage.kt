@@ -1,6 +1,7 @@
 package com.example.applicationstb.model
 
 import com.example.applicationstb.localdatabase.RemontageCCEntity
+import com.example.applicationstb.localdatabase.RemontageEntity
 import com.example.applicationstb.localdatabase.RemontageTriphaseEntity
 import java.sql.Timestamp
 import java.util.*
@@ -520,4 +521,64 @@ class RemontageCourantC(
 
     }
 }
-//essais dyna et vibratoires à rajouter
+class Autre(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photo: Array<String>?,
+    var typeFicheRemontage: Int?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementFlasque: Int?,
+    var verificationFixationCouronne: Boolean?,
+    var verificationIsolementPorteBalais: Boolean?,
+    var isolementPorteBalaisV: Int?,
+    var isolementPorteBalaisOhm: Int?
+    ): Fiche (
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photo) {
+        fun toEntity():RemontageEntity{
+            return RemontageEntity(
+                _id,
+                numDevis,
+                numFiche,
+                type,
+                status,
+                client!!._id,
+                contact,
+                telContact,
+                dureeTotale,
+                observations,
+                typeFicheRemontage,
+                remontageRoulement,
+                collageRoulementPorteeArbre,
+                collageRoulementFlasque,
+                verificationFixationCouronne,
+                verificationIsolementPorteBalais,
+                isolementPorteBalaisV,
+                isolementPorteBalaisOhm
+            )
+        }
+    }

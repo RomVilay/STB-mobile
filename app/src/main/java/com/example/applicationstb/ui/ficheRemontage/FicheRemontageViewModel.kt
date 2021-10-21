@@ -69,33 +69,32 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         start.value = now
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     fun quickSave(){
         Log.i("INFO","quick save")
         getTime()
         viewModelScope.launch(Dispatchers.IO){
             if (selection.value!!.typeFicheRemontage == 1) {
-                var ch = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
+                var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
-                if (ch !== null) {
-                    repository.updateRemoTriLocalDatabse(ch.toEntity())
-                    //Log.i("INFO","patch ${selection.value!!._id}")
+                if (tri !== null) {
+                    repository.updateRemoTriLocalDatabse(tri.toEntity())
+                    Log.i("INFO","patch ${selection.value!!._id}")
                 } else {
                     var t = selection.value as RemontageTriphase
                     repository.insertRemoTriLocalDatabase(t)
-                    //Log.i("INFO","insert ${selection.value!!._id}")
+                    Log.i("INFO","insert ${selection.value!!._id}")
                 }
             }
             if (selection.value!!.typeFicheRemontage == 2) {
-                var ch = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
+                var remo = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
-                if (ch !== null) {
-                    repository.updateRemoCCLocalDatabse(ch.toEntity())
-                    //Log.i("INFO","patch ${selection.value!!._id}")
+                if (remo !== null) {
+                    repository.updateRemoCCLocalDatabse(remo.toEntity())
+                    Log.i("INFO","patch ${selection.value!!._id}")
                 } else {
                     var t = selection.value as RemontageCourantC
                     repository.insertRemoCCLocalDatabase(t)
-                    //Log.i("INFO","insert ${selection.value!!._id}")
+                    Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
         }

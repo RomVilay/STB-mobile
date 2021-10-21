@@ -1541,6 +1541,63 @@ class BodyRemontageTriphase(
         }
     }
 }
+class BodyRemontage(
+    var status: Int?,
+    var dureeTotale: Long?,
+    var observations: String?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementPorteeFlasque: Int?,
+    var verificationFixationCouronne: Boolean?,
+    var verificationIsolementPorteBalais: Boolean?,
+    var isolementPorteBalaisV: Int?,
+    var isolementPorteBalaisOhm: Int?
+): Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+
+    ) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(status!!)
+        parcel.writeLong(dureeTotale!!)
+        parcel.writeString(observations!!)
+        parcel.writeInt(remontageRoulement!!)
+        parcel.writeInt(collageRoulementPorteeArbre!!)
+        parcel.writeInt(collageRoulementPorteeFlasque!!)
+        parcel.writeBoolean(verificationFixationCouronne!!)
+        parcel.writeBoolean(verificationIsolementPorteBalais!!)
+        parcel.writeInt(isolementPorteBalaisV!!)
+        parcel.writeInt(isolementPorteBalaisOhm!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyRemontage> {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        override fun createFromParcel(parcel: Parcel): BodyRemontage {
+            return BodyRemontage(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyRemontage?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class BodyRemontageCC(
     var status: Int?,
@@ -1795,6 +1852,9 @@ class ClientsResponse(
     var client:Client?
 )
 
+class AutreResponse(
+    var fiche: Autre?
+)
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
@@ -2267,6 +2327,23 @@ class Repository (var context:Context) {
         )
         var call = service.patchRemontageTriphase(token,ficheId,body)
         var fiche:RemontageTriphase? = null
+        call.enqueue(callback)
+    }
+    fun patchAutre(token:String,ficheId:String, fiche:Autre, callback:Callback<AutreResponse>){
+        var body = BodyRemontage(
+            fiche.status!!.toInt(),
+            fiche.dureeTotale,
+            fiche.observations,
+            fiche.remontageRoulement,
+            fiche.collageRoulementPorteeArbre,
+            fiche.collageRoulementFlasque,
+            fiche.verificationFixationCouronne,
+            fiche.verificationIsolementPorteBalais,
+            fiche.isolementPorteBalaisV,
+            fiche.isolementPorteBalaisOhm,
+        )
+        var call = service.patchRemontage(token,ficheId,body)
+        var fiche:Autre? = null
         call.enqueue(callback)
     }
     fun patchDemontagePompe(token:String,ficheId:String, fiche:DemontagePompe, callback:Callback<DemontagePompeResponse>){
