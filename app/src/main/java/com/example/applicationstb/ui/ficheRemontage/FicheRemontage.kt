@@ -136,6 +136,7 @@ class FicheRemontage : Fragment() {
             if(viewModel.selection.value!!.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(viewModel.selection.value!!.verificationIsolementPorteBalais!!)
             if(viewModel.selection.value!!.isolementPorteBalaisV !== null) isoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisV!!.toString())
             if(viewModel.selection.value!!.isolementPorteBalaisOhm !== null) risoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisOhm!!.toString())
+            if(viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
             if ( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2)
                 {
             if(viewModel.selection.value!!.tensionStator !== null ) tensionStator.setChecked(viewModel.selection.value!!.tensionStator!!)

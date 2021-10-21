@@ -36,10 +36,12 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         var action = ConnexionDirections.versAccueil(user!!.token!!, user!!.username!!)
         Navigation.findNavController(view).navigate(action)
     }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun login(username: String, psw: String, view: View){
         if (isOnline(context) == true) {
             val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
@@ -322,6 +324,50 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             })
                                     }
                                 }
+                                var listRm: List<RemontageEntity> =
+                                    repository.getAllRemontageLocalDatabase()
+                                //Log.i("INFO", "token : ${user!!.token}")
+                                Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
+                                if (listRm.size > 0) {
+                                    for (fiche in listRm) {
+                                        var rc = fiche.toRemo()
+                                        val resp = repository.patchRemontage(
+                                            user!!.token!!,
+                                            rc._id,
+                                            rc,
+                                            object : Callback<RemontageResponse> {
+                                                override fun onResponse(
+                                                    call: Call<RemontageResponse>,
+                                                    response: Response<RemontageResponse>
+                                                ) {
+                                                    if (response.code() == 200) {
+                                                        val resp = response.body()
+                                                        if (resp != null) {
+                                                            Log.i("INFO", "fiche enregistrée")
+                                                        }
+                                                        viewModelScope.launch(Dispatchers.IO) {
+                                                            repository.deleteRemontageLocalDatabse(
+                                                                fiche
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Log.i(
+                                                            "INFO",
+                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onFailure(
+                                                    call: Call<RemontageResponse>,
+                                                    t: Throwable
+                                                ) {
+                                                    Log.e("Error", "${t.stackTraceToString()}")
+                                                    Log.e("Error", "erreur ${t.message}")
+                                                }
+                                            })
+                                    }
+                                }
                                 var listDP: List<DemoPompeEntity> =
                                     repository.getAllDemontagePompeLocalDatabase()
                                 //Log.i("INFO", "token : ${user!!.token}")
@@ -527,7 +573,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager

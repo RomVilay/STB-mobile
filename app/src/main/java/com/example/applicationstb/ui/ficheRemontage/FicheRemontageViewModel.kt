@@ -74,38 +74,37 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         getTime()
         viewModelScope.launch(Dispatchers.IO){
             if (selection.value!!.typeFicheRemontage == 1) {
+                var fiche = selection.value!! as RemontageTriphase
                 var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
-                //Log.i("INFO","${ch}")
-                if (tri !== null) {
-                    repository.updateRemoTriLocalDatabse(tri.toEntity())
-                    Log.i("INFO","patch ${selection.value!!._id}")
-                } else {
-                    var t = selection.value as RemontageTriphase
-                    repository.insertRemoTriLocalDatabase(t)
-                    Log.i("INFO","insert ${selection.value!!._id}")
+                if (tri !== null ) {
+                    repository.updateRemoTriLocalDatabse(fiche.toEntity())
+                    Log.i("INFO", "patch local triphase")
+                } else  {
+                    repository.insertRemoTriLocalDatabase(fiche)
+                    Log.i("INFO", "enregistré local triphase")
                 }
             }
             if (selection.value!!.typeFicheRemontage == 2) {
+                var fiche = selection.value!! as RemontageCourantC
                 var remo = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
                 if (remo !== null) {
-                    repository.updateRemoCCLocalDatabse(remo.toEntity())
-                    Log.i("INFO","patch ${selection.value!!._id}")
+                    repository.updateRemoCCLocalDatabse(fiche.toEntity())
+                    Log.i("INFO","patch cc ${selection.value!!._id}")
                 } else {
-                    var t = selection.value as RemontageCourantC
-                    repository.insertRemoCCLocalDatabase(t)
+                    repository.insertRemoCCLocalDatabase(fiche)
                     Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
             if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 5 ||selection.value!!.typeFicheRemontage == 6 ) {
+                var fiche = selection.value!!
                 var remo = repository.getByIdRemoLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
                 if (remo !== null) {
-                    repository.updateRemoLocalDatabse(remo.toRemoEntity())
-                    Log.i("INFO","patch ${selection.value!!._id}")
+                    repository.updateRemoLocalDatabse(fiche.toRemoEntity())
+                    Log.i("INFO","patch autre ${selection.value!!._id}")
                 } else {
-                    var t = selection.value as Remontage
-                    repository.insertRemoLocalDatabase(t)
+                    repository.insertRemoLocalDatabase(fiche)
                     Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
