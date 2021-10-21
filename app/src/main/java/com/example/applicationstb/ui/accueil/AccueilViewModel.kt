@@ -504,7 +504,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        remontages!!.add(demoT as Remontage)
+                                                                        remontages!!.add(resp2!!.fiche!!)
                                                                     }
                                                                 }
                                                             } else {
