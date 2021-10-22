@@ -106,7 +106,7 @@ class PompeFragment : Fragment() {
             viewModel.localSave()
         }
         numSerie.doAfterTextChanged {
-            fiche.numSerie = numSerie.text.toString().toInt()
+            fiche.numSerie = numSerie.text.toString()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.localSave()

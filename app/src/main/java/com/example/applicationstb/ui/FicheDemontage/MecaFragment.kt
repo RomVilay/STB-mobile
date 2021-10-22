@@ -134,7 +134,7 @@ class MecaFragment : Fragment() {
         }
         //roulements
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M"))
+        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
         var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
@@ -198,47 +198,58 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeRoulement.selectedItem.toString()
-                if (switchRoullements.isChecked) {
-                    if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1){
-                        var tab = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
-                        tab.add(selection)
-                        viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
-                        var tab2 = viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
-                        tab2.add("")
-                        viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
-                        refRoul.setText("")
-                    }else{
-                        refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection)])
-                    } /*else {
-                        var tab = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
-                        var tab2 = viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
-                        tab.removeAt(viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection))
-                        tab2.removeAt(viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection))
-                        viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
-                        viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
-                    }*/
-                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                Log.i("INFO", "position ${position}")
+                if (position > 0) {
+                    if (switchRoullements.isChecked) {
+                        if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
+                            var tab =
+                                viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
+                            tab.add(selection)
+                            viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
+                            var tab2 =
+                                viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
+                            tab2.add("")
+                            viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
+                            refRoul.setText("")
+                        } else {
+                            refRoul.setText(
+                                viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(
+                                    selection
+                                )]
+                            )
+                        }
+                        specsRoul.adapter = roulementAdapter(
+                            fiche.typeRoulementArriere!!,
+                            fiche.refRoulementArriere!!
+                        ) { item ->
+                            viewModel.selection.value!!.typeRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                            viewModel.selection.value!!.refRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
                         viewModel.getTime()
                         viewModel.localSave()
-                    }
-                    viewModel.getTime()
-                    viewModel.localSave()
-                } else {
-                    if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1){
-                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                        tab.add(selection)
-                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                        tab2.add("")
-                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                        refRoul.setText("")
                     } else {
-                        refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection)])
-                    }
-                    /* else {
+                        if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1) {
+                            var tab =
+                                viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                            tab.add(selection)
+                            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                            var tab2 =
+                                viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                            tab2.add("")
+                            viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                            refRoul.setText("")
+                        } else {
+                            refRoul.setText(
+                                viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(
+                                    selection
+                                )]
+                            )
+                        }
+                        /* else {
                         var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
                         var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
                         tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
@@ -246,15 +257,20 @@ class MecaFragment : Fragment() {
                         viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
                         viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
                     }*/
-                    specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
-                        viewModel.selection.value!!.typeRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                        viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                        specsRoul.adapter = roulementAdapter(
+                            fiche.typeRoulementAvant!!,
+                            fiche.refRoulementAvant!!
+                        ) { item ->
+                            viewModel.selection.value!!.typeRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                            viewModel.selection.value!!.refRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
                         viewModel.getTime()
                         viewModel.localSave()
                     }
-                    viewModel.getTime()
-                    viewModel.localSave()
                 }
             }
 
@@ -346,10 +362,10 @@ class MecaFragment : Fragment() {
                         viewModel.getTime()
                         viewModel.localSave()
                     }
-                    Log.i("INFO", "position:${position} - valeur: ${selection} - type joint arrière : ${viewModel.selection.value!!.typeJointArriere!!.toString()}")
+
                 } else {
                     if (position == 1 ) viewModel.selection.value!!.typeJointAvant = true else viewModel.selection.value!!.typeJointAvant = false
-                    Log.i("INFO", "position:${position} - valeur: ${selection} - type joint av : ${viewModel.selection.value!!.typeJointAvant!!.toString()}")
+
                 }
             }
         }
@@ -363,14 +379,14 @@ class MecaFragment : Fragment() {
             }
         }*/
         refJoints.doAfterTextChanged {
-                Log.i("INFO", "position ${if (switchJoints.isChecked) "ar" else "av"}")
+
                 if (switchJoints.isChecked) {
-                    Log.i("INFO", "set ar")
+
                     viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
                     viewModel.getTime()
                     viewModel.localSave()
                 } else {
-                    Log.i("INFO", "set av")
+
                     viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
                     viewModel.getTime()
                     viewModel.localSave()

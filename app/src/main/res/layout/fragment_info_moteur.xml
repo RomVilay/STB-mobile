@@ -55,7 +55,7 @@
             android:ems="10"
             android:gravity="center"
             android:hint="numéro de série"
-            android:inputType="number"
+            android:inputType="text"
             app:layout_constraintStart_toEndOf="@+id/nums"
             app:layout_constraintTop_toTopOf="parent" />
 

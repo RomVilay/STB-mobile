@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.FicheDemontage.MecaFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/meca"
         android:layout_width="649dp"
-        android:layout_height="816dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="644dp"
@@ -246,7 +246,7 @@
 
                 <Spinner
                     android:id="@+id/spiRoul"
-                    android:layout_width="181dp"
+                    android:layout_width="190dp"
                     android:layout_height="31dp"
                     android:layout_marginStart="56dp"
                     android:layout_marginLeft="56dp"
@@ -270,9 +270,12 @@
                     android:id="@+id/refRoullement"
                     android:layout_width="183dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/round_textview"
                     android:ems="10"
+                    android:gravity="center"
                     android:hint="référence roulement "
-                    android:inputType="textPersonName"
+                    android:inputType="text"
+                    android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView27"
                     app:layout_constraintStart_toEndOf="@+id/textView27"
                     app:layout_constraintTop_toTopOf="@+id/textView27"
@@ -306,7 +309,7 @@
                     android:id="@+id/specsRoul"
                     android:layout_width="547dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_textview"
+                    android:layout_margin="5dp"
                     android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -364,9 +367,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginLeft="12dp"
+                    android:background="@drawable/round_textview"
                     android:ems="10"
+                    android:gravity="center"
                     android:hint="référence joints"
-                    android:inputType="textPersonName"
+                    android:inputType="text"
+                    android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/spiJoints"
                     app:layout_constraintStart_toEndOf="@+id/textView30"
                     app:layout_constraintTop_toTopOf="@+id/spiJoints" />
@@ -608,9 +614,12 @@
                 android:layout_marginStart="348dp"
                 android:layout_marginLeft="348dp"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/round_textview"
                 android:ems="10"
+                android:gravity="center"
                 android:hint=" type sonde"
                 android:inputType="textPersonName"
+                android:padding="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switchSondes" />
 
@@ -642,16 +651,19 @@
                 android:id="@+id/coul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/round_textview"
                 android:ems="10"
+                android:gravity="center"
                 android:hint="Peinture"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="@+id/textView40"
+                android:inputType="text"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView40"
-                app:layout_constraintTop_toBottomOf="@+id/typeSonde"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/typeSonde" />
 
             <Switch
                 android:id="@+id/swEqui"

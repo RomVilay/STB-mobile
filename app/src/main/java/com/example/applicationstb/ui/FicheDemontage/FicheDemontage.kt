@@ -42,6 +42,10 @@ class FicheDemontage : Fragment() {
             viewModel.start.value = Date()
             var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
             viewModel.selection.value = demo
+            var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
+            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+            var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
+            viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()
             when (viewModel.selection.value){
                 is CourantContinu -> fragmentManager.commit {
                     replace<CCFragment>(R.id.fragmentContainer)

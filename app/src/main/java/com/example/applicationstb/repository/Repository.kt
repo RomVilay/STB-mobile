@@ -185,7 +185,7 @@ class BodyDemontageTriphase (
                       var status: Long?,
                       var typeMoteur: String?,
                       var marque: String?,
-                      var numSerie: Int?,
+                      var numSerie: String?,
                       var puissance: Float?,
                       var bride: Float?,
                       var vitesse : Float?,
@@ -243,7 +243,7 @@ class BodyDemontageTriphase (
         parcel.readLong(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -311,7 +311,7 @@ class BodyDemontageTriphase (
         parcel.writeLong(status!!)
         parcel.writeString(typeMoteur!!)
         parcel.writeString(marque!!)
-        parcel.writeInt(numSerie!!)
+        parcel.writeString(numSerie!!)
         parcel.writeFloat(puissance!!)
         parcel.writeFloat(bride!!)
         parcel.writeFloat(vitesse!!)
@@ -392,7 +392,7 @@ class BodyDemontageTriphase (
 class BodyDemontageCC ( var status: Long?,
                         var typeMoteur: String?,
                         var marque: String?,
-                        var numSerie: Int?,
+                        var numSerie: String?,
                         var puissance: Float?,
                         var bride: Float?,
                         var vitesse : Float?,
@@ -447,7 +447,7 @@ class BodyDemontageCC ( var status: Long?,
         parcel.readLong(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -512,7 +512,7 @@ class BodyDemontageCC ( var status: Long?,
         parcel.writeLong(status!!)
         parcel.writeString(typeMoteur!!)
         parcel.writeString(marque!!)
-        parcel.writeInt(numSerie!!)
+        parcel.writeString(numSerie!!)
         parcel.writeFloat(puissance!!)
         parcel.writeFloat(bride!!)
         parcel.writeFloat(vitesse!!)
@@ -592,7 +592,7 @@ class BodyDemontageAlternateur (
     var typeMoteur: String?,
     var status: Long?,
     var marque: String?,
-    var numSerie: Int?,
+    var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
     var vitesse : Float?,
@@ -658,7 +658,7 @@ class BodyDemontageAlternateur (
         parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -734,7 +734,7 @@ class BodyDemontageAlternateur (
         parcel.writeString(typeMoteur!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
-        parcel.writeInt(numSerie!!)
+        parcel.writeString(numSerie!!)
         parcel.writeFloat(puissance!!)
         parcel.writeFloat(bride!!)
         parcel.writeFloat(vitesse!!)
@@ -823,7 +823,7 @@ class BodyDemontageRotorBobine (
     var typeMoteur: String?,
     var status: Long?,
     var marque: String?,
-    var numSerie: Int?,
+    var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
     var vitesse : Float?,
@@ -890,7 +890,7 @@ class BodyDemontageRotorBobine (
         parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -967,7 +967,7 @@ class BodyDemontageRotorBobine (
         parcel.writeString(typeMoteur!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
-        parcel.writeInt(numSerie!!)
+        parcel.writeString(numSerie!!)
         parcel.writeFloat(puissance!!)
         parcel.writeFloat(bride!!)
         parcel.writeFloat(vitesse!!)
@@ -1060,7 +1060,7 @@ class BodyDemontageMonophase (
     var typeMoteur: String?,
     var status: Long?,
     var marque: String?,
-    var numSerie: Int?,
+    var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
     var vitesse : Float?,
@@ -1108,7 +1108,7 @@ class BodyDemontageMonophase (
         parcel.readString(),
         parcel.readLong(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -1166,7 +1166,7 @@ class BodyDemontageMonophase (
         parcel.writeString(observations!!)
         parcel.writeLong(status!!)
         parcel.writeString(marque!!)
-        parcel.writeInt(numSerie!!)
+        parcel.writeString(numSerie!!)
         parcel.writeFloat(puissance!!)
         parcel.writeFloat(bride!!)
         parcel.writeFloat(vitesse!!)
@@ -1237,7 +1237,7 @@ class BodyDemoPompe(
     var status: Long?,
     var typeMoteur: String?,
     var marque: String?,
-    var numSerie: Int?,
+    var numSerie: String?,
     var fluide: String?,
     var sensRotation: Boolean?,
     var typeRessort: Int?,
@@ -1258,7 +1258,7 @@ class BodyDemoPompe(
         parcel.readLong(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readInt(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readInt(),
@@ -1281,7 +1281,7 @@ class BodyDemoPompe(
         parcel.writeLong(status!!)
         parcel.writeString(typeMoteur!!)
         parcel.writeString(marque!!)
-        parcel.writeInt(numSerie!!)
+        parcel.writeString(numSerie!!)
         parcel.writeString(fluide!!)
         parcel.writeBoolean(sensRotation!!)
         parcel.writeInt(typeRessort!!)

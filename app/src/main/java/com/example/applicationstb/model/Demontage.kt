@@ -6,29 +6,6 @@ import com.example.applicationstb.localdatabase.*
 import kotlinx.serialization.json.Json
 import java.util.*
 
-enum class Etat2 {
-    A_controler, Ok, a_rebague
-}
-
-enum class Etat3 {
-    BonEtat, Casse, Absent, A_Changer, Sortie_par_cables
-}
-
-enum class Etat {
-    propre, sale, tres_sale
-}
-
-enum class Rotation {
-    gauche, droite
-}
-
-enum class TypePompe {
-    entrainement_vis, ressort_coax_conique, ressort_coax_cyl, soufflet
-}
-
-enum class Matiere {
-    ceramique, carbone_silicium, carbone, tugstène
-}
 
 open class DemontageMoteur(
     idFiche: String,
@@ -48,7 +25,7 @@ open class DemontageMoteur(
     var typeFicheDemontage: Int?,
     open var typeMoteur:String?,
     open var marque: String?,
-    open var numSerie: Int?,
+    open var numSerie: String?,
     open var puissance: Float?,
     open var bride: Float?,
     open var vitesse : Float?,
@@ -117,7 +94,7 @@ class DemontagePompe(
     photo: Array<String>?,
     typeMoteur:String?,
     marque: String?,
-    numSerie: Int?,
+    numSerie: String?,
     puissance: Float?,
     bride: Float?,
     vitesse: Float?,
@@ -266,7 +243,7 @@ class DemontageMonophase(
     photo: Array<String>?,
     typeMoteur: String?,
     marque: String?,
-    numSerie: Int?,
+    numSerie: String?,
     puissance: Float?,
     bride: Float?,
     vitesse: Float?,
@@ -435,7 +412,7 @@ class Triphase(
     photo: Array<String>?,
     typeMoteur: String?,
     marque: String?,
-    numSerie: Int?,
+    numSerie: String?,
     puissance: Float?,
     bride: Float?,
     vitesse: Float?,
@@ -687,7 +664,7 @@ class DemontageRotorBobine(
     photo: Array<String>?,
     typeMoteur: String?,
     marque: String?,
-    numSerie: Int?,
+    numSerie: String?,
     puissance: Float?,
     bride: Float?,
     vitesse: Float?,
@@ -894,7 +871,7 @@ class CourantContinu(
     photo: Array<String>?,
     typeMoteur: String?,
     marque: String?,
-    numSerie: Int?,
+    numSerie: String?,
     puissance: Float?,
     bride: Float?,
     vitesse: Float?,
@@ -1079,7 +1056,7 @@ class DemontageAlternateur(
     photo: Array<String>?,
     typeMoteur: String?,
     marque: String?,
-    numSerie: Int?,
+    numSerie: String?,
     puissance: Float?,
     bride: Float?,
     vitesse: Float?,

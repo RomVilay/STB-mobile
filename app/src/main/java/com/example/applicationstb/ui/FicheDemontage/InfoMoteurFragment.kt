@@ -63,7 +63,7 @@ class InfoMoteurFragment : Fragment() {
             viewModel.localSave()
         }
         num.doAfterTextChanged {
-           if(num.text.isNotEmpty()) viewModel.selection.value!!.numSerie = num.text.toString().toInt()
+           if(num.text.isNotEmpty()) viewModel.selection.value!!.numSerie = num.text.toString()
             viewModel.getTime()
             viewModel.localSave()
         }

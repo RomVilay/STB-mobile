@@ -84,7 +84,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         Navigation.findNavController(view).navigate(action)
     }
     fun getTime() {
-        Log.i("INFO","duree avant : ${selection.value?.dureeTotale}")
         var now = Date()
         if (selection.value!!.dureeTotale !== null) {
             selection.value!!.dureeTotale =
@@ -102,10 +101,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoPompeLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local")
                 } else  {
                     repository.insertDemoPompeLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local")
                 }
             }
             if ( selection.value!!.typeFicheDemontage == 2 ) {
@@ -114,10 +111,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoMonoLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local")
+
                 } else  {
                     repository.insertDemoMonoLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local")
+
                 }
             }
             if ( selection.value!!.typeFicheDemontage == 3 ) {
@@ -126,10 +123,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoAlterLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local")
+
                 } else  {
                     repository.insertDemoAlterLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local")
+
                 }
             }
             if ( selection.value!!.typeFicheDemontage == 4 ) {
@@ -138,10 +135,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoRBLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local")
+
                 } else  {
                     repository.insertDemoRBLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local")
+
                 }
             }
             if ( selection.value!!.typeFicheDemontage == 5 ) {
@@ -150,23 +147,23 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoCCLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local")
+
                 } else  {
                     repository.insertDemoCCLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local")
+
                 }
             }
             if ( selection.value!!.typeFicheDemontage == 6 ) {
-                Log.i("INFO","duree: ${selection.value!!.dureeTotale}")
+
                 var fiche = selection.value!! as Triphase
                 fiche.status = 2L
                 var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
                 if (f !== null ) {
                     repository.updateDemoTriLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local")
+
                 } else  {
                     repository.insertDemoTriLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local")
+
                 }
             }
         }
@@ -218,12 +215,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         repository.updateDemoPompeLocalDatabse(p.toEntity())
                         val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                         mySnackbar.show()
-                        Log.i("INFO", "patch local")
+
                     } else  {
                         repository.insertDemoPompeLocalDatabase(p)
                         val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                         mySnackbar.show()
-                        Log.i("INFO", "enregistré local")
+
                     }
                 }
             }

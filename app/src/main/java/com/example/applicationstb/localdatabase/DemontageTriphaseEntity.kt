@@ -21,7 +21,7 @@ data class DemontageTriphaseEntity(
     var typeFicheDemontage: Int,
     var typeMoteur: String?,
     var marque: String?,
-    var numSerie: Int?,
+    var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
     var vitesse: Float?,
