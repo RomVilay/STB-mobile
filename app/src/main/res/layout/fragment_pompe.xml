@@ -226,7 +226,7 @@
                         android:layout_marginLeft="4dp"
                         android:layout_marginTop="11dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintStart_toEndOf="@+id/DAd1"
                         app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
@@ -237,7 +237,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginLeft="12dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView54"
                         app:layout_constraintStart_toEndOf="@+id/textView54"
                         app:layout_constraintTop_toTopOf="@+id/textView54"
@@ -250,7 +250,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginLeft="4dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView52"
                         app:layout_constraintStart_toEndOf="@+id/textView52"
                         app:layout_constraintTop_toTopOf="@+id/textView52"
@@ -263,7 +263,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView57"
                         app:layout_constraintStart_toEndOf="@+id/textView53"
                         app:layout_constraintTop_toTopOf="@+id/textView57" />
@@ -319,7 +319,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintBottom_toBottomOf="@+id/PRTi3"
                         app:layout_constraintStart_toEndOf="@+id/PRTi3"
                         app:layout_constraintTop_toTopOf="@+id/PRTi3"
@@ -344,7 +344,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintBottom_toBottomOf="@+id/DEd7"
                         app:layout_constraintStart_toEndOf="@+id/DEd7"
                         app:layout_constraintTop_toTopOf="@+id/DEd7"
@@ -370,7 +370,7 @@
                         android:layout_marginLeft="28dp"
                         android:layout_marginTop="10dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="numberSigned|number|text"
                         app:layout_constraintStart_toEndOf="@+id/textView57"
                         app:layout_constraintTop_toBottomOf="@+id/dExt" />
 

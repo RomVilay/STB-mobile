@@ -160,9 +160,9 @@ class MecaFragment : Fragment() {
                 )
             }
         })
-        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null){
+        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null && fiche.refRoulementArriere!!.size > 0){
             refRoul.setText(fiche.refRoulementArriere!![0])
-        } else if( fiche.refRoulementAvant !== null) {
+        } else if( fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
                 refRoul.setText(fiche.refRoulementAvant!![0])}
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

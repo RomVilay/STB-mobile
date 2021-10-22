@@ -100,7 +100,7 @@ class FicheRemontage : Fragment() {
             //Log.i("INFO","moteur ${viewModel.listeRemontages[spinner.selectedItemPosition].remontageRoulement}")
             viewModel.start.value = Date()
             var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
-            if ( demo!!.typeFicheRemontage == 1) {
+            if ( demo!!.typeFicheRemontage == 6) {
                 viewModel.selection.value = demo as RemontageTriphase
                 fragmentManager.commit {
                     replace<essaisStatTriFragment>(R.id.essaisStatiqueslayout)
@@ -110,7 +110,7 @@ class FicheRemontage : Fragment() {
                 layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
                 layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
             }
-            if ( demo!!.typeFicheRemontage == 2) {
+            if ( demo!!.typeFicheRemontage == 5) {
                 viewModel.selection.value = demo as RemontageCourantC
                 fragmentManager.commit {
                     replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
@@ -121,7 +121,7 @@ class FicheRemontage : Fragment() {
                 layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
 
             }
-            if( demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4 ||demo!!.typeFicheRemontage == 5 || demo!!.typeFicheRemontage == 6 ) {
+            if( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2 ||demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4 ) {
                 viewModel.selection.value = demo
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
 
@@ -137,7 +137,7 @@ class FicheRemontage : Fragment() {
             if(viewModel.selection.value!!.isolementPorteBalaisV !== null) isoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisV!!.toString())
             if(viewModel.selection.value!!.isolementPorteBalaisOhm !== null) risoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisOhm!!.toString())
             if(viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
-            if ( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2)
+            if ( demo!!.typeFicheRemontage == 5 || demo!!.typeFicheRemontage == 6)
                 {
             if(viewModel.selection.value!!.tensionStator !== null ) tensionStator.setChecked(viewModel.selection.value!!.tensionStator!!)
             if(viewModel.selection.value!!.tensionStatorU !== null) tensionStatorU.setText(viewModel.selection.value!!.tensionStatorU!!.toString())

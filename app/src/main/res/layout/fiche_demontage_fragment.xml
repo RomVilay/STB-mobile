@@ -54,7 +54,7 @@
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="765dp"
-        android:layout_height="800dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="260dp">
 
     </FrameLayout>

@@ -73,7 +73,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         Log.i("INFO","quick save")
         getTime()
         viewModelScope.launch(Dispatchers.IO){
-            if (selection.value!!.typeFicheRemontage == 1) {
+            if (selection.value!!.typeFicheRemontage == 6) {
                 var fiche = selection.value!! as RemontageTriphase
                 var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
                 if (tri !== null ) {
@@ -84,7 +84,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     Log.i("INFO", "enregistré local triphase")
                 }
             }
-            if (selection.value!!.typeFicheRemontage == 2) {
+            if (selection.value!!.typeFicheRemontage == 5) {
                 var fiche = selection.value!! as RemontageCourantC
                 var remo = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
@@ -96,7 +96,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
-            if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 5 ||selection.value!!.typeFicheRemontage == 6 ) {
+            if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 ||selection.value!!.typeFicheRemontage == 2 ) {
                 var fiche = selection.value!!
                 var remo = repository.getByIdRemoLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
@@ -112,7 +112,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
     @RequiresApi(Build.VERSION_CODES.M)
     fun enregistrer(view:View){
-        if (selection.value!!.typeFicheRemontage == 1)  {
+        if (selection.value!!.typeFicheRemontage == 6)  {
             var t = selection.value!! as RemontageTriphase
             Log.i("Info","v2H : ${t.vitesse2H}")
             if (isOnline(context))   {
@@ -167,7 +167,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
         }
-        if (selection.value!!.typeFicheRemontage == 2)  {
+        if (selection.value!!.typeFicheRemontage == 5)  {
             var c = selection.value!! as RemontageCourantC
             if (isOnline(context))   {
                 val resp = repository.patchRemontageCC(
@@ -215,7 +215,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
         }
-        if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 ||selection.value!!.typeFicheRemontage == 5 ||selection.value!!.typeFicheRemontage == 6)  {
+        if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 ||selection.value!!.typeFicheRemontage == 1 ||selection.value!!.typeFicheRemontage == 2)  {
             var c = selection.value!!
             if (isOnline(context))   {
                 val resp = repository.patchRemontage(

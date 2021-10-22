@@ -363,7 +363,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     if ( response.code() == 200 ) {
                                         val resp = response.body()
                                         if (resp != null) {
-                                            if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 1) {
+                                            if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 6) {
                                                 val demoTri = repository.getRemontageTriphase(token, resp.fiche!!._id, object: Callback<RemontageTriphaseResponse>{
                                                     override fun onResponse(call: Call<RemontageTriphaseResponse>, response: Response<RemontageTriphaseResponse>) {
                                                         if ( response.code() == 200 ) {
@@ -406,7 +406,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 })
                                             }
-                                            if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 2) {
+                                            if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 5) {
                                                 val demoTri = repository.getRemontageCC(token, resp.fiche!!._id, object: Callback<RemontageCCResponse >{
                                                     override fun onResponse(call: Call<RemontageCCResponse>, response: Response<RemontageCCResponse>) {
                                                         if ( response.code() == 200 ) {
@@ -449,7 +449,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 })
                                             }
-                                            if (resp.fiche!!.typeFicheRemontage !== null && (resp.fiche!!.typeFicheRemontage == 3 || resp.fiche!!.typeFicheRemontage == 4 || resp.fiche!!.typeFicheRemontage == 5 || resp.fiche!!.typeFicheRemontage == 6))
+                                            if (resp.fiche!!.typeFicheRemontage !== null && (resp.fiche!!.typeFicheRemontage == 3 || resp.fiche!!.typeFicheRemontage == 4 || resp.fiche!!.typeFicheRemontage == 1 || resp.fiche!!.typeFicheRemontage == 2))
                                             {
                                                 val remo = repository.getRemontage(token, resp.fiche!!._id, object: Callback<RemontageResponse>{
                                                     override fun onResponse(

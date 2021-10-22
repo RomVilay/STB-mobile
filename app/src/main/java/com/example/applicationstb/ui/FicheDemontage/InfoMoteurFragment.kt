@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,7 @@ class InfoMoteurFragment : Fragment() {
         var aspectBte = layout.findViewById<Spinner>(R.id.enumboite)
         var optionsAsp = arrayOf<String>("propre","sale","très sale")
         var adaptExt = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
+        var typeMoteur = layout.findViewById<EditText>(R.id.typeMoteur)
         aspectExt.adapter = adaptExt
         aspectBte.adapter = adaptExt
 
@@ -52,6 +54,7 @@ class InfoMoteurFragment : Fragment() {
             if (it.coteAccouplement !== null) cote.setText(it.coteAccouplement.toString())
             if (it.aspect !== null) aspectExt.setSelection(it.aspect!!-1)
             if (it.aspectInterieur !== null) aspectBte.setSelection(it.aspectInterieur!!-1)
+            if (it.typeMoteur !== null) typeMoteur.setText(it.typeMoteur)
         })
 
         marque.doAfterTextChanged {
@@ -90,6 +93,7 @@ class InfoMoteurFragment : Fragment() {
             viewModel.localSave()
         }
         cote.doAfterTextChanged {
+            Log.i("INFO","${cote.text} - ${viewModel.selection.value!!.coteAccouplement}")
            if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
             viewModel.getTime()
             viewModel.localSave()
@@ -116,6 +120,11 @@ class InfoMoteurFragment : Fragment() {
                 viewModel.getTime()
                 viewModel.localSave()
             }
+        }
+        typeMoteur.doAfterTextChanged {
+            if (typeMoteur.text.isNotEmpty()) viewModel.selection.value!!.typeMoteur = typeMoteur.text.toString()
+            viewModel.getTime()
+            viewModel.localSave()
         }
         return layout
     }

@@ -203,7 +203,7 @@ class TriphaseFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
-            Log.i("INFO","vU: ${fiche.tensionU}")
+            Log.i("INFO","cote : ${fiche.coteAccouplement}")
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
