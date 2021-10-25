@@ -27,8 +27,8 @@ open class Remontage(
     open var collageRoulementFlasque: Int?,
     open var verificationFixationCouronne: Boolean?,
     open var verificationIsolementPorteBalais: Boolean?,
-    open var isolementPorteBalaisV: Int?,
-    open var isolementPorteBalaisOhm: Int?,
+    open var isolementPorteBalaisV: Float?,
+    open var isolementPorteBalaisOhm: Float?,
     // essais dynamiques
     open var tensionStator:Boolean?,
     open var tensionStatorU:Float?,
@@ -107,7 +107,47 @@ open class Remontage(
             verificationFixationCouronne,
             verificationIsolementPorteBalais,
             isolementPorteBalaisV,
-            isolementPorteBalaisOhm
+            isolementPorteBalaisOhm,
+            tensionStator,
+            tensionStatorU,
+            tensionStatorV,
+            tensionStatorW,
+            tensionInducteurs,
+            tensionInducteursU,
+            tensionInducteursV,
+            tensionInducteursW,
+            intensiteStator,
+            intensiteStatorU,
+            intensiteStatorV,
+            intensiteStatorW,
+            intensiteInducteurs,
+            intensiteInducteursU,
+            intensiteInducteursV,
+            intensiteInducteursW,
+            tensionInduit,
+            tensionInduitU,
+            tensionInduitV,
+            tensionInduitW,
+            tensionRotor,
+            tensionRotorU,
+            tensionRotorV,
+            tensionRotorW,
+            intensiteInduit,
+            intensiteInduitU,
+            vitesseU,
+            puissanceU,
+            dureeEssai,
+            sensRotation,
+            vitesse1V,  // vitesse 1v
+            acceleration1V,  //accélération 1v
+            vitesse2V,  // vitesse 2v
+            acceleration2V,  //accélération 2v
+            vitesse1H,  // vitesse 1H
+            acceleration1H,  //accélération 1H
+            vitesse2H,  // vitesse 2H
+            acceleration2H,  //accélération 2H
+            vitesse2A,  // vitesse 2A
+            acceleration2A,  //accélération 2A
         )
     }
 }
@@ -132,8 +172,8 @@ class RemontageTriphase(
     collageRoulementFlasque: Int?,
     verificationFixationCouronne: Boolean?,
     verificationIsolementPorteBalais: Boolean?,
-    isolementPorteBalaisV: Int?,
-    isolementPorteBalaisOhm: Int?,
+    isolementPorteBalaisV: Float?,
+    isolementPorteBalaisOhm: Float?,
     tensionStator:Boolean?,
     tensionStatorU:Float?,
     tensionStatorV:Float?,
@@ -356,8 +396,8 @@ class RemontageCourantC(
     collageRoulementFlasque: Int?,
     verificationFixationCouronne: Boolean?,
     verificationIsolementPorteBalais: Boolean?,
-    isolementPorteBalaisV: Int?,
-    isolementPorteBalaisOhm: Int?,
+    isolementPorteBalaisV: Float?,
+    isolementPorteBalaisOhm: Float?,
     // essais dynamiques
     tensionStator:Boolean?,
     tensionStatorU:Float?,
@@ -544,64 +584,3 @@ class RemontageCourantC(
 
     }
 }
-class Autre(
-    idFiche: String,
-    numDevis: String,
-    numFiche: String,
-    type: Long,
-    statut: Long,
-    client: Client,
-    contact: String?,
-    telContact: String?,
-    techniciens: Array<User>?,
-    resp: User?,
-    dateDebut: Date?,
-    dureeTotale: Long?,
-    observation: String?,
-    photo: Array<String>?,
-    var typeFicheRemontage: Int?,
-    var remontageRoulement: Int?,
-    var collageRoulementPorteeArbre: Int?,
-    var collageRoulementFlasque: Int?,
-    var verificationFixationCouronne: Boolean?,
-    var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Int?,
-    var isolementPorteBalaisOhm: Int?
-    ): Fiche (
-    idFiche,
-    numDevis,
-    numFiche,
-    type,
-    statut,
-    client,
-    contact,
-    telContact,
-    techniciens,
-    resp,
-    dateDebut,
-    dureeTotale,
-    observation,
-    photo) {
-        fun toEntity():RemontageEntity{
-            return RemontageEntity(
-                _id,
-                numDevis,
-                numFiche,
-                type,
-                status,
-                client!!._id,
-                contact,
-                telContact,
-                dureeTotale,
-                observations,
-                typeFicheRemontage,
-                remontageRoulement,
-                collageRoulementPorteeArbre,
-                collageRoulementFlasque,
-                verificationFixationCouronne,
-                verificationIsolementPorteBalais,
-                isolementPorteBalaisV,
-                isolementPorteBalaisOhm
-            )
-        }
-    }

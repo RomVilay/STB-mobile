@@ -3,7 +3,6 @@ package com.example.applicationstb.ui.ficheBobinage
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
-import com.example.applicationstb.model.Fiche
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
@@ -80,7 +78,7 @@ class FicheBobinage : Fragment() {
         var switch = layout.findViewById<Switch>(R.id.callage)
         var dates = layout.findViewById<LinearLayout>(R.id.dates)
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
-        var details = layout.findViewById<TextView>(R.id.details)
+        var details = layout.findViewById<TextView>(R.id.titreDetails)
         val adapter = FillAdapter(viewModel.sections!!.value!!)
         val sAdapter = schemaAdapter(viewModel.schemas.value!! ,{ item ->
             viewModel.setSchema(item)
@@ -155,22 +153,22 @@ class FicheBobinage : Fragment() {
                 if (bobinage.phases!== null) {phases.setText(bobinage?.phases.toString())} //
                 if (bobinage.frequences!== null) {frequence.setText(bobinage?.frequences.toString())} //
                 if(bobinage.calageEncoches !== null) {switch.setChecked(bobinage.calageEncoches!!)} else switch.setChecked(false)
-                tension.setText(bobinage?.tension.toString())
+                if (bobinage.tension !== null) tension.setText(bobinage?.tension.toString())
                 adapter.list = bobinage.sectionsFils!!
                 if (bobinage.nbSpires!== null) {spire.setText(bobinage?.nbSpires.toString())}
-                poids.setText(bobinage?.poids.toString())
+                if (bobinage.poids !== null) poids.setText(bobinage?.poids.toString())
                 if (bobinage.resistanceU !== null) {RU.setText(bobinage?.resistanceU.toString())}
-                RV.setText(bobinage?.resistanceV.toString())
-                RW.setText(bobinage?.resistanceW.toString())
-                IU.setText(bobinage?.isolementUT.toString())
-                IV.setText(bobinage?.isolementVT.toString())
-                IW.setText(bobinage?.isolementWT.toString())
-                IIU.setText(bobinage?.isolementUV.toString())
-                IIV.setText(bobinage?.isolementUW.toString())
-                IIW.setText(bobinage?.isolementVW.toString())
-                obs.setText(bobinage?.observations.toString())
+                if (bobinage.resistanceV !== null) RV.setText(bobinage?.resistanceV.toString())
+                if (bobinage.resistanceW !== null) RW.setText(bobinage?.resistanceW.toString())
+                if (bobinage.isolementUT !== null) IU.setText(bobinage?.isolementUT.toString())
+                if (bobinage.isolementVT !== null)IV.setText(bobinage?.isolementVT.toString())
+                if (bobinage.isolementWT !== null) IW.setText(bobinage?.isolementWT.toString())
+                if (bobinage.isolementUV !== null) IIU.setText(bobinage?.isolementUV.toString())
+                if (bobinage.isolementUW !== null) IIV.setText(bobinage?.isolementUW.toString())
+                if (bobinage.isolementVW !== null) IIW.setText(bobinage?.isolementVW.toString())
+                if (bobinage.observations !== null) obs.setText(bobinage?.observations.toString())
                 var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
-                dated.setText( bobinage?.dateDebut!!.toLocaleString())
+                if (bobinage.dateDebut !== null) dated.setText( bobinage?.dateDebut!!.toLocaleString())
             }
             //viewModel.selectBobinage(bobinage!!._id)
             /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
@@ -180,8 +178,10 @@ class FicheBobinage : Fragment() {
         details.setOnClickListener {
             if (visibility == View.GONE){
                 visibility = View.VISIBLE
+                details.setText("masquer les détails")
             } else {
                 visibility = View.GONE
+                details.setText("afficher les détails")
             }
             non.visibility = visibility
             client.visibility = visibility
@@ -251,16 +251,16 @@ class FicheBobinage : Fragment() {
             if (marque.text.isNotEmpty()) viewModel.bobinage.value!!.marqueMoteur = marque.text.toString()
             viewModel.quickSave()
         }
-        type.doAfterTextChanged {
-            if (type.text.isNotEmpty()) viewModel.bobinage.value!!.typeBobinage = type.text.toString()
+        courant.doAfterTextChanged {
+            if (courant.text.isNotEmpty()) viewModel.bobinage.value!!.courant = courant.text.toString().toFloat()
             viewModel.quickSave()
         }
         vitesse.doAfterTextChanged {
-                if (vitesse.text.isNotEmpty()) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().toFloat()
+            if (vitesse.text.isNotEmpty()) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().toFloat()
             viewModel.quickSave()
         }
-        puissance.doAfterTextChanged {
-            if (puissance.text.isNotEmpty()) viewModel.bobinage.value!!.puissance = puissance.text.toString().toFloat()
+        type.doAfterTextChanged {
+            if (type.text.isNotEmpty()) viewModel.bobinage.value!!.typeBobinage = type.text.toString()
             viewModel.quickSave()
         }
         phases.doAfterTextChanged {
@@ -271,10 +271,18 @@ class FicheBobinage : Fragment() {
             if (frequence.text.isNotEmpty()) viewModel.bobinage.value!!.frequences = frequence.text.toString().toFloat()
             viewModel.quickSave()
         }
-        courant.doAfterTextChanged {
-            if (courant.text.isNotEmpty()) viewModel.bobinage.value!!.courant = courant.text.toString().toFloat()
+        puissance.doAfterTextChanged {
+            if (puissance.text.isNotEmpty()) viewModel.bobinage.value!!.puissance = puissance.text.toString().toFloat()
             viewModel.quickSave()
         }
+        switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.bobinage.value!!.calageEncoches = isChecked
+            viewModel.quickSave()
+        }
+        tension.doAfterTextChanged {
+            if (tension.text.isNotEmpty()) viewModel.bobinage.value!!.tension = tension.text.toString().toLong()
+        }
+
         spire.doAfterTextChanged {
             if (spire.text.isNotEmpty()) viewModel.bobinage.value!!.nbSpires = spire.text.toString().toLong()
             viewModel.quickSave()

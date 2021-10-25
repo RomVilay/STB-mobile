@@ -23,18 +23,15 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.ui.FicheDemontage.FicheDemontageViewModel
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -73,7 +70,7 @@ class FicheChantier : Fragment() {
         val numero = layout.findViewById<TextView>(R.id.type)
         val adresse = layout.findViewById<TextView>(R.id.adresse)
         val dateDebut = layout.findViewById<TextView>(R.id.dateDebut)
-        val showDetails = layout.findViewById<TextView>(R.id.details)
+        val showDetails = layout.findViewById<TextView>(R.id.titreDetails)
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val term = layout.findViewById<Button>(R.id.termC)

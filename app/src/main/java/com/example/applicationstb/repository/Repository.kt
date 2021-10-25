@@ -1323,8 +1323,8 @@ class BodyRemontageTriphase(
     var collageRoulementPorteeFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Int?,
-    var isolementPorteBalaisOhm: Int?,
+    var isolementPorteBalaisV: Float?,
+    var isolementPorteBalaisOhm: Float?,
      var tensionStator:Boolean?,
      var tensionStatorU:Float?,
      var tensionStatorV:Float?,
@@ -1393,8 +1393,8 @@ class BodyRemontageTriphase(
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readInt(),
-        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readBoolean(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -1465,8 +1465,8 @@ class BodyRemontageTriphase(
         parcel.writeInt(collageRoulementPorteeFlasque!!)
         parcel.writeBoolean(verificationFixationCouronne!!)
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
-        parcel.writeInt(isolementPorteBalaisV!!)
-        parcel.writeInt(isolementPorteBalaisOhm!!)
+        parcel.writeFloat(isolementPorteBalaisV!!)
+        parcel.writeFloat(isolementPorteBalaisOhm!!)
         parcel.writeBoolean(tensionStator!!)
         parcel.writeFloat(tensionStatorU!!)
         parcel.writeFloat(tensionStatorV!!)
@@ -1550,8 +1550,48 @@ class BodyRemontage(
     var collageRoulementFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Int?,
-    var isolementPorteBalaisOhm: Int?
+    var isolementPorteBalaisV: Float?,
+    var isolementPorteBalaisOhm: Float?,
+    var tensionStator:Boolean?,
+    var tensionStatorU:Float?,
+    var tensionStatorV:Float?,
+    var tensionStatorW:Float?,
+    var tensionInducteurs: Boolean?,
+    var tensionInducteursU: Float?,
+    var tensionInducteursV: Float?,
+    var tensionInducteursW: Float?,
+    var intensiteStator:Boolean?,
+    var intensiteStatorU:Float?,
+    var intensiteStatorV:Float?,
+    var intensiteStatorW:Float?,
+    var intensiteInducteurs: Boolean?,
+    var intensiteInducteursU: Float?,
+    var intensiteInducteursV: Float?,
+    var intensiteInducteursW: Float?,
+    var tensionInduit:Boolean?,
+    var tensionInduitU:Float?,
+    var tensionInduitV:Float?,
+    var tensionInduitW:Float?,
+    var tensionRotor: Boolean?,
+    var tensionRotorU: Float?,
+    var tensionRotorV: Float?,
+    var tensionRotorW: Float?,
+    var intensiteInduit: Boolean,
+    var intensiteInduitU: Float?,
+    var vitesseU: Float?,
+    var puissanceU: Float?,
+    var dureeEssai: Float?,
+    var sensRotation: Int?,
+    var vitesse1V: Float?,  // vitesse 1v
+    var acceleration1V: Float?,  //accélération 1v
+    var vitesse2V: Float?,  // vitesse 2v
+    var acceleration2V: Float?,  //accélération 2v
+    var vitesse1H: Float?,  // vitesse 1H
+    var acceleration1H: Float?,  //accélération 1H
+    var vitesse2H: Float?,  // vitesse 2H
+    var acceleration2H: Float?,  //accélération 2H
+    var vitesse2A: Float?,  // vitesse 2A
+    var acceleration2A: Float?,  //accélération 2A
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1563,8 +1603,48 @@ class BodyRemontage(
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readInt(),
-        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat()
 
     ) {
     }
@@ -1579,8 +1659,48 @@ class BodyRemontage(
         parcel.writeInt(collageRoulementFlasque!!)
         parcel.writeBoolean(verificationFixationCouronne!!)
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
-        parcel.writeInt(isolementPorteBalaisV!!)
-        parcel.writeInt(isolementPorteBalaisOhm!!)
+        parcel.writeFloat(isolementPorteBalaisV!!)
+        parcel.writeFloat(isolementPorteBalaisOhm!!)
+        parcel.writeBoolean(tensionStator!!)
+        parcel.writeFloat(tensionStatorU!!)
+        parcel.writeFloat(tensionStatorV!!)
+        parcel.writeFloat(tensionStatorW!!)
+        parcel.writeBoolean(tensionInducteurs!!)
+        parcel.writeFloat(tensionInducteursU!!)
+        parcel.writeFloat(tensionInducteursV!!)
+        parcel.writeFloat(tensionInducteursW!!)
+        parcel.writeBoolean(intensiteStator!!)
+        parcel.writeFloat(intensiteStatorU!!)
+        parcel.writeFloat(intensiteStatorV!!)
+        parcel.writeFloat(intensiteStatorW!!)
+        parcel.writeBoolean(intensiteInducteurs!!)
+        parcel.writeFloat(intensiteInducteursU!!)
+        parcel.writeFloat(intensiteInducteursV!!)
+        parcel.writeFloat(intensiteInducteursW!!)
+        parcel.writeBoolean(tensionInduit!!)
+        parcel.writeFloat(tensionInduitU!!)
+        parcel.writeFloat(tensionInduitV!!)
+        parcel.writeFloat(tensionInduitW!!)
+        parcel.writeBoolean(tensionRotor!!)
+        parcel.writeFloat(tensionRotorU!!)
+        parcel.writeFloat(tensionRotorV!!)
+        parcel.writeFloat(tensionRotorW!!)
+        parcel.writeBoolean(intensiteInduit!!)
+        parcel.writeFloat(intensiteInduitU!!)
+        parcel.writeFloat(vitesseU!!)
+        parcel.writeFloat(puissanceU!!)
+        parcel.writeFloat(dureeEssai!!)
+        parcel.writeInt(sensRotation!!)
+        parcel.writeFloat(vitesse1V!!)
+        parcel.writeFloat(acceleration1V!!)
+        parcel.writeFloat(vitesse2V!!)
+        parcel.writeFloat(acceleration2V!!)
+        parcel.writeFloat(vitesse1H!!)
+        parcel.writeFloat(acceleration1H!!)
+        parcel.writeFloat(vitesse2H!!)
+        parcel.writeFloat(acceleration2H!!)
+        parcel.writeFloat(vitesse2A!!)
+        parcel.writeFloat(acceleration2A!!)
     }
 
     override fun describeContents(): Int {
@@ -1608,8 +1728,8 @@ class BodyRemontageCC(
     var collageRoulementFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Int?,
-    var isolementPorteBalaisOhm: Int?,
+    var isolementPorteBalaisV: Float?,
+    var isolementPorteBalaisOhm: Float?,
     var tensionStator:Boolean?,
     var tensionStatorU:Float?,
     var tensionStatorV:Float?,
@@ -1669,8 +1789,8 @@ class BodyRemontageCC(
         parcel.readInt(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        parcel.readInt(),
-        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
         parcel.readBoolean(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -1732,8 +1852,8 @@ class BodyRemontageCC(
         parcel.writeInt(collageRoulementFlasque!!)
         parcel.writeBoolean(verificationFixationCouronne!!)
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
-        parcel.writeInt(isolementPorteBalaisV!!)
-        parcel.writeInt(isolementPorteBalaisOhm!!)
+        parcel.writeFloat(isolementPorteBalaisV!!)
+        parcel.writeFloat(isolementPorteBalaisOhm!!)
         parcel.writeBoolean(tensionStator!!)
         parcel.writeFloat(tensionStatorU!!)
         parcel.writeFloat(tensionStatorV!!)
@@ -2339,6 +2459,46 @@ class Repository (var context:Context) {
             fiche.verificationIsolementPorteBalais,
             fiche.isolementPorteBalaisV,
             fiche.isolementPorteBalaisOhm,
+            fiche.tensionStator,
+            fiche.tensionStatorU,
+            fiche.tensionStatorV,
+            fiche.tensionStatorW,
+            fiche.tensionInducteurs,
+            fiche.tensionInducteursU,
+            fiche.tensionInducteursV,
+            fiche.tensionInducteursW,
+            fiche.intensiteStator,
+            fiche.intensiteStatorU,
+            fiche.intensiteStatorV,
+            fiche.intensiteStatorW,
+            fiche.intensiteInducteurs,
+            fiche.intensiteInducteursU,
+            fiche.intensiteInducteursV,
+            fiche.intensiteInducteursW,
+            fiche.tensionInduit,
+            fiche.tensionInduitU,
+            fiche.tensionInduitV,
+            fiche.tensionInduitW,
+            fiche.tensionRotor,
+            fiche.tensionRotorU,
+            fiche.tensionRotorV,
+            fiche.tensionRotorW,
+            fiche.intensiteInduit,
+            fiche.intensiteInduitU,
+            fiche.vitesseU,
+            fiche.puissanceU,
+            fiche.dureeEssai,
+            fiche.sensRotation,
+            fiche.vitesse1V,
+            fiche.acceleration1V,
+            fiche.vitesse2V,
+            fiche.acceleration2V,
+            fiche.vitesse1H,
+            fiche.acceleration1H,
+            fiche.vitesse2H,
+            fiche.acceleration2H,
+            fiche.vitesse2A,
+            fiche.acceleration2A,
         )
         var call = service.patchRemontage(token,ficheId,body)
         var fiche:Remontage? = null

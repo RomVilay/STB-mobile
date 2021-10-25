@@ -23,8 +23,8 @@ data class RemontageTriphaseEntity (
     var collageRoulementPorteeFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Int?,
-    var isolementPorteBalaisOhm: Int?,
+    var isolementPorteBalaisV: Float?,
+    var isolementPorteBalaisOhm: Float?,
     // essais dynamiques
      var tensionStator:Boolean?,
      var tensionStatorU:Float?,

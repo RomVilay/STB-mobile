@@ -124,6 +124,8 @@ class FicheRemontage : Fragment() {
             if( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2 ||demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4 ) {
                 viewModel.selection.value = demo
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
+                layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+                layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
 
             }
             layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
@@ -137,8 +139,6 @@ class FicheRemontage : Fragment() {
             if(viewModel.selection.value!!.isolementPorteBalaisV !== null) isoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisV!!.toString())
             if(viewModel.selection.value!!.isolementPorteBalaisOhm !== null) risoPBV.setText(viewModel.selection.value!!.isolementPorteBalaisOhm!!.toString())
             if(viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
-            if ( demo!!.typeFicheRemontage == 5 || demo!!.typeFicheRemontage == 6)
-                {
             if(viewModel.selection.value!!.tensionStator !== null ) tensionStator.setChecked(viewModel.selection.value!!.tensionStator!!)
             if(viewModel.selection.value!!.tensionStatorU !== null) tensionStatorU.setText(viewModel.selection.value!!.tensionStatorU!!.toString())
             if(viewModel.selection.value!!.tensionStatorV !== null) tensionStatorV.setText(viewModel.selection.value!!.tensionStatorV!!.toString())
@@ -180,7 +180,6 @@ class FicheRemontage : Fragment() {
             if(viewModel.selection.value!!.acceleration2H !== null) A2H.setText(viewModel.selection.value!!.acceleration2H!!.toString())
             if(viewModel.selection.value!!.acceleration2A !== null) A2A.setText(viewModel.selection.value!!.acceleration2A!!.toString())
             if(viewModel.selection.value!!.sensRotation !== null && viewModel.selection.value!!.sensRotation == 2 ) sensRotation.setChecked(true) else sensRotation.setChecked(false)
-                    }
             //infoMoteur.visibility = View.VISIBLE
             //essaisDynamiques.visibility = View.VISIBLE
         }
@@ -241,12 +240,12 @@ class FicheRemontage : Fragment() {
             viewModel.quickSave()
         }
         isoPBV.doAfterTextChanged {
-            if (isoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisV =  isoPBV.text.toString().toInt()
+            if (isoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisV =  isoPBV.text.toString().toFloat()
             viewModel.getTime()
             viewModel.quickSave()
         }
         risoPBV.doAfterTextChanged {
-            if (risoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisOhm =  risoPBV.text.toString().toInt()
+            if (risoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisOhm =  risoPBV.text.toString().toFloat()
             viewModel.getTime()
             viewModel.quickSave()
         }
