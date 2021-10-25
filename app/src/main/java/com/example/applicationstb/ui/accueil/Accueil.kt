@@ -1,10 +1,8 @@
 package com.example.applicationstb.ui.accueil
 
-import android.app.Application
-import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +10,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -25,6 +24,7 @@ class Accueil : Fragment() {
 
     private lateinit var viewModel: AccueilViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,8 +48,19 @@ class Accueil : Fragment() {
         val rm = layout.findViewById<TextView>(R.id.btnRemo)
         val rb = layout.findViewById<Button>(R.id.btnRebobinage)
         val token = arguments?.let { AccueilArgs.fromBundle(it).token }
+        val reload = layout.findViewById<Button>(R.id.reload)
+        val send = layout.findViewById<Button>(R.id.send)
+        val loading = layout.findViewById<CardView>(R.id.loadingHome)
         deco.setOnClickListener{
             viewModel.toDeconnexion(layout)
+        }
+        reload.setOnClickListener {
+            if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
+                viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+            }
+        }
+        send.setOnClickListener {
+            viewModel.sendFiche(loading)
         }
         dm.setOnClickListener {
             if (viewModel.demontages.size > 0) {
