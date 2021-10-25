@@ -102,6 +102,7 @@ class FicheRemontage : Fragment() {
             var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
             if ( demo!!.typeFicheRemontage == 6) {
                 viewModel.selection.value = demo as RemontageTriphase
+                viewModel.selection.value!!.status = 2L
                 fragmentManager.commit {
                     replace<essaisStatTriFragment>(R.id.essaisStatiqueslayout)
                 }
@@ -112,6 +113,7 @@ class FicheRemontage : Fragment() {
             }
             if ( demo!!.typeFicheRemontage == 5) {
                 viewModel.selection.value = demo as RemontageCourantC
+                viewModel.selection.value!!.status = 2L
                 fragmentManager.commit {
                     replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
                 }
@@ -123,6 +125,7 @@ class FicheRemontage : Fragment() {
             }
             if( demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2 ||demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4 ) {
                 viewModel.selection.value = demo
+                viewModel.selection.value!!.status = 2L
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                 layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
                 layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
