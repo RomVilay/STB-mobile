@@ -62,7 +62,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 var ch = repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
                                                 if (ch == null) {
                                                     repository.insertChantierLocalDatabase(resp!!.fiche!!)
-                                                    getVehicule(resp!!.fiche!!.vehicule!!)
+                                                    Log.i("INFO","${resp!!.fiche!!.vehicule}")
+                                                    if (resp!!.fiche!!.vehicule !== null) getVehicule(resp!!.fiche!!.vehicule!!)
                                                     chantiers!!.add(resp!!.fiche!!)
                                                     Log.i("INFO","ajout en bdd locale")
                                                 } else {

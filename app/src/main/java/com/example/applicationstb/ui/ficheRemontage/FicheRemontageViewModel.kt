@@ -78,10 +78,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
                 if (tri !== null ) {
                     repository.updateRemoTriLocalDatabse(fiche.toEntity())
-                    Log.i("INFO", "patch local triphase")
                 } else  {
                     repository.insertRemoTriLocalDatabase(fiche)
-                    Log.i("INFO", "enregistré local triphase")
                 }
             }
             if (selection.value!!.typeFicheRemontage == 5) {
@@ -90,10 +88,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 //Log.i("INFO","${ch}")
                 if (remo !== null) {
                     repository.updateRemoCCLocalDatabse(fiche.toEntity())
-                    Log.i("INFO","patch cc ${selection.value!!._id}")
                 } else {
                     repository.insertRemoCCLocalDatabase(fiche)
-                    Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
             if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 ||selection.value!!.typeFicheRemontage == 2 ) {
@@ -102,10 +98,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 //Log.i("INFO","${ch}")
                 if (remo !== null) {
                     repository.updateRemoLocalDatabse(fiche.toRemoEntity())
-                    Log.i("INFO","patch autre ${selection.value!!._id}")
                 } else {
                     repository.insertRemoLocalDatabase(fiche)
-                    Log.i("INFO","insert ${selection.value!!._id} ")
                 }
             }
         }
@@ -114,7 +108,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     fun enregistrer(view:View){
         if (selection.value!!.typeFicheRemontage == 6)  {
             var t = selection.value!! as RemontageTriphase
-            Log.i("Info","v2H : ${t.vitesse2H}")
             if (isOnline(context))   {
                 val resp = repository.patchRemontageTriphase(
                     token!!,
@@ -130,7 +123,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    Log.i("INFO", "enregistré")
                                 }
                             } else {
                                 val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
@@ -157,12 +149,10 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                         repository.updateRemoTriLocalDatabse(t.toEntity())
                         val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                         mySnackbar.show()
-                        Log.i("INFO", "patch local")
                     } else  {
                         repository.insertRemoTriLocalDatabase(t)
                         val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                         mySnackbar.show()
-                        Log.i("INFO", "enregistré local")
                     }
                 }
             }
@@ -184,7 +174,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    Log.i("INFO", "Remontage enregistré")
                                 }
                             } else {
                                 val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
@@ -232,7 +221,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    Log.i("INFO", "Remontage enregistré")
                                 }
                             } else {
                                 val mySnackbar = Snackbar.make(view,"erreur d'enregistrement", 3600)
