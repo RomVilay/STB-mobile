@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
@@ -38,7 +39,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun login(username: String, psw: String, view: View){
+    fun login(username: String, psw: String, view: View, loading: CardView){
+        if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
         if (isOnline(context) == true) {
             val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
                 @RequiresApi(Build.VERSION_CODES.O)
@@ -546,6 +548,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             }
                             if (action != null) {
+                                if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
                                 Navigation.findNavController(view).navigate(action)
                             }
                             //toAccueil(view)
@@ -561,6 +564,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             })
         } else {
             Log.i("INFO","connexion offline")
+            if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
             var action = ConnexionDirections.versAccueil("tech", "pwd")
             Navigation.findNavController(view).navigate(action)
         }
