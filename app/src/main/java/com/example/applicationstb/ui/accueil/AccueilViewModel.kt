@@ -1113,12 +1113,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             })
                     }
                 }
-                if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
             }
         } else {
             Log.i("INFO","connexion offline")
-            if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
         }
+        if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
     }
 
 
