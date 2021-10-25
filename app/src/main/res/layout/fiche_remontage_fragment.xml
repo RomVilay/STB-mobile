@@ -62,7 +62,7 @@
                 android:id="@+id/infoMoteur"
                 android:layout_width="549dp"
                 android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="match_parent"

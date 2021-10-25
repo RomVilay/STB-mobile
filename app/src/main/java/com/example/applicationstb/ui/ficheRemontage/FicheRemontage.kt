@@ -97,7 +97,6 @@ class FicheRemontage : Fragment() {
         var term = layout.findViewById<Button>(R.id.termRemo)
 
         btnDemontage.setOnClickListener {
-            //Log.i("INFO","moteur ${viewModel.listeRemontages[spinner.selectedItemPosition].remontageRoulement}")
             viewModel.start.value = Date()
             var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
             if ( demo!!.typeFicheRemontage == 6) {
@@ -209,7 +208,7 @@ class FicheRemontage : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.remontageRoulement = position
+             viewModel.selection.value!!.remontageRoulement = position
                 viewModel.getTime()
                 viewModel.quickSave()
             }
@@ -227,7 +226,7 @@ class FicheRemontage : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.collageRoulementFlasque = position
+               viewModel.selection.value!!.collageRoulementFlasque = position
                 viewModel.getTime()
                 viewModel.quickSave()
             }
