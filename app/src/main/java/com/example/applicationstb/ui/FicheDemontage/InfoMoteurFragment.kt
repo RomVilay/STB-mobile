@@ -56,75 +56,95 @@ class InfoMoteurFragment : Fragment() {
             if (it.aspectInterieur !== null) aspectBte.setSelection(it.aspectInterieur!!-1)
             if (it.typeMoteur !== null) typeMoteur.setText(it.typeMoteur)
         })
+        if (viewModel.selection.value?.status!! < 3L) {
+            marque.doAfterTextChanged {
+                if (marque.text.isNotEmpty()) viewModel.selection.value!!.marque =
+                    marque.text.toString()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            num.doAfterTextChanged {
+                if (num.text.isNotEmpty()) viewModel.selection.value!!.numSerie =
+                    num.text.toString()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            puissance.doAfterTextChanged {
+                if (puissance.text.isNotEmpty()) viewModel.selection.value!!.puissance =
+                    puissance.text.toString().toFloat()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            bride.doAfterTextChanged {
+                if (bride.text.isNotEmpty()) viewModel.selection.value!!.bride =
+                    bride.text.toString().toFloat()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            vitesse.doAfterTextChanged {
+                if (vitesse.text.isNotEmpty()) viewModel.selection.value!!.vitesse =
+                    vitesse.text.toString().toFloat()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            clavette.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.selection.value!!.clavette = isChecked
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            arbre.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.selection.value!!.arbreSortantEntrant = isChecked
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            cote.doAfterTextChanged {
+                Log.i("INFO", "${cote.text} - ${viewModel.selection.value!!.coteAccouplement}")
+                if (cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement =
+                    cote.text.toString()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            accouplement.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.selection.value!!.accouplement = isChecked
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            aspectBte.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
 
-        marque.doAfterTextChanged {
-            if(marque.text.isNotEmpty()) viewModel.selection.value!!.marque = marque.text.toString()
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        num.doAfterTextChanged {
-           if(num.text.isNotEmpty()) viewModel.selection.value!!.numSerie = num.text.toString()
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        puissance.doAfterTextChanged {
-          if (puissance.text.isNotEmpty())  viewModel.selection.value!!.puissance = puissance.text.toString().toFloat()
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        bride.doAfterTextChanged {
-          if (bride.text.isNotEmpty())  viewModel.selection.value!!.bride = bride.text.toString().toFloat()
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        vitesse.doAfterTextChanged {
-            if (vitesse.text.isNotEmpty()) viewModel.selection.value!!.vitesse = vitesse.text.toString().toFloat()
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        clavette.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selection.value!!.clavette = isChecked
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        arbre.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selection.value!!.arbreSortantEntrant = isChecked
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        cote.doAfterTextChanged {
-            Log.i("INFO","${cote.text} - ${viewModel.selection.value!!.coteAccouplement}")
-           if(cote.text.isNotEmpty()) viewModel.selection.value!!.coteAccouplement = cote.text.toString()
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        accouplement.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selection.value!!.accouplement = isChecked
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        aspectBte.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.selection.value!!.aspectInterieur = position + 1
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.aspectInterieur = position+1
+            aspectExt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.selection.value!!.aspect = position + 1
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            typeMoteur.doAfterTextChanged {
+                if (typeMoteur.text.isNotEmpty()) viewModel.selection.value!!.typeMoteur =
+                    typeMoteur.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }
-        }
-        aspectExt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.aspect = position+1
-                viewModel.getTime()
-                viewModel.localSave()
-            }
-        }
-        typeMoteur.doAfterTextChanged {
-            if (typeMoteur.text.isNotEmpty()) viewModel.selection.value!!.typeMoteur = typeMoteur.text.toString()
-            viewModel.getTime()
-            viewModel.localSave()
         }
         return layout
     }

@@ -51,6 +51,9 @@
         <argument
             android:name="listDemontages"
             app:argType="com.example.applicationstb.model.DemontageMoteur[]" />
+        <action
+            android:id="@+id/action_ficheDemontage_to_ficheRemontage"
+            app:destination="@id/ficheRemontage" />
     </fragment>
     <fragment
         android:id="@+id/connexion"

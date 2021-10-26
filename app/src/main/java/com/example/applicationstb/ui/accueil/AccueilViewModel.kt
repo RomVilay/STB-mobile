@@ -1121,6 +1121,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
 
 
+
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =

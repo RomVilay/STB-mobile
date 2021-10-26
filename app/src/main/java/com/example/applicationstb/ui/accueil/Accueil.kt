@@ -1,5 +1,7 @@
 package com.example.applicationstb.ui.accueil
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -52,7 +54,22 @@ class Accueil : Fragment() {
         val send = layout.findViewById<Button>(R.id.send)
         val loading = layout.findViewById<CardView>(R.id.loadingHome)
         deco.setOnClickListener{
-            viewModel.toDeconnexion(layout)
+            val alertDialogBuilder: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton("se Déconnecter",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.toDeconnexion(layout)
+                        })
+                    setNegativeButton("Rester connecté",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+                        })
+                }
+                builder.setMessage("Êtes vous sûr de vouloir vous déconnecter ?")
+                builder.create()
+            }
+            alertDialogBuilder!!.show()
         }
         reload.setOnClickListener {
             if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {

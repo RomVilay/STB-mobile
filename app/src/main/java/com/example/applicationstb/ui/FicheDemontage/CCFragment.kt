@@ -208,7 +208,7 @@ class CCFragment : Fragment() {
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,viewModel.schema.value.toString())
+            viewModel.fullScreen(layout,item.toString())
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {

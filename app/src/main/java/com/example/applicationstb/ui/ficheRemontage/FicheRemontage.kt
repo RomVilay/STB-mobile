@@ -1,5 +1,7 @@
 package com.example.applicationstb.ui.ficheRemontage
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -38,12 +40,13 @@ class FicheRemontage : Fragment() {
         val adapterRemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeRemontages.map { it.numFiche  })
         spinner.adapter = adapterRemontages
         //var infoMoteur = layout.findViewById<CardView>(R.id.infoMoteur)
-        var btnDemontage = layout.findViewById<Button>(R.id.btnDemarrer)
+        var btnRemontage = layout.findViewById<Button>(R.id.btnDemarrer)
         //var essaisDynamiques = layout.findViewById<CardView>(R.id.essaisDynamiques)
         var essaisStats = layout.findViewById<FrameLayout>(R.id.essaisStatiqueslayout)
         val fragmentManager = childFragmentManager
         //infos moteur
         var titre = layout.findViewById<TextView>(R.id.titreRemontage)
+        var btnDemo = layout.findViewById<Button>(R.id.btnFDemo)
         var spinnerMnt = layout.findViewById<Spinner>(R.id.spinnerMntRll)
         spinnerMnt.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","à la presse","douille de frappe","chauffe roulement"))
         var spinnerCPA = layout.findViewById<Spinner>(R.id.spinnerCPA)
@@ -96,8 +99,9 @@ class FicheRemontage : Fragment() {
          var obs = layout.findViewById<EditText>(R.id.observations)
         var term = layout.findViewById<Button>(R.id.termRemo)
 
-        btnDemontage.setOnClickListener {
+        btnRemontage.setOnClickListener {
             viewModel.start.value = Date()
+            //viewModel.getListeDemontage()
             var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
             if ( demo!!.typeFicheRemontage == 6) {
                 viewModel.selection.value = demo as RemontageTriphase
@@ -193,6 +197,21 @@ class FicheRemontage : Fragment() {
         btnquitter.setOnClickListener {
             viewModel.retour(layout)
         }
+        btnDemo.setOnClickListener {
+           var numFiches = arrayListOf<String>()
+            viewModel.listeDemo.value?.forEach {
+               numFiches.add(it.numFiche!!)
+            }
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Sélectionnez une fiche de démontage")
+                       .setItems(numFiches.toTypedArray(),  DialogInterface.OnClickListener { dialog, which ->
+                    Log.i("INFO","item selected ${viewModel.listeDemo?.value?.get(which)?.numFiche}")
+                })
+                builder.create()
+            }
+            if (viewModel.listeDemo !== null) alertDialog?.show()
+        }
         sensRotation.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.selection.value!!.sensRotation = 2
@@ -208,7 +227,9 @@ class FicheRemontage : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-             viewModel.selection.value!!.remontageRoulement = position
+                if (position > 0) {
+                    viewModel.selection.value!!.remontageRoulement = position
+                }
                 viewModel.getTime()
                 viewModel.quickSave()
             }
@@ -217,7 +238,9 @@ class FicheRemontage : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.collageRoulementPorteeArbre = position
+               if (position > 0) {
+                   viewModel.selection.value!!.collageRoulementPorteeArbre = position
+               }
                 viewModel.getTime()
                 viewModel.quickSave()
             }
@@ -226,7 +249,9 @@ class FicheRemontage : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-               viewModel.selection.value!!.collageRoulementFlasque = position
+                if (position > 0) {
+                    viewModel.selection.value!!.collageRoulementFlasque = position
+                }
                 viewModel.getTime()
                 viewModel.quickSave()
             }

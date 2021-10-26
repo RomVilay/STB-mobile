@@ -2045,6 +2045,11 @@ class Repository (var context:Context) {
         var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }
+    fun getFichesForRemontage(token:String, numDevis:String, callback:Callback<FichesResponse>) {
+        var call = service.getFichesForRemontage(token,numDevis)
+        var fiches: Array<Fiche>? = null
+        call.enqueue(callback)
+    }
     fun getChantier(token:String,ficheId:String, callback:Callback<ChantierResponse>){
         var call = service.getChantier(token,ficheId)
         var fiche:Chantier? = null
