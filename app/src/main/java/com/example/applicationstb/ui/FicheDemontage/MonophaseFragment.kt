@@ -60,6 +60,9 @@ class MonophaseFragment : Fragment() {
         var tension	= layout.findViewById<EditText>(R.id.vV)
         var intensite	= layout.findViewById<EditText>(R.id.vW)
         var observations = layout.findViewById<EditText>(R.id.obs2)
+        var retour = layout.findViewById<Button>(R.id.retourTri)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
+        var terminer = layout.findViewById<Button>(R.id.termMo)
         var fiche = viewModel.selection.value as DemontageMonophase
         if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
         if( fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
@@ -67,53 +70,68 @@ class MonophaseFragment : Fragment() {
         if( fiche.valeurCondensateur !== null ) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
         if( fiche.tension !== null ) tension.setText(fiche.tension.toString())
         if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
-        isolementPhaseMasse.doAfterTextChanged {
-            if(isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse = isolementPhaseMasse.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceTravail.doAfterTextChanged {
-           if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceDemarrage.doAfterTextChanged {
-           if (resistanceDemarrage.text.isNotEmpty()) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        valeurCondensateur.doAfterTextChanged {
-           if (valeurCondensateur.text.isNotEmpty()) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        tension.doAfterTextChanged {
-           if (tension.text.isNotEmpty()) fiche.tension = tension.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        intensite.doAfterTextChanged {
-           if (intensite.text.isNotEmpty()) fiche.intensite = intensite.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        observations.doAfterTextChanged {
-            fiche.observations = observations.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! < 3) {
+            isolementPhaseMasse.doAfterTextChanged {
+                if (isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse =
+                    isolementPhaseMasse.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceTravail.doAfterTextChanged {
+                if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail =
+                    resistanceTravail.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceDemarrage.doAfterTextChanged {
+                if (resistanceDemarrage.text.isNotEmpty()) fiche.resistanceDemarrage =
+                    resistanceDemarrage.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            valeurCondensateur.doAfterTextChanged {
+                if (valeurCondensateur.text.isNotEmpty()) fiche.valeurCondensateur =
+                    valeurCondensateur.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tension.doAfterTextChanged {
+                if (tension.text.isNotEmpty()) fiche.tension = tension.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensite.doAfterTextChanged {
+                if (intensite.text.isNotEmpty()) fiche.intensite =
+                    intensite.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            observations.doAfterTextChanged {
+                fiche.observations = observations.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+        }  else {
+            isolementPhaseMasse.isEnabled = false
+            resistanceTravail.isEnabled = false
+            resistanceDemarrage.isEnabled = false
+            valeurCondensateur.isEnabled = false
+            tension.isEnabled = false
+            intensite.isEnabled = false
+            observations.isEnabled = false
+            enregistrer.visibility = View.GONE
+            terminer.visibility = View.GONE
         }
 
+
         //
-        var retour = layout.findViewById<Button>(R.id.retourTri)
-        var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
-        var terminer = layout.findViewById<Button>(R.id.termMo)
 
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
 
@@ -131,7 +149,12 @@ class MonophaseFragment : Fragment() {
         })
 
         retour.setOnClickListener {
+            if (viewModel.selection.value?.status == 3L){
+            activity?.onBackPressed()
+            } else {
             viewModel.retour(layout)
+        }
+
         }
         enregistrer.setOnClickListener {
             viewModel.getTime()

@@ -96,107 +96,135 @@ class TriphaseFragment : Fragment() {
             if (fiche.intensiteW !== null) VWI.setText(fiche.intensiteW!!.toString()) else 0
             if (fiche.dureeEssai !== null) dessai.setText(fiche.dureeEssai!!.toString()) else 0
             if (fiche.observations !== null) obs.setText(fiche.observations)
-        UM.doAfterTextChanged {
-           if (UM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM = UM.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VM.doAfterTextChanged {
-            if (VM.text.isNotEmpty())  fiche.isolementPhaseMasseStatorVM = VM.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        WM.doAfterTextChanged {
-            if (WM.text.isNotEmpty())   fiche.isolementPhaseMasseStatorWM = WM.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        UV.doAfterTextChanged {
-            if (UV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUV = UV.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        UW.doAfterTextChanged {
-            if (UW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUW = UW.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        iVW.doAfterTextChanged {
-            if (iVW.text.isNotEmpty())   fiche.isolementPhasePhaseStatorVW = iVW.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        RU.doAfterTextChanged {
-            if (RU.text.isNotEmpty()) fiche.resistanceStatorU = RU.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        RV.doAfterTextChanged {
-            if (RV.text.isNotEmpty())  fiche.resistanceStatorV = RV.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        RW.doAfterTextChanged {
-            if (RW.text.isNotEmpty()) fiche.resistanceStatorW = RW.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VU.doAfterTextChanged {
-            if (VU.text.isNotEmpty())  fiche.tensionU = VU.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VV.doAfterTextChanged {
-            if (VV.text.isNotEmpty())  fiche.tensionV = VV.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VW.doAfterTextChanged {
-            if (VW.text.isNotEmpty())  fiche.tensionW = VW.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VUI.doAfterTextChanged {
-            if (VUI.text.isNotEmpty())  fiche.intensiteU = VUI.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VVI.doAfterTextChanged {
-            if (VVI.text.isNotEmpty())  fiche.intensiteV = VVI.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        VWI.doAfterTextChanged {
-            if (VWI.text.isNotEmpty()) fiche.intensiteW = VWI.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        dessai.doAfterTextChanged {
-            if (dessai.text.isNotEmpty())  fiche.dureeEssai = dessai.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        obs.doAfterTextChanged {
-            if (obs.text.isNotEmpty()) fiche.observations = obs.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
+        if ( fiche.status!! < 3L) {
+            UM.doAfterTextChanged {
+                if (UM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM =
+                    UM.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VM.doAfterTextChanged {
+                if (VM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorVM =
+                    VM.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            WM.doAfterTextChanged {
+                if (WM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorWM =
+                    WM.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            UV.doAfterTextChanged {
+                if (UV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUV =
+                    UV.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            UW.doAfterTextChanged {
+                if (UW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUW =
+                    UW.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            iVW.doAfterTextChanged {
+                if (iVW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorVW =
+                    iVW.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            RU.doAfterTextChanged {
+                if (RU.text.isNotEmpty()) fiche.resistanceStatorU = RU.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            RV.doAfterTextChanged {
+                if (RV.text.isNotEmpty()) fiche.resistanceStatorV = RV.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            RW.doAfterTextChanged {
+                if (RW.text.isNotEmpty()) fiche.resistanceStatorW = RW.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VU.doAfterTextChanged {
+                if (VU.text.isNotEmpty()) fiche.tensionU = VU.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VV.doAfterTextChanged {
+                if (VV.text.isNotEmpty()) fiche.tensionV = VV.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VW.doAfterTextChanged {
+                if (VW.text.isNotEmpty()) fiche.tensionW = VW.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VUI.doAfterTextChanged {
+                if (VUI.text.isNotEmpty()) fiche.intensiteU = VUI.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VVI.doAfterTextChanged {
+                if (VVI.text.isNotEmpty()) fiche.intensiteV = VVI.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VWI.doAfterTextChanged {
+                if (VWI.text.isNotEmpty()) fiche.intensiteW = VWI.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            dessai.doAfterTextChanged {
+                if (dessai.text.isNotEmpty()) fiche.dureeEssai = dessai.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            obs.doAfterTextChanged {
+                if (obs.text.isNotEmpty()) fiche.observations = obs.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+        } else {
+            UM.isEnabled = false
+            VM.isEnabled = false
+            WM.isEnabled = false
+            UV.isEnabled = false
+            UW.isEnabled = false
+            iVW.isEnabled = false
+            RU.isEnabled = false
+            RV.isEnabled = false
+            RW.isEnabled = false
+            VU.isEnabled = false
+            VV.isEnabled = false
+            VW.isEnabled = false
+            VUI.isEnabled = false
+            VVI.isEnabled = false
+            VWI.isEnabled = false
+            dessai.isEnabled = false
+            obs.isEnabled = false
+            enr.visibility = View.GONE
+            ter.visibility = View.GONE
         }
 
         enr.setOnClickListener {

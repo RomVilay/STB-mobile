@@ -37,6 +37,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     val selection = MutableLiveData<Remontage>()
     var start = MutableLiveData<Date>()
     var listeDemo = MutableLiveData<Array<Fiche>?>()
+    var ficheDemo = MutableLiveData<DemontageMoteur>()
     init{
         viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -56,6 +57,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
     fun fullScreen(view: View,uri: String) {
         val action = FicheRemontageDirections.deRemoVersFScreen(uri.toString())
+        Navigation.findNavController(view).navigate(action)
+    }
+    fun toFicheDemo(view: View, fiche: DemontageMoteur) {
+        val action = FicheRemontageDirections.actionFicheRemontageToFicheDemontage(token!!,username!!,
+            arrayOf(fiche))
         Navigation.findNavController(view).navigate(action)
     }
 
@@ -267,8 +273,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         })
     }
-    fun getFichesDemontage(idFiche: String): Fiche?{
-        var resp : Fiche? = null;
+    fun getFichesDemontage(idFiche: String){
         if( selection.value!!.typeFicheRemontage == 1){
                     var fiche = repository.getDemontagePompe(token!!,idFiche, object  : Callback<DemontagePompeResponse>{
                         override fun onResponse(
@@ -276,7 +281,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             response: Response<DemontagePompeResponse>
                         ) {
                             if (response.code() == 200) {
-                                resp = response.body()!!.fiche
+                                ficheDemo.value = response.body()!!.fiche!!
+                                Log.i("INFO", "fiche ${ficheDemo.value?.numFiche.toString()}")
                             }
                         }
                         override fun onFailure(call: Call<DemontagePompeResponse>, t: Throwable) {
@@ -291,7 +297,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<DemontageMonophaseResponse>
                 ) {
                     if (response.code() == 200) {
-                        resp = response.body()!!.fiche
+                        ficheDemo.value = response.body()!!.fiche!!
                     }
                 }
                 override fun onFailure(call: Call<DemontageMonophaseResponse>, t: Throwable) {
@@ -306,7 +312,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<DemontageAlternateurResponse>
                 ) {
                     if (response.code() == 200) {
-                        resp = response.body()!!.fiche
+                        ficheDemo.value = response.body()!!.fiche!!
                     }
                 }
                 override fun onFailure(call: Call<DemontageAlternateurResponse>, t: Throwable) {
@@ -321,7 +327,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<DemontageRotorBobineResponse>
                 ) {
                     if (response.code() == 200) {
-                        resp = response.body()!!.fiche
+                        ficheDemo.value = response.body()!!.fiche!!
                     }
                 }
                 override fun onFailure(call: Call<DemontageRotorBobineResponse>, t: Throwable) {
@@ -336,7 +342,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<DemontageCCResponse>
                 ) {
                     if (response.code() == 200) {
-                        resp = response.body()!!.fiche
+                        ficheDemo.value = response.body()!!.fiche!!
                     }
                 }
                 override fun onFailure(call: Call<DemontageCCResponse>, t: Throwable) {
@@ -351,7 +357,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<DemontageTriphaseResponse>
                 ) {
                     if (response.code() == 200) {
-                        resp = response.body()!!.fiche
+                        ficheDemo.value = response.body()!!.fiche!!
                     }
                 }
                 override fun onFailure(call: Call<DemontageTriphaseResponse>, t: Throwable) {
@@ -359,7 +365,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             })
         }
-        return resp
     }
 }
 @RequiresApi(Build.VERSION_CODES.M)
