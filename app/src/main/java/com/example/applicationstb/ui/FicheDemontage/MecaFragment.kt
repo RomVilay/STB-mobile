@@ -193,7 +193,7 @@ class MecaFragment : Fragment() {
                 refRoul.setText(fiche.refRoulementAvant!![0])}
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var s = "roulement arrière :"
+                var s = "roulement arrière : ${viewModel.selection.value!!.typeRoulementArriere!![0]}"
                 var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
                 typeRoulement.setSelection(type)
                 refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
@@ -205,11 +205,10 @@ class MecaFragment : Fragment() {
                     viewModel.localSave()
                 }
             } else {
-                var s = "roulement avant :"
+                var s = "roulement avant :${viewModel.selection.value!!.typeRoulementAvant!![0]}"
                 var type = if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
                 typeRoulement.setSelection(type)
                 refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
-                Log.i("INFO","av")
                 specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementAvant!!,viewModel.selection.value!!.refRoulementAvant!!) { item ->
                     viewModel.selection.value!!.typeRoulementAvant =
                         removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
@@ -347,10 +346,15 @@ class MecaFragment : Fragment() {
         var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
         var refJoints = layout.findViewById<EditText>(R.id.refJoints)
         if (fiche.status == 3L) {
-            typeJoints.isEnabled = false
             refJoints.isEnabled = false
         }
-        if (switchJoints.isChecked && fiche.typeJointArriere !== null) refJoints.setText(fiche.refJointArriere) else if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
+        if (switchJoints.isChecked && fiche.typeJointArriere !== null){
+            if (fiche.typeJointArriere!!) typeJoints.setSelection(0) else typeJoints.setSelection(1)
+            refJoints.setText(fiche.refJointArriere)
+        } else if (fiche.refJointAvant !== null) {
+            if (fiche.typeJointAvant!!) typeJoints.setSelection(0) else typeJoints.setSelection(1)
+            refJoints.setText(fiche.refJointAvant)
+        }
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 var type = if (viewModel.selection.value!!.typeJointArriere == null) {

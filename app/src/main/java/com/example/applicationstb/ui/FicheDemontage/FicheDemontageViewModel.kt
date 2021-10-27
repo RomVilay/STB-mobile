@@ -80,7 +80,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         Navigation.findNavController(view).navigate(action)
     }
     fun retour(view:View){
-        var action = FicheDemontageDirections.deDemontageversAccueil("Token","username")
+        var action = FicheDemontageDirections.deDemontageversAccueil(token!!,username!!)
         Navigation.findNavController(view).navigate(action)
     }
     fun getTime() {
@@ -95,75 +95,76 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
     fun localSave(){
         viewModelScope.launch(Dispatchers.IO){
-            if ( selection.value!!.typeFicheDemontage == 1 ) {
-                var fiche = selection.value!! as DemontagePompe
-                fiche.status = 2L
-                var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
-                if (f !== null ) {
-                    repository.updateDemoPompeLocalDatabse(fiche.toEntity())
-                } else  {
-                    repository.insertDemoPompeLocalDatabase(fiche)
+            if (selection.value!!.status!! < 3L) {
+                if (selection.value!!.typeFicheDemontage == 1) {
+                    var fiche = selection.value!! as DemontagePompe
+                    fiche.status = 2L
+                    var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                    if (f !== null) {
+                        repository.updateDemoPompeLocalDatabse(fiche.toEntity())
+                    } else {
+                        repository.insertDemoPompeLocalDatabase(fiche)
+                    }
                 }
-            }
-            if ( selection.value!!.typeFicheDemontage == 2 ) {
-                var fiche = selection.value!! as DemontageMonophase
-                fiche.status = 2L
-                var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
-                if (f !== null ) {
-                    repository.updateDemoMonoLocalDatabse(fiche.toEntity())
+                if (selection.value!!.typeFicheDemontage == 2) {
+                    var fiche = selection.value!! as DemontageMonophase
+                    fiche.status = 2L
+                    var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
+                    if (f !== null) {
+                        repository.updateDemoMonoLocalDatabse(fiche.toEntity())
 
-                } else  {
-                    repository.insertDemoMonoLocalDatabase(fiche)
-
+                    } else {
+                        repository.insertDemoMonoLocalDatabase(fiche)
+                    }
                 }
-            }
-            if ( selection.value!!.typeFicheDemontage == 3 ) {
-                var fiche = selection.value!! as DemontageAlternateur
-                fiche.status = 2L
-                var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
-                if (f !== null ) {
-                    repository.updateDemoAlterLocalDatabse(fiche.toEntity())
+                if (selection.value!!.typeFicheDemontage == 3) {
+                    var fiche = selection.value!! as DemontageAlternateur
+                    fiche.status = 2L
+                    var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
+                    if (f !== null) {
+                        repository.updateDemoAlterLocalDatabse(fiche.toEntity())
 
-                } else  {
-                    repository.insertDemoAlterLocalDatabase(fiche)
+                    } else {
+                        repository.insertDemoAlterLocalDatabase(fiche)
 
+                    }
                 }
-            }
-            if ( selection.value!!.typeFicheDemontage == 4 ) {
-                var fiche = selection.value!! as DemontageRotorBobine
-                fiche.status = 2L
-                var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
-                if (f !== null ) {
-                    repository.updateDemoRBLocalDatabse(fiche.toEntity())
+                if (selection.value!!.typeFicheDemontage == 4) {
+                    var fiche = selection.value!! as DemontageRotorBobine
+                    fiche.status = 2L
+                    var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
+                    if (f !== null) {
+                        repository.updateDemoRBLocalDatabse(fiche.toEntity())
 
-                } else  {
-                    repository.insertDemoRBLocalDatabase(fiche)
+                    } else {
+                        repository.insertDemoRBLocalDatabase(fiche)
 
+                    }
                 }
-            }
-            if ( selection.value!!.typeFicheDemontage == 5 ) {
-                var fiche = selection.value!! as CourantContinu
-                fiche.status = 2L
-                var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
-                if (f !== null ) {
-                    repository.updateDemoCCLocalDatabse(fiche.toEntity())
+                if (selection.value!!.typeFicheDemontage == 5) {
+                    var fiche = selection.value!! as CourantContinu
+                    fiche.status = 2L
+                    var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                    if (f !== null) {
+                        repository.updateDemoCCLocalDatabse(fiche.toEntity())
 
-                } else  {
-                    repository.insertDemoCCLocalDatabase(fiche)
+                    } else {
+                        repository.insertDemoCCLocalDatabase(fiche)
 
+                    }
                 }
-            }
-            if ( selection.value!!.typeFicheDemontage == 6 ) {
+                if (selection.value!!.typeFicheDemontage == 6) {
 
-                var fiche = selection.value!! as Triphase
-                fiche.status = 2L
-                var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
-                if (f !== null ) {
-                    repository.updateDemoTriLocalDatabse(fiche.toEntity())
+                    var fiche = selection.value!! as Triphase
+                    fiche.status = 2L
+                    var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                    if (f !== null) {
+                        repository.updateDemoTriLocalDatabse(fiche.toEntity())
 
-                } else  {
-                    repository.insertDemoTriLocalDatabase(fiche)
+                    } else {
+                        repository.insertDemoTriLocalDatabase(fiche)
 
+                    }
                 }
             }
         }

@@ -201,6 +201,7 @@ class FicheRemontage : Fragment() {
             viewModel.retour(layout)
         }
         btnDemo.setOnClickListener {
+            Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
             runBlocking {
                 var numFiches = arrayListOf<String>()
                 viewModel.listeDemo.value?.forEach {
@@ -210,7 +211,8 @@ class FicheRemontage : Fragment() {
                     val builder = AlertDialog.Builder(it)
                     builder.setTitle("Sélectionnez une fiche de démontage")
                         .setItems(numFiches.toTypedArray(),  DialogInterface.OnClickListener { dialog, which ->
-                           Log.i("INFO","type demontage ${viewModel.listeDemo.value?.get(which)?.typeFicheDemontage.toString()}")
+                           Log.i("INFO","type demontage ${
+                               viewModel.listeDemo.value?.get(which)?.typeRoulementAvant?.get(0)?.toString()}")
                             numFiches.clear()
                             viewModel.toFicheDemo(layout, viewModel.listeDemo.value?.get(which)!!)
                         })
