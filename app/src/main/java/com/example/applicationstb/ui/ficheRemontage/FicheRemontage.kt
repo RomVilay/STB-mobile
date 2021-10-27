@@ -16,9 +16,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.*
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 import java.util.*
 
 class FicheRemontage : Fragment() {
@@ -202,6 +201,7 @@ class FicheRemontage : Fragment() {
             viewModel.retour(layout)
         }
         btnDemo.setOnClickListener {
+            runBlocking {
                 var numFiches = arrayListOf<String>()
                 viewModel.listeDemo.value?.forEach {
                     numFiches.add(it.numFiche!!)
@@ -210,17 +210,15 @@ class FicheRemontage : Fragment() {
                     val builder = AlertDialog.Builder(it)
                     builder.setTitle("Sélectionnez une fiche de démontage")
                         .setItems(numFiches.toTypedArray(),  DialogInterface.OnClickListener { dialog, which ->
-                            runBlocking {
-                                viewModel.getFichesDemontage(viewModel.listeDemo.value?.get(which)!!._id)
-                                delay(1000)
-                                if(viewModel.ficheDemo.value !== null) viewModel.toFicheDemo(layout, viewModel.ficheDemo.value!!)
-                                //
-                            }
+                           Log.i("INFO","type demontage ${viewModel.listeDemo.value?.get(which)?.typeFicheDemontage.toString()}")
+                            numFiches.clear()
+                            viewModel.toFicheDemo(layout, viewModel.listeDemo.value?.get(which)!!)
                         })
                     builder.create()
                 }
-                if (viewModel.listeDemo !== null) alertDialog?.show()
+                alertDialog?.show()
 
+            }
         }
         sensRotation.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

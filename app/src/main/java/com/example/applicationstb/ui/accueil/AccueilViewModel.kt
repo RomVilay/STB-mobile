@@ -22,6 +22,7 @@ import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.connexion.ConnexionDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -136,47 +137,49 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                             // fiche demontage Monophase
                                             if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 2) {
-                                                val demoTri = repository.getDemontageMono(token, resp.fiche!!._id, object: Callback<DemontageMonophaseResponse>{
-                                                    override fun onResponse(call: Call<DemontageMonophaseResponse>, response: Response<DemontageMonophaseResponse>) {
-                                                        if ( response.code() == 200 ) {
-                                                            val resp2 = response.body()
-                                                            if (resp2 != null) {
-                                                                Log.i("INFO","fiche DemontageMonophase :${resp.fiche!!.numFiche}")
-                                                                //demontages!!.add(resp.fiche!!)
-                                                                viewModelScope.launch(Dispatchers.IO) {
-                                                                    var demoM =
-                                                                        repository.getByIdDemoMonoLocalDatabse(
-                                                                            resp2.fiche!!._id
-                                                                        )
-                                                                    if (demoM == null) {
-                                                                        repository.insertDemoMonoLocalDatabase(
-                                                                            resp2!!.fiche!!
-                                                                        )
-                                                                        demontages!!.add(resp2!!.fiche!!)
-                                                                        Log.i(
-                                                                            "INFO",
-                                                                            "ajout demo Monophase en bdd locale"
-                                                                        )
-                                                                    } else {
-                                                                        Log.i(
-                                                                            "INFO",
-                                                                            "fiche déjà en bdd"
-                                                                        )
-                                                                        demontages!!.add(demoM)
+                                                runBlocking {
+                                                    val demoTri = repository.getDemontageMono(token, resp.fiche!!._id, object: Callback<DemontageMonophaseResponse>{
+                                                        override fun onResponse(call: Call<DemontageMonophaseResponse>, response: Response<DemontageMonophaseResponse>) {
+                                                            if ( response.code() == 200 ) {
+                                                                val resp2 = response.body()
+                                                                if (resp2 != null) {
+                                                                    Log.i("INFO","fiche DemontageMonophase :${resp.fiche!!.numFiche}")
+                                                                    //demontages!!.add(resp.fiche!!)
+                                                                    viewModelScope.launch(Dispatchers.IO) {
+                                                                        var demoM =
+                                                                            repository.getByIdDemoMonoLocalDatabse(
+                                                                                resp2.fiche!!._id
+                                                                            )
+                                                                        if (demoM == null) {
+                                                                            repository.insertDemoMonoLocalDatabase(
+                                                                                resp2!!.fiche!!
+                                                                            )
+                                                                            demontages!!.add(resp2!!.fiche!!)
+                                                                            Log.i(
+                                                                                "INFO",
+                                                                                "ajout demo Monophase en bdd locale"
+                                                                            )
+                                                                        } else {
+                                                                            Log.i(
+                                                                                "INFO",
+                                                                                "fiche déjà en bdd"
+                                                                            )
+                                                                            demontages!!.add(demoM)
+                                                                        }
                                                                     }
+                                                                } else {
+                                                                    Log.i(
+                                                                        "INFO",
+                                                                        "code : ${response.code()} - erreur : ${response.message()}"
+                                                                    )
                                                                 }
-                                                            } else {
-                                                                Log.i(
-                                                                    "INFO",
-                                                                    "code : ${response.code()} - erreur : ${response.message()}"
-                                                                )
                                                             }
                                                         }
-                                                    }
-                                                    override fun onFailure(call: Call<DemontageMonophaseResponse>, t: Throwable) {
-                                                        Log.e("Error","erreur ${t.message}")
-                                                    }
-                                                })
+                                                        override fun onFailure(call: Call<DemontageMonophaseResponse>, t: Throwable) {
+                                                            Log.e("Error","erreur ${t.message}")
+                                                        }
+                                                    })
+                                                }
                                             }
                                             // fiche demontage Alternateur
                                             if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 3) {
