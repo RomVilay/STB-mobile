@@ -20,7 +20,7 @@ interface APIstb  {
     fun getFichesUser( @Header("auth-token") token:String, @Query("filter") userid:String ): Call<FichesResponse>
 
     @GET("/fiches?type=2&status=3")
-    fun getFichesForRemontage( @Header("auth-token") token: String, @Query("filter") numDevis: String): Call<FichesResponse>
+    fun getFichesForRemontage( @Header("auth-token") token: String, @Query("filter") numDevis: String): Call<DemontagesResponse>
 
     @GET("/fiches/{ficheId}")
     fun getChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<ChantierResponse>

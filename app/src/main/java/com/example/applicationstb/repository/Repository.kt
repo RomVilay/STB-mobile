@@ -1956,6 +1956,9 @@ class VehiculesResponse(
 class DemontageResponse(
     var fiche:DemontageMoteur?
 )
+class DemontagesResponse(
+    var fiches:Array<DemontageMoteur>?
+)
 class DemontageAlternateurResponse(
     var fiche:DemontageAlternateur?
 )
@@ -2045,9 +2048,9 @@ class Repository (var context:Context) {
         var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }
-    fun getFichesForRemontage(token:String, numDevis:String, callback:Callback<FichesResponse>) {
+    fun getFichesForRemontage(token:String, numDevis:String, callback:Callback<DemontagesResponse>) {
         var call = service.getFichesForRemontage(token,numDevis)
-        var fiches: Array<Fiche>? = null
+        var fiches: Array<DemontageMoteur>? = null
         call.enqueue(callback)
     }
     fun getChantier(token:String,ficheId:String, callback:Callback<ChantierResponse>){

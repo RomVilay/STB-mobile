@@ -290,7 +290,7 @@ class FicheRemontage : Fragment() {
                                 DialogInterface.OnClickListener { dialog, which ->
                                     Log.i(
                                         "INFO", "fiche envoyée ${
-                                            viewModel.listeDemo.value?.get(which)?.numFiche.toString()
+                                            viewModel.listeDemo.value?.get(which)?.javaClass
                                         }"
                                     )
                                     viewModel.toFicheDemo(

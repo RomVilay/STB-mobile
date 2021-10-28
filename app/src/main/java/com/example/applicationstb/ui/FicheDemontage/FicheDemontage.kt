@@ -42,7 +42,7 @@ class FicheDemontage : Fragment() {
             viewModel.start.value = Date()
             var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
             viewModel.selection.value = demo
-            Log.i("INFO","type fiche ${viewModel.selection.value?.typeFicheDemontage}")
+            Log.i("INFO","type fiche ${viewModel.selection.value?.javaClass}")
             /*var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
             viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
             var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
