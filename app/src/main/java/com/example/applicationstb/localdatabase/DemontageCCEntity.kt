@@ -56,20 +56,20 @@ data class DemontageCCEntity (
     var typeSondes: String?,
     var equilibrage: Boolean?,
     var peinture : String?,
-    var isolationMasseInduit: Int?,
-    var isolationMassePolesPrincipaux: Int?,
-    var isolationMassePolesAuxilliaires: Int?,
-    var isolationMassePolesCompensatoires: Int?,
-    var isolationMassePorteBalais: Int?,
-    var resistanceInduit: Int?,
-    var resistancePP: Int?,
-    var resistancePA: Int?,
-    var resistancePC: Int?,
+    var isolationMasseInduit: Float?,
+    var isolationMassePolesPrincipaux: Float?,
+    var isolationMassePolesAuxilliaires: Float?,
+    var isolationMassePolesCompensatoires: Float?,
+    var isolationMassePorteBalais: Float?,
+    var resistanceInduit: Float?,
+    var resistancePP: Float?,
+    var resistancePA: Float?,
+    var resistancePC: Float?,
     /* essais dynamiques */
-    var tensionInduit: Int?,
-    var intensiteInduit: Int?,
-    var tensionExcitation: Int?,
-    var intensiteExcitation: Int?
+    var tensionInduit: Float?,
+    var intensiteInduit: Float?,
+    var tensionExcitation: Float?,
+    var intensiteExcitation: Float?
     ){
         fun toCContinu (): CourantContinu {
             var fiche = CourantContinu(

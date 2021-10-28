@@ -219,23 +219,23 @@ class BodyDemontageTriphase (
                       var typeSondes: String?,
                       var equilibrage: Boolean?,
                       var peinture : String?,
-                      var isolementPhaseMasseStatorUM: Int?,
-                      var isolementPhaseMasseStatorVM: Int?,
-                      var isolementPhaseMasseStatorWM: Int?,
-                      var isolementPhasePhaseStatorUV: Int?,
-                      var isolementPhasePhaseStatorVW: Int?,
-                      var isolementPhasePhaseStatorUW: Int?,
-                      var resistanceStatorU: Int?,
-                      var resistanceStatorV: Int?,
-                      var resistanceStatorW: Int?,
-                      var tensionU: Int?,
-                      var tensionV: Int?,
-                      var tensionW: Int?,
-                      var intensiteU: Int?,
-                      var intensiteV: Int?,
-                      var intensiteW: Int?,
-                      var dureeEssai: Int?,
-                      var dureeTotale: Int?,
+                      var isolementPhaseMasseStatorUM: Float?,
+                      var isolementPhaseMasseStatorVM: Float?,
+                      var isolementPhaseMasseStatorWM: Float?,
+                      var isolementPhasePhaseStatorUV: Float?,
+                      var isolementPhasePhaseStatorVW: Float?,
+                      var isolementPhasePhaseStatorUW: Float?,
+                      var resistanceStatorU: Float?,
+                      var resistanceStatorV: Float?,
+                      var resistanceStatorW: Float?,
+                      var tensionU: Float?,
+                      var tensionV: Float?,
+                      var tensionW: Float?,
+                      var intensiteU: Float?,
+                      var intensiteV: Float?,
+                      var intensiteW: Float?,
+                      var dureeEssai: Float?,
+                      var dureeTotale: Long?,
                       var observations: String?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -285,23 +285,23 @@ class BodyDemontageTriphase (
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readString(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readLong(),
         parcel.readString()
     ) {
     }
@@ -353,23 +353,23 @@ class BodyDemontageTriphase (
         parcel.writeString(typeSondes!!)
         parcel.writeBoolean(equilibrage!!)
         parcel.writeString(peinture!!)
-        parcel.writeInt(isolementPhaseMasseStatorUM!!)
-        parcel.writeInt(isolementPhaseMasseStatorVM!!)
-        parcel.writeInt(isolementPhaseMasseStatorWM!!)
-        parcel.writeInt(isolementPhasePhaseStatorUV!!)
-        parcel.writeInt(isolementPhasePhaseStatorVW!!)
-        parcel.writeInt(isolementPhasePhaseStatorUW!!)
-        parcel.writeInt(resistanceStatorU!!)
-        parcel.writeInt(resistanceStatorV!!)
-        parcel.writeInt(resistanceStatorW!!)
-        parcel.writeInt(tensionU!!)
-        parcel.writeInt(tensionV!!)
-        parcel.writeInt(tensionW!!)
-        parcel.writeInt(intensiteU!!)
-        parcel.writeInt(intensiteV!!)
-        parcel.writeInt(intensiteW!!)
-        parcel.writeInt(dureeEssai!!)
-        parcel.writeInt(dureeTotale!!)
+        parcel.writeFloat(isolementPhaseMasseStatorUM!!)
+        parcel.writeFloat(isolementPhaseMasseStatorVM!!)
+        parcel.writeFloat(isolementPhaseMasseStatorWM!!)
+        parcel.writeFloat(isolementPhasePhaseStatorUV!!)
+        parcel.writeFloat(isolementPhasePhaseStatorVW!!)
+        parcel.writeFloat(isolementPhasePhaseStatorUW!!)
+        parcel.writeFloat(resistanceStatorU!!)
+        parcel.writeFloat(resistanceStatorV!!)
+        parcel.writeFloat(resistanceStatorW!!)
+        parcel.writeFloat(tensionU!!)
+        parcel.writeFloat(tensionV!!)
+        parcel.writeFloat(tensionW!!)
+        parcel.writeFloat(intensiteU!!)
+        parcel.writeFloat(intensiteV!!)
+        parcel.writeFloat(intensiteW!!)
+        parcel.writeFloat(dureeEssai!!)
+        parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
     }
 
@@ -426,20 +426,20 @@ class BodyDemontageCC ( var status: Long?,
                         var typeSondes: String?,
                         var equilibrage: Boolean?,
                         var peinture : String?,
-                        var isolationMasseInduit: Int?,
-                        var isolationMassePolesPrincipaux: Int?,
-                        var isolationMassePolesAuxilliaires: Int?,
-                        var isolationMassePolesCompensatoires: Int?,
-                        var isolationMassePorteBalais: Int?,
-                        var resistanceInduit: Int?,
-                        var resistancePP: Int?,
-                        var resistancePA: Int?,
-                        var resistancePC: Int?,
-                        var tensionInduit: Int?,
-                        var intensiteInduit: Int?,
-                        var tensionExcitation: Int?,
-                        var intensiteExcitation: Int?,
-                        var dureeTotale: Int?,
+                        var isolationMasseInduit: Float?,
+                        var isolationMassePolesPrincipaux: Float?,
+                        var isolationMassePolesAuxilliaires: Float?,
+                        var isolationMassePolesCompensatoires: Float?,
+                        var isolationMassePorteBalais: Float?,
+                        var resistanceInduit: Float?,
+                        var resistancePP: Float?,
+                        var resistancePA: Float?,
+                        var resistancePC: Float?,
+                        var tensionInduit: Float?,
+                        var intensiteInduit: Float?,
+                        var tensionExcitation: Float?,
+                        var intensiteExcitation: Float?,
+                        var dureeTotale: Long?,
                         var observations: String?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -489,20 +489,20 @@ class BodyDemontageCC ( var status: Long?,
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readString(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readLong(),
         parcel.readString()
     ) {
     }
@@ -554,20 +554,20 @@ class BodyDemontageCC ( var status: Long?,
         parcel.writeString(typeSondes!!)
         parcel.writeBoolean(equilibrage!!)
         parcel.writeString(peinture!!)
-        parcel.writeInt(isolationMasseInduit!!)
-        parcel.writeInt(isolationMassePolesPrincipaux!!)
-        parcel.writeInt(isolationMassePolesAuxilliaires!!)
-        parcel.writeInt(isolationMassePolesCompensatoires!!)
-        parcel.writeInt(isolationMassePorteBalais!!)
-        parcel.writeInt(resistanceInduit!!)
-        parcel.writeInt(resistancePP!!)
-        parcel.writeInt(resistancePA!!)
-        parcel.writeInt(resistancePC!!)
-        parcel.writeInt(tensionInduit!!)
-        parcel.writeInt(intensiteInduit!!)
-        parcel.writeInt(tensionExcitation!!)
-        parcel.writeInt(intensiteExcitation!!)
-        parcel.writeInt(dureeTotale!!)
+        parcel.writeFloat(isolationMasseInduit!!)
+        parcel.writeFloat(isolationMassePolesPrincipaux!!)
+        parcel.writeFloat(isolationMassePolesAuxilliaires!!)
+        parcel.writeFloat(isolationMassePolesCompensatoires!!)
+        parcel.writeFloat(isolationMassePorteBalais!!)
+        parcel.writeFloat(resistanceInduit!!)
+        parcel.writeFloat(resistancePP!!)
+        parcel.writeFloat(resistancePA!!)
+        parcel.writeFloat(resistancePC!!)
+        parcel.writeFloat(tensionInduit!!)
+        parcel.writeFloat(intensiteInduit!!)
+        parcel.writeFloat(tensionExcitation!!)
+        parcel.writeFloat(intensiteExcitation!!)
+        parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
     }
 
@@ -2163,7 +2163,7 @@ class Repository (var context:Context) {
             triphase.intensiteV,
             triphase.intensiteW,
             triphase.dureeEssai,
-            triphase.dureeTotale!!.toInt(),
+            triphase.dureeTotale!!,
             triphase.observations
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
@@ -2225,7 +2225,7 @@ class Repository (var context:Context) {
             triphase.intensiteV,
             triphase.intensiteW,
             triphase.dureeEssai,
-            triphase.dureeTotale!!.toInt(),
+            triphase.dureeTotale!!,
             triphase.observations
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
@@ -2291,7 +2291,7 @@ class Repository (var context:Context) {
             fiche.intensiteInduit,
             fiche.tensionExcitation,
             fiche.intensiteExcitation,
-            fiche.dureeTotale!!.toInt(),
+            fiche.dureeTotale!!,
             fiche.observations
         )
         var call = service.patchDemontageCC(token,ficheId,body)

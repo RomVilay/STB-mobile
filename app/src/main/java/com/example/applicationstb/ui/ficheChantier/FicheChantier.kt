@@ -59,6 +59,7 @@ class FicheChantier : Fragment() {
         Log.i("INFO","token: ${viewModel.token} - username: ${viewModel.username}")
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
+        val lin = layout.findViewById<LinearLayout>(R.id.linearCh)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
         val materiel = layout.findViewById<EditText>(R.id.materiel)
         val objet = layout.findViewById<EditText>(R.id.objet)
@@ -78,6 +79,7 @@ class FicheChantier : Fragment() {
 
         var visibility = View.VISIBLE
         selectButton.setOnClickListener {
+            lin.visibility = View.VISIBLE
             var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
             viewModel.chantier.value = chantier
             viewModel.start.value = Date()

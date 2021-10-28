@@ -109,7 +109,7 @@ class CCFragment : Fragment() {
             isopmu.doAfterTextChanged {
                 if (isopmu.text.isNotEmpty() && isopmu.hasFocus()) {
                     fiche.isolationMasseInduit =
-                        isopmu.text.toString().toInt()
+                        isopmu.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -118,7 +118,7 @@ class CCFragment : Fragment() {
             isopmv.doAfterTextChanged {
                 if (isopmv.text.isNotEmpty() && isopmv.hasFocus()) {
                     fiche.isolationMassePolesPrincipaux =
-                        isopmv.text.toString().toInt()
+                        isopmv.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -127,7 +127,7 @@ class CCFragment : Fragment() {
             isopmw.doAfterTextChanged {
                 if (isopmw.text.isNotEmpty() && isopmw.hasFocus()) {
                     fiche.isolationMassePolesAuxilliaires =
-                        isopmw.text.toString().toInt()
+                        isopmw.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -136,7 +136,7 @@ class CCFragment : Fragment() {
             isoppU.doAfterTextChanged {
                 if (isoppU.text.isNotEmpty() && isoppU.hasFocus()) {
                     fiche.isolationMassePolesCompensatoires =
-                        isoppU.text.toString().toInt()
+                        isoppU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -145,7 +145,7 @@ class CCFragment : Fragment() {
             isoppV.doAfterTextChanged {
                 if (isoppV.text.isNotEmpty() && isoppV.hasFocus()) {
                     fiche.isolationMassePorteBalais =
-                        isoppV.text.toString().toInt()
+                        isoppV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -153,7 +153,7 @@ class CCFragment : Fragment() {
             }
             rU.doAfterTextChanged {
                 if (rU.text.isNotEmpty() && rU.hasFocus()) {
-                    fiche.resistanceInduit = rU.text.toString().toInt()
+                    fiche.resistanceInduit = rU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -161,7 +161,7 @@ class CCFragment : Fragment() {
             }
             rI.doAfterTextChanged {
                 if (rI.text.isNotEmpty() && rI.hasFocus()) {
-                    fiche.resistancePA = rI.text.toString().toInt()
+                    fiche.resistancePA = rI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -169,7 +169,7 @@ class CCFragment : Fragment() {
             }
             rV.doAfterTextChanged {
                 if (rV.text.isNotEmpty() && rV.hasFocus()) {
-                    fiche.resistancePP = rV.text.toString().toInt()
+                    fiche.resistancePP = rV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -177,7 +177,7 @@ class CCFragment : Fragment() {
             }
             rPP.doAfterTextChanged {
                 if (rPP.text.isNotEmpty() && rPP.hasFocus()) {
-                    fiche.resistancePC = rPP.text.toString().toInt()
+                    fiche.resistancePC = rPP.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -185,7 +185,7 @@ class CCFragment : Fragment() {
             }
             vU.doAfterTextChanged {
                 if (vU.text.isNotEmpty() && vU.hasFocus()) {
-                    fiche.tensionInduit = vU.text.toString().toInt()
+                    fiche.tensionInduit = vU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -193,7 +193,7 @@ class CCFragment : Fragment() {
             }
             vV.doAfterTextChanged {
                 if (vV.text.isNotEmpty() && vV.hasFocus()) {
-                    fiche.tensionExcitation = vV.text.toString().toInt()
+                    fiche.tensionExcitation = vV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -201,7 +201,7 @@ class CCFragment : Fragment() {
             }
             vUI.doAfterTextChanged {
                 if (vUI.text.isNotEmpty() && isopmu.hasFocus()) {
-                    fiche.intensiteInduit = vUI.text.toString().toInt()
+                    fiche.intensiteInduit = vUI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -209,7 +209,7 @@ class CCFragment : Fragment() {
             }
             vVI.doAfterTextChanged {
                 if (vVI.text.isNotEmpty() && isopmu.hasFocus()) {
-                    fiche.intensiteExcitation = vVI.text.toString().toInt()
+                    fiche.intensiteExcitation = vVI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
