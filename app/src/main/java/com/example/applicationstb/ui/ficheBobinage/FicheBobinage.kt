@@ -138,42 +138,67 @@ class FicheBobinage : Fragment() {
             dateDebut.setText(LocalDateTime.now().format(format))*/
 
         btnSelect.setOnClickListener {
-            scrollBobi.visibility = View.VISIBLE
-            viewModel.start.value = Date()
-            var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
-            viewModel.bobinage.value = bobinage
-            viewModel.sections.value = bobinage?.sectionsFils
-            viewModel.schemas.value = bobinage?.schemas
-            if (bobinage != null) {
-                marque.setText(bobinage?.marqueMoteur)
-                if (bobinage.courant !== null) {courant.setText(bobinage?.courant.toString())} //
-                if (bobinage.vitesse!== null) {vitesse.setText(bobinage?.vitesse.toString())} //
-                type.setText(bobinage?.typeBobinage)
-                client.setText(bobinage?.client?.enterprise)
-                if (bobinage.puissance!== null) {puissance.setText(bobinage?.puissance.toString())} //
-                if (bobinage.phases!== null) {phases.setText(bobinage?.phases.toString())} //
-                if (bobinage.frequences!== null) {frequence.setText(bobinage?.frequences.toString())} //
-                if(bobinage.calageEncoches !== null) {switch.setChecked(bobinage.calageEncoches!!)} else switch.setChecked(false)
-                if (bobinage.tension !== null) tension.setText(bobinage?.tension.toString())
-                adapter.list = bobinage.sectionsFils!!
-                if (bobinage.nbSpires!== null) {spire.setText(bobinage?.nbSpires.toString())}
-                if (bobinage.poids !== null) poids.setText(bobinage?.poids.toString())
-                if (bobinage.resistanceU !== null) {RU.setText(bobinage?.resistanceU.toString())}
-                if (bobinage.resistanceV !== null) RV.setText(bobinage?.resistanceV.toString())
-                if (bobinage.resistanceW !== null) RW.setText(bobinage?.resistanceW.toString())
-                if (bobinage.isolementUT !== null) IU.setText(bobinage?.isolementUT.toString())
-                if (bobinage.isolementVT !== null)IV.setText(bobinage?.isolementVT.toString())
-                if (bobinage.isolementWT !== null) IW.setText(bobinage?.isolementWT.toString())
-                if (bobinage.isolementUV !== null) IIU.setText(bobinage?.isolementUV.toString())
-                if (bobinage.isolementUW !== null) IIV.setText(bobinage?.isolementUW.toString())
-                if (bobinage.isolementVW !== null) IIW.setText(bobinage?.isolementVW.toString())
-                if (bobinage.observations !== null) obs.setText(bobinage?.observations.toString())
-                var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
-                if (bobinage.dateDebut !== null) dated.setText( bobinage?.dateDebut!!.toLocaleString())
-            }
-            //viewModel.selectBobinage(bobinage!!._id)
-            /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            if (spinner.selectedItem == null) {
+                val mySnackbar = Snackbar.make(
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
+                    "Veuillez sélectionner une fiche",
+                    3600
+                )
+                mySnackbar.show()
+            } else {
+                scrollBobi.visibility = View.VISIBLE
+                viewModel.start.value = Date()
+                var bobinage = viewModel.listeBobinage.find { it.numFiche == spinner.selectedItem }
+                viewModel.bobinage.value = bobinage
+                viewModel.sections.value = bobinage?.sectionsFils
+                viewModel.schemas.value = bobinage?.schemas
+                if (bobinage != null) {
+                    marque.setText(bobinage?.marqueMoteur)
+                    if (bobinage.courant !== null) {
+                        courant.setText(bobinage?.courant.toString())
+                    } //
+                    if (bobinage.vitesse !== null) {
+                        vitesse.setText(bobinage?.vitesse.toString())
+                    } //
+                    type.setText(bobinage?.typeBobinage)
+                    client.setText(bobinage?.client?.enterprise)
+                    if (bobinage.puissance !== null) {
+                        puissance.setText(bobinage?.puissance.toString())
+                    } //
+                    if (bobinage.phases !== null) {
+                        phases.setText(bobinage?.phases.toString())
+                    } //
+                    if (bobinage.frequences !== null) {
+                        frequence.setText(bobinage?.frequences.toString())
+                    } //
+                    if (bobinage.calageEncoches !== null) {
+                        switch.setChecked(bobinage.calageEncoches!!)
+                    } else switch.setChecked(false)
+                    if (bobinage.tension !== null) tension.setText(bobinage?.tension.toString())
+                    adapter.list = bobinage.sectionsFils!!
+                    if (bobinage.nbSpires !== null) {
+                        spire.setText(bobinage?.nbSpires.toString())
+                    }
+                    if (bobinage.poids !== null) poids.setText(bobinage?.poids.toString())
+                    if (bobinage.resistanceU !== null) {
+                        RU.setText(bobinage?.resistanceU.toString())
+                    }
+                    if (bobinage.resistanceV !== null) RV.setText(bobinage?.resistanceV.toString())
+                    if (bobinage.resistanceW !== null) RW.setText(bobinage?.resistanceW.toString())
+                    if (bobinage.isolementUT !== null) IU.setText(bobinage?.isolementUT.toString())
+                    if (bobinage.isolementVT !== null) IV.setText(bobinage?.isolementVT.toString())
+                    if (bobinage.isolementWT !== null) IW.setText(bobinage?.isolementWT.toString())
+                    if (bobinage.isolementUV !== null) IIU.setText(bobinage?.isolementUV.toString())
+                    if (bobinage.isolementUW !== null) IIV.setText(bobinage?.isolementUW.toString())
+                    if (bobinage.isolementVW !== null) IIW.setText(bobinage?.isolementVW.toString())
+                    if (bobinage.observations !== null) obs.setText(bobinage?.observations.toString())
+                    var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
+                    if (bobinage.dateDebut !== null) dated.setText(bobinage?.dateDebut!!.toLocaleString())
+                }
+                //viewModel.selectBobinage(bobinage!!._id)
+                /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
             dated.setText(LocalDateTime.now().format(format))*/
+            }
         }
 
         details.setOnClickListener {
