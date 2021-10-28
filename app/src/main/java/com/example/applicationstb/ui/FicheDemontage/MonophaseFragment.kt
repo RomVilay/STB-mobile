@@ -63,6 +63,7 @@ class MonophaseFragment : Fragment() {
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
         var terminer = layout.findViewById<Button>(R.id.termMo)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo2)
         var fiche = viewModel.selection.value as DemontageMonophase
         if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
         if( fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
@@ -128,6 +129,7 @@ class MonophaseFragment : Fragment() {
             observations.isEnabled = false
             enregistrer.visibility = View.GONE
             terminer.visibility = View.GONE
+            btnPhoto.visibility = View.INVISIBLE
         }
 
 
@@ -136,7 +138,6 @@ class MonophaseFragment : Fragment() {
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
 
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
-        var btnPhoto = layout.findViewById<Button>(R.id.photo2)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto2)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
@@ -153,8 +154,7 @@ class MonophaseFragment : Fragment() {
             activity?.onBackPressed()
             } else {
             viewModel.retour(layout)
-        }
-
+            }
         }
         enregistrer.setOnClickListener {
             viewModel.getTime()

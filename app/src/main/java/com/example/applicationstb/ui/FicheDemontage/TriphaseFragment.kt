@@ -225,6 +225,7 @@ class TriphaseFragment : Fragment() {
             obs.isEnabled = false
             enr.visibility = View.GONE
             ter.visibility = View.GONE
+            btnPhoto.visibility = View.INVISIBLE
         }
 
         enr.setOnClickListener {
@@ -240,8 +241,12 @@ class TriphaseFragment : Fragment() {
             viewModel.selection.value = fiche
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
-        retour.setOnClickListener {
-            viewModel.back(layout)
+        retour.setOnClickListener{
+            if (viewModel.selection.value?.status == 3L){
+                activity?.onBackPressed()
+            } else {
+                viewModel.retour(layout)
+            }
         }
 
 

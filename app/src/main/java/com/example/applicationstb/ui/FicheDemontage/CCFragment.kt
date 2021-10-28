@@ -78,18 +78,16 @@ class CCFragment : Fragment() {
         var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
         var enr = layout.findViewById<Button>(R.id.enregistrerCC)
         var ter = layout.findViewById<Button>(R.id.termCC)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var observations = layout.findViewById<EditText>(R.id.observations)
         var retour = layout.findViewById<Button>(R.id.retourCC)
         retour.setOnClickListener {
-            viewModel.back(layout)
+            if (viewModel.selection.value?.status == 3L){
+                activity?.onBackPressed()
+            } else {
+                viewModel.back(layout)
+            }
         }
-       /* if (viewModel.selection.value.javaClass is CourantContinu){
-            var fiche: CourantContinu? = viewModel.selection.value as CourantContinu
-            isopmu.setText(fiche.isoMass[0])
-            isopmv.setText(fiche.isoMass[1])
-            isopmw.setText(fiche.isoMass[2])
-
-        }*/
         var fiche = viewModel.selection.value!! as CourantContinu
             if(fiche.isolationMasseInduit !== null )isopmu.setText(fiche.isolationMasseInduit.toString())
             if(fiche.isolationMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolationMassePolesPrincipaux.toString())  //pole principal
@@ -107,89 +105,141 @@ class CCFragment : Fragment() {
              if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
              if (fiche.intensiteExcitation !== null )vVI.setText(fiche.intensiteExcitation.toString())
             if (fiche.observations !== null) observations.setText(fiche.observations.toString())
-        isopmu.doAfterTextChanged {
-           if (isopmu.text.isNotEmpty()) fiche.isolationMasseInduit = isopmu.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isopmv.doAfterTextChanged {
-            if (isopmv.text.isNotEmpty()) fiche.isolationMassePolesPrincipaux = isopmv.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isopmw.doAfterTextChanged {
-            if (isopmw.text.isNotEmpty()) fiche.isolationMassePolesAuxilliaires = isopmw.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isoppU.doAfterTextChanged {
-            if (isoppU.text.isNotEmpty())  fiche.isolationMassePolesCompensatoires = isoppU.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isoppV.doAfterTextChanged {
-            if (isoppV.text.isNotEmpty())  fiche.isolationMassePorteBalais = isoppV.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-         rU.doAfterTextChanged {
-             if (rU.text.isNotEmpty()) fiche.resistanceInduit = rU.text.toString().toInt()
-             viewModel.selection.value = fiche
-             viewModel.getTime()
-             viewModel.localSave()
-        }
-        rI.doAfterTextChanged {
-            if (rI.text.isNotEmpty())  fiche.resistancePA = rI.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        rV.doAfterTextChanged {
-            if (rV.text.isNotEmpty()) fiche.resistancePP = rV.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        rPP.doAfterTextChanged {
-            if (rPP.text.isNotEmpty())  fiche.resistancePC = rPP.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        vU.doAfterTextChanged {
-            if (vU.text.isNotEmpty())  fiche.tensionInduit = vU.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        vV.doAfterTextChanged {
-            if (vV.text.isNotEmpty())  fiche.tensionExcitation = vV.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        vUI.doAfterTextChanged {
-            if (vUI.text.isNotEmpty())  fiche.intensiteInduit = vUI.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        vVI.doAfterTextChanged {
-            if (vVI.text.isNotEmpty())  fiche.intensiteExcitation = vVI.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        observations.doAfterTextChanged {
-            fiche.observations = observations.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! < 3L) {
+            isopmu.doAfterTextChanged {
+                if (isopmu.text.isNotEmpty() && isopmu.hasFocus()) {
+                    fiche.isolationMasseInduit =
+                        isopmu.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isopmv.doAfterTextChanged {
+                if (isopmv.text.isNotEmpty() && isopmv.hasFocus()) {
+                    fiche.isolationMassePolesPrincipaux =
+                        isopmv.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isopmw.doAfterTextChanged {
+                if (isopmw.text.isNotEmpty() && isopmw.hasFocus()) {
+                    fiche.isolationMassePolesAuxilliaires =
+                        isopmw.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isoppU.doAfterTextChanged {
+                if (isoppU.text.isNotEmpty() && isoppU.hasFocus()) {
+                    fiche.isolationMassePolesCompensatoires =
+                        isoppU.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isoppV.doAfterTextChanged {
+                if (isoppV.text.isNotEmpty() && isoppV.hasFocus()) {
+                    fiche.isolationMassePorteBalais =
+                        isoppV.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rU.doAfterTextChanged {
+                if (rU.text.isNotEmpty() && rU.hasFocus()) {
+                    fiche.resistanceInduit = rU.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rI.doAfterTextChanged {
+                if (rI.text.isNotEmpty() && rI.hasFocus()) {
+                    fiche.resistancePA = rI.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rV.doAfterTextChanged {
+                if (rV.text.isNotEmpty() && rV.hasFocus()) {
+                    fiche.resistancePP = rV.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rPP.doAfterTextChanged {
+                if (rPP.text.isNotEmpty() && rPP.hasFocus()) {
+                    fiche.resistancePC = rPP.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vU.doAfterTextChanged {
+                if (vU.text.isNotEmpty() && vU.hasFocus()) {
+                    fiche.tensionInduit = vU.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vV.doAfterTextChanged {
+                if (vV.text.isNotEmpty() && vV.hasFocus()) {
+                    fiche.tensionExcitation = vV.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vUI.doAfterTextChanged {
+                if (vUI.text.isNotEmpty() && isopmu.hasFocus()) {
+                    fiche.intensiteInduit = vUI.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vVI.doAfterTextChanged {
+                if (vVI.text.isNotEmpty() && isopmu.hasFocus()) {
+                    fiche.intensiteExcitation = vVI.text.toString().toInt()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            observations.doAfterTextChanged {
+                if (isopmu.hasFocus()) {
+                    fiche.observations = observations.text.toString()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+        } else {
+            isopmu.isEnabled = false
+            isopmv.isEnabled = false
+            isopmw.isEnabled = false
+            isoppU.isEnabled = false
+            rU.isEnabled = false
+            rI.isEnabled = false
+            rV.isEnabled = false
+            rPP.isEnabled = false
+            vU.isEnabled = false
+            vV.isEnabled = false
+            vUI.isEnabled = false
+            vVI.isEnabled = false
+            observations.isEnabled = false
+            enr.visibility = View.GONE
+            ter.visibility = View.GONE
+            btnPhoto.visibility = View.INVISIBLE
         }
         enr.setOnClickListener {
             viewModel.getTime()
@@ -203,7 +253,7 @@ class CCFragment : Fragment() {
         }
 
 
-        var btnPhoto = layout.findViewById<Button>(R.id.photo4)
+
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->

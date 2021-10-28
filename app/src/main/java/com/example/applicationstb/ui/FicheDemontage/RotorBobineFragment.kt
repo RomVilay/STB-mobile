@@ -89,6 +89,7 @@ class RotorBobineFragment : Fragment() {
         var intensiteRotor = layout.findViewById<EditText>(R.id.irotor)
         var dureeEssai = layout.findViewById<EditText>(R.id.tpse)
         var observations = layout.findViewById<EditText>(R.id.obs2)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo3)
         var fiche = viewModel.selection.value!! as DemontageRotorBobine
         if (fiche.isolementPhaseMasseStatorUM !== null) isolementPhaseMasseStatorUM.setText(fiche.isolementPhaseMasseStatorUM.toString())
         if (fiche.isolementPhaseMasseStatorVM !== null) isolementPhaseMasseStatorVM.setText(fiche.isolementPhaseMasseStatorVM.toString())
@@ -116,6 +117,9 @@ class RotorBobineFragment : Fragment() {
         if (fiche.intensiteRotor !== null) intensiteRotor.setText(fiche.intensiteRotor.toString())
         if (fiche.dureeEssai !== null) dureeEssai.setText(fiche.dureeEssai.toString())
         if (fiche.observations !== null) observations.setText(fiche.observations.toString())
+        var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
+        var retour = layout.findViewById<Button>(R.id.retourTri)
+        var term = layout.findViewById<Button>(R.id.termRB)
         if (fiche.status!! < 3L) {
             isolementPhaseMasseStatorUM.doAfterTextChanged {
                 if (isolementPhaseMasseStatorUM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM =
@@ -322,10 +326,10 @@ class RotorBobineFragment : Fragment() {
             intensiteRotor.isEnabled = false
             dureeEssai.isEnabled = false
             observations.isEnabled = false
+            enr.visibility = View.GONE
+            term.visibility = View.GONE
+            btnPhoto.visibility = View.INVISIBLE
         }
-        var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
-        var retour = layout.findViewById<Button>(R.id.retourTri)
-        var term = layout.findViewById<Button>(R.id.termRB)
         enr.setOnClickListener {
             fiche.status = 2L
             viewModel.selection.value = fiche
@@ -339,10 +343,12 @@ class RotorBobineFragment : Fragment() {
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         retour.setOnClickListener {
-            viewModel.retour(layout)
+            if (viewModel.selection.value?.status == 3L){
+                activity?.onBackPressed()
+            } else {
+                viewModel.retour(layout)
+            }
         }
-
-        var btnPhoto = layout.findViewById<Button>(R.id.photo3)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
