@@ -112,7 +112,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
                 var fiche = selection.value!!
                 var remo = repository.getByIdRemoLocalDatabse(fiche._id)
-                //Log.i("INFO","${ch}")
+                Log.i("INFO","${remo !== null}")
                 Log.i("INFO", remo.toString())
                 if (remo !== null) {
                     repository.updateRemoLocalDatabse(fiche.toRemoEntity())

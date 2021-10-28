@@ -296,8 +296,32 @@ class RotorBobineFragment : Fragment() {
                 viewModel.localSave()
             }
         } else {
-
             isolementPhaseMasseStatorUM.isEnabled = false
+            isolementPhaseMasseStatorVM.isEnabled = false
+            isolementPhaseMasseStatorWM.isEnabled = false
+            isolementPhaseMasseRotorB1M.isEnabled = false
+            isolementPhaseMasseRotorB2M.isEnabled = false
+            isolementPhaseMasseRotorB3M.isEnabled = false
+            isolementPhaseMassePorteBalaisM.isEnabled = false
+            isolementPhasePhaseStatorUV.isEnabled = false
+            isolementPhasePhaseStatorUW.isEnabled = false
+            isolementPhasePhaseStatorVW.isEnabled = false
+            resistanceStatorU.isEnabled = false
+            resistanceStatorV.isEnabled = false
+            resistanceStatorW.isEnabled = false
+            resistanceRotorB1B2.isEnabled = false
+            resistanceRotorB1B3.isEnabled = false
+            resistanceRotorB2B2.isEnabled = false
+            tensionU.isEnabled = false
+            tensionV.isEnabled = false
+            tensionW.isEnabled = false
+            tensionRotor.isEnabled = false
+            intensiteU.isEnabled = false
+            intensiteV.isEnabled = false
+            intensiteW.isEnabled = false
+            intensiteRotor.isEnabled = false
+            dureeEssai.isEnabled = false
+            observations.isEnabled = false
         }
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
