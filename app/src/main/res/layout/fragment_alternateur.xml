@@ -554,7 +554,7 @@
                             android:background="@drawable/round_top_right_full_grey"
                             android:gravity="center"
                             android:padding="3dp"
-                            android:text="Rotor Externe"
+                            android:text="Rotor Excitation"
                             android:textColor="@color/white"
                             android:textSize="14sp" />
                     </TableRow>
@@ -623,7 +623,7 @@
                             android:background="@drawable/round_top_right_full_grey"
                             android:gravity="center"
                             android:padding="3dp"
-                            android:text="Rotor Externe"
+                            android:text="Rotor Excitation"
                             android:textColor="@color/white"
                             android:textSize="14sp" />
                     </TableRow>

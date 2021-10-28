@@ -98,7 +98,7 @@ class TriphaseFragment : Fragment() {
             if (fiche.observations !== null) obs.setText(fiche.observations)
         if ( fiche.status!! < 3L) {
             UM.doAfterTextChanged {
-                if (UM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM =
+                if (UM.text.isNotEmpty() && UM.hasFocus()) fiche.isolementPhaseMasseStatorUM =
                     UM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()

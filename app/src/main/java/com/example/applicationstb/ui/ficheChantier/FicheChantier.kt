@@ -76,7 +76,6 @@ class FicheChantier : Fragment() {
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val term = layout.findViewById<Button>(R.id.termC)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
-
         var visibility = View.VISIBLE
         selectButton.setOnClickListener {
             lin.visibility = View.VISIBLE
