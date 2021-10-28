@@ -56,6 +56,20 @@ class InfoMoteurFragment : Fragment() {
             if (it.aspectInterieur !== null) aspectBte.setSelection(it.aspectInterieur!!-1)
             if (it.typeMoteur !== null) typeMoteur.setText(it.typeMoteur)
         })
+        if (viewModel.selection.value?.status!! == 3L) {
+            marque.isEnabled = false
+            num.isEnabled = false
+            puissance.isEnabled = false
+            bride.isEnabled = false
+            vitesse.isEnabled = false
+            clavette.isEnabled = false
+            arbre.isEnabled = false
+            accouplement.isEnabled = false
+            cote.isEnabled = false
+            aspectExt.isEnabled = false
+            aspectBte.isEnabled = false
+            typeMoteur.isEnabled = false
+        }
         if (viewModel.selection.value?.status!! < 3L) {
             marque.doAfterTextChanged {
                 if (marque.text.isNotEmpty()) viewModel.selection.value!!.marque =

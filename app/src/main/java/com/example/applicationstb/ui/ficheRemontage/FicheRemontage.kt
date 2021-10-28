@@ -201,7 +201,7 @@ class FicheRemontage : Fragment() {
             viewModel.retour(layout)
         }
         btnDemo.setOnClickListener {
-            Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
+           // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
             runBlocking {
                 var numFiches = arrayListOf<String>()
                 viewModel.listeDemo.value?.forEach {

@@ -7,14 +7,18 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.User
 import com.example.applicationstb.repository.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -553,12 +557,18 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                             //toAccueil(view)
                         }
-                    } else {
-                        Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
+                    }
+                    if (response.code() == 401 || response.code() == 404) {
+                        if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
+                        val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Vérifier votre identifiant et votre mot de passe", 3600)
+                        mySnackbar.show()
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
+                    val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Une erreur réseau est survenue.", 3600)
+                    mySnackbar.show()
                     Log.e("Error", "erreur ${t.message}")
                 }
             })

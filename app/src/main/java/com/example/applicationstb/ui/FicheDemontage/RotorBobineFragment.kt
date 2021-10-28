@@ -116,161 +116,188 @@ class RotorBobineFragment : Fragment() {
         if (fiche.intensiteRotor !== null) intensiteRotor.setText(fiche.intensiteRotor.toString())
         if (fiche.dureeEssai !== null) dureeEssai.setText(fiche.dureeEssai.toString())
         if (fiche.observations !== null) observations.setText(fiche.observations.toString())
-        isolementPhaseMasseStatorUM.doAfterTextChanged {
-         if(isolementPhaseMasseStatorUM.text.isNotEmpty())   fiche.isolementPhaseMasseStatorUM = isolementPhaseMasseStatorUM.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhaseMasseStatorVM.doAfterTextChanged {
-            if(isolementPhaseMasseStatorVM.text.isNotEmpty())fiche.isolementPhaseMasseStatorVM = isolementPhaseMasseStatorVM.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhaseMasseStatorWM.doAfterTextChanged {
-            if(isolementPhaseMasseStatorWM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorWM = isolementPhaseMasseStatorWM.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhaseMasseRotorB1M.doAfterTextChanged {
-            if(isolementPhaseMasseRotorB1M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB1M = isolementPhaseMasseRotorB1M.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhaseMasseRotorB2M.doAfterTextChanged {
-            if(isolementPhaseMasseRotorB2M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB2M = isolementPhaseMasseRotorB2M.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhaseMasseRotorB3M.doAfterTextChanged {
-            if(isolementPhaseMasseRotorB3M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB3M = isolementPhaseMasseRotorB3M.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhaseMassePorteBalaisM.doAfterTextChanged {
-            if(isolementPhaseMassePorteBalaisM.text.isNotEmpty())  fiche.isolementPhaseMassePorteBalaisM = isolementPhaseMassePorteBalaisM.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhasePhaseStatorUV.doAfterTextChanged {
-            if(isolementPhasePhaseStatorUV.text.isNotEmpty())  fiche.isolementPhasePhaseStatorUV = isolementPhasePhaseStatorUV.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhasePhaseStatorUW.doAfterTextChanged {
-            if(isolementPhasePhaseStatorUW.text.isNotEmpty())  fiche.isolementPhasePhaseStatorUW = isolementPhasePhaseStatorUW.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        isolementPhasePhaseStatorVW.doAfterTextChanged {
-            if(isolementPhasePhaseStatorVW.text.isNotEmpty())  fiche.isolementPhasePhaseStatorVW = isolementPhasePhaseStatorVW.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceStatorU.doAfterTextChanged {
-            if(resistanceStatorU.text.isNotEmpty())  fiche.resistanceStatorU = resistanceStatorU.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceStatorV.doAfterTextChanged {
-            if(resistanceStatorV.text.isNotEmpty())  fiche.resistanceStatorV = resistanceStatorV.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceStatorW.doAfterTextChanged {
-            if(resistanceStatorW.text.isNotEmpty())  fiche.resistanceStatorW = resistanceStatorW.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceRotorB1B2.doAfterTextChanged {
-            if(resistanceRotorB1B2.text.isNotEmpty())  fiche.resistanceRotorB1B2 = resistanceRotorB1B2.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceRotorB1B3.doAfterTextChanged {
-            if(resistanceRotorB1B3.text.isNotEmpty())  fiche.resistanceRotorB1B3 = resistanceRotorB1B3.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        resistanceRotorB2B2.doAfterTextChanged {
-            if(resistanceRotorB2B2.text.isNotEmpty())  fiche.resistanceRotorB2B2 = resistanceRotorB2B2.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        tensionU.doAfterTextChanged {
-            if(tensionU.text.isNotEmpty())  fiche.tensionU = tensionU.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        tensionV.doAfterTextChanged {
-            if(tensionV.text.isNotEmpty())  fiche.tensionV = tensionV.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        tensionW.doAfterTextChanged {
-            if(tensionW.text.isNotEmpty())  fiche.tensionW = tensionW.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        tensionRotor.doAfterTextChanged {
-            if(tensionRotor.text.isNotEmpty())  fiche.tensionRotor = tensionRotor.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        intensiteU.doAfterTextChanged {
-            if(intensiteU.text.isNotEmpty())  fiche.intensiteU = intensiteU.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        intensiteV.doAfterTextChanged {
-            if(intensiteV.text.isNotEmpty())  fiche.intensiteV = intensiteV.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        intensiteW.doAfterTextChanged {
-            if(intensiteW.text.isNotEmpty())  fiche.intensiteW = intensiteW.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        intensiteRotor.doAfterTextChanged {
-            if(intensiteRotor.text.isNotEmpty())  fiche.intensiteRotor = intensiteRotor.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        dureeEssai.doAfterTextChanged {
-            if(dureeEssai.text.isNotEmpty()) fiche.dureeEssai = dureeEssai.text.toString().toInt()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        observations.doAfterTextChanged {
-            fiche.observations = observations.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! < 3L) {
+            isolementPhaseMasseStatorUM.doAfterTextChanged {
+                if (isolementPhaseMasseStatorUM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM =
+                    isolementPhaseMasseStatorUM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMasseStatorVM.doAfterTextChanged {
+                if (isolementPhaseMasseStatorVM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorVM =
+                    isolementPhaseMasseStatorVM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMasseStatorWM.doAfterTextChanged {
+                if (isolementPhaseMasseStatorWM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorWM =
+                    isolementPhaseMasseStatorWM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMasseRotorB1M.doAfterTextChanged {
+                if (isolementPhaseMasseRotorB1M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB1M =
+                    isolementPhaseMasseRotorB1M.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMasseRotorB2M.doAfterTextChanged {
+                if (isolementPhaseMasseRotorB2M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB2M =
+                    isolementPhaseMasseRotorB2M.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMasseRotorB3M.doAfterTextChanged {
+                if (isolementPhaseMasseRotorB3M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB3M =
+                    isolementPhaseMasseRotorB3M.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMassePorteBalaisM.doAfterTextChanged {
+                if (isolementPhaseMassePorteBalaisM.text.isNotEmpty()) fiche.isolementPhaseMassePorteBalaisM =
+                    isolementPhaseMassePorteBalaisM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhasePhaseStatorUV.doAfterTextChanged {
+                if (isolementPhasePhaseStatorUV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUV =
+                    isolementPhasePhaseStatorUV.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhasePhaseStatorUW.doAfterTextChanged {
+                if (isolementPhasePhaseStatorUW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUW =
+                    isolementPhasePhaseStatorUW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhasePhaseStatorVW.doAfterTextChanged {
+                if (isolementPhasePhaseStatorVW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorVW =
+                    isolementPhasePhaseStatorVW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceStatorU.doAfterTextChanged {
+                if (resistanceStatorU.text.isNotEmpty()) fiche.resistanceStatorU =
+                    resistanceStatorU.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceStatorV.doAfterTextChanged {
+                if (resistanceStatorV.text.isNotEmpty()) fiche.resistanceStatorV =
+                    resistanceStatorV.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceStatorW.doAfterTextChanged {
+                if (resistanceStatorW.text.isNotEmpty()) fiche.resistanceStatorW =
+                    resistanceStatorW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceRotorB1B2.doAfterTextChanged {
+                if (resistanceRotorB1B2.text.isNotEmpty()) fiche.resistanceRotorB1B2 =
+                    resistanceRotorB1B2.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceRotorB1B3.doAfterTextChanged {
+                if (resistanceRotorB1B3.text.isNotEmpty()) fiche.resistanceRotorB1B3 =
+                    resistanceRotorB1B3.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceRotorB2B2.doAfterTextChanged {
+                if (resistanceRotorB2B2.text.isNotEmpty()) fiche.resistanceRotorB2B2 =
+                    resistanceRotorB2B2.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionU.doAfterTextChanged {
+                if (tensionU.text.isNotEmpty()) fiche.tensionU = tensionU.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionV.doAfterTextChanged {
+                if (tensionV.text.isNotEmpty()) fiche.tensionV = tensionV.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionW.doAfterTextChanged {
+                if (tensionW.text.isNotEmpty()) fiche.tensionW = tensionW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionRotor.doAfterTextChanged {
+                if (tensionRotor.text.isNotEmpty()) fiche.tensionRotor =
+                    tensionRotor.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensiteU.doAfterTextChanged {
+                if (intensiteU.text.isNotEmpty()) fiche.intensiteU =
+                    intensiteU.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensiteV.doAfterTextChanged {
+                if (intensiteV.text.isNotEmpty()) fiche.intensiteV =
+                    intensiteV.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensiteW.doAfterTextChanged {
+                if (intensiteW.text.isNotEmpty()) fiche.intensiteW =
+                    intensiteW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensiteRotor.doAfterTextChanged {
+                if (intensiteRotor.text.isNotEmpty()) fiche.intensiteRotor =
+                    intensiteRotor.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            dureeEssai.doAfterTextChanged {
+                if (dureeEssai.text.isNotEmpty()) fiche.dureeEssai =
+                    dureeEssai.text.toString().toInt()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            observations.doAfterTextChanged {
+                fiche.observations = observations.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+        } else {
+
+            isolementPhaseMasseStatorUM.isEnabled = false
         }
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)

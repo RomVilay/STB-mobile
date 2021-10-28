@@ -341,46 +341,49 @@ class MecaFragment : Fragment() {
             }
         }
         //joints
+        Log.i("INFO","joints ar ${viewModel.selection.value!!.typeJointArriere} - joints av ${viewModel.selection.value!!.typeJointAvant}")
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("simple lèvre","double lèvre"))
         var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
         var refJoints = layout.findViewById<EditText>(R.id.refJoints)
         if (fiche.status == 3L) {
             refJoints.isEnabled = false
+            typeJoints.isEnabled = false
         }
         if (switchJoints.isChecked && fiche.typeJointArriere !== null){
             if (fiche.typeJointArriere!!) typeJoints.setSelection(0) else typeJoints.setSelection(1)
             refJoints.setText(fiche.refJointArriere)
         } else if (fiche.refJointAvant !== null) {
-            if (fiche.typeJointAvant!!) typeJoints.setSelection(0) else typeJoints.setSelection(1)
+            if (fiche.typeJointAvant!!) typeJoints.setSelection(1) else typeJoints.setSelection(0)
             refJoints.setText(fiche.refJointAvant)
         }
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 var type = if (viewModel.selection.value!!.typeJointArriere == null) {
-                    0
-                } else { if (viewModel.selection.value!!.typeJointArriere == false) {
-                        0
+                    typeJoints.setSelection(0)
+                } else { if (viewModel.selection.value!!.typeJointArriere!!) {
+                    typeJoints.setSelection(1)
                     } else {
-                    1
+                    typeJoints.setSelection(0)
                  }
                 }
-                typeJoints.setSelection(type)
                 refJoints.setText(viewModel.selection.value!!.refJointArriere)
             } else {
-                var type = if (viewModel.selection.value!!.typeJointAvant == null) {
-                    0
+                var type = 0
+                if (viewModel.selection.value!!.typeJointAvant == null) {
+                    typeJoints.setSelection(0)
                 } else {
-                    if (viewModel.selection.value!!.typeJointAvant!! == false) {
-                        0
+                    if (viewModel.selection.value!!.typeJointAvant!!) {
+                        typeJoints.setSelection(1)
                     } else {
-                        1
+                        typeJoints.setSelection(0)
                     }
                 }
-                typeJoints.setSelection(type)
+                Log.i("INFO","position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}")
                 refJoints.setText(viewModel.selection.value!!.refJointAvant)
             }
         }
+        if( viewModel.selection.value!!.status!! !== 3L) {
         typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -413,8 +416,8 @@ class MecaFragment : Fragment() {
                 viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
             }
         }*/
-        refJoints.doAfterTextChanged {
 
+            refJoints.doAfterTextChanged {
                 if (switchJoints.isChecked) {
 
                     viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
@@ -426,74 +429,118 @@ class MecaFragment : Fragment() {
                     viewModel.getTime()
                     viewModel.localSave()
                 }
+            }
         }
         //capot ventilateur
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
         cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
            //if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
         if (fiche.capotV !== null) cvent.setSelection(arrayOf<String>("Bon état","Cassé","Absent").indexOf(fiche.capotV))
-        cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-               viewModel.selection.value!!.capotV = position + 1
-                viewModel.getTime()
-                viewModel.localSave()
+        if (fiche.status!! == 3L) cvent.isEnabled = false
+        if (fiche.status!! !== 3L) {
+            cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.selection.value!!.capotV = position + 1
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
             }
         }
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
         vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Absent"))
+        if (fiche.status!! == 3L) vent.isEnabled = false
         if (fiche.ventilateur !== null) vent.setSelection(arrayOf<String>("Bon état","A changer","Absent").indexOf(fiche.ventilateur))
-        vent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+        if (fiche.status!! < 3L) {
+            vent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.selection.value!!.ventilateur = position + 1
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
 
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-              viewModel.selection.value!!.ventilateur = position +1
-                viewModel.getTime()
-                viewModel.localSave()
-            }
-
         }
         if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!! - 1)
             var socle = layout.findViewById<Spinner>(R.id.spiSocle)
         socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
         if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!! - 1)
-           socle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-               override fun onNothingSelected(parent: AdapterView<*>?) {
+        if (fiche.status!! == 3L) socle.isEnabled = false
+        if (fiche.status!! < 3L) {
+            socle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
 
-               }
-               override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     viewModel.selection.value!!.socleBoiteABorne = position + 1
-                   viewModel.getTime()
-                   viewModel.localSave()
-               }
-           }
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+        }
         var capot = layout.findViewById<Spinner>(R.id.spiCap)
         capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
         if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!! - 1)
-         capot.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-             override fun onNothingSelected(parent: AdapterView<*>?) {
-             }
-             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.capotBoiteABorne = position+1
-                 viewModel.getTime()
-                 viewModel.localSave()
-             }
+        if (fiche.status!! == 3L) capot.isEnabled = false
+        if (fiche.status!! < 3L) {
+            capot.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
 
-         }
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.selection.value!!.capotBoiteABorne = position + 1
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+
+            }
+        }
             var plaque = layout.findViewById<Spinner>(R.id.spiPla!!)
         plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Sortie par câbles"))
         if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!! - 1)
-        plaque.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+        if (fiche.status!! == 3L) plaque.isEnabled = false
+        if (fiche.status!! !== 3L) {
+            plaque.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
 
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selection.value!!.plaqueABorne = position + 1
-                viewModel.getTime()
-                viewModel.localSave()
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.selection.value!!.plaqueABorne = position + 1
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
             }
         }
         var sondes = layout.findViewById<Switch>(R.id.switchSondes)
@@ -503,31 +550,43 @@ class MecaFragment : Fragment() {
         }  else {
             sondes.setChecked(false)
         }
-        sondes.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selection.value!!.presenceSondes = isChecked
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! == 3L) sondes.isEnabled = false
+        if (fiche.status!! < 3L) {
+            sondes.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.selection.value!!.presenceSondes = isChecked
+                viewModel.getTime()
+                viewModel.localSave()
+            }
         }
         var typeSondes = layout.findViewById<EditText>(R.id.typeSonde)
+        if (fiche.status!! == 3L) typeSondes.isEnabled = false
         typeSondes.setText(viewModel.selection.value!!.typeSondes)
-        typeSondes.doAfterTextChanged {
-            viewModel.selection.value!!.typeSondes = typeSondes.text.toString()
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! < 3L) {
+            typeSondes.doAfterTextChanged {
+                viewModel.selection.value!!.typeSondes = typeSondes.text.toString()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
         }
         var equi = layout.findViewById<Switch>(R.id.swEqui)
         if (viewModel.selection.value!!.equilibrage !== null) equi.setChecked(viewModel.selection.value!!.equilibrage!!)
-        equi.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selection.value!!.equilibrage = isChecked
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! == 3L) equi.isEnabled = false
+        if (fiche.status!! < 3L) {
+            equi.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.selection.value!!.equilibrage = isChecked
+                viewModel.getTime()
+                viewModel.localSave()
+            }
         }
         var peint = layout.findViewById<EditText>(R.id.coul)
         if (viewModel.selection.value!!.peinture !== null) peint.setText(viewModel.selection.value!!.peinture)
-        peint.doAfterTextChanged {
-            viewModel.selection.value!!.peinture = peint.text.toString()
-            viewModel.getTime()
-            viewModel.localSave()
+        if (fiche.status!! == 3L) peint.isEnabled = false
+        if (fiche.status!! < 3L) {
+            peint.doAfterTextChanged {
+                viewModel.selection.value!!.peinture = peint.text.toString()
+                viewModel.getTime()
+                viewModel.localSave()
+            }
         }
         return layout
     }

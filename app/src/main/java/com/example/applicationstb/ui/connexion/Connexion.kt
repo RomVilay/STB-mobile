@@ -48,8 +48,13 @@ class Connexion : Fragment() {
             if (password.text.isEmpty() ) {
                 val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre mot de passe", 3600)
                 mySnackbar.show()
-            } else {
-                viewModel.login(username.text.toString(), password.text.toString(), it, loading)
+            }
+            if (password.text.length < 5 ) {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
+                mySnackbar.show()
+            }
+            else {
+                viewModel.login(username.text.toString(), password.text.toString(), layout, loading)
                 viewModel.localGet()
             }
              /*   val action = viewModel.user?.token?.let { it1 -> ConnexionDirections.versAccueil(it1) }
