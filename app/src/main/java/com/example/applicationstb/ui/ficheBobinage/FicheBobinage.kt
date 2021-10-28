@@ -57,7 +57,7 @@ class FicheBobinage : Fragment() {
         viewModel.listeBobinage = list.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
-
+        var scrollBobi = layout.findViewById<ScrollView>(R.id.scrollBobi)
         //viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
 
         //champs détails
@@ -138,6 +138,7 @@ class FicheBobinage : Fragment() {
             dateDebut.setText(LocalDateTime.now().format(format))*/
 
         btnSelect.setOnClickListener {
+            scrollBobi.visibility = View.VISIBLE
             viewModel.start.value = Date()
             var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
             viewModel.bobinage.value = bobinage
