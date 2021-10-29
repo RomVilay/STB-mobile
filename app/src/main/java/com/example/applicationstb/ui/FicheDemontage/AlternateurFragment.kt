@@ -402,7 +402,11 @@ class AlternateurFragment : Fragment() {
         }
 
         retour.setOnClickListener {
-            viewModel.back(layout)
+            if (viewModel.selection.value?.status == 3L){
+                activity?.onBackPressed()
+            } else {
+                viewModel.back(layout)
+            }
         }
         enregistrer.setOnClickListener {
             fiche.status = 2L

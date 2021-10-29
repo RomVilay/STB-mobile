@@ -86,7 +86,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -110,7 +110,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -133,7 +133,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -187,7 +187,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -211,7 +211,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>
@@ -256,7 +256,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -279,7 +279,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>
@@ -314,7 +314,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -337,14 +337,14 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/tensions"
-                        android:layout_width="400dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
@@ -362,7 +362,7 @@
 
                         <EditText
                             android:id="@+id/vU"
-                            android:layout_width="20dp"
+                            android:layout_width="85dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -371,7 +371,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -384,7 +384,7 @@
 
                         <EditText
                             android:id="@+id/vV"
-                            android:layout_width="20dp"
+                            android:layout_width="85dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -393,7 +393,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>
@@ -407,7 +407,7 @@
 
                     <LinearLayout
                         android:id="@+id/intensité"
-                        android:layout_width="400dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
@@ -425,7 +425,7 @@
 
                         <EditText
                             android:id="@+id/vUI"
-                            android:layout_width="20dp"
+                            android:layout_width="85dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -434,7 +434,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -447,7 +447,7 @@
 
                         <EditText
                             android:id="@+id/vVI"
-                            android:layout_width="20dp"
+                            android:layout_width="85dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -456,7 +456,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>

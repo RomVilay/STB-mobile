@@ -80,6 +80,7 @@ class PompeFragment : Fragment() {
         var epaisseurPF = layout.findViewById<EditText>(R.id.ePF)
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termP)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var fiche = viewModel.selection.value!! as DemontagePompe
         Log.i("INFO","sensRoation: ${fiche.sensRotation} - matiere joint: ${fiche.matiere}")
         if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
@@ -99,109 +100,147 @@ class PompeFragment : Fragment() {
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
         var retour = layout.findViewById<Button>(R.id.retourPompe)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
-        marque.doAfterTextChanged {
-            fiche.marque = marque.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        numSerie.doAfterTextChanged {
-            fiche.numSerie = numSerie.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        fluide.doAfterTextChanged {
-            fiche.fluide = fluide.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        sensRotation.setOnCheckedChangeListener { _, isChecked ->
-            fiche.sensRotation = !isChecked
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        typeRessort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(typeRessort.selectedItem.toString() !== " ") fiche.typeRessort = position
+        if (fiche.status!! < 3L) {
+            marque.doAfterTextChanged {
+                fiche.marque = marque.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-        }
-        matiere.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(matiere.selectedItem.toString() !== " ") fiche.matiere = position
+            numSerie.doAfterTextChanged {
+                fiche.numSerie = numSerie.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
-                Log.i("INFO","matiere ${fiche.matiere}")
             }
-        }
-        typeJoint.doAfterTextChanged {
-          if(typeJoint.text.isNotEmpty())  fiche.typeJoint = typeJoint.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        diametreArbre.doAfterTextChanged {
-            if(diametreArbre.text.isNotEmpty())  fiche.diametreArbre = diametreArbre.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        diametreExtPF.doAfterTextChanged {
-            if(diametreExtPF.text.isNotEmpty())  fiche.diametreExtPF = diametreExtPF.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        diametreExtPR.doAfterTextChanged {
-            if(diametreExtPR.text.isNotEmpty())  fiche.diametreExtPR = diametreExtPR.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        epaisseurPF.doAfterTextChanged {
-            if(epaisseurPF.text.isNotEmpty())  fiche.epaisseurPF = epaisseurPF.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        longueurRotativeNonComprimee.doAfterTextChanged {
-            if(longueurRotativeNonComprimee.text.isNotEmpty())  fiche.longueurRotativeNonComprimee = longueurRotativeNonComprimee.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        longueurRotativeComprimee.doAfterTextChanged {
-            if(longueurRotativeComprimee.text.isNotEmpty()) fiche.longueurRotativeComprimee = longueurRotativeComprimee.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        longueurRotativeTravail.doAfterTextChanged {
-            if(longueurRotativeTravail.text.isNotEmpty()) fiche.longueurRotativeTravail = longueurRotativeTravail.text.toString().toFloat()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        obs.doAfterTextChanged {
-            fiche.observations = obs.text.toString()
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.localSave()
+            fluide.doAfterTextChanged {
+                fiche.fluide = fluide.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            sensRotation.setOnCheckedChangeListener { _, isChecked ->
+                fiche.sensRotation = !isChecked
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            typeRessort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (typeRessort.selectedItem.toString() !== " ") fiche.typeRessort = position
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            matiere.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (matiere.selectedItem.toString() !== " ") fiche.matiere = position
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                    Log.i("INFO", "matiere ${fiche.matiere}")
+                }
+            }
+            typeJoint.doAfterTextChanged {
+                if (typeJoint.text.isNotEmpty()) fiche.typeJoint = typeJoint.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            diametreArbre.doAfterTextChanged {
+                if (diametreArbre.text.isNotEmpty()) fiche.diametreArbre =
+                    diametreArbre.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            diametreExtPF.doAfterTextChanged {
+                if (diametreExtPF.text.isNotEmpty()) fiche.diametreExtPF =
+                    diametreExtPF.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            diametreExtPR.doAfterTextChanged {
+                if (diametreExtPR.text.isNotEmpty()) fiche.diametreExtPR =
+                    diametreExtPR.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            epaisseurPF.doAfterTextChanged {
+                if (epaisseurPF.text.isNotEmpty()) fiche.epaisseurPF =
+                    epaisseurPF.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            longueurRotativeNonComprimee.doAfterTextChanged {
+                if (longueurRotativeNonComprimee.text.isNotEmpty()) fiche.longueurRotativeNonComprimee =
+                    longueurRotativeNonComprimee.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            longueurRotativeComprimee.doAfterTextChanged {
+                if (longueurRotativeComprimee.text.isNotEmpty()) fiche.longueurRotativeComprimee =
+                    longueurRotativeComprimee.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            longueurRotativeTravail.doAfterTextChanged {
+                if (longueurRotativeTravail.text.isNotEmpty()) fiche.longueurRotativeTravail =
+                    longueurRotativeTravail.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            obs.doAfterTextChanged {
+                fiche.observations = obs.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+        } else {
+            marque.isEnabled = false
+            numSerie.isEnabled = false
+            fluide.isEnabled = false
+            sensRotation.isEnabled = false
+            typeRessort.isEnabled = false
+            matiere.isEnabled = false
+            typeJoint.isEnabled = false
+            diametreArbre.isEnabled = false
+            diametreExtPF.isEnabled = false
+            diametreExtPR.isEnabled = false
+            epaisseurPF.isEnabled = false
+            longueurRotativeNonComprimee.isEnabled = false
+            longueurRotativeComprimee.isEnabled = false
+            longueurRotativeTravail.isEnabled = false
+            obs.isEnabled = false
+            btnPhoto.visibility = View.INVISIBLE
+            enregistrer.visibility = View.GONE
         }
 
 
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
-        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
@@ -316,7 +355,11 @@ class PompeFragment : Fragment() {
 
 
         retour.setOnClickListener {
-            viewModel.retour(layout)
+            if (viewModel.selection.value?.status == 3L){
+                activity?.onBackPressed()
+            } else {
+                viewModel.retour(layout)
+            }
         }
         enregistrer.setOnClickListener {
             viewModel.getTime()
