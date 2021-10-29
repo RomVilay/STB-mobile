@@ -319,7 +319,6 @@ class FicheBobinage : Fragment() {
                 linscroll.layoutParams = margins
             }
         }
-        //|| client.hasFocus() || vitesse.hasFocus() || type.hasFocus() || phases.hasFocus() ){
         marque.doAfterTextChanged {
             if (marque.text.isNotEmpty() && marque.hasFocus()) {
                 viewModel.bobinage.value!!.marqueMoteur = marque.text.toString()
