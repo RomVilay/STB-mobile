@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.connexion
 
+import android.content.Context
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.edit
 import androidx.navigation.fragment.findNavController
 import com.example.applicationstb.R
 import com.google.android.material.snackbar.Snackbar
@@ -33,6 +35,10 @@ class Connexion : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharedPref = activity?.getSharedPreferences(
+            "identifiants", Context.MODE_PRIVATE)
+        var login = sharedPref?.getString("login","")
+        var pwd = sharedPref?.getString("password","")
         viewModel = ViewModelProvider(this).get(ConnexionViewModel::class.java)
         val user = viewModel.user
         val layout = inflater.inflate(R.layout.connexion_fragment, container, false)
@@ -40,6 +46,9 @@ class Connexion : Fragment() {
         val loading = layout.findViewById<CardView>(R.id.loadingLogIn)
         val password = layout.findViewById<EditText>(R.id.psw)
         val button = layout.findViewById<Button>(R.id.button)
+        if (login !== "") username.setText(login)
+
+        if (pwd !== "") password.setText(pwd)
         button.setOnClickListener{
             if (username.text.isEmpty() ) {
                 val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre pseudo utilisateur", 3600)
@@ -54,6 +63,14 @@ class Connexion : Fragment() {
                 mySnackbar.show()
             }
             else {
+                if (login == "") {
+                    if (sharedPref != null) {
+                        sharedPref.edit {
+                            putString("login",username.text.toString())
+                            putString("password",password.text.toString())
+                        }
+                    }
+                }
                 viewModel.login(username.text.toString(), password.text.toString(), layout, loading)
                 viewModel.localGet()
             }
