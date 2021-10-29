@@ -18,6 +18,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.marginTop
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -86,6 +87,7 @@ class FicheBobinage : Fragment() {
         })
         var visibility = View.VISIBLE
         //champs fils
+        var linscroll = layout.findViewById<LinearLayout>(R.id.linscroll)
         var btnfils = layout.findViewById<Button>(R.id.ajoutFil)
         var diam = layout.findViewById<EditText>(R.id.diam)
         var nbBrins = layout.findViewById<EditText>(R.id.nbfils)
@@ -273,9 +275,56 @@ class FicheBobinage : Fragment() {
                 }
             }
         }
+        marque.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
+            }
+        }
+        courant.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
+            }
+        }
+        client.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
+            }
+        }
+        type.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
+            }
+        }
+        //|| client.hasFocus() || vitesse.hasFocus() || type.hasFocus() || phases.hasFocus() ){
         marque.doAfterTextChanged {
-            if (marque.text.isNotEmpty()) viewModel.bobinage.value!!.marqueMoteur = marque.text.toString()
-            viewModel.quickSave()
+            if (marque.text.isNotEmpty() && marque.hasFocus()) {
+                viewModel.bobinage.value!!.marqueMoteur = marque.text.toString()
+                viewModel.quickSave()
+            }
         }
         courant.doAfterTextChanged {
             if (courant.text.isNotEmpty()) viewModel.bobinage.value!!.courant = courant.text.toString().toFloat()
