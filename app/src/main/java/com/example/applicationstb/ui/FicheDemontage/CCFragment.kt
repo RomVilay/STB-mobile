@@ -200,7 +200,7 @@ class CCFragment : Fragment() {
                 }
             }
             vUI.doAfterTextChanged {
-                if (vUI.text.isNotEmpty() && isopmu.hasFocus()) {
+                if (vUI.text.isNotEmpty() && vUI.hasFocus()) {
                     fiche.intensiteInduit = vUI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -208,7 +208,7 @@ class CCFragment : Fragment() {
                 }
             }
             vVI.doAfterTextChanged {
-                if (vVI.text.isNotEmpty() && isopmu.hasFocus()) {
+                if (vVI.text.isNotEmpty() && vVI.hasFocus()) {
                     fiche.intensiteExcitation = vVI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -216,7 +216,7 @@ class CCFragment : Fragment() {
                 }
             }
             observations.doAfterTextChanged {
-                if (isopmu.hasFocus()) {
+                if (observations.hasFocus()) {
                     fiche.observations = observations.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()

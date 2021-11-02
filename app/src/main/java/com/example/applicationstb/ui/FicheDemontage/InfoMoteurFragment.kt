@@ -154,8 +154,8 @@ class InfoMoteurFragment : Fragment() {
                 }
             }
             typeMoteur.doAfterTextChanged {
-                if (typeMoteur.text.isNotEmpty()) viewModel.selection.value!!.typeMoteur =
-                    typeMoteur.text.toString()
+                if (typeMoteur.text.isNotEmpty())
+                viewModel.selection.value!!.typeMoteur = typeMoteur.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }
