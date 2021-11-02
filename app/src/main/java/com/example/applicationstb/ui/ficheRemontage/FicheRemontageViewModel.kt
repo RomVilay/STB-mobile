@@ -20,10 +20,7 @@ import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontageDirections
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +37,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     var start = MutableLiveData<Date>()
     var listeDemo = MutableLiveData<Array<DemontageMoteur>?>(arrayOf())
     var ficheDemo = MutableLiveData<DemontageMoteur>()
+    fun getListeDemo() : Array<DemontageMoteur> { return listeDemo.value!! }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -291,42 +289,48 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getListeDemontage() {
-        if (isOnline(context)) {
-            repository.getFichesForRemontage(
-                token!!,
-                selection.value!!.numDevis!!,
-                object : Callback<DemontagesResponse> {
-                    override fun onResponse(
-                        call: Call<DemontagesResponse>,
-                        response: Response<DemontagesResponse>
-                    ) {
-                        var l = response.body()!!.fiches!!
-                        for (f in l) {
-                            f.typeFicheDemontage?.toString()?.let { Log.i("INFO", it) }
-                            getFichesDemontage(f._id)
-                        }
-                    }
+    fun getListeDemontage(): Array<DemontageMoteur> {
+        var liste = mutableListOf<DemontageMoteur>()
+            if (isOnline(context)) {
+                var job = viewModelScope.async {
+                    repository.getFichesForRemontage(
+                        token!!,
+                        selection.value!!.numDevis!!,
+                        object : Callback<DemontagesResponse> {
+                            override fun onResponse(
+                                call: Call<DemontagesResponse>,
+                                response: Response<DemontagesResponse>
+                            ) {
+                                var l = response.body()!!.fiches!!
+                                for (f in l) {
+                                    Log.i("INFO","add fiche")
+                                    getFichesDemontage(f._id)
+                                    liste.add(f)
+                                }
+                            }
 
-                    override fun onFailure(call: Call<DemontagesResponse>, t: Throwable) {
-                        Log.e("Error", "erreur ${t.message}")
-                    }
-                })
-        } else {
-            if (selection.value!!.typeFicheRemontage == 1) {
-                viewModelScope.launch {
-                    var list = repository.getAllDemontagePompeLocalDatabase()
-                    var t = mutableListOf<DemontageMoteur>()
-                    for (i in list) {
-                        if (i.numDevis == selection.value!!.numDevis) {
-                            t.add(i.toDemoPompe())
-                        }
-                    }
-                    listeDemo.value = t.toTypedArray()
+                            override fun onFailure(call: Call<DemontagesResponse>, t: Throwable) {
+                                Log.e("Error", "erreur ${t.message}")
+                            }
+                        })
                 }
-            }
-            if (selection.value!!.typeFicheRemontage == 2) {
-                    viewModelScope.launch {
+                Log.i("INFO", "fiches ${liste.size}")
+               return liste.toTypedArray()
+            } else {
+                if (selection.value!!.typeFicheRemontage == 1) {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        var list = repository.getAllDemontagePompeLocalDatabase()
+                        var t = mutableListOf<DemontageMoteur>()
+                        for (i in list) {
+                            if (i.numDevis == selection.value!!.numDevis) {
+                                t.add(i.toDemoPompe())
+                            }
+                        }
+                        listeDemo.postValue(t.toTypedArray())
+                    }
+                }
+                if (selection.value!!.typeFicheRemontage == 2) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontageMonoLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
                         for (i in list) {
@@ -334,12 +338,12 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 t.add(i.toMonophase())
                             }
                         }
-                        listeDemo.value = t.toTypedArray()
+                        listeDemo.postValue(t.toTypedArray())
                     }
 
-            }
-            if (selection.value!!.typeFicheRemontage == 3) {
-                    viewModelScope.launch {
+                }
+                if (selection.value!!.typeFicheRemontage == 3) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontageAlterLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
                         for (i in list) {
@@ -347,12 +351,12 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 t.add(i.toDemontageAlternateur())
                             }
                         }
-                        listeDemo.value = t.toTypedArray()
+                        listeDemo.postValue(t.toTypedArray())
                     }
 
-            }
-            if (selection.value!!.typeFicheRemontage == 4) {
-                    viewModelScope.launch {
+                }
+                if (selection.value!!.typeFicheRemontage == 4) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontageRBLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
                         for (i in list) {
@@ -360,11 +364,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 t.add(i.toDemoRotorB())
                             }
                         }
-                        listeDemo.value = t.toTypedArray()
+                        listeDemo.postValue(t.toTypedArray())
                     }
-            }
-            if (selection.value!!.typeFicheRemontage == 5) {
-                    viewModelScope.launch {
+                }
+                if (selection.value!!.typeFicheRemontage == 5) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontageCCLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
                         for (i in list) {
@@ -372,11 +376,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 t.add(i.toCContinu())
                             }
                         }
-                        listeDemo.value = t.toTypedArray()
+                        listeDemo.postValue(t.toTypedArray())
                     }
-            }
-            if (selection.value!!.typeFicheRemontage == 6) {
-                    viewModelScope.launch {
+                }
+                if (selection.value!!.typeFicheRemontage == 6) {
+                    viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontageTriLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
                         for (i in list) {
@@ -384,187 +388,207 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 t.add(i.toTriphase())
                             }
                         }
-                        listeDemo.value = t.toTypedArray()
-                    }
-            }
-        }
-    }
-
-    fun getFichesDemontage(id: String) {
-        repository.getDemontage(token!!, id, object: Callback<DemontageResponse> {
-            override fun onResponse(
-                call: Call<DemontageResponse>,
-                response: Response<DemontageResponse>
-            ) {
-                var fiche = response.body()?.fiche
-                if (fiche !== null) {
-                    Log.i("INFO", (fiche.typeFicheDemontage == selection.value?.typeFicheRemontage).toString())
-                    if (fiche.typeFicheDemontage == 1 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                        var pompe = repository.getDemontagePompe(
-                            token!!,
-                            fiche._id,
-                            object : Callback<DemontagePompeResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontagePompeResponse>,
-                                    response: Response<DemontagePompeResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        var copy = listeDemo.value?.toMutableList()
-                                        if (copy != null) {
-                                            copy.add(response.body()!!.fiche!!)
-                                        }
-                                        if (copy != null) {
-                                            listeDemo.value = copy.toTypedArray()
-                                        }
-                                        // Log.i("INFO", "fiche ${ficheDemo.value?.numFiche.toString()}")
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontagePompeResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                    if (fiche.typeFicheDemontage == 2 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                        Log.i("INFO", "mono")
-                        var mono = repository.getDemontageMono(
-                            token!!,
-                            fiche._id,
-                            object : Callback<DemontageMonophaseResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMonophaseResponse>,
-                                    response: Response<DemontageMonophaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        var copy = listeDemo.value?.toMutableList()
-                                        copy?.add(response.body()!!.fiche!!)
-                                        listeDemo.value = copy?.toTypedArray()
-                                        Log.i("INFO", listeDemo.value!!.size.toString())
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMonophaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-
-                    }
-                    if (fiche.typeFicheDemontage == 3 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                        var alter = repository.getDemontageAlternateur(
-                            token!!,
-                            fiche._id,
-                            object : Callback<DemontageAlternateurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageAlternateurResponse>,
-                                    response: Response<DemontageAlternateurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        var copy = listeDemo.value?.toMutableList()
-                                        copy?.add(response.body()!!.fiche!!)
-                                        listeDemo.value = copy?.toTypedArray()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageAlternateurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                    if (fiche.typeFicheDemontage == 4 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                        Log.i("INFO", "rotor")
-                        var RB = repository.getDemontageRB(
-                            token!!,
-                            fiche._id,
-                            object : Callback<DemontageRotorBobineResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageRotorBobineResponse>,
-                                    response: Response<DemontageRotorBobineResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        Log.i(
-                                            "INFO",
-                                            "type fiche ${response.body()?.fiche?.javaClass}"
-                                        )
-                                        var copy = listeDemo.value?.toMutableList()
-                                        copy?.add(response.body()!!.fiche!!)
-                                        listeDemo.value = copy?.toTypedArray()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageRotorBobineResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                    if (fiche.typeFicheDemontage == 5 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                        var CC =
-                            repository.getDemontageCC(
-                                token!!,
-                                fiche._id,
-                                object : Callback<DemontageCCResponse> {
-                                    override fun onResponse(
-                                        call: Call<DemontageCCResponse>,
-                                        response: Response<DemontageCCResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            var copy = listeDemo.value?.toMutableList()
-                                            copy?.add(response.body()!!.fiche!!)
-                                            listeDemo.value = copy?.toTypedArray()
-                                        }
-                                    }
-
-                                    override fun onFailure(
-                                        call: Call<DemontageCCResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
-                    }
-                    if (fiche.typeFicheDemontage == 6 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                        var tri = repository.getDemontageTriphase(
-                            token!!,
-                            fiche._id,
-                            object : Callback<DemontageTriphaseResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    response: Response<DemontageTriphaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        var copy = listeDemo.value?.toMutableList()
-                                        copy?.add(response.body()!!.fiche!!)
-                                        listeDemo.value = copy?.toTypedArray()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
+                        listeDemo.postValue(t.toTypedArray())
+                        listeDemo?.value?.get(0)?.numFiche?.let { Log.i("INFO", it) }
                     }
                 }
+                else{}
             }
+        return liste.toTypedArray()
+    }
 
-            override fun onFailure(call: Call<DemontageResponse>, t: Throwable) {
-                Log.e("Error", "erreur ${t.message}")
-            }
-        })
+    fun getFichesDemontage(id: String) : DemontageMoteur? {
+        var demo = MutableLiveData<DemontageMoteur>()
+        runBlocking {
+            repository.getDemontage(token!!, id, object: Callback<DemontageResponse> {
+                override fun onResponse(
+                    call: Call<DemontageResponse>,
+                    response: Response<DemontageResponse>
+                ) {
+                    runBlocking {
+                        var fiche = response.body()?.fiche
+                        if (fiche !== null) {
+                            Log.i("INFO", (fiche.typeFicheDemontage == selection.value?.typeFicheRemontage).toString())
+                            if (fiche.typeFicheDemontage == 1 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
+                                var pompe = viewModelScope.async {repository.getDemontagePompe(
+                                    token!!,
+                                    fiche._id,
+                                    object : Callback<DemontagePompeResponse> {
+                                        override fun onResponse(
+                                            call: Call<DemontagePompeResponse>,
+                                            response: Response<DemontagePompeResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                fiche
+                                                var copy = listeDemo.value?.toMutableList()
+                                                if (copy != null) {
+                                                    demo.value = response.body()!!.fiche!!
+                                                    copy.add(response.body()!!.fiche!!)
+                                                    listeDemo.value = copy.toTypedArray()
+                                                    //setListeDemo(copy.toTypedArray())
+                                                }
+                                            }
+                                        }
 
+                                        override fun onFailure(
+                                            call: Call<DemontagePompeResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    })}
+                                pompe.await()
+                                return@runBlocking demo.value
+                            }
+                            if (fiche.typeFicheDemontage == 2 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
+                                Log.i("INFO", "mono")
+                                var mono =  viewModelScope.async {
+                                    repository.getDemontageMono(
+                                        token!!,
+                                        fiche._id,
+                                        object : Callback<DemontageMonophaseResponse> {
+                                            override fun onResponse(
+                                                call: Call<DemontageMonophaseResponse>,
+                                                response: Response<DemontageMonophaseResponse>
+                                            ) {
+                                                if (response.code() == 200) {
+                                                    demo.value = response.body()!!.fiche!!
+                                                    var copy = listeDemo.value?.toMutableList()
+                                                    copy?.add(response.body()!!.fiche!!)
+                                                    listeDemo.value = copy?.toTypedArray()
+                                                    Log.i("INFO", listeDemo.value!!.size.toString())
+                                                }
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<DemontageMonophaseResponse>,
+                                                t: Throwable
+                                            ) {
+                                                Log.e("Error", "erreur ${t.message}")
+                                            }
+                                        })
+                                }
+                                mono.await()
+                                return@runBlocking demo.value
+                            }
+                            if (fiche.typeFicheDemontage == 3 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
+                                var alter = viewModelScope.async { repository.getDemontageAlternateur(
+                                    token!!,
+                                    fiche._id,
+                                    object : Callback<DemontageAlternateurResponse> {
+                                        override fun onResponse(
+                                            call: Call<DemontageAlternateurResponse>,
+                                            response: Response<DemontageAlternateurResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                demo.value = response.body()!!.fiche!!
+                                                var copy = listeDemo.value?.toMutableList()
+                                                copy?.add(response.body()!!.fiche!!)
+                                                listeDemo.value = copy?.toTypedArray()
+                                            }
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<DemontageAlternateurResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    }) }
+                                return@runBlocking demo
+                            }
+                            if (fiche.typeFicheDemontage == 4 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
+                                Log.i("INFO", "rotor")
+                                var RB = repository.getDemontageRB(
+                                    token!!,
+                                    fiche._id,
+                                    object : Callback<DemontageRotorBobineResponse> {
+                                        override fun onResponse(
+                                            call: Call<DemontageRotorBobineResponse>,
+                                            response: Response<DemontageRotorBobineResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                Log.i(
+                                                    "INFO",
+                                                    "type fiche ${response.body()?.fiche?.javaClass}"
+                                                )
+                                                demo.value = response.body()!!.fiche!!
+                                                var copy = listeDemo.value?.toMutableList()
+                                                copy?.add(response.body()!!.fiche!!)
+                                                listeDemo.value = copy?.toTypedArray()
+                                            }
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<DemontageRotorBobineResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    })
+                            }
+                            if (fiche.typeFicheDemontage == 5 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
+                                var CC =
+                                    repository.getDemontageCC(
+                                        token!!,
+                                        fiche._id,
+                                        object : Callback<DemontageCCResponse> {
+                                            override fun onResponse(
+                                                call: Call<DemontageCCResponse>,
+                                                response: Response<DemontageCCResponse>
+                                            ) {
+                                                if (response.code() == 200) {
+                                                    demo.value = response.body()!!.fiche!!
+                                                    var copy = listeDemo.value?.toMutableList()
+                                                    copy?.add(response.body()!!.fiche!!)
+                                                    listeDemo.value = copy?.toTypedArray()
+                                                }
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<DemontageCCResponse>,
+                                                t: Throwable
+                                            ) {
+                                                Log.e("Error", "erreur ${t.message}")
+                                            }
+                                        })
+                            }
+                            if (fiche.typeFicheDemontage == 6 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
+                                var tri = repository.getDemontageTriphase(
+                                    token!!,
+                                    fiche._id,
+                                    object : Callback<DemontageTriphaseResponse> {
+                                        override fun onResponse(
+                                            call: Call<DemontageTriphaseResponse>,
+                                            response: Response<DemontageTriphaseResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                demo.value = response.body()!!.fiche!!
+                                                var copy = listeDemo.value?.toMutableList()
+                                                copy?.add(response.body()!!.fiche!!)
+                                                listeDemo.value = copy?.toTypedArray()
+                                            }
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<DemontageTriphaseResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    })
+                            }
+                            else{}
+                    } else {}
+                    }
+                }
+
+                override fun onFailure(call: Call<DemontageResponse>, t: Throwable) {
+                    Log.e("Error", "erreur ${t.message}")
+                }
+            })
+        }
+        return demo.value
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

@@ -101,6 +101,7 @@ class FicheRemontage : Fragment() {
          var A2A = layout.findViewById<EditText>(R.id.A2A)
          var obs = layout.findViewById<EditText>(R.id.observations)
         var term = layout.findViewById<Button>(R.id.termRemo)
+        var btnFichesD = layout.findViewById<Button>(R.id.btnFichesD)
 
         btnRemontage.setOnClickListener {
             if (spinner.selectedItem == null) {
@@ -111,6 +112,7 @@ class FicheRemontage : Fragment() {
                 )
                 mySnackbar.show()
             } else {
+                btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
                 var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
                 if (demo!!.typeFicheRemontage == 6) {
@@ -144,7 +146,7 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
 
                 }
-                if (viewModel.selection.value !== null) viewModel.getListeDemontage()
+                if (viewModel.selection.value !== null && viewModel.isOnline(viewModel.context)) viewModel.getListeDemontage()
                 layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
                 layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
 
@@ -242,7 +244,6 @@ class FicheRemontage : Fragment() {
                 if (viewModel.selection.value!!.tensionRotorW !== null) tensionRotorW.setText(
                     viewModel.selection.value!!.tensionRotorW!!.toString()
                 )
-                //if(viewModel.selection.value!!.intensiteInduit !== null ) inte.setChecked(viewModel.selection.value!!.intensiteInduit!!)
                 if (viewModel.selection.value!!.intensiteInduitU !== null) intensiteInduitU.setText(
                     viewModel.selection.value!!.intensiteInduitU!!.toString()
                 )
@@ -275,9 +276,19 @@ class FicheRemontage : Fragment() {
         btnquitter.setOnClickListener {
             viewModel.retour(layout)
         }
+        btnFichesD.setOnClickListener {
+            if (context?.let { it1 -> viewModel.isOnline(it1) } == true) {
+                viewModel.getListeDemontage()
+            }
+        }
         btnDemo.setOnClickListener {
-                // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
+            // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
+            if (viewModel.isOnline(viewModel.context)) {
                 runBlocking {
+                    var liste = async {
+                        viewModel.getListeDemontage()
+                    }
+                    liste.await()
                     var numFiches = arrayListOf<String>()
                     viewModel.listeDemo.value?.forEach {
                         if (!numFiches.contains(it.numFiche!!)) numFiches.add(it.numFiche!!)
@@ -300,9 +311,14 @@ class FicheRemontage : Fragment() {
                                 })
                         builder.create()
                     }
-                    alertDialog?.show()
-
+                    if (viewModel.listeDemo.value!!.size > 0) {
+                        alertDialog?.show()
+                    }
                 }
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.RemontageLayout), "Vous devez être connecté à internet pour réccupérer les fiches de démontage", 3600)
+                mySnackbar.show()
+            }
         }
         sensRotation.setOnCheckedChangeListener { _, isChecked ->
             if (sensRotation.hasFocus()) {
