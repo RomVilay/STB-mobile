@@ -1,6 +1,8 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -285,7 +287,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             intensiteV.doAfterTextChanged {
-                if (intensiteV.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus()) {
+                if (intensiteV.text.isNotEmpty() && intensiteV.hasFocus()) {
                     fiche.intensiteV = intensiteV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -293,7 +295,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             intensiteW.doAfterTextChanged {
-                if (intensiteW.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus()) {
+                if (intensiteW.text.isNotEmpty() && intensiteW.hasFocus()) {
                     fiche.intensiteW = intensiteW.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -301,7 +303,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionUExcitation.doAfterTextChanged {
-                if (tensionUExcitation.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus()) {
+                if (tensionUExcitation.text.isNotEmpty() && tensionUExcitation.hasFocus()) {
                     fiche.tensionExcitation = tensionUExcitation.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -415,10 +417,20 @@ class AlternateurFragment : Fragment() {
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         term.setOnClickListener {
-            fiche.status = 3L
-            viewModel.selection.value = fiche
-            viewModel.getTime()
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus éditable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            viewModel.getTime()
+                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
         }
         val fmanager = childFragmentManager
         fmanager.commit {
