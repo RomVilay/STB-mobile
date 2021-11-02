@@ -1,6 +1,8 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -236,10 +238,20 @@ class TriphaseFragment : Fragment() {
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
-            viewModel.getTime()
-            fiche.status = 3L
-            viewModel.selection.value = fiche
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus éditable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
         }
         retour.setOnClickListener{
             if (viewModel.selection.value?.status == 3L){
