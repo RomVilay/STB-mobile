@@ -373,7 +373,7 @@ class PompeFragment : Fragment() {
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.setTitle("Terminer une fiche")
-                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus éditable après")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
                     .setPositiveButton("Terminer",
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()

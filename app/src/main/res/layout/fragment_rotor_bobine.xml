@@ -194,7 +194,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/tv"
@@ -203,7 +203,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/tw"
@@ -212,7 +212,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/tr"
@@ -221,7 +221,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
                         </TableRow>
 
                         <TableRow
@@ -244,7 +244,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/iv"
@@ -253,7 +253,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/iw"
@@ -262,7 +262,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
 
                             <EditText
                                 android:id="@+id/irotor"
@@ -271,7 +271,7 @@
                                 android:background="@drawable/cell"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:inputType="number" />
+                                android:inputType="numberSigned|number|text" />
                         </TableRow>
 
                         <TableRow
@@ -321,7 +321,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U/M"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/vpm"
@@ -331,7 +331,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="V/M"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/wpm"
@@ -341,7 +341,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="W/M"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TableRow
@@ -372,7 +372,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="B1/M"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b2"
@@ -382,7 +382,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="B2/M"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b3"
@@ -392,7 +392,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="B3/M"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TableRow
@@ -423,7 +423,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="MΩ"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TextView
@@ -473,7 +473,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U/V"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/v2"
@@ -483,7 +483,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="V/W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/w"
@@ -493,7 +493,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U/W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TextView
@@ -539,7 +539,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/V"
@@ -549,7 +549,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="V"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/W"
@@ -559,7 +559,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="W"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                     <TableRow
@@ -590,7 +590,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="B1/B2"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b2b3"
@@ -600,7 +600,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="B2/B3"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
 
                         <EditText
                             android:id="@+id/b1b3"
@@ -610,7 +610,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="B1/B3"
-                            android:inputType="number" />
+                            android:inputType="numberSigned|number|text" />
                     </TableRow>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
