@@ -90,7 +90,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -114,7 +114,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
@@ -148,7 +148,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -170,7 +170,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>
@@ -237,7 +237,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="I"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -261,7 +261,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
 
