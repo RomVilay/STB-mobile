@@ -695,7 +695,7 @@ class FicheRemontage : Fragment() {
         }
 
         btnenregistrer.setOnClickListener {
-            Log.i("INFO","collage inté flasque ${viewModel.selection.value!!.collageRoulementFlasque}")
+            Log.i("INFO","collage inté flasque ${viewModel.selection.value!!.collageRoulementPorteeArbre}")
             var fiche = viewModel.selection.value!!
             if (fiche.dureeTotale !== null) {
                 fiche.dureeTotale =
@@ -708,16 +708,26 @@ class FicheRemontage : Fragment() {
             viewModel.enregistrer(layout)
         }
         term.setOnClickListener {
-            var fiche = viewModel.selection.value!!
-            if (fiche.dureeTotale !== null) {
-                fiche.dureeTotale =
-                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
-            } else {
-                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            var fiche = viewModel.selection.value!!
+                            if (fiche.dureeTotale !== null) {
+                                fiche.dureeTotale =
+                                    (Date().time - viewModel.start.value!!.time) + viewModel.selection.value!!.dureeTotale!!
+                            } else {
+                                fiche.dureeTotale = Date().time - viewModel.start.value!!.time
+                            }
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            viewModel.enregistrer(layout)
+                        })
+                builder.create()
             }
-            fiche.status = 3L
-            viewModel.selection.value = fiche
-            viewModel.enregistrer(layout)
+            alertDialog?.show()
         }
 
 
