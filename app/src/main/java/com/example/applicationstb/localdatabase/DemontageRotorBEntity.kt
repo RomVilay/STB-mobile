@@ -3,11 +3,12 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.DemontageRotorBobine
 import com.example.applicationstb.model.Triphase
 import java.util.*
 
-@Entity(tableName = "demontage_triphase")
-data class DemontageTriphaseEntity(
+@Entity(tableName = "demontage_rotorb")
+data class DemontageRotorBEntity(
     @PrimaryKey var _id: String,
     var numDevis: String?,
     var numFiche: String?,
@@ -55,25 +56,34 @@ data class DemontageTriphaseEntity(
     var typeSondes: String?,
     var equilibrage: Boolean?,
     var peinture: String?,
-    var isolementPhaseMasseStatorUM: Float?,
-    var isolementPhaseMasseStatorVM: Float?,
-    var isolementPhaseMasseStatorWM: Float?,
-    var isolementPhasePhaseStatorUV: Float?,
-    var isolementPhasePhaseStatorVW: Float?,
-    var isolementPhasePhaseStatorUW: Float?,
-    var resistanceStatorU: Float?,
-    var resistanceStatorV: Float?,
-    var resistanceStatorW: Float?,
-    var tensionU: Float?,
-    var tensionV: Float?,
-    var tensionW: Float?,
-    var intensiteU: Float?,
-    var intensiteV: Float?,
-    var intensiteW: Float?,
-    var dureeEssai: Float?,
+    var isolementPhaseMasseStatorUM	: Float?,
+    var isolementPhaseMasseStatorVM	: Float?,
+    var isolementPhaseMasseStatorWM	: Float?,
+    var isolementPhaseMasseRotorB1M	: Float?,
+    var isolementPhaseMasseRotorB2M	: Float?,
+    var isolementPhaseMasseRotorB3M	: Float?,
+    var isolementPhaseMassePorteBalaisM	: Float?,
+    var isolementPhasePhaseStatorUV	: Float?,
+    var isolementPhasePhaseStatorVW	: Float?,
+    var isolementPhasePhaseStatorUW	: Float?,
+    var resistanceStatorU	: Float?,
+    var resistanceStatorV	: Float?,
+    var resistanceStatorW	: Float?,
+    var resistanceRotorB1B2	: Float?,
+    var resistanceRotorB2B2	: Float?,
+    var resistanceRotorB1B3	: Float?,
+    var tensionU	: Float?,
+    var tensionV	: Float?,
+    var tensionW	: Float?,
+    var tensionRotor	: Float?,
+    var intensiteU	: Float?,
+    var intensiteV	: Float?,
+    var intensiteW	: Float?,
+    var intensiteRotor	: Float?,
+    var dureeEssai	: Int?
 ) {
-    fun toTriphase(): Triphase {
-        var fiche = Triphase(
+    fun toDemoRotorB(): DemontageRotorBobine {
+        var fiche = DemontageRotorBobine(
             _id,
             numDevis,
             numFiche,
@@ -124,22 +134,31 @@ data class DemontageTriphaseEntity(
             typeSondes,
             equilibrage,
             peinture,
-            isolementPhaseMasseStatorUM,
-            isolementPhaseMasseStatorVM,
-            isolementPhaseMasseStatorWM,
-            isolementPhasePhaseStatorUV,
-            isolementPhasePhaseStatorVW,
-            isolementPhasePhaseStatorUW,
-            resistanceStatorU,
-            resistanceStatorV,
-            resistanceStatorW,
-            tensionU,
-            tensionV,
-            tensionW,
-            intensiteU,
-            intensiteV,
-            intensiteW,
-            dureeEssai)
+            isolementPhaseMasseStatorUM	,
+        isolementPhaseMasseStatorVM	,
+        isolementPhaseMasseStatorWM	,
+        isolementPhaseMasseRotorB1M	,
+        isolementPhaseMasseRotorB2M	,
+        isolementPhaseMasseRotorB3M	,
+        isolementPhaseMassePorteBalaisM	,
+        isolementPhasePhaseStatorUV	,
+        isolementPhasePhaseStatorVW	,
+        isolementPhasePhaseStatorUW	,
+        resistanceStatorU	,
+        resistanceStatorV	,
+        resistanceStatorW	,
+        resistanceRotorB1B2	,
+        resistanceRotorB2B2	,
+        resistanceRotorB1B3	,
+        tensionU	,
+        tensionV	,
+        tensionW	,
+        tensionRotor	,
+        intensiteU	,
+        intensiteV	,
+        intensiteW	,
+        intensiteRotor	,
+        dureeEssai)
         return fiche
     }
 }

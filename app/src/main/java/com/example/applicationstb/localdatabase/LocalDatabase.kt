@@ -5,17 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.applicationstb.model.DemontageAlternateur
 
 
-@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class), version = 8)
+@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class, DemoPompeEntity::class, DemontageAlternateurEntity::class,DemontageRotorBEntity::class,DemontageMonophaseEntity::class,ClientEntity::class,VehiculeEntity::class, RemontageEntity::class), version = 19)
 @TypeConverters (Converters::class)
     abstract class LocalDatabase : RoomDatabase() {
         abstract fun chantierDao(): ChantierDao
         abstract fun bobinageDao(): BobinageDao
         abstract fun demontageTriphaseDao(): DemontageTriphaseDao
         abstract fun demontageCCDao(): DemontageCCDao
+        abstract fun demontagePDao(): DemontagePDao
+        abstract fun demontageAlternateurDao(): DemontageAlternateurDao
+        abstract fun demontageMonophaseDao(): DemontageMonophaseDao
+        abstract fun demontageRotorBobineDao(): DemontageRotorBobineDao
         abstract fun remontageTriphaseDao(): RemontageTriphaseDao
         abstract fun remontageCCDao(): RemontageCCDao
+        abstract fun remontageDao(): RemontageDao
+        abstract fun vehiculesDao(): VehiculeDao
+        abstract  fun clientDao(): ClientsDao
     @Volatile
     private var INSTANCE: LocalDatabase? = null
 

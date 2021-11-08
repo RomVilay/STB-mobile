@@ -5,8 +5,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,11 +20,13 @@ import com.example.applicationstb.repository.BobinageResponse
 import com.example.applicationstb.repository.ChantierResponse
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -35,6 +39,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var token: String? = null;
     var username: String? = null;
     var context = getApplication<Application>().applicationContext
+    var start = MutableLiveData<Date>()
 
     init {
         viewModelScope.launch(Dispatchers.IO){
@@ -66,6 +71,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //bobinage.value = listeBobinage[0]
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun selectBobinage(id: String) {
         if (isOnline(context)) {
             val resp = repository.getBobinage(token!!, id, object : Callback<BobinageResponse> {
@@ -77,9 +83,9 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         val resp = response.body()
                         if (resp != null) {
                             Log.i("INFO", "${resp.fiche!!._id}")
-                            bobinage.value = resp.fiche
-                            sections.value = bobinage.value!!.sectionsFils
-                            schemas.value = bobinage.value!!.schemas
+                            bobinage.value = resp.fiche!!
+                            sections.value = bobinage.value!!.sectionsFils!!
+                            schemas.value = mutableListOf()
                         }
                     } else {
                         Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
@@ -99,16 +105,16 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         var list = sections.value
         var section = Section(nbBrins, diametre)
         list!!.add(section)
-        sections.value = list
+        sections.value = list!!
         //Log.i("INFO", "add section $brins - $longueur")
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
 
-    fun addSchema(schema: Uri) {
-        var list = schemas.value
-        list!!.add(schema.toString())
+    /*fun addSchema(schema: Uri) {
+        var list = schemas.value!!
+        list.add(schema.toString())
         schemas.value = list
-    }
+    }*/
 
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { Math.sqrt(it.diametre) * (Math.PI / 4) * it.nbBrins }
@@ -130,13 +136,18 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO", sch.toString())
     }
 
+    fun addSchema(index:Int,photo: Uri) {
+        schemas.value!!.add(photo.toString())
+    }
+
     fun fullScreen(view: View, uri: String) {
         val action = FicheChantierDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
-    fun save(context: Context) {
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun save(context: Context, view:View) {
         Log.i("INFO", "iso: ${bobinage.value!!.isolementUT}")
         if (isOnline(context)) {
             val resp = repository.patchBobinage(
@@ -151,9 +162,13 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         if (response.code() == 200) {
                             val resp = response.body()
                             if (resp != null) {
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
                                 Log.i("INFO", "enregistré")
                             }
                         } else {
+                            val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
+                            mySnackbar.show()
                             Log.i(
                                 "INFO",
                                 "code : ${response.code()} - erreur : ${response.message()}"
@@ -162,29 +177,65 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     }
 
                     override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                        val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
+                        mySnackbar.show()
                         Log.e("Error", "erreur ${t.message}")
                     }
                 })
-            localSave()
+            //localSave(view)
         } else {
-            localSave()
+            localSave(view)
         }
 
     }
-    fun localSave(){
+    fun localSave(view:View){
         Log.i("INFO","local save fiche ${bobinage.value!!._id}")
         viewModelScope.launch(Dispatchers.IO){
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             if (bob !== null) {
+                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                mySnackbar.show()
                 repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
                 Log.i("INFO","patch ${bobinage.value!!.sectionsFils}")
             } else {
+                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                mySnackbar.show()
                 repository.insertBobinageLocalDatabase(bobinage.value!!)
                 Log.i("INFO","insert ${bobinage.value!!._id}")
             }
         }
     }
 
+    fun getTime(){
+        Log.i("INFO","duree avant : ${bobinage.value?.dureeTotale}")
+        var now = Date()
+        if (bobinage.value!!.dureeTotale !== null) {
+            bobinage.value!!.dureeTotale =
+                (now.time - start.value!!.time ) + bobinage.value!!.dureeTotale!!
+        } else {
+            bobinage.value!!.dureeTotale = now.time - start.value!!.time
+        }
+        start.value = now
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun quickSave(){
+        Log.i("INFO","quick save")
+        getTime()
+        Log.i("INFO","duree après : ${bobinage.value?.dureeTotale}")
+        viewModelScope.launch(Dispatchers.IO){
+            var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            //Log.i("INFO","${ch}")
+            if (ch !== null) {
+                repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
+                //Log.i("INFO","patch ${bobinage.value!!._id}")
+            } else {
+                repository.insertBobinageLocalDatabase(bobinage.value!!)
+                //Log.i("INFO","insert ${chantier.value!!._id}")
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

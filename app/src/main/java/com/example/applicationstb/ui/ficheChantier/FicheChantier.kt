@@ -9,10 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.os.SystemClock
+import android.os.*
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,23 +17,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -46,7 +41,7 @@ class FicheChantier : Fragment() {
         fun newInstance() = FicheChantier()
     }
 
-    private lateinit var viewModel: FicheChantierViewModel
+    private val viewModel: FicheChantierViewModel by activityViewModels()
     private  val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
@@ -58,13 +53,13 @@ class FicheChantier : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(FicheChantierViewModel::class.java)
         var list = arguments?.get("listChantiers") as Array<Chantier>
         viewModel.token = arguments?.get("Token") as String
         viewModel.username = arguments?.get("username") as String
         Log.i("INFO","token: ${viewModel.token} - username: ${viewModel.username}")
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
+        val lin = layout.findViewById<LinearLayout>(R.id.linearCh)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
         val materiel = layout.findViewById<EditText>(R.id.materiel)
         val objet = layout.findViewById<EditText>(R.id.objet)
@@ -76,17 +71,27 @@ class FicheChantier : Fragment() {
         val numero = layout.findViewById<TextView>(R.id.type)
         val adresse = layout.findViewById<TextView>(R.id.adresse)
         val dateDebut = layout.findViewById<TextView>(R.id.dateDebut)
-        val showDetails = layout.findViewById<TextView>(R.id.details)
+        val showDetails = layout.findViewById<TextView>(R.id.titreDetails)
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
+        val term = layout.findViewById<Button>(R.id.termC)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
-
         var visibility = View.VISIBLE
-        //define signature area
-        //val stech = layout.findViewById<DawingView>(R.id.signTech)
-        //val scli = layout.findViewById<DawingView>(R.id.signclient)
-        //stech.viewPlaceholder = "signature technicien"
-        //scli.viewPlaceholder = "signature client"
+        selectButton.setOnClickListener {
+            lin.visibility = View.VISIBLE
+            var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
+            viewModel.chantier.value = chantier
+            viewModel.start.value = Date()
+            if (viewModel.chantier.value!!.materiel !== null)  materiel.setText(viewModel.chantier.value!!.materiel)
+            if (viewModel.chantier.value!!.objet !== null)  objet.setText(viewModel.chantier.value!!.objet)
+            if (viewModel.chantier.value!!.observations !== null)  observation.setText(viewModel.chantier.value!!.observations)
+            if (viewModel.chantier.value!!.client !== null)  client.setText(viewModel.chantier.value!!.client!!.enterprise)
+            if (viewModel.chantier.value!!.vehicule !== null) viewModel.getVehicule(viewModel.chantier.value!!.vehicule!!, vehicule)
+            if (viewModel.chantier.value!!.contact !== null)  contact.setText(viewModel.chantier.value!!.contact)
+            if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
+            if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
+            if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
+        }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
         //var stech: Bitmap? = sview.extraBitmap
@@ -101,22 +106,24 @@ class FicheChantier : Fragment() {
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
-        viewModel.chantier.observe(viewLifecycleOwner, {
-            materiel.setText(it.materiel)
-            objet.setText(it.objet)
-            observation.setText(it.observations)
-            client.setText(it.client!!.enterprise)
-            vehicule.setText(it.vehicule)
-            contact.setText(it.contact)
-            numero.setText(it.telContact)
-            adresse.setText(it.adresseChantier)
-            dateDebut.setText(it.dateDebut!!.toLocaleString())
-        })
+
+
+        materiel.doAfterTextChanged {
+            if (materiel.text.isNotEmpty()) viewModel.chantier.value?.materiel = materiel.text.toString()
+            viewModel.quickSave()
+        }
+        objet.doAfterTextChanged {
+            if (objet.text.isNotEmpty()) viewModel.chantier.value?.objet = objet.text.toString()
+            viewModel.quickSave()
+        }
+        observation.doAfterTextChanged {
+            if (observation.text.isNotEmpty()) viewModel.chantier.value?.observations = observation.text.toString()
+            viewModel.quickSave()
+        }
 
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            Log.i("INFO",test.toString())
             if (test == false) {
                 requestPermissions(arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -125,7 +132,7 @@ class FicheChantier : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -137,7 +144,7 @@ class FicheChantier : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
@@ -184,6 +191,7 @@ class FicheChantier : Fragment() {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
                 viewModel.signatures.add(0,uri)
+
             }
         }
         btnTech.setOnClickListener{
@@ -204,25 +212,7 @@ class FicheChantier : Fragment() {
                 viewModel.signatures.add(uri)
             }
         }
-        selectButton.setOnClickListener {
-            var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
-            //Log.i("INFO","${viewModel.listeChantiers}")
-            viewModel.chantier.value = chantier
-            /*materiel.setText(chantier?.materiel)
-            objet.setText(chantier?.objet)
-            observation.setText(chantier?.observations)
-            client.setText(chantier?.client?.enterprise)
-            vehicule.setText(chantier?.vehicule?.nom)
-            contact.setText(chantier?.contact)
-            numero.setText(chantier?.telContact.toString())
-            //adresse.setText(chantier?.adresse)
-            var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-            dateDebut.setText(LocalDateTime.now().format(format))*/
-        }
         quit.setOnClickListener {
-            //stech = generateBitmapFromView(sview)
-
-            //Log.i("INFO",stech?.let { it1 -> saveImageToInternalStorage(it1) }.toString())
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
@@ -231,15 +221,20 @@ class FicheChantier : Fragment() {
             chantier.objet = objet.text.toString()
             chantier.observations = observation.text.toString()
             chantier.status = 2L
-            chantier.dureeTotale = chantier.dateDebut!!.getTime() - Date.from(Instant.now()).getTime()
-            //chantier.dateDebut = Date.from(dateDebut.text.toString())
             viewModel.chantier.value = chantier
-            var t = viewModel.chantier.value
-            //Log.i("INFO", "chantier envoyé: ${t!!.materiel } - ${t!!.objet} - ${t!!.observations}")
-            //Log.i("INFO",t.toString())
-            Log.i("INFO","connection internet: ${viewModel.isOnline(context!!)}")
-            viewModel.save(context!!)
-            //viewModel.back(layout)
+            viewModel.getTime()
+            Log.i("INFO","duree: ${viewModel.chantier.value!!.dureeTotale}")
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
+        }
+        term.setOnClickListener {
+            var chantier = viewModel.chantier!!.value!!
+            chantier.materiel = materiel.text.toString()
+            chantier.objet = objet.text.toString()
+            chantier.observations = observation.text.toString()
+            chantier.status = 3L
+            viewModel.chantier.value = chantier
+            viewModel.getTime()
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
         }
         return layout
     }
@@ -267,14 +262,31 @@ class FicheChantier : Fragment() {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
         }
+    }
+
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 
     fun Bitmap.saveImage(context: Context): Uri? {

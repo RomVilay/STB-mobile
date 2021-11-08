@@ -49,7 +49,7 @@ data class BobinageEntity (
             numFiche,
             4,
             status,
-            Client(client!!,null,null,null),
+            Client(client!!,null,null,null, null),
             contact,
             telContact,
             null,

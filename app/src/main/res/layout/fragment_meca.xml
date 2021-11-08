@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.FicheDemontage.MecaFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/meca"
         android:layout_width="649dp"
-        android:layout_height="816dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="644dp"
-            android:layout_height="818dp">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
@@ -51,7 +51,7 @@
 
                 <Spinner
                     android:id="@+id/spiFAr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
@@ -73,7 +73,7 @@
 
                 <Spinner
                     android:id="@+id/spiFA"
-                    android:layout_width="wrap_content"
+                    android:layout_width="125dp"
                     android:layout_height="29dp"
                     android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
@@ -132,7 +132,7 @@
 
                 <Spinner
                     android:id="@+id/spiRAv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="125dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginLeft="20dp"
@@ -154,7 +154,7 @@
 
                 <Spinner
                     android:id="@+id/spiRAr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="125dp"
                     android:layout_height="29dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="bon état"
+                android:text="mauvais état"
                 app:layout_constraintBottom_toBottomOf="@+id/textView24"
                 app:layout_constraintStart_toEndOf="@+id/textView24"
                 app:layout_constraintTop_toTopOf="@+id/textView24" />
@@ -193,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:text="mauvais état"
+                android:text="bon état"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/switchBA"
                 app:layout_constraintStart_toEndOf="@+id/switchBA"
@@ -223,8 +223,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/typeroulements"
-                android:layout_width="598dp"
-                android:layout_height="96dp"
+                android:layout_width="599dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="48dp"
@@ -246,11 +246,11 @@
 
                 <Spinner
                     android:id="@+id/spiRoul"
-                    android:layout_width="181dp"
+                    android:layout_width="190dp"
                     android:layout_height="31dp"
                     android:layout_marginStart="56dp"
                     android:layout_marginLeft="56dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="48dp"
                     android:background="@drawable/dropdown_background"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -270,23 +270,28 @@
                     android:id="@+id/refRoullement"
                     android:layout_width="183dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/round_textview"
                     android:ems="10"
+                    android:gravity="center"
                     android:hint="référence roulement "
-                    android:inputType="textPersonName"
+                    android:inputType="text"
+                    android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView27"
                     app:layout_constraintStart_toEndOf="@+id/textView27"
-                    app:layout_constraintTop_toTopOf="@+id/textView27" />
+                    app:layout_constraintTop_toTopOf="@+id/textView27"
+                    app:layout_constraintVertical_bias="0.555" />
 
                 <TextView
                     android:id="@+id/textView27"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="112dp"
-                    android:layout_marginLeft="112dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginLeft="28dp"
                     android:text="ref :"
                     app:layout_constraintBottom_toBottomOf="@+id/spiRoul"
                     app:layout_constraintStart_toEndOf="@+id/spiRoul"
-                    app:layout_constraintTop_toTopOf="@+id/spiRoul" />
+                    app:layout_constraintTop_toTopOf="@+id/spiRoul"
+                    app:layout_constraintVertical_bias="0.666" />
 
                 <TextView
                     android:id="@+id/textView28"
@@ -299,6 +304,17 @@
                     app:layout_constraintBottom_toBottomOf="@+id/switchRoullements"
                     app:layout_constraintStart_toEndOf="@+id/switchRoullements"
                     app:layout_constraintTop_toTopOf="@+id/switchRoullements" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/specsRoul"
+                    android:layout_width="547dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/refRoullement" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -351,9 +367,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginLeft="12dp"
+                    android:background="@drawable/round_textview"
                     android:ems="10"
+                    android:gravity="center"
                     android:hint="référence joints"
-                    android:inputType="textPersonName"
+                    android:inputType="text"
+                    android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/spiJoints"
                     app:layout_constraintStart_toEndOf="@+id/textView30"
                     app:layout_constraintTop_toTopOf="@+id/spiJoints" />
@@ -578,27 +597,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
             <Switch
-                android:id="@+id/switch7"
+                android:id="@+id/switchSondes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
+                android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/textView38"
                 app:layout_constraintStart_toEndOf="@+id/textView38"
                 app:layout_constraintTop_toTopOf="@+id/textView38" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName6"
+                android:id="@+id/typeSonde"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="348dp"
                 android:layout_marginLeft="348dp"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/round_textview"
                 android:ems="10"
+                android:gravity="center"
                 android:hint=" type sonde"
                 android:inputType="textPersonName"
+                android:padding="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/switch7" />
+                app:layout_constraintTop_toBottomOf="@+id/switchSondes" />
 
             <TextView
                 android:id="@+id/textView39"
@@ -607,59 +630,43 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:text="Equilibrage"
-                app:layout_constraintBottom_toBottomOf="@+id/switch9"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/swEqui"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/switch9" />
+                app:layout_constraintTop_toTopOf="@+id/swEqui" />
 
             <TextView
                 android:id="@+id/textView40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
                 android:text="Peinture"
-                app:layout_constraintBottom_toBottomOf="@+id/switch8"
-                app:layout_constraintStart_toEndOf="@+id/switch9"
-                app:layout_constraintTop_toTopOf="@+id/switch8" />
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/coul"
+                app:layout_constraintStart_toEndOf="@+id/swEqui"
+                app:layout_constraintTop_toTopOf="@+id/coul" />
 
-            <Switch
-                android:id="@+id/switch8"
+            <EditText
+                android:id="@+id/coul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName7"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/round_textview"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Peinture"
+                android:inputType="text"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView40"
-                app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName7" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName7"
-                android:layout_width="83dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:ems="10"
-                android:hint="ral"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName10"
-                app:layout_constraintStart_toEndOf="@+id/switch8"
-                app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName10" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
-                android:ems="10"
-                android:hint="couleur"
-                android:inputType="textPersonName"
-                app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName7"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
+                app:layout_constraintTop_toBottomOf="@+id/typeSonde" />
 
             <Switch
-                android:id="@+id/switch9"
+                android:id="@+id/swEqui"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"

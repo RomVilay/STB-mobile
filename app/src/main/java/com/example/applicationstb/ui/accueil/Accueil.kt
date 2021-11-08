@@ -1,10 +1,10 @@
 package com.example.applicationstb.ui.accueil
 
-import android.app.Application
-import android.net.Uri
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.test.core.app.ApplicationProvider
 import com.example.applicationstb.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -25,21 +26,22 @@ class Accueil : Fragment() {
 
     private lateinit var viewModel: AccueilViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
+        val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         viewModel.token = arguments?.get("Token") as? String
         viewModel.username = arguments?.get("Username") as? String
         if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
             viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
         } else {
-            Log.i("INFO"," pas connecté")
+            val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'êtes pas connecté au réseau Internet.", 3600)
+            mySnackbar.show()
             viewModel.listeFicheLocal()
         }
-
-        val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
         val cht = layout.findViewById<Button>(R.id.btnChantier)
         val dm = layout.findViewById<TextView>(R.id.btnDemo)
@@ -48,26 +50,66 @@ class Accueil : Fragment() {
         val rm = layout.findViewById<TextView>(R.id.btnRemo)
         val rb = layout.findViewById<Button>(R.id.btnRebobinage)
         val token = arguments?.let { AccueilArgs.fromBundle(it).token }
+        val reload = layout.findViewById<Button>(R.id.reload)
+        val send = layout.findViewById<Button>(R.id.send)
+        val loading = layout.findViewById<CardView>(R.id.loadingHome)
         deco.setOnClickListener{
-            viewModel.toDeconnexion(layout)
+            val alertDialogBuilder: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton("se Déconnecter",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.toDeconnexion(layout)
+                        })
+                    setNegativeButton("Rester connecté",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+                        })
+                }
+                builder.setMessage("Êtes vous sûr de vouloir vous déconnecter ?")
+                builder.create()
+            }
+            alertDialogBuilder!!.show()
+        }
+        reload.setOnClickListener {
+            if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
+                viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+            }
+        }
+        send.setOnClickListener {
+            viewModel.sendFiche(loading)
         }
         dm.setOnClickListener {
-            viewModel.toFicheD(layout)
+            if (viewModel.demontages.size > 0) {
+                viewModel.toFicheD(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de Demontages attribués", 3600)
+                mySnackbar.show()
+            }
         }
         cht.setOnClickListener {
-            Log.i("INFO",token!!)
             if (viewModel.chantiers.size > 0) {
                 viewModel.toChantier(layout)
             } else {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de chantiers attribués", 60)
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de chantiers attribués", 3600)
                 mySnackbar.show()
             }
         }
         rm.setOnClickListener {
-            viewModel.toFicheR(layout)
+            if (viewModel.remontages.size > 0) {
+                viewModel.toFicheR(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de Remontages attribués", 3600)
+                mySnackbar.show()
+            }
         }
         rb.setOnClickListener {
-            viewModel.toBobinage(layout)
+            if (viewModel.bobinages.size > 0) {
+                viewModel.toBobinage(layout)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'avez pas de bobinages attribués", 3600)
+                mySnackbar.show()
+            }
         }
         rep.setOnClickListener {
             if (list.visibility == View.GONE) {

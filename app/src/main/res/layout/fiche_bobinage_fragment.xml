@@ -8,62 +8,76 @@
     android:layout_height="match_parent"
     tools:context=".ui.ficheChantier.FicheChantier">
 
-    <ScrollView
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="293dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="logoSTB"
+        android:src="@drawable/logo_grand_format" />
+
+    <TextView
+        android:id="@+id/titre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:gravity="center"
+        android:text="Fiche rebobinage"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="220dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/numDevis"
+            android:layout_width="286dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/round_textview" />
+
+        <Button
+            android:id="@+id/btnDemarrer"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="Démarrer un Bobinage"
+            app:backgroundTint="@color/bleu_stb"
+            app:cornerRadius="60px" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollBobi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="270dp"
         android:clickable="true"
+        android:fillViewport="true"
+        android:fitsSystemWindows="false"
+        android:scrollY="30dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        >
 
         <LinearLayout
+            android:id="@+id/linscroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="293dp"
-                android:layout_height="128dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="30dp"
-                android:contentDescription="logoSTB"
-                android:src="@drawable/logo_grand_format" />
-
-            <TextView
-                android:id="@+id/titre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Fiche rebobinage"
-                android:textSize="24sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/numDevis"
-                    android:layout_width="286dp"
-                    android:layout_height="46dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/round_textview" />
-
-                <Button
-                    android:id="@+id/btnDemarrer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="52dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:text="Démarrer un Chantier"
-                    app:backgroundTint="@color/bleu_stb"
-                    app:cornerRadius="60px" />
-            </LinearLayout>
+            android:orientation="vertical"
+            android:paddingTop="50dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="551dp"
@@ -81,8 +95,8 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="client"
-                    android:inputType="textShortMessage"
-                    android:visibility="gone"
+                    android:inputType="text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/type"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,7 +109,7 @@
                     android:layout_marginTop="24dp"
                     android:text="non"
                     android:textColor="@color/white"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/courant"
                     app:layout_constraintTop_toBottomOf="@+id/phase" />
 
@@ -109,8 +123,8 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="frequence"
-                    android:inputType="textShortMessage"
-                    android:visibility="gone"
+                    android:inputType="numberSigned|number|text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/vitesse" />
 
@@ -124,9 +138,10 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="courant"
-                    android:visibility="gone"
+                    android:inputType="numberSigned|number|text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/frequence"
-                    app:layout_constraintTop_toBottomOf="@+id/details" />
+                    app:layout_constraintTop_toBottomOf="@+id/titreDetails" />
 
                 <EditText
                     android:id="@+id/phase"
@@ -138,7 +153,8 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="phase"
-                    android:visibility="gone"
+                    android:inputType="numberSigned|number|text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/type"
                     app:layout_constraintTop_toBottomOf="@+id/client" />
 
@@ -153,7 +169,8 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="puissance"
-                    android:visibility="gone"
+                    android:inputType="numberSigned|number|text"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@+id/dates"
                     app:layout_constraintStart_toEndOf="@+id/vitesse"
                     app:layout_constraintTop_toBottomOf="@+id/type"
@@ -169,15 +186,16 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="vitesse"
-                    android:visibility="gone"
+                    android:inputType="numberSigned|number|text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/marque" />
 
                 <TextView
-                    android:id="@+id/details"
+                    android:id="@+id/titreDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="afficher les details"
+                    android:text="masquer les détails"
                     android:textColor="#FFFFFF"
                     android:textSize="22dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +212,8 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="type"
-                    android:visibility="gone"
+                    android:inputType="text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toEndOf="@+id/marque"
                     app:layout_constraintTop_toBottomOf="@+id/courant" />
 
@@ -208,7 +227,8 @@
                     android:background="@drawable/round_textview_full_white"
                     android:gravity="center"
                     android:hint="marque"
-                    android:visibility="gone"
+                    android:inputType="text"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -221,7 +241,7 @@
                     android:layout_marginRight="16dp"
                     android:text="oui"
                     android:textColor="@color/white"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/phase" />
 
@@ -235,7 +255,7 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/round_textview_full_white"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -263,7 +283,7 @@
                     android:layout_marginBottom="64dp"
                     android:text="Callage encoches"
                     android:textColor="@color/white"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -277,8 +297,8 @@
                     android:ems="7"
                     android:gravity="center"
                     android:hint="tensions"
-                    android:inputType="numberSigned"
-                    android:visibility="gone"
+                    android:inputType="numberSigned|number"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/dates"
                     app:layout_constraintStart_toEndOf="@+id/dates"
                     app:layout_constraintTop_toTopOf="@+id/dates" />
@@ -293,8 +313,8 @@
                     android:id="@+id/addsection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginLeft="48dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginLeft="200dp"
                     android:text="Ajout de section"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -740,7 +760,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="quitter"
-                    app:backgroundTint="@color/bleu_stb" />
+                    app:backgroundTint="@color/gray_400" />
 
                 <Button
                     android:id="@+id/enregistrer"
@@ -748,6 +768,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="enregistrer"
+                    app:backgroundTint="@color/gray_400" />
+
+                <Button
+                    android:id="@+id/termB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="terminer la fiche"
                     app:backgroundTint="@color/bleu_stb" />
             </LinearLayout>
 

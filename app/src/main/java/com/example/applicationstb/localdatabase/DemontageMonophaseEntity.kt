@@ -3,11 +3,12 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.DemontageMonophase
 import com.example.applicationstb.model.Triphase
 import java.util.*
 
-@Entity(tableName = "demontage_triphase")
-data class DemontageTriphaseEntity(
+@Entity(tableName = "demontage_monophase")
+data class DemontageMonophaseEntity(
     @PrimaryKey var _id: String,
     var numDevis: String?,
     var numFiche: String?,
@@ -55,25 +56,15 @@ data class DemontageTriphaseEntity(
     var typeSondes: String?,
     var equilibrage: Boolean?,
     var peinture: String?,
-    var isolementPhaseMasseStatorUM: Float?,
-    var isolementPhaseMasseStatorVM: Float?,
-    var isolementPhaseMasseStatorWM: Float?,
-    var isolementPhasePhaseStatorUV: Float?,
-    var isolementPhasePhaseStatorVW: Float?,
-    var isolementPhasePhaseStatorUW: Float?,
-    var resistanceStatorU: Float?,
-    var resistanceStatorV: Float?,
-    var resistanceStatorW: Float?,
-    var tensionU: Float?,
-    var tensionV: Float?,
-    var tensionW: Float?,
-    var intensiteU: Float?,
-    var intensiteV: Float?,
-    var intensiteW: Float?,
-    var dureeEssai: Float?,
+    var isolementPhaseMasse: Float?,
+    var resistanceTravail	: Float?,
+    var resistanceDemarrage	: Float?,
+    var valeurCondensateur	: Float?,
+    var tension	: Float?,
+    var intensite	: Float?
 ) {
-    fun toTriphase(): Triphase {
-        var fiche = Triphase(
+    fun toMonophase(): DemontageMonophase {
+        var fiche = DemontageMonophase(
             _id,
             numDevis,
             numFiche,
@@ -124,22 +115,12 @@ data class DemontageTriphaseEntity(
             typeSondes,
             equilibrage,
             peinture,
-            isolementPhaseMasseStatorUM,
-            isolementPhaseMasseStatorVM,
-            isolementPhaseMasseStatorWM,
-            isolementPhasePhaseStatorUV,
-            isolementPhasePhaseStatorVW,
-            isolementPhasePhaseStatorUW,
-            resistanceStatorU,
-            resistanceStatorV,
-            resistanceStatorW,
-            tensionU,
-            tensionV,
-            tensionW,
-            intensiteU,
-            intensiteV,
-            intensiteW,
-            dureeEssai)
+            isolementPhaseMasse,
+        resistanceTravail	,
+        resistanceDemarrage	,
+        valeurCondensateur	,
+        tension	,
+        intensite)
         return fiche
     }
 }

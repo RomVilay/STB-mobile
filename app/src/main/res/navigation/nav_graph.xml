@@ -42,6 +42,18 @@
         <action
             android:id="@+id/versFullScreen"
             app:destination="@id/schemaFragment" />
+        <argument android:name="token"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="listDemontages"
+            app:argType="com.example.applicationstb.model.DemontageMoteur[]" />
+        <action
+            android:id="@+id/action_ficheDemontage_to_ficheRemontage"
+            app:destination="@id/ficheRemontage" />
     </fragment>
     <fragment
         android:id="@+id/connexion"
@@ -111,6 +123,18 @@
         <action
             android:id="@+id/action_ficheRemontage_to_ficheDemontage"
             app:destination="@id/ficheDemontage" />
+        <argument
+            android:name="token"
+            app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="listRemontages"
+            app:argType="com.example.applicationstb.model.Remontage[]" />
+        <action
+            android:id="@+id/deRemoVersFScreen"
+            app:destination="@id/schemaFragment" />
     </fragment>
     <fragment
         android:id="@+id/schemaFragment"

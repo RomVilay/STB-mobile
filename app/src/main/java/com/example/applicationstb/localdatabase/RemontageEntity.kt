@@ -1,15 +1,12 @@
 package com.example.applicationstb.localdatabase
 
 import androidx.room.Entity
-import androidx.room.TypeConverter
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
-import com.example.applicationstb.model.CourantContinu
-import com.example.applicationstb.model.RemontageCourantC
-import java.util.*
+import com.example.applicationstb.model.Remontage
 
-@Entity(tableName = "remontage_cc")
-data class RemontageCCEntity (
+@Entity(tableName = "remontage")
+data class RemontageEntity (
     @PrimaryKey var _id:String,
     var numDevis:String?,
     var numFiche: String?,
@@ -20,6 +17,7 @@ data class RemontageCCEntity (
     var telContact: String?,
     var dureeTotale: Long?,
     var observation: String?,
+    var typeFicheRemontage: Int?,
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementPorteeFlasque: Int?,
@@ -27,7 +25,6 @@ data class RemontageCCEntity (
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
     var isolementPorteBalaisOhm: Float?,
-    // essais dynamiques
     var tensionStator:Boolean?,
     var tensionStatorU:Float?,
     var tensionStatorV:Float?,
@@ -70,17 +67,9 @@ data class RemontageCCEntity (
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
-    var resistanceInducteurs: Float?,
-    var resistanceInduit: Float?,
-    var isolementInducteursMasse: Float?,
-    var isolementInduitMasse: Float?,
-    var isolementInduitInducteurs: Float?,
-    var releveIsoInducteursMasse: Float?,
-    var releveIsoInduitMasse: Float?,
-    var releveIsoInduitInducteurs: Float?,
 ){
-    fun toRCourantC() : RemontageCourantC {
-        return RemontageCourantC(
+    fun toRemo(): Remontage{
+        return Remontage(
             _id,
             numDevis!!,
             numFiche!!,
@@ -95,13 +84,14 @@ data class RemontageCCEntity (
             dureeTotale,
             observation,
             null,
+            typeFicheRemontage,
             remontageRoulement,
-        collageRoulementPorteeArbre,
-        collageRoulementPorteeFlasque,
-        verificationFixationCouronne,
-        verificationIsolementPorteBalais,
-        isolementPorteBalaisV,
-        isolementPorteBalaisOhm,
+            collageRoulementPorteeArbre,
+            collageRoulementPorteeFlasque,
+            verificationFixationCouronne,
+            verificationIsolementPorteBalais,
+            isolementPorteBalaisV,
+            isolementPorteBalaisOhm,
             tensionStator,
             tensionStatorU,
             tensionStatorV,
@@ -126,31 +116,22 @@ data class RemontageCCEntity (
             tensionRotorU,
             tensionRotorV,
             tensionRotorW,
-        intensiteInduit,
-        intensiteInduitU,
-        vitesseU,
-        puissanceU,
-        dureeEssai,
-        sensRotation,
-//essais vibratoires
-        vitesse1V,  // vitesse 1v
-        acceleration1V,  //accélération 1v
-        vitesse2V,  // vitesse 2v
-        acceleration2V,  //accélération 2v
-        vitesse1H,  // vitesse 1H
-        acceleration1H,  //accélération 1H
-        vitesse2H,  // vitesse 2H
-        acceleration2H,  //accélération 2H
-        vitesse2A,  // vitesse 2acceleration
-        acceleration2A,  //accélération 2A
-         resistanceInducteurs,
-         resistanceInduit,
-         isolementInducteursMasse,
-         isolementInduitMasse,
-         isolementInduitInducteurs,
-         releveIsoInducteursMasse,
-         releveIsoInduitMasse,
-         releveIsoInduitInducteurs
+            intensiteInduit,
+            intensiteInduitU,
+            vitesseU,
+            puissanceU,
+            dureeEssai,
+            sensRotation,
+            vitesse1V,  // vitesse 1v
+            acceleration1V,  //accélération 1v
+            vitesse2V,  // vitesse 2v
+            acceleration2V,  //accélération 2v
+            vitesse1H,  // vitesse 1H
+            acceleration1H,  //accélération 1H
+            vitesse2H,  // vitesse 2H
+            acceleration2H,  //accélération 2H
+            vitesse2A,  // vitesse 2A
+            acceleration2A,  //accélération 2A
         )
     }
 }

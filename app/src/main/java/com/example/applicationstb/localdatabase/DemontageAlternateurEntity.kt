@@ -3,11 +3,12 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.DemontageAlternateur
 import com.example.applicationstb.model.Triphase
 import java.util.*
 
-@Entity(tableName = "demontage_triphase")
-data class DemontageTriphaseEntity(
+@Entity(tableName = "demontage_alternateur")
+data class DemontageAlternateurEntity(
     @PrimaryKey var _id: String,
     var numDevis: String?,
     var numFiche: String?,
@@ -19,7 +20,7 @@ data class DemontageTriphaseEntity(
     var dureeTotale: Long?,
     var observation: String?,
     var typeFicheDemontage: Int,
-    var typeMoteur: String?,
+    var typeMoteur:String?,
     var marque: String?,
     var numSerie: String?,
     var puissance: Float?,
@@ -55,25 +56,33 @@ data class DemontageTriphaseEntity(
     var typeSondes: String?,
     var equilibrage: Boolean?,
     var peinture: String?,
-    var isolementPhaseMasseStatorUM: Float?,
-    var isolementPhaseMasseStatorVM: Float?,
-    var isolementPhaseMasseStatorWM: Float?,
-    var isolementPhasePhaseStatorUV: Float?,
-    var isolementPhasePhaseStatorVW: Float?,
-    var isolementPhasePhaseStatorUW: Float?,
-    var resistanceStatorU: Float?,
-    var resistanceStatorV: Float?,
-    var resistanceStatorW: Float?,
-    var tensionU: Float?,
-    var tensionV: Float?,
-    var tensionW: Float?,
-    var intensiteU: Float?,
-    var intensiteV: Float?,
-    var intensiteW: Float?,
-    var dureeEssai: Float?,
+    var isolementMasseStatorPrincipalU: Float?,
+    var isolementMasseStatorPrincipalV: Float?,
+    var isolementMasseStatorPrincipalW	: Float?,
+    var isolementMasseRotorPrincipal	: Float?,
+    var isolementMasseStatorExcitation	: Float?,
+    var isolementMasseRotorExcitation:Float?,
+    var resistanceStatorPrincipalU	: Float?,
+    var resistanceStatorPrincipalV	: Float?,
+    var resistanceStatorPrincipalW	: Float?,
+    var resistanceRotorPrincipal	: Float?,
+    var resistanceStatorExcitation	: Float?,
+    var resistanceRotorExcitation	: Float?,
+    var isolementPhasePhaseStatorPrincipalUV	: Float?,
+    var isolementPhasePhaseStatorPrincipalVW	: Float?,
+    var isolementPhasePhaseStatorPrincipalUW	: Float?,
+    var testDiode : Boolean?,
+    var tensionU	: Float?,
+    var tensionV	: Float?,
+    var tensionW	: Float?,
+    var intensiteU	: Float?,
+    var intensiteV	: Float?,
+    var intensiteW	: Float?,
+    var tensionExcitation	: Float?,
+    var intensiteExcitation	: Float?,
 ) {
-    fun toTriphase(): Triphase {
-        var fiche = Triphase(
+    fun toDemontageAlternateur(): DemontageAlternateur {
+        var fiche = DemontageAlternateur(
             _id,
             numDevis,
             numFiche,
@@ -124,22 +133,30 @@ data class DemontageTriphaseEntity(
             typeSondes,
             equilibrage,
             peinture,
-            isolementPhaseMasseStatorUM,
-            isolementPhaseMasseStatorVM,
-            isolementPhaseMasseStatorWM,
-            isolementPhasePhaseStatorUV,
-            isolementPhasePhaseStatorVW,
-            isolementPhasePhaseStatorUW,
-            resistanceStatorU,
-            resistanceStatorV,
-            resistanceStatorW,
-            tensionU,
-            tensionV,
-            tensionW,
-            intensiteU,
-            intensiteV,
-            intensiteW,
-            dureeEssai)
+             isolementMasseStatorPrincipalU,
+         isolementMasseStatorPrincipalV,
+         isolementMasseStatorPrincipalW,
+         isolementMasseRotorPrincipal,
+         isolementMasseStatorExcitation,
+         isolementMasseRotorExcitation,
+         resistanceStatorPrincipalU,
+         resistanceStatorPrincipalV,
+         resistanceStatorPrincipalW,
+         resistanceRotorPrincipal,
+         resistanceStatorExcitation,
+         resistanceRotorExcitation,
+         isolementPhasePhaseStatorPrincipalUV,
+         isolementPhasePhaseStatorPrincipalVW,
+         isolementPhasePhaseStatorPrincipalUW,
+         testDiode,
+         tensionU,
+         tensionV,
+         tensionW,
+         intensiteU,
+         intensiteV,
+         intensiteW,
+         tensionExcitation,
+         intensiteExcitation)
         return fiche
     }
 }

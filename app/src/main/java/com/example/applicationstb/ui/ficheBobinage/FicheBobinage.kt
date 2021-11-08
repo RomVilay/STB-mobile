@@ -3,7 +3,6 @@ package com.example.applicationstb.ui.ficheBobinage
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,9 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.marginTop
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
-import com.example.applicationstb.model.Fiche
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -45,18 +47,6 @@ class FicheBobinage : Fragment() {
     private  val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
-
-    /*private val requestPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Log.i("Permission: ", "Granted")
-            } else {
-                Log.i("Permission: ", "Denied")
-            }
-        }*/
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +58,7 @@ class FicheBobinage : Fragment() {
         viewModel.listeBobinage = list.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
+        var scrollBobi = layout.findViewById<ScrollView>(R.id.scrollBobi)
         //viewModel = ViewModelProvider(this).get(FicheBobinageViewModel::class.java)
 
         //champs détails
@@ -88,7 +79,7 @@ class FicheBobinage : Fragment() {
         var switch = layout.findViewById<Switch>(R.id.callage)
         var dates = layout.findViewById<LinearLayout>(R.id.dates)
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
-        var details = layout.findViewById<TextView>(R.id.details)
+        var details = layout.findViewById<TextView>(R.id.titreDetails)
         val adapter = FillAdapter(viewModel.sections!!.value!!)
         val sAdapter = schemaAdapter(viewModel.schemas.value!! ,{ item ->
             viewModel.setSchema(item)
@@ -96,6 +87,7 @@ class FicheBobinage : Fragment() {
         })
         var visibility = View.VISIBLE
         //champs fils
+        var linscroll = layout.findViewById<LinearLayout>(R.id.linscroll)
         var btnfils = layout.findViewById<Button>(R.id.ajoutFil)
         var diam = layout.findViewById<EditText>(R.id.diam)
         var nbBrins = layout.findViewById<EditText>(R.id.nbfils)
@@ -116,6 +108,7 @@ class FicheBobinage : Fragment() {
         var spire = layout.findViewById<EditText>(R.id.spire)
         var enrg = layout.findViewById<Button>(R.id.enregistrer)
         var quit = layout.findViewById<Button>(R.id.quit)
+        var term = layout.findViewById<Button>(R.id.termB)
         if (activity?.let { ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.CAMERA) }
                 == PackageManager.PERMISSION_DENIED)
             this.activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.CAMERA), PHOTO_RESULT) }
@@ -130,61 +123,93 @@ class FicheBobinage : Fragment() {
         schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
         viewModel.schemas.observe(viewLifecycleOwner, {
-          /*  sAdapter.update(it)
-            if ( viewModel.schemas.value?.size == 0){
-                schemas.visibility = View.GONE
+            Log.i("INFO",viewModel.schemas.value?.size.toString())
+            if (viewModel.schemas.value !== null) {
+                sAdapter.update(viewModel.schemas.value!!)
+                if (viewModel.schemas.value?.size == 0) {
+                    schemas.visibility = View.GONE
+                } else {
+                    schemas.visibility = View.VISIBLE
+                }
             } else {
-                schemas.visibility = View.VISIBLE
-            }*/
-        })
-        viewModel.bobinage.observe(viewLifecycleOwner,{
-            var bobinage = viewModel.bobinage.value
-            if (bobinage != null) {
-                marque.setText(bobinage?.marqueMoteur)
-                if (bobinage.courant!== null) {courant.setText(bobinage?.courant.toString())} //
-                if (bobinage.vitesse!== null) {vitesse.setText(bobinage?.vitesse.toString())} //
-                type.setText(bobinage?.typeBobinage)
-                client.setText(bobinage?.client?.enterprise)
-                if (bobinage.puissance!== null) {puissance.setText(bobinage?.puissance.toString())} //
-                if (bobinage.phases!== null) {phases.setText(bobinage?.phases.toString())} //
-                if (bobinage.frequences!== null) {frequence.setText(bobinage?.frequences.toString())} //
-                if(bobinage.calageEncoches !== null) {switch.setChecked(bobinage.calageEncoches!!)} else switch.setChecked(false)
-                tension.setText(bobinage?.tension.toString())
-                adapter.list = bobinage.sectionsFils!!
-                if (bobinage.nbSpires!== null) {spire.setText(bobinage?.nbSpires.toString())}
-                poids.setText(bobinage?.poids.toString())
-                RU.setText(bobinage?.resistanceU.toString())
-                RV.setText(bobinage?.resistanceV.toString())
-                RW.setText(bobinage?.resistanceW.toString())
-                IU.setText(bobinage?.isolementUT.toString())
-                IV.setText(bobinage?.isolementVT.toString())
-                IW.setText(bobinage?.isolementWT.toString())
-                IIU.setText(bobinage?.isolementUV.toString())
-                IIV.setText(bobinage?.isolementUW.toString())
-                IIW.setText(bobinage?.isolementVW.toString())
-                obs.setText(bobinage?.observations.toString())
-                var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
-                dated.setText( bobinage?.dateDebut!!.toLocaleString())
+                viewModel.schemas.value = mutableListOf()
             }
-            /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
-            dateDebut.setText(LocalDateTime.now().format(format))*/
         })
 
+            /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
+            dateDebut.setText(LocalDateTime.now().format(format))*/
+
         btnSelect.setOnClickListener {
-            var bobinage = viewModel.listeBobinage.find{it.numFiche == spinner.selectedItem}
-            viewModel.bobinage.value = bobinage
-            viewModel.sections.value = bobinage?.sectionsFils
-            viewModel.schemas.value = bobinage?.schemas
-            //viewModel.selectBobinage(bobinage!!._id)
-            /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            if (spinner.selectedItem == null) {
+                val mySnackbar = Snackbar.make(
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
+                    "Veuillez sélectionner une fiche",
+                    3600
+                )
+                mySnackbar.show()
+            } else {
+                scrollBobi.visibility = View.VISIBLE
+                viewModel.start.value = Date()
+                var bobinage = viewModel.listeBobinage.find { it.numFiche == spinner.selectedItem }
+                viewModel.bobinage.value = bobinage
+                viewModel.sections.value = bobinage?.sectionsFils
+                viewModel.schemas.value = bobinage?.schemas
+                if (bobinage != null) {
+                    marque.setText(bobinage?.marqueMoteur)
+                    if (bobinage.courant !== null) {
+                        courant.setText(bobinage?.courant.toString())
+                    } //
+                    if (bobinage.vitesse !== null) {
+                        vitesse.setText(bobinage?.vitesse.toString())
+                    } //
+                    type.setText(bobinage?.typeBobinage)
+                    client.setText(bobinage?.client?.enterprise)
+                    if (bobinage.puissance !== null) {
+                        puissance.setText(bobinage?.puissance.toString())
+                    } //
+                    if (bobinage.phases !== null) {
+                        phases.setText(bobinage?.phases.toString())
+                    } //
+                    if (bobinage.frequences !== null) {
+                        frequence.setText(bobinage?.frequences.toString())
+                    } //
+                    if (bobinage.calageEncoches !== null) {
+                        switch.setChecked(bobinage.calageEncoches!!)
+                    } else switch.setChecked(false)
+                    if (bobinage.tension !== null) tension.setText(bobinage?.tension.toString())
+                    adapter.list = bobinage.sectionsFils!!
+                    if (bobinage.nbSpires !== null) {
+                        spire.setText(bobinage?.nbSpires.toString())
+                    }
+                    if (bobinage.poids !== null) poids.setText(bobinage?.poids.toString())
+                    if (bobinage.resistanceU !== null) {
+                        RU.setText(bobinage?.resistanceU.toString())
+                    }
+                    if (bobinage.resistanceV !== null) RV.setText(bobinage?.resistanceV.toString())
+                    if (bobinage.resistanceW !== null) RW.setText(bobinage?.resistanceW.toString())
+                    if (bobinage.isolementUT !== null) IU.setText(bobinage?.isolementUT.toString())
+                    if (bobinage.isolementVT !== null) IV.setText(bobinage?.isolementVT.toString())
+                    if (bobinage.isolementWT !== null) IW.setText(bobinage?.isolementWT.toString())
+                    if (bobinage.isolementUV !== null) IIU.setText(bobinage?.isolementUV.toString())
+                    if (bobinage.isolementUW !== null) IIV.setText(bobinage?.isolementUW.toString())
+                    if (bobinage.isolementVW !== null) IIW.setText(bobinage?.isolementVW.toString())
+                    if (bobinage.observations !== null) obs.setText(bobinage?.observations.toString())
+                    var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
+                    if (bobinage.dateDebut !== null) dated.setText(bobinage?.dateDebut!!.toLocaleString())
+                }
+                //viewModel.selectBobinage(bobinage!!._id)
+                /*var format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
             dated.setText(LocalDateTime.now().format(format))*/
+            }
         }
 
         details.setOnClickListener {
             if (visibility == View.GONE){
                 visibility = View.VISIBLE
+                details.setText("masquer les détails")
             } else {
                 visibility = View.GONE
+                details.setText("afficher les détails")
             }
             non.visibility = visibility
             client.visibility = visibility
@@ -203,13 +228,21 @@ class FicheBobinage : Fragment() {
             Log.i("INFO", "change")
         }
         btnfils.setOnClickListener {
-            viewModel.addSection(nbBrins.text.toString().toLong(),diam.text.toString().toDouble())
-            var s = viewModel.somme(viewModel.sections.value!!)
-            som.setText(s.toString())
-            //Log.i("INFO",viewModel.somme(viewModel.sections.value!!).toString())
+            if (nbBrins.text.isNotEmpty() && diam.text.isNotEmpty()) {
+                viewModel.addSection(
+                    nbBrins.text.toString().toLong(),
+                    diam.text.toString().toDouble()
+                )
+                var s = viewModel.somme(viewModel.sections.value!!)
+                som.setText(s.toString())
+                viewModel.quickSave()
+            } else {
+                val mySnackbar = Snackbar.make(layout,"Veuillez préciser le nombre de brins et le diamètre de la section", 3600)
+                mySnackbar.show()
+            }
         }
         addschema.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             Log.i("INFO",test.toString())
             if (test == false) {
@@ -219,7 +252,7 @@ class FicheBobinage : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -231,104 +264,168 @@ class FicheBobinage : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                        //viewModel.addSchema(photoURI)
                         Log.i("INFO",currentPhotoPath)
                     }
                 }
             }
-            /*if ()
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
-                        // Ensure that there's a camera activity to handle the intent
-                        cameraIntent.resolveActivity(activity!!.packageManager).also {
-                            // Create the File where the photo should go
-                            val photoFile: File? = try {
-                                createImageFile()
-                            } catch (ex: IOException ) {
-                                // Error occurred while creating the File
-                                Log.i("INFO","error while creating file: "+ ex)
-                                null
-                            }
-                            // Continue only if the File was successfully created
-                            photoFile?.also {
-                                val photoURI: Uri = FileProvider.getUriForFile(
-                                    context!!,
-                                    "com.example.applicationstb.fileprovider",
-                                    it
-                                )
-                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                                //viewModel.addSchema(photoURI)
-                                Log.i("INFO",currentPhotoPath)
-                            }
-                        } ()
-                }
-
-                ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )  -> {
-                        //requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-
-                else -> {
-                        requestPermissionLauncher.launch(
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                }
+        }
+        marque.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
             }
-
-
+        }
+        courant.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
             }
-            //startActivityForResult(cameraIntent, PHOTO_RESULT)*/
+        }
+        client.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
+            }
+        }
+        type.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 120
+                linscroll.layoutParams = margins
+            } else{
+                var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
+                margins.topMargin = 0
+                linscroll.layoutParams = margins
+            }
+        }
+        marque.doAfterTextChanged {
+            if (marque.text.isNotEmpty() && marque.hasFocus()) {
+                viewModel.bobinage.value!!.marqueMoteur = marque.text.toString()
+                viewModel.quickSave()
+            }
+        }
+        courant.doAfterTextChanged {
+            if (courant.text.isNotEmpty()) viewModel.bobinage.value!!.courant = courant.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        vitesse.doAfterTextChanged {
+            if (vitesse.text.isNotEmpty()) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        type.doAfterTextChanged {
+            if (type.text.isNotEmpty()) viewModel.bobinage.value!!.typeBobinage = type.text.toString()
+            viewModel.quickSave()
+        }
+        phases.doAfterTextChanged {
+            if (phases.text.isNotEmpty()) viewModel.bobinage.value!!.phases = phases.text.toString().toLong()
+            viewModel.quickSave()
+        }
+        frequence.doAfterTextChanged {
+            if (frequence.text.isNotEmpty()) viewModel.bobinage.value!!.frequences = frequence.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        puissance.doAfterTextChanged {
+            if (puissance.text.isNotEmpty()) viewModel.bobinage.value!!.puissance = puissance.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.bobinage.value!!.calageEncoches = isChecked
+            viewModel.quickSave()
+        }
+        tension.doAfterTextChanged {
+            if (tension.text.isNotEmpty()) viewModel.bobinage.value!!.tension = tension.text.toString().toLong()
+        }
+
+        spire.doAfterTextChanged {
+            if (spire.text.isNotEmpty()) viewModel.bobinage.value!!.nbSpires = spire.text.toString().toLong()
+            viewModel.quickSave()
+        }
+        poids.doAfterTextChanged {
+            if (poids.text.isNotEmpty()) viewModel.bobinage.value!!.poids = poids.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        RU.doAfterTextChanged {
+            if(RU.text.isNotEmpty()) viewModel.bobinage.value!!.resistanceU = RU.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        RV.doAfterTextChanged {
+            if(RV.text.isNotEmpty()) viewModel.bobinage.value!!.resistanceV = RV.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        RW.doAfterTextChanged {
+            if (RW.text.isNotEmpty()) viewModel.bobinage.value!!.resistanceW = RW.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        IU.doAfterTextChanged {
+            if (IU.text.isNotEmpty()) viewModel.bobinage.value!!.isolementUT = IU.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        IV.doAfterTextChanged {
+             if (IV.text.isNotEmpty()) viewModel.bobinage.value!!.isolementVT = IV.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+        IW.doAfterTextChanged {
+            if (IW.text.isNotEmpty()) viewModel.bobinage.value!!.isolementWT = IW.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+         IIU.doAfterTextChanged {
+             if (IIU.text.isNotEmpty()) viewModel.bobinage.value!!.isolementUV =  IIU.text.toString().toFloat()
+             viewModel.quickSave()
+         }
+        IIV.doAfterTextChanged {
+            if (IIV.text.isNotEmpty()) viewModel.bobinage.value!!.isolementUW =   IIV.text.toString().toFloat()
+            viewModel.quickSave()
+        }
+         IIW.doAfterTextChanged {
+             if (IIW.text.isNotEmpty()) viewModel.bobinage.value!!.isolementVW =  IIW.text.toString().toFloat()
+             viewModel.quickSave()
+         }
+        obs.doAfterTextChanged {
+            viewModel.bobinage.value!!.observations = obs.text.toString()
+            viewModel.quickSave()
+        }
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.bobinage.value!!.calageEncoches = isChecked
+            viewModel.quickSave()
         }
         quit.setOnClickListener {
             viewModel.back(layout)
         }
         enrg.setOnClickListener {
-            /*if (IU == null) {
-                Snackbar.make(
-                    layout.findViewById(R.id.FicheBobinageLayout),
-                    "veuilleza définir une valeur pour la résistance",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }*/
-            var bobi = viewModel.bobinage.value
-            bobi!!.marqueMoteur = marque.text.toString()
-            bobi!!.typeBobinage = type.text.toString()
-            bobi!!.vitesse = if (vitesse.text.isNotEmpty()) vitesse.text.toString().toFloat() else bobi!!.vitesse
-            bobi!!.puissance = if (puissance.text.isNotEmpty()) puissance.text.toString().toFloat() else bobi!!.puissance
-            bobi!!.phases = if (phases.text.isNotEmpty()) phases.text.toString().toLong() else bobi!!.phases
-            bobi!!.frequences = if (frequence.text.isNotEmpty()) frequence.text.toString().toFloat() else bobi!!.frequences
-            bobi!!.courant = if (courant.text.isNotEmpty()) courant.text.toString().toFloat() else bobi!!.courant
-            bobi!!.nbSpires = if (spire.text.isNotEmpty()) spire.text.toString().toLong() else bobi!!.nbSpires
-            bobi!!.poids = if (poids.text.isNotEmpty()) poids.text.toString().toFloat() else bobi!!.poids
-            bobi!!.resistanceU = if(RU.text.isNotEmpty()) RU.text.toString().toFloat() else bobi!!.resistanceU
-            bobi!!.resistanceV = if(RV.text.isNotEmpty()) RV.text.toString().toFloat() else bobi!!.resistanceV
-            bobi!!.resistanceW = if (RW.text.isNotEmpty()) RW.text.toString().toFloat() else bobi!!.resistanceW
-            bobi!!.isolementUT = if (IU.text.isNotEmpty()) IU.text.toString().toFloat() else bobi!!.isolementUT
-            bobi!!.isolementVT = if (IV.text.isNotEmpty()) IV.text.toString().toFloat() else bobi!!.isolementVT
-            bobi!!.isolementWT = if (IW.text.isNotEmpty()) IW.text.toString().toFloat() else bobi!!.isolementWT
-            bobi!!.isolementUV = if (IIU.text.isNotEmpty()) IIU.text.toString().toFloat() else bobi!!.isolementUV
-            bobi!!.isolementUW =  if (IIV.text.isNotEmpty()) IIV.text.toString().toFloat() else bobi!!.isolementUW
-            bobi!!.isolementVW = if (IIW.text.isNotEmpty()) IIW.text.toString().toFloat() else bobi!!.isolementVW
-            bobi!!.observations = obs.text.toString()
-            bobi!!.status = 2L
-            bobi!!.calageEncoches = switch.isChecked()
-            bobi!!.sectionsFils = viewModel.sections.value
-            viewModel.bobinage.value = bobi
-            Log.i("INFO","iUT: ${bobi.isolementUT}")
-            viewModel.save(context!!)
+            viewModel.bobinage.value!!.status = 2L
+            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
+            viewModel.getTime()
+            Log.i("INFO","duree: ${viewModel.bobinage.value!!.dureeTotale}")
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
+        }
+
+        term.setOnClickListener {
+            viewModel.bobinage.value!!.status = 3L
+            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
+            viewModel.getTime()
+            Log.i("INFO","duree: ${viewModel.bobinage.value!!.dureeTotale}")
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
         return layout
     }
@@ -344,15 +441,33 @@ class FicheBobinage : Fragment() {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+                schemas.visibility = View.VISIBLE
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+                schemas.visibility = View.VISIBLE
+            }
         }
+    }
+
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 
     /*private fun galleryAddPic() {
@@ -364,19 +479,19 @@ class FicheBobinage : Fragment() {
     }*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PHOTO_RESULT) {
+        /*if (requestCode == PHOTO_RESULT) {
             val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            /*val uri = context?.let { photo.saveImage(it.applicationContext) }
+            val uri = context?.let { photo.saveImage(it.applicationContext) }
             if (uri != null) {
-                viewModel.addSchema(uri)
+                viewModel.addSchema(0,uri)
             }
-            Log.i("INFO",uri.toString())*/
-        }
+            Log.i("INFO",uri.toString())
+        }*/
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            viewModel.addSchema(Uri.parse(currentPhotoPath))
+            viewModel.addSchema(0,Uri.parse(currentPhotoPath))
             //galleryAddPic()
         }
     }

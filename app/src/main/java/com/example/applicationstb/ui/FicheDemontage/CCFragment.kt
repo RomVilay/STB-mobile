@@ -1,9 +1,12 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -15,8 +18,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -48,6 +54,8 @@ class CCFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,20 +78,199 @@ class CCFragment : Fragment() {
         var vV = layout.findViewById<EditText>(R.id.vV)     //tension excitation
         var vUI = layout.findViewById<EditText>(R.id.vUI)   //intensité induit
         var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
-       /* if (viewModel.selection.value.javaClass is CourantContinu){
-            var fiche: CourantContinu? = viewModel.selection.value as CourantContinu
-            isopmu.setText(fiche.isoMass[0])
-            isopmv.setText(fiche.isoMass[1])
-            isopmw.setText(fiche.isoMass[2])
-
-        }*/
-
+        var enr = layout.findViewById<Button>(R.id.enregistrerCC)
+        var ter = layout.findViewById<Button>(R.id.termCC)
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
+        var observations = layout.findViewById<EditText>(R.id.observations)
+        var retour = layout.findViewById<Button>(R.id.retourCC)
+        retour.setOnClickListener {
+            if (viewModel.selection.value?.status == 3L){
+                activity?.onBackPressed()
+            } else {
+                viewModel.back(layout)
+            }
+        }
+        var fiche = viewModel.selection.value!! as CourantContinu
+            if(fiche.isolationMasseInduit !== null )isopmu.setText(fiche.isolationMasseInduit.toString())
+            if(fiche.isolationMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolationMassePolesPrincipaux.toString())  //pole principal
+            if(fiche.isolationMassePolesAuxilliaires !== null ) isopmw.setText(fiche.isolationMassePolesAuxilliaires.toString())  //pole auxilliare
+            if(fiche.isolationMassePolesCompensatoires !==null) isoppU.setText(fiche.isolationMassePolesCompensatoires.toString()) // pôle compensatoire
+            if(fiche.isolationMassePorteBalais !== null) isoppV.setText(fiche.isolationMassePorteBalais.toString()) // pôle porte balais
+            //resistances
+             if (fiche.resistanceInduit !== null) rU.setText(fiche.resistanceInduit.toString())    //résistance Induit
+             if (fiche.resistancePP !== null) rV.setText(fiche.resistancePP.toString())    // résistance pôle principal
+             if (fiche.resistancePA !== null) rI.setText(fiche.resistancePA.toString())    //resistance pôle auxilliaire
+             if (fiche.resistancePC !== null) rPP.setText(fiche.resistancePC.toString())   // resistance pôle compensatoire
+            // essais dynamiques
+             if (fiche.tensionInduit !== null) vU.setText(fiche.tensionInduit.toString())    //tension induit
+             if (fiche.tensionExcitation !== null) vV.setText(fiche.tensionExcitation.toString())   //tension excitation
+             if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
+             if (fiche.intensiteExcitation !== null )vVI.setText(fiche.intensiteExcitation.toString())
+            if (fiche.observations !== null) observations.setText(fiche.observations.toString())
+        if (fiche.status!! < 3L) {
+            isopmu.doAfterTextChanged {
+                if (isopmu.text.isNotEmpty() && isopmu.hasFocus()) {
+                    fiche.isolationMasseInduit =
+                        isopmu.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isopmv.doAfterTextChanged {
+                if (isopmv.text.isNotEmpty() && isopmv.hasFocus()) {
+                    fiche.isolationMassePolesPrincipaux =
+                        isopmv.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isopmw.doAfterTextChanged {
+                if (isopmw.text.isNotEmpty() && isopmw.hasFocus()) {
+                    fiche.isolationMassePolesAuxilliaires =
+                        isopmw.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isoppU.doAfterTextChanged {
+                if (isoppU.text.isNotEmpty() && isoppU.hasFocus()) {
+                    fiche.isolationMassePolesCompensatoires =
+                        isoppU.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isoppV.doAfterTextChanged {
+                if (isoppV.text.isNotEmpty() && isoppV.hasFocus()) {
+                    fiche.isolationMassePorteBalais =
+                        isoppV.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rU.doAfterTextChanged {
+                if (rU.text.isNotEmpty() && rU.hasFocus()) {
+                    fiche.resistanceInduit = rU.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rI.doAfterTextChanged {
+                if (rI.text.isNotEmpty() && rI.hasFocus()) {
+                    fiche.resistancePA = rI.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rV.doAfterTextChanged {
+                if (rV.text.isNotEmpty() && rV.hasFocus()) {
+                    fiche.resistancePP = rV.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            rPP.doAfterTextChanged {
+                if (rPP.text.isNotEmpty() && rPP.hasFocus()) {
+                    fiche.resistancePC = rPP.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vU.doAfterTextChanged {
+                if (vU.text.isNotEmpty() && vU.hasFocus()) {
+                    fiche.tensionInduit = vU.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vV.doAfterTextChanged {
+                if (vV.text.isNotEmpty() && vV.hasFocus()) {
+                    fiche.tensionExcitation = vV.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vUI.doAfterTextChanged {
+                if (vUI.text.isNotEmpty() && vUI.hasFocus()) {
+                    fiche.intensiteInduit = vUI.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            vVI.doAfterTextChanged {
+                if (vVI.text.isNotEmpty() && vVI.hasFocus()) {
+                    fiche.intensiteExcitation = vVI.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            observations.doAfterTextChanged {
+                if (observations.hasFocus()) {
+                    fiche.observations = observations.text.toString()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+        } else {
+            isopmu.isEnabled = false
+            isopmv.isEnabled = false
+            isopmw.isEnabled = false
+            isoppU.isEnabled = false
+            rU.isEnabled = false
+            rI.isEnabled = false
+            rV.isEnabled = false
+            rPP.isEnabled = false
+            vU.isEnabled = false
+            vV.isEnabled = false
+            vUI.isEnabled = false
+            vVI.isEnabled = false
+            observations.isEnabled = false
+            enr.visibility = View.GONE
+            ter.visibility = View.GONE
+            btnPhoto.visibility = View.INVISIBLE
+        }
+        enr.setOnClickListener {
+            viewModel.getTime()
+            viewModel.selection.value!!.status = 2L
+            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        ter.setOnClickListener {
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            viewModel.selection.value!!.status = 3L
+                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+                alertDialog?.show()
+        }
+
+
+
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,viewModel.schema.value.toString())
+            viewModel.fullScreen(layout,item.toString())
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
@@ -92,7 +279,7 @@ class CCFragment : Fragment() {
         })
 
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(getContext()!!,
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             Log.i("INFO",test.toString())
             if (test == false) {
@@ -103,7 +290,7 @@ class CCFragment : Fragment() {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
                 // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(activity!!.packageManager).also {
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
                     // Create the File where the photo should go
                     val photoFile: File? = try {
                         createImageFile()
@@ -115,7 +302,7 @@ class CCFragment : Fragment() {
                     // Continue only if the File was successfully created
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.applicationstb.fileprovider",
                             it
                         )

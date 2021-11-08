@@ -1,5 +1,7 @@
 package com.example.applicationstb.localdatabase
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -34,6 +36,7 @@ data class ChantierEntity(
     var signatureTech:String?,
     var signatureClient:String?
 ){
+    @RequiresApi(Build.VERSION_CODES.O)
     fun toChantier() : Chantier{
         return Chantier(
             _id,
@@ -41,7 +44,7 @@ data class ChantierEntity(
             numFiche,
             1,
             status,
-            Client(client,null,null,null),
+            Client(client,null,null,null, null),
             contact,
             telContact,
             null,

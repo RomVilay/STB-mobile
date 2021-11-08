@@ -3,6 +3,7 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.CourantContinu
 //import com.example.applicationstb.model.CourantContinu
 import java.util.*
 
@@ -18,10 +19,10 @@ data class DemontageCCEntity (
     var dateDebut: Date?,
     var dureeTotale: Long?,
     var observation: String?,
-    var photo: Array<String>?,
     var typeFicheDemontage: Int,
+    var typeMoteur: String?,
     var marque: String?,
-    var numSerie: Int?,
+    var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
     var vitesse : Float?,
@@ -38,10 +39,10 @@ data class DemontageCCEntity (
     var porteeRArriere:  Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
-    var refRoulementAvant: String?,
-    var refRoulementArriere: String?,
-    var typeRoulementAvant: String ?,
-    var typeRoulementArriere: String ?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
     var refJointAvant: String?,
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
@@ -55,38 +56,38 @@ data class DemontageCCEntity (
     var typeSondes: String?,
     var equilibrage: Boolean?,
     var peinture : String?,
-    var isolationMasseInduit: Int?,
-    var isolationMassePolesPrincipaux: Int?,
-    var isolationMassePolesAuxilliaires: Int?,
-    var isolationMassePolesCompensatoires: Int?,
-    var isolationMassePorteBalais: Int?,
-    var resistanceInduit: Int?,
-    var resistancePP: Int?,
-    var resistancePA: Int?,
-    var resistancePC: Int?,
+    var isolationMasseInduit: Float?,
+    var isolationMassePolesPrincipaux: Float?,
+    var isolationMassePolesAuxilliaires: Float?,
+    var isolationMassePolesCompensatoires: Float?,
+    var isolationMassePorteBalais: Float?,
+    var resistanceInduit: Float?,
+    var resistancePP: Float?,
+    var resistancePA: Float?,
+    var resistancePC: Float?,
     /* essais dynamiques */
-    var tensionInduit: Int?,
-    var intensiteInduit: Int?,
-    var tensionExcitation: Int?,
-    var intensiteExcitation: Int?
+    var tensionInduit: Float?,
+    var intensiteInduit: Float?,
+    var tensionExcitation: Float?,
+    var intensiteExcitation: Float?
     ){
-        /*fun toCContinu (): CourantContinu {
+        fun toCContinu (): CourantContinu {
             var fiche = CourantContinu(
                 _id,
                 numDevis,
                 numFiche,
                 2,
                 statut,
-                Client(client,null,null,null),
+                Client(client,null,null,null, null),
                 contact,
                 telContact,
-                nu,
-                resp,
+                null,
+                null,
                 dateDebut,
                 dureeTotale,
                 observation,
-                photo,
-                typeFicheDemontage,
+                null,
+                typeMoteur,
                 marque,
                 numSerie,
                 puissance,
@@ -138,5 +139,5 @@ data class DemontageCCEntity (
                 intensiteExcitation
             )
             return fiche
-        }*/
+        }
     }
