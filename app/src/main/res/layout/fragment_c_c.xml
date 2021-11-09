@@ -217,13 +217,14 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/titreDyna"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="Essais Dynamiques"
                         android:textSize="24sp"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@+id/resI"
                         tools:layout_editor_absoluteX="0dp" />
 
@@ -348,10 +349,11 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4">
+                        app:layout_constraintTop_toBottomOf="@+id/titreDyna">
 
                         <TextView
                             android:id="@+id/UT"
@@ -411,6 +413,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
