@@ -29,18 +29,19 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.type.text = typeRoulement[position]
-        var test = refRoulement[position].length
-        Log.i("INFO","${test} -${refRoulement[position]} ")
-        if(refRoulement[position].length !== 0) holder.ref.text = refRoulement[position] else holder.ref.text ="N/A"
-        holder.suppr.setOnClickListener {
-            var tab = typeRoulement.toMutableList()
-            var tab2 = refRoulement.toMutableList()
-            tab.removeAt(position)
-            tab2.removeAt(position)
-            callback(position)
-            notifyItemRemoved(position)
-            update(tab.toTypedArray(),tab2.toTypedArray())
+        if (typeRoulement.size > 0) {
+            holder.type.text = typeRoulement[position]
+            if (refRoulement[position].length > 0 && refRoulement[position] !== null) holder.ref.text =
+                refRoulement[position] else holder.ref.text = "N/A"
+            holder.suppr.setOnClickListener {
+                var tab = typeRoulement.toMutableList()
+                var tab2 = refRoulement.toMutableList()
+                tab.removeAt(position)
+                tab2.removeAt(position)
+                callback(position)
+                notifyItemRemoved(position)
+                update(tab.toTypedArray(), tab2.toTypedArray())
+            }
         }
     }
 
@@ -50,7 +51,6 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
     fun update(types:Array<String>,refs:Array<String>){
         this.typeRoulement = types
         this.refRoulement = refs
-        Log.i("INFO","taille ${typeRoulement.size}")
         notifyDataSetChanged()
     }
 }

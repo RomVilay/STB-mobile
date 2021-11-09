@@ -203,26 +203,80 @@ class MecaFragment : Fragment() {
                 refRoul.setText(fiche.refRoulementAvant!![0])}
         switchRoullements.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                var type = if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
-                typeRoulement.setSelection(type)
-                refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
-                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
-                    viewModel.selection.value!!.typeRoulementArriere =
-                        removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                    viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                    viewModel.getTime()
-                    viewModel.localSave()
+                if (viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size > 0) {
+                    var type =
+                        if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>(
+                            "2Z/ECJ",
+                            "2RS/ECP",
+                            "C3",
+                            "M"
+                        ).indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
+                    typeRoulement.setSelection(type)
+                    refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
+                    specsRoul.adapter = roulementAdapter(
+                        viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
+                        viewModel.selection.value!!.refRoulementArriere!!
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
+                    typeRoulement.setSelection(0)
+                    refRoul.setText("")
+                    specsRoul.adapter = roulementAdapter(
+                        arrayOf(),
+                        arrayOf()
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
                 }
             } else {
-                var type = if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M").indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
-                typeRoulement.setSelection(type)
-                refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
-                specsRoul.adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementAvant!!,viewModel.selection.value!!.refRoulementAvant!!) { item ->
-                    viewModel.selection.value!!.typeRoulementAvant =
-                        removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                    viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                    viewModel.getTime()
-                    viewModel.localSave()
+                if (viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.size > 0) {
+                    var type =
+                        if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>(
+                            "2Z/ECJ",
+                            "2RS/ECP",
+                            "C3",
+                            "M"
+                        ).indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
+                    typeRoulement.setSelection(type)
+                    refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
+                    specsRoul.adapter = roulementAdapter(
+                        viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
+                        viewModel.selection.value!!.refRoulementAvant!!
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                        viewModel.selection.value!!.refRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
+                    typeRoulement.setSelection(0)
+                    refRoul.setText("")
+                    specsRoul.adapter = roulementAdapter(
+                        arrayOf(),
+                        arrayOf()
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
                 }
             }
         }
@@ -232,7 +286,6 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeRoulement.selectedItem.toString()
-                Log.i("INFO", "position ${position}")
                 if (position > 0) {
                     if (switchRoullements.isChecked) {
                         if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
@@ -253,7 +306,7 @@ class MecaFragment : Fragment() {
                             )
                         }
                         specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementArriere!!,
+                            fiche.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
                             fiche.refRoulementArriere!!
                         ) { item ->
                             viewModel.selection.value!!.typeRoulementArriere =
@@ -292,7 +345,7 @@ class MecaFragment : Fragment() {
                         viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
                     }*/
                         specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementAvant!!,
+                            fiche.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
                             fiche.refRoulementAvant!!
                         ) { item ->
                             viewModel.selection.value!!.typeRoulementAvant =
@@ -349,7 +402,6 @@ class MecaFragment : Fragment() {
             }
         }
         //joints
-        Log.i("INFO","joints ar ${viewModel.selection.value!!.typeJointArriere} - joints av ${viewModel.selection.value!!.typeJointAvant}")
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
         var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
