@@ -250,13 +250,14 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/titreDyna"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="Essais Dynamiques"
                         android:textSize="24sp"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@+id/linearRes"
                         tools:layout_editor_absoluteX="0dp" />
 
@@ -286,8 +287,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -310,8 +311,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -333,8 +334,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
@@ -345,10 +346,11 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4">
+                        app:layout_constraintTop_toBottomOf="@+id/titreDyna">
 
                         <TextView
                             android:id="@+id/UT"
@@ -366,8 +368,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -388,8 +390,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -412,8 +414,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
@@ -424,6 +426,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -445,8 +448,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -467,8 +470,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -491,8 +494,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
@@ -515,7 +518,6 @@
                         android:layout_width="83dp"
                         android:layout_height="33dp"
                         android:layout_marginStart="36dp"
-                        android:layout_marginLeft="36dp"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:background="@drawable/round_textview"
@@ -524,6 +526,7 @@
                         android:hint="val"
                         android:inputType="number"
                         android:padding="5dp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toEndOf="@+id/essaistitre"
                         app:layout_constraintTop_toBottomOf="@+id/intensité" />
 
@@ -556,9 +559,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="208dp"
-                        android:layout_marginLeft="208dp"
                         android:layout_marginTop="8dp"
                         android:text="Durée essais:"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/intensité" />
 
