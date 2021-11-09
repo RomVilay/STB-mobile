@@ -67,10 +67,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     repository.insertChantierLocalDatabase(resp!!.fiche!!)
                                                     Log.i("INFO","${resp!!.fiche!!.vehicule}")
                                                     if (resp!!.fiche!!.vehicule !== null) getVehicule(resp!!.fiche!!.vehicule!!)
-                                                    chantiers!!.add(resp!!.fiche!!)
+                                                    if (!chantiers.contains(resp!!.fiche!!)) chantiers!!.add(resp!!.fiche!!)
                                                     Log.i("INFO","ajout en bdd locale")
                                                 } else {
-                                                    chantiers!!.add(ch)
+                                                  //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
                                                 }
                                                 //Log.i("INFO","fiche chantier :${ch!!._id} - matériel : ${ch!!.materiel}")
                                             }
@@ -109,7 +109,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertDemoPompeLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        if (!demontages.contains(resp2!!.fiche!!)) demontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout demo pompe en bdd locale"
@@ -119,7 +119,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        demontages!!.add(demoP)
+                                                                       // if (!demontages.contains(demoP)) demontages!!.add(demoP)
                                                                     }
                                                                 }
                                                             } else {
@@ -154,7 +154,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             repository.insertDemoMonoLocalDatabase(
                                                                                 resp2!!.fiche!!
                                                                             )
-                                                                            demontages!!.add(resp2!!.fiche!!)
+                                                                            if (!demontages.contains(resp2!!.fiche!!)) demontages!!.add(resp2!!.fiche!!)
                                                                             Log.i(
                                                                                 "INFO",
                                                                                 "ajout demo Monophase en bdd locale"
@@ -164,7 +164,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 "INFO",
                                                                                 "fiche déjà en bdd"
                                                                             )
-                                                                            demontages!!.add(demoM)
+                                                                           // if (!demontages.contains(demoM)) demontages!!.add(demoM)
                                                                         }
                                                                     }
                                                                 } else {
@@ -199,7 +199,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertDemoAlterLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        if (!demontages.contains(resp2!!.fiche!!)) demontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout demo Alternateur en bdd locale"
@@ -209,7 +209,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        demontages!!.add(demoA)
+                                                                       // if (!demontages.contains(demoA)) demontages!!.add(demoA)
                                                                     }
                                                                 }
                                                             } else {
@@ -243,7 +243,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertDemoRBLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        if (!demontages.contains(resp2!!.fiche!!)) demontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout demo RotorBobine en bdd locale"
@@ -253,7 +253,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        demontages!!.add(demoRB)
+                                                                      //  if (!demontages.contains(demoRB)) demontages!!.add(demoRB)
                                                                     }
                                                                 }
                                                             } else {
@@ -285,13 +285,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertDemoCCLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        if (!demontages.contains(resp2!!.fiche!!)) demontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout demo CC en bdd locale"
                                                                         )
                                                                     } else {
-                                                                        demontages!!.add(demoCC)
+                                                                       // if (!demontages.contains(demoCC)) demontages!!.add(demoCC)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
@@ -326,7 +326,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertDemoTriLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        demontages!!.add(resp2!!.fiche!!)
+                                                                        if (!demontages.contains(resp2!!.fiche!!)) demontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout demo tri en bdd locale"
@@ -336,7 +336,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        demontages!!.add(demoT)
+                                                                       // if (!demontages.contains(demoT)) demontages!!.add(demoT)
                                                                     }
                                                                 }
                                                             } else {
@@ -386,7 +386,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertRemoTriLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                        if (!remontages.contains(resp2!!.fiche!!)) remontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout remo tri en bdd locale"
@@ -396,7 +396,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        remontages!!.add(demoT as Remontage)
+                                                                       // if (!remontages.contains(demoT)) remontages!!.add(demoT as Remontage)
                                                                     }
                                                                 }
                                                             } else {
@@ -429,7 +429,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertRemoCCLocalDatabase(
                                                                             resp2!!.fiche!!
                                                                         )
-                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                        if (!remontages.contains(resp2!!.fiche!!)) remontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout remo cc en bdd locale"
@@ -439,7 +439,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        remontages!!.add(demoT as Remontage)
+                                                                       // if (!remontages.contains(demoT)) remontages!!.add(demoT as Remontage)
                                                                     }
                                                                 }
                                                             } else {
@@ -476,7 +476,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         repository.insertRemoLocalDatabase(
                                                                             resp2.fiche!!
                                                                         )
-                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                        if (!remontages.contains(resp2!!.fiche!!)) remontages!!.add(resp2!!.fiche!!)
                                                                         Log.i(
                                                                             "INFO",
                                                                             "ajout remo en bdd locale"
@@ -486,7 +486,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             "INFO",
                                                                             "fiche déjà en bdd"
                                                                         )
-                                                                        remontages!!.add(resp2!!.fiche!!)
+                                                                       // if (!remontages.contains(resp2!!.fiche!!)) remontages!!.add(resp2!!.fiche!!)
                                                                     }
                                                                 }
                                                             } else {
@@ -522,7 +522,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         val resp = response.body()
                                         if (resp != null) {
                                            // Log.i("INFO","fiche bobinage :${resp.fiche!!._id} - spires : ${resp.fiche!!.nbSpires}")
-                                            bobinages!!.add(resp.fiche!!)
+                                            if (!bobinages.contains(resp!!.fiche!!)) bobinages!!.add(resp.fiche!!)
                                             viewModelScope.launch(Dispatchers.IO){
                                                 var b = repository.getByIdBobinageLocalDatabse(resp.fiche!!._id)
                                                 if (b == null) {
