@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.applicationstb.model.DemontageAlternateur
 
 
-@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class, DemoPompeEntity::class, DemontageAlternateurEntity::class,DemontageRotorBEntity::class,DemontageMonophaseEntity::class,ClientEntity::class,VehiculeEntity::class, RemontageEntity::class), version = 19)
+@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class, DemoPompeEntity::class, DemontageAlternateurEntity::class,DemontageRotorBEntity::class,DemontageMonophaseEntity::class,ClientEntity::class,VehiculeEntity::class, RemontageEntity::class), version = 20)
 @TypeConverters (Converters::class)
     abstract class LocalDatabase : RoomDatabase() {
         abstract fun chantierDao(): ChantierDao

@@ -68,6 +68,7 @@ class Chantier(
             dateDebut,
             dureeTotale!!,
             observations,
+            photo,
             vehicule,
             adresseChantier,
             objet,

@@ -79,7 +79,8 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
     }
 }
 
-class BodyBobinage(var marqueMoteur : String?,
+class BodyBobinage(
+    var marqueMoteur : String?,
     var typeBobinage: String?,
     var vitesse:Float?,
     var puissance:Float?,
@@ -102,7 +103,8 @@ class BodyBobinage(var marqueMoteur : String?,
     var observations: String?,
     var poids:Float?,
     var tension:Long?,
-    var dureeTotale: Long?
+    var dureeTotale: Long?,
+    var photo:Array<String>?
                   ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -132,6 +134,9 @@ class BodyBobinage(var marqueMoteur : String?,
         parcel.readFloat(),
         parcel.readLong(),
         parcel.readLong(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -163,6 +168,9 @@ class BodyBobinage(var marqueMoteur : String?,
         parcel.writeFloat(poids!!)
         parcel.writeLong(tension!!)
         parcel.writeLong(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(this)
+        }
     }
 
     override fun describeContents(): Int {
@@ -236,7 +244,8 @@ class BodyDemontageTriphase (
                       var intensiteW: Float?,
                       var dureeEssai: Float?,
                       var dureeTotale: Long?,
-                      var observations: String?
+                      var observations: String?,
+                      var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -302,7 +311,10 @@ class BodyDemontageTriphase (
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readLong(),
-        parcel.readString()
+        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -371,6 +383,9 @@ class BodyDemontageTriphase (
         parcel.writeFloat(dureeEssai!!)
         parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -440,7 +455,8 @@ class BodyDemontageCC ( var status: Long?,
                         var tensionExcitation: Float?,
                         var intensiteExcitation: Float?,
                         var dureeTotale: Long?,
-                        var observations: String?
+                        var observations: String?,
+                        var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -503,7 +519,10 @@ class BodyDemontageCC ( var status: Long?,
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readLong(),
-        parcel.readString()
+        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -569,6 +588,9 @@ class BodyDemontageCC ( var status: Long?,
         parcel.writeFloat(intensiteExcitation!!)
         parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -650,7 +672,8 @@ class BodyDemontageAlternateur (
     var intensiteW	: Float?,
     var tensionExcitation	: Float?,
     var intensiteExcitation	: Float?,
-    var dureeTotale: Int?
+    var dureeTotale: Int?,
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -725,6 +748,9 @@ class BodyDemontageAlternateur (
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readInt(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
     ) {
     }
 
@@ -800,6 +826,9 @@ class BodyDemontageAlternateur (
         parcel.writeFloat(tensionExcitation!!)
         parcel.writeFloat(intensiteExcitation!!)
         parcel.writeInt(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -882,7 +911,8 @@ class BodyDemontageRotorBobine (
     var intensiteW	: Float?,
     var intensiteRotor	: Float?,
     var dureeEssai	: Int?,
-    var dureeTotale: Int?
+    var dureeTotale: Int?,
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -958,6 +988,9 @@ class BodyDemontageRotorBobine (
         parcel.readFloat(),
         parcel.readInt(),
         parcel.readInt(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -1037,6 +1070,9 @@ class BodyDemontageRotorBobine (
         parcel.writeFloat(intensiteRotor!!)
         parcel.writeInt(dureeEssai!!)
         parcel.writeInt(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
     }
 
     override fun describeContents(): Int {
@@ -1100,7 +1136,8 @@ class BodyDemontageMonophase (
     var valeurCondensateur	: Float?,
     var tension	: Float?,
     var intensite	: Float?,
-    var dureeTotale: Int?
+    var dureeTotale: Int?,
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1157,6 +1194,9 @@ class BodyDemontageMonophase (
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readInt(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
     ) {
     }
 
@@ -1215,6 +1255,9 @@ class BodyDemontageMonophase (
         parcel.writeFloat(tension!!)
         parcel.writeFloat(intensite!!)
         parcel.writeInt(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -1252,6 +1295,7 @@ class BodyDemoPompe(
     var longueurRotativeTravail:Float?,
     var observations:String?,
     var dureeTotale:Long?,
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1273,6 +1317,9 @@ class BodyDemoPompe(
         parcel.readFloat(),
         parcel.readString(),
         parcel.readLong(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
     ) {
     }
 
@@ -1296,6 +1343,9 @@ class BodyDemoPompe(
         parcel.writeFloat(longueurRotativeTravail!!)
         parcel.writeString(observations!!)
         parcel.writeLong(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -1382,6 +1432,7 @@ class BodyRemontageTriphase(
     var isolementPhaseRotorUV: Float?,
     var isolementPhaseRotorVW: Float?,
     var isolementPhaseRotorUW: Float?,
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1452,6 +1503,9 @@ class BodyRemontageTriphase(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -1524,6 +1578,9 @@ class BodyRemontageTriphase(
         parcel.writeFloat(isolementPhaseStatorUV!!)
         parcel.writeFloat(isolementPhaseStatorVW!!)
         parcel.writeFloat(isolementPhaseRotorUW!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -1592,6 +1649,7 @@ class BodyRemontage(
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1644,8 +1702,10 @@ class BodyRemontage(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
-        parcel.readFloat()
-
+        parcel.readFloat(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -1701,6 +1761,9 @@ class BodyRemontage(
         parcel.writeFloat(acceleration2H!!)
         parcel.writeFloat(vitesse2A!!)
         parcel.writeFloat(acceleration2A!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -1778,6 +1841,7 @@ class BodyRemontageCC(
     var releveIsoInducteursMasse: Float?,
     var releveIsoInduitMasse: Float?,
     var releveIsoInduitInducteurs: Float?,
+    var photo: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1838,7 +1902,10 @@ class BodyRemontageCC(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
-        parcel.readFloat()
+        parcel.readFloat(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
     ) {
     }
 
@@ -1902,6 +1969,9 @@ class BodyRemontageCC(
         parcel.writeFloat(releveIsoInducteursMasse!!)
         parcel.writeFloat(releveIsoInduitMasse!!)
         parcel.writeFloat(releveIsoInduitInducteurs!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photo)
+        }
     }
 
     override fun describeContents(): Int {
@@ -2164,7 +2234,8 @@ class Repository (var context:Context) {
             triphase.intensiteW,
             triphase.dureeEssai,
             triphase.dureeTotale!!,
-            triphase.observations
+            triphase.observations,
+            triphase.photo
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
         var fiche:Triphase? = null
@@ -2226,7 +2297,8 @@ class Repository (var context:Context) {
             triphase.intensiteW,
             triphase.dureeEssai,
             triphase.dureeTotale!!,
-            triphase.observations
+            triphase.observations,
+            triphase.photo
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
         var fiche:Triphase? = null
@@ -2292,7 +2364,8 @@ class Repository (var context:Context) {
             fiche.tensionExcitation,
             fiche.intensiteExcitation,
             fiche.dureeTotale!!,
-            fiche.observations
+            fiche.observations,
+            fiche.photo
         )
         var call = service.patchDemontageCC(token,ficheId,body)
         var fiche:CourantContinu? = null
@@ -2368,7 +2441,8 @@ class Repository (var context:Context) {
             fiche.isolementInduitInducteurs,
             fiche.releveIsoInducteursMasse,
             fiche.releveIsoInduitMasse,
-            fiche.releveIsoInduitInducteurs
+            fiche.releveIsoInduitInducteurs,
+            fiche.photo
         )
         Log.i("INFO","tensioninducteurs : ${body.tensionInducteurs}")
         var call = service.patchRemontageCC(token,ficheId,body)
@@ -2449,7 +2523,8 @@ class Repository (var context:Context) {
             fiche.isolementPhaseStatorUW,
             fiche.isolementPhaseRotorUV,
             fiche.isolementPhaseRotorVW,
-            fiche.isolementPhaseRotorUW
+            fiche.isolementPhaseRotorUW,
+            fiche.photo
         )
         var call = service.patchRemontageTriphase(token,ficheId,body)
         var fiche:RemontageTriphase? = null
@@ -2507,6 +2582,7 @@ class Repository (var context:Context) {
             fiche.acceleration2H,
             fiche.vitesse2A,
             fiche.acceleration2A,
+            fiche.photo
         )
         var call = service.patchRemontage(token,ficheId,body)
         var fiche:Remontage? = null
@@ -2531,7 +2607,8 @@ class Repository (var context:Context) {
             fiche.longueurRotativeComprimee,
             fiche.longueurRotativeTravail,
             fiche.observations,
-            fiche.dureeTotale
+            fiche.dureeTotale,
+            fiche.photo
         )
         var call = service.patchDemontagePompe(token,ficheId,body)
         var fiche:DemontagePompe? = null
@@ -2585,7 +2662,8 @@ class Repository (var context:Context) {
             fiche.valeurCondensateur,
             fiche.tension,
             fiche.intensite,
-            fiche.dureeTotale!!.toInt()
+            fiche.dureeTotale!!.toInt(),
+            fiche.photo
         )
         var call = service.patchDemontageMonophase(token,ficheId,body)
         var fiche:DemontageMonophase? = null
@@ -2659,7 +2737,8 @@ class Repository (var context:Context) {
             fiche.intensiteW,
             fiche.tensionExcitation,
             fiche.intensiteExcitation,
-            fiche.dureeTotale!!.toInt()
+            fiche.dureeTotale!!.toInt(),
+            fiche.photo
         )
         var call = service.patchDemontageAlternateur(token,ficheId,body)
         var fiche:DemontageAlternateur? = null
@@ -2731,7 +2810,8 @@ class Repository (var context:Context) {
             fiche.intensiteW	,
             fiche.intensiteRotor	,
             fiche.dureeEssai,
-            fiche.dureeTotale!!.toInt()
+            fiche.dureeTotale!!.toInt(),
+            fiche.photo
         )
         var call = service.patchDemontageRotorBobine(token,ficheId,body)
         var fiche:DemontageRotorBobine? = null
@@ -2794,7 +2874,8 @@ class Repository (var context:Context) {
                 bobinage.observations} else "",
             bobinage.poids,
             0,
-            bobinage.dureeTotale)
+            bobinage.dureeTotale,
+            bobinage.photo)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)
