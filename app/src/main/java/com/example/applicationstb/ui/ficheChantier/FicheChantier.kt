@@ -91,6 +91,7 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
+            viewModel.photos.value = chantier?.photos?.toMutableList()
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
@@ -223,8 +224,10 @@ class FicheChantier : Fragment() {
             chantier.status = 2L
             viewModel.chantier.value = chantier
             viewModel.getTime()
-            Log.i("INFO","duree: ${viewModel.chantier.value!!.dureeTotale}")
-            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
+            for (i in viewModel.chantier.value?.photos!!) {
+                Log.i("INFO","photo: ${i}")
+            }
+           // viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
         }
         term.setOnClickListener {
             var chantier = viewModel.chantier!!.value!!

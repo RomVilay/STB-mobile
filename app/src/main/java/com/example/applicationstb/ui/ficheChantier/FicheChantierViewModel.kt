@@ -73,7 +73,12 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         Navigation.findNavController(view).navigate(action)
     }
     fun addPhoto(index:Int,photo: Uri) {
-        photos.value!!.add(photo.toString())
+        var list = chantier?.value?.photos?.toMutableList()
+        if (list != null) {
+            list.add(photo.toString())
+        }
+        chantier?.value?.photos = list?.toTypedArray()
+        //photos.value!!.add(photo.toString())
     }
     fun setSchema(sch: String){
         schema.value = sch
@@ -107,7 +112,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             var v = repository.getByIdVehiculesLocalDatabse(id)
             textView.setText(v!!.nom)
         }
-        Log.i("INFO","vehicule ${nom}")
+        //Log.i("INFO","vehicule ${nom}")
         /*val resp = repository.getVehiculeById(token!!, id, object: Callback<VehiculesResponse> {
             override fun onResponse(call: Call<VehiculesResponse>, response: Response<VehiculesResponse>){
                 if ( response.code() == 200 ) {

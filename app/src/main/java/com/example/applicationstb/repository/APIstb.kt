@@ -3,6 +3,7 @@ package com.example.applicationstb.repository
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
+import okhttp3.RequestBody
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
@@ -99,5 +100,12 @@ interface APIstb  {
     fun getAllClients(@Header("auth-token") token:String): Call<ClientsResponse>
     @GET("/clients/{id}")
     fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
-
+    @PUT("{address}")
+    fun uploadPhoto( @Header("auth-token") token:String, @Path("address") address:String, @Body body: RequestBody ) : Call<URLPhotoResponse2>
+    @GET("/images/put")
+    fun getURLToUploadPhoto( @Header("auth-token") token:String) : Call<URLPhotoResponse>
+    @GET("/images/get/{photoName}")
+    fun getURLPhoto(@Header("auth-token") token:String, photoName: String): Call<URLPhotoResponse>
+    @GET("{address}")
+    fun getPhoto(@Header("auth-token") token:String): Call<PhotoResponse>
 }

@@ -10,10 +10,13 @@ import androidx.room.Room
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -45,6 +48,7 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
         }
     }
 }
+
 
 class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?, var dureeTotale: Long?): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -2044,6 +2048,16 @@ class RemontageResponse(
 class ClientsResponse(
     var client:Client?
 )
+class URLPhotoResponse(
+    var url: String?
+)
+class URLPhotoResponse2(
+    var url: String?,
+    var name: String?
+)
+class PhotoResponse(
+    var photo: File
+)
 
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
@@ -2891,6 +2905,26 @@ class Repository (var context:Context) {
         var vehicule: Vehicule? = null
         call.enqueue(callback)
     }
+    fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse>) {
+        var call = service.getURLToUploadPhoto(token)
+        call.enqueue(callback)
+    }
+    fun uploadPhoto(token: String, address: String, photo: File, callback: Callback<URLPhotoResponse2>){
+        var body = RequestBody.create(MediaType.parse("image/jpeg"),photo)
+        var call = service.uploadPhoto(token, address, body)
+        var photo :String? = null
+        call.enqueue(callback)
+    }
+    fun getURLPhoto(token: String, photoName: String, callback: Callback<URLPhotoResponse>){
+        var call = service.getURLPhoto(token,photoName)
+        call.enqueue(callback)
+    }
+
+    fun getPhoto(token: String, address: String, callback: Callback<PhotoResponse>) {
+            var call = service.getPhoto(token)
+            call.enqueue(callback)
+    }
+
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
           .build()
