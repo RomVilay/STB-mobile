@@ -104,7 +104,7 @@ class BodyBobinage(
     var poids:Float?,
     var tension:Long?,
     var dureeTotale: Long?,
-    var photo:Array<String>?
+    var photos:Array<String>?
                   ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -245,7 +245,7 @@ class BodyDemontageTriphase (
                       var dureeEssai: Float?,
                       var dureeTotale: Long?,
                       var observations: String?,
-                      var photo: Array<String>?
+                      var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -384,7 +384,7 @@ class BodyDemontageTriphase (
         parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -456,7 +456,7 @@ class BodyDemontageCC ( var status: Long?,
                         var intensiteExcitation: Float?,
                         var dureeTotale: Long?,
                         var observations: String?,
-                        var photo: Array<String>?
+                        var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -589,7 +589,7 @@ class BodyDemontageCC ( var status: Long?,
         parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -673,7 +673,7 @@ class BodyDemontageAlternateur (
     var tensionExcitation	: Float?,
     var intensiteExcitation	: Float?,
     var dureeTotale: Int?,
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -827,7 +827,7 @@ class BodyDemontageAlternateur (
         parcel.writeFloat(intensiteExcitation!!)
         parcel.writeInt(dureeTotale!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -912,7 +912,7 @@ class BodyDemontageRotorBobine (
     var intensiteRotor	: Float?,
     var dureeEssai	: Int?,
     var dureeTotale: Int?,
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1137,7 +1137,7 @@ class BodyDemontageMonophase (
     var tension	: Float?,
     var intensite	: Float?,
     var dureeTotale: Int?,
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1256,7 +1256,7 @@ class BodyDemontageMonophase (
         parcel.writeFloat(intensite!!)
         parcel.writeInt(dureeTotale!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -1295,7 +1295,7 @@ class BodyDemoPompe(
     var longueurRotativeTravail:Float?,
     var observations:String?,
     var dureeTotale:Long?,
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1344,7 +1344,7 @@ class BodyDemoPompe(
         parcel.writeString(observations!!)
         parcel.writeLong(dureeTotale!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -1432,7 +1432,7 @@ class BodyRemontageTriphase(
     var isolementPhaseRotorUV: Float?,
     var isolementPhaseRotorVW: Float?,
     var isolementPhaseRotorUW: Float?,
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1579,7 +1579,7 @@ class BodyRemontageTriphase(
         parcel.writeFloat(isolementPhaseStatorVW!!)
         parcel.writeFloat(isolementPhaseRotorUW!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -1649,7 +1649,7 @@ class BodyRemontage(
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1762,7 +1762,7 @@ class BodyRemontage(
         parcel.writeFloat(vitesse2A!!)
         parcel.writeFloat(acceleration2A!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -1841,7 +1841,7 @@ class BodyRemontageCC(
     var releveIsoInducteursMasse: Float?,
     var releveIsoInduitMasse: Float?,
     var releveIsoInduitInducteurs: Float?,
-    var photo: Array<String>?
+    var photos: Array<String>?
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1970,7 +1970,7 @@ class BodyRemontageCC(
         parcel.writeFloat(releveIsoInduitMasse!!)
         parcel.writeFloat(releveIsoInduitInducteurs!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photo)
+            parcel.writeArray(photos)
         }
     }
 
@@ -2235,7 +2235,7 @@ class Repository (var context:Context) {
             triphase.dureeEssai,
             triphase.dureeTotale!!,
             triphase.observations,
-            triphase.photo
+            triphase.photos
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
         var fiche:Triphase? = null
@@ -2298,7 +2298,7 @@ class Repository (var context:Context) {
             triphase.dureeEssai,
             triphase.dureeTotale!!,
             triphase.observations,
-            triphase.photo
+            triphase.photos
         )
         var call = service.patchDemontageTriphase(token,ficheId,body)
         var fiche:Triphase? = null
@@ -2365,7 +2365,7 @@ class Repository (var context:Context) {
             fiche.intensiteExcitation,
             fiche.dureeTotale!!,
             fiche.observations,
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchDemontageCC(token,ficheId,body)
         var fiche:CourantContinu? = null
@@ -2442,7 +2442,7 @@ class Repository (var context:Context) {
             fiche.releveIsoInducteursMasse,
             fiche.releveIsoInduitMasse,
             fiche.releveIsoInduitInducteurs,
-            fiche.photo
+            fiche.photos
         )
         Log.i("INFO","tensioninducteurs : ${body.tensionInducteurs}")
         var call = service.patchRemontageCC(token,ficheId,body)
@@ -2524,7 +2524,7 @@ class Repository (var context:Context) {
             fiche.isolementPhaseRotorUV,
             fiche.isolementPhaseRotorVW,
             fiche.isolementPhaseRotorUW,
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchRemontageTriphase(token,ficheId,body)
         var fiche:RemontageTriphase? = null
@@ -2582,7 +2582,7 @@ class Repository (var context:Context) {
             fiche.acceleration2H,
             fiche.vitesse2A,
             fiche.acceleration2A,
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchRemontage(token,ficheId,body)
         var fiche:Remontage? = null
@@ -2608,7 +2608,7 @@ class Repository (var context:Context) {
             fiche.longueurRotativeTravail,
             fiche.observations,
             fiche.dureeTotale,
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchDemontagePompe(token,ficheId,body)
         var fiche:DemontagePompe? = null
@@ -2663,7 +2663,7 @@ class Repository (var context:Context) {
             fiche.tension,
             fiche.intensite,
             fiche.dureeTotale!!.toInt(),
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchDemontageMonophase(token,ficheId,body)
         var fiche:DemontageMonophase? = null
@@ -2738,7 +2738,7 @@ class Repository (var context:Context) {
             fiche.tensionExcitation,
             fiche.intensiteExcitation,
             fiche.dureeTotale!!.toInt(),
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchDemontageAlternateur(token,ficheId,body)
         var fiche:DemontageAlternateur? = null
@@ -2811,7 +2811,7 @@ class Repository (var context:Context) {
             fiche.intensiteRotor	,
             fiche.dureeEssai,
             fiche.dureeTotale!!.toInt(),
-            fiche.photo
+            fiche.photos
         )
         var call = service.patchDemontageRotorBobine(token,ficheId,body)
         var fiche:DemontageRotorBobine? = null
@@ -2875,7 +2875,7 @@ class Repository (var context:Context) {
             bobinage.poids,
             0,
             bobinage.dureeTotale,
-            bobinage.photo)
+            bobinage.photos)
         var call = service.patchBobinage(token,ficheId,body)
         var fiche:Bobinage? = null
         call.enqueue(callback)

@@ -31,7 +31,7 @@ class Bobinage(idFiche:String,
                dateDebut: Date?,
                dureeTotale:Long?,
                observation: String?,
-               photo:Array<String>?,
+               photos:Array<String>?,
                var marqueMoteur:String?,
                var typeBobinage:String?,
                var puissance:Float?,
@@ -54,7 +54,7 @@ class Bobinage(idFiche:String,
                var schemas : MutableList<String>?,
                var poids : Float?,
                var tension: Long?
-                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
+                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photos ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
                 fun addSection(nbBrins: Long, diametre: Double){
@@ -77,7 +77,7 @@ class Bobinage(idFiche:String,
             dateDebut,
             dureeTotale!!,
             observations,
-            photo,
+            photos,
             marqueMoteur,
             typeBobinage,
             vitesse,

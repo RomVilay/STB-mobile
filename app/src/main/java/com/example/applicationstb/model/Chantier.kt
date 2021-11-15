@@ -25,7 +25,7 @@ class Chantier(
     dateDebut: Date?,
     dureeTotale:Long?,
     observations: String?,
-    photo:Array<String>?,
+    photos:Array<String>?,
     var vehicule: String?,
     var adresseChantier:String?,
     var objet:String?,
@@ -34,28 +34,7 @@ class Chantier(
     var signatureTech:String?,
     var signatureClient:String?
 
-) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observations, photo ) {
-    override fun toString(): String {
-        return "{\"status\": ${status}," +
-                "\" dureeTotale\": ${dureeTotale},"+
-            "\"photos \": ${photo},"+
-            "\" _id \": ${_id},"+
-            "\" numDevis\": ${numDevis},"+
-            "\" numFiche\": ${numFiche},"+
-            "\" type\": ${type},"+
-            "\" client\": ${client},"+
-            "\" resp\": ${resp},"+
-            "\" contact\": ${contact},"+
-            "\" telContact\": ${telContact},"+
-            "\" observations\": ${observations},"+
-            "\" dateDebut\": ${dateDebut},"+
-            "\" techniciens \": ${techniciens},"+
-            "\" signatureClient \": ${signatureClient},"+
-            "\" vehicule \": ${vehicule},"+
-            "\" adresseChantier \": ${adresseChantier},"+
-            "\" materiel \": ${materiel},"+
-            "\" objet\": ${objet} }"
-        }
+) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observations, photos ) {
     fun toEntity() : ChantierEntity {
         return ChantierEntity(
             _id,
@@ -68,7 +47,7 @@ class Chantier(
             dateDebut,
             dureeTotale!!,
             observations,
-            photo,
+            photos,
             vehicule,
             adresseChantier,
             objet,
