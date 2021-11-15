@@ -2048,17 +2048,6 @@ class RemontageResponse(
 class ClientsResponse(
     var client:Client?
 )
-class URLPhotoResponse(
-    var url: String?
-)
-class URLPhotoResponse2(
-    var url: String?,
-    var name: String?
-)
-class PhotoResponse(
-    var photo: File
-)
-
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
@@ -2085,6 +2074,18 @@ class CustomDateAdapter : JsonAdapter <Date>() {
         const val SERVER_FORMAT = ("yyyy-MM-dd'T'HH:mm") // define your server format here
     }
 }
+
+class URLPhotoResponse(
+    var url: String?
+)
+class URLPhotoResponse2(
+    var url: String?,
+    var name: String?
+)
+class PhotoResponse(
+    var photo: File
+)
+
 class Repository (var context:Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter())
     val url = "http://195.154.107.195:4000"
@@ -2905,6 +2906,7 @@ class Repository (var context:Context) {
         var vehicule: Vehicule? = null
         call.enqueue(callback)
     }
+    // photo requests
     fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse>) {
         var call = service.getURLToUploadPhoto(token)
         call.enqueue(callback)
