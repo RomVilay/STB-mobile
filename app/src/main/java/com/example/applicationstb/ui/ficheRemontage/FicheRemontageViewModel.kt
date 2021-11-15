@@ -51,7 +51,12 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun addPhoto(index: Int, photo: Uri) {
-        photos.value!!.add(photo.toString())
+        var list = selection?.value?.photos?.toMutableList()
+        if (list != null) {
+            list.add(photo.toString())
+        }
+        selection?.value?.photos = list?.toTypedArray()
+        photos.value = list!!
     }
 
     fun retour(view: View) {

@@ -137,7 +137,12 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun addSchema(index:Int,photo: Uri) {
-        schemas.value!!.add(photo.toString())
+        var list = bobinage?.value?.photos?.toMutableList()
+        if (list != null) {
+            list.add(photo.toString())
+        }
+        bobinage?.value?.photos = list?.toTypedArray()
+        schemas.value = list!!
     }
 
     fun fullScreen(view: View, uri: String) {

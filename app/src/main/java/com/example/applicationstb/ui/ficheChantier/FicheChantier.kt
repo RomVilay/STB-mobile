@@ -91,7 +91,7 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
-            viewModel.photos.value = chantier?.photos?.toMutableList()
+            //viewModel.photos.value = chantier?.photos?.toMutableList()
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
@@ -105,9 +105,9 @@ class FicheChantier : Fragment() {
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
+            Log.i("INFO","updated")
             sAdapter.update(it)
         })
-
 
         materiel.doAfterTextChanged {
             if (materiel.text.isNotEmpty()) viewModel.chantier.value?.materiel = materiel.text.toString()
@@ -125,7 +125,7 @@ class FicheChantier : Fragment() {
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            if (test == false) {
+            if (!test) {
                 requestPermissions(arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
