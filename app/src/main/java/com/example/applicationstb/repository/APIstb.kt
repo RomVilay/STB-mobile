@@ -101,11 +101,11 @@ interface APIstb  {
     @GET("/clients/{id}")
     fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
     @PUT("{address}")
-    fun uploadPhoto( @Header("auth-token") token:String, @Path("address") address:String, @Body body: RequestBody ) : Call<URLPhotoResponse2>
+    fun uploadPhoto( @Header("auth-token") token:String, @Path("address") address:String, @Body body: RequestBody )
     @GET("/images/put")
-    fun getURLToUploadPhoto( @Header("auth-token") token:String) : Call<URLPhotoResponse>
+    fun getURLToUploadPhoto( @Header("auth-token") token:String) : Call<URLPhotoResponse2>
     @GET("/images/get/{photoName}")
     fun getURLPhoto(@Header("auth-token") token:String, photoName: String): Call<URLPhotoResponse>
     @GET("{address}")
-    fun getPhoto(@Header("auth-token") token:String): Call<PhotoResponse>
+    fun getPhoto(@Header("auth-token") token:String, @Path("address") address: String): Call<PhotoResponse>
 }

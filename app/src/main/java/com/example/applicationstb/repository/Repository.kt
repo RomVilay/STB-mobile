@@ -2907,15 +2907,14 @@ class Repository (var context:Context) {
         call.enqueue(callback)
     }
     // photo requests
-    fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse>) {
+    fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse2>) {
         var call = service.getURLToUploadPhoto(token)
         call.enqueue(callback)
     }
-    fun uploadPhoto(token: String, address: String, photo: File, callback: Callback<URLPhotoResponse2>){
+    fun uploadPhoto(token: String, address: String, photo: File){
         var body = RequestBody.create(MediaType.parse("image/jpeg"),photo)
         var call = service.uploadPhoto(token, address, body)
         var photo :String? = null
-        call.enqueue(callback)
     }
     fun getURLPhoto(token: String, photoName: String, callback: Callback<URLPhotoResponse>){
         var call = service.getURLPhoto(token,photoName)
@@ -2923,7 +2922,7 @@ class Repository (var context:Context) {
     }
 
     fun getPhoto(token: String, address: String, callback: Callback<PhotoResponse>) {
-            var call = service.getPhoto(token)
+            var call = service.getPhoto(token, address)
             call.enqueue(callback)
     }
 
