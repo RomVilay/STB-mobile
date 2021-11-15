@@ -73,12 +73,12 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         Navigation.findNavController(view).navigate(action)
     }
     fun addPhoto(index:Int,photo: Uri) {
-        var list = chantier?.value?.photos?.toMutableList()
+       var list = chantier?.value?.photos?.toMutableList()
         if (list != null) {
             list.add(photo.toString())
         }
         chantier?.value?.photos = list?.toTypedArray()
-        //photos.value!!.add(photo.toString())
+        photos.value!!.add(photo.toString())
     }
     fun setSchema(sch: String){
         schema.value = sch

@@ -21,8 +21,10 @@ class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
                 schema = view.findViewById(R.id.schema)
             }
             fun bind(photo:String){
+                if (photo !== "") {
                 uri = Uri.parse(photo)
                 schema.setImageURI(Uri.parse(photo))
+                    }
             }
         }
 
