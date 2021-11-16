@@ -50,13 +50,18 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
 }
 
 
-class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?, var dureeTotale: Long?): Parcelable {
+class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?, var dureeTotale: Long?, var photos: Array<String>?, var signatureClient: String?, var signatureTech: String?): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readLong(),
-        parcel.readLong()
+        parcel.readLong(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readString(),
+        parcel.readString(),
     ) {
     }
 
@@ -66,6 +71,11 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
         parcel.writeString(observations)
         parcel.writeLong(status!!)
         parcel.writeLong(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
+        parcel.writeString(signatureClient)
+        parcel.writeString(signatureTech)
     }
 
     override fun describeContents(): Int {
@@ -2896,7 +2906,7 @@ class Repository (var context:Context) {
         call.enqueue(callback)
     }
     fun patchChantier(token:String,ficheId:String, chantier:Chantier, callback:Callback<ChantierResponse>){
-        var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status, chantier.dureeTotale)
+        var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status, chantier.dureeTotale, chantier.photos, chantier.signatureClient,chantier.signatureTech)
         var call = service.patchChantier(token,ficheId,body)
         var fiche:Chantier? = null
         call.enqueue(callback)

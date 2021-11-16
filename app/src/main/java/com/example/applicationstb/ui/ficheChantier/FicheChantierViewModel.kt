@@ -72,7 +72,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         val action = FicheChantierDirections.deChantierversAccueil(token!!,username!!)
         Navigation.findNavController(view).navigate(action)
     }
-    fun addPhoto(index:Int,photo: Uri) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addPhoto(index:Int, photo: Uri) {
         Log.i("INFO", "add photo")
        var list = chantier?.value?.photos?.toMutableList()
         if (list != null) {
@@ -80,6 +81,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
         chantier?.value?.photos = list?.toTypedArray()
         photos.value = list!!
+        quickSave()
     }
     fun setSchema(sch: String){
         schema.value = sch
@@ -160,7 +162,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     fun quickSave(){
         Log.i("INFO","quick save")
         getTime()
-        Log.i("INFO","duree après : ${chantier.value?.dureeTotale}")
+        var size = chantier.value?.photos?.size?.minus(1)
+        Log.i("INFO","signature tech: ${chantier.value?.signatureTech}  signature client: ${chantier.value?.signatureClient}")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
             //Log.i("INFO","${ch}")
@@ -203,7 +206,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                         if (resp != null) {
                             val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                             mySnackbar.show()
-                            // Log.i("INFO","${resp.fiche!!.observations}")
+                            Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
                         }
                     } else {
                         val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)

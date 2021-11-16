@@ -77,6 +77,7 @@ class FicheChantier : Fragment() {
         val term = layout.findViewById<Button>(R.id.termC)
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
         var visibility = View.VISIBLE
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         selectButton.setOnClickListener {
             lin.visibility = View.VISIBLE
             var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
@@ -91,13 +92,13 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
-            //viewModel.photos.value = chantier?.photos?.toMutableList()
+            viewModel.photos.value = chantier?.photos?.toMutableList()
+            if ( chantier?.photos?.size!! > 0) Log.i("INFO", chantier?.photos!![0])
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
         //var stech: Bitmap? = sview.extraBitmap
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
-        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
@@ -192,7 +193,8 @@ class FicheChantier : Fragment() {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
                 viewModel.signatures.add(0,uri)
-
+                viewModel.chantier.value?.signatureClient = uri.toString()
+                viewModel.quickSave()
             }
         }
         btnTech.setOnClickListener{
@@ -211,6 +213,8 @@ class FicheChantier : Fragment() {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
                 viewModel.signatures.add(uri)
+                viewModel.chantier.value?.signatureTech = uri.toString()
+                viewModel.quickSave()
             }
         }
         quit.setOnClickListener {
@@ -221,19 +225,21 @@ class FicheChantier : Fragment() {
             chantier.materiel = materiel.text.toString()
             chantier.objet = objet.text.toString()
             chantier.observations = observation.text.toString()
+            chantier.photos = viewModel.photos?.value?.toTypedArray()
             chantier.status = 2L
             viewModel.chantier.value = chantier
             viewModel.getTime()
             for (i in viewModel.chantier.value?.photos!!) {
                 Log.i("INFO","photo: ${i}")
             }
-           // viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
+            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
         }
         term.setOnClickListener {
             var chantier = viewModel.chantier!!.value!!
             chantier.materiel = materiel.text.toString()
             chantier.objet = objet.text.toString()
             chantier.observations = observation.text.toString()
+            chantier.photos = viewModel.photos?.value?.toTypedArray()
             chantier.status = 3L
             viewModel.chantier.value = chantier
             viewModel.getTime()
@@ -242,6 +248,7 @@ class FicheChantier : Fragment() {
         return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PHOTO_RESULT) {
@@ -250,6 +257,7 @@ class FicheChantier : Fragment() {
             if (uri != null) {
                 Log.i("INFO",uri.toString())
                 viewModel.addPhoto(0,uri)
+
             }
             Log.i("INFO",uri.toString())
         }
