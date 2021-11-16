@@ -575,7 +575,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         } else {
             Log.i("INFO","connexion offline")
             if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
-            var action = ConnexionDirections.versAccueil("tech", "pwd")
+            var action = ConnexionDirections.versAccueil("", username)
             Navigation.findNavController(view).navigate(action)
         }
     }

@@ -42,6 +42,27 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var bobinages: MutableList<Bobinage> = mutableListOf();
     var demontages: MutableList<DemontageMoteur> = mutableListOf();
     var remontages: MutableList<Remontage> = mutableListOf();
+    fun connection (username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+    }
     fun listeFiches(token: String, userid: String){
         val resp = repository.getFichesUser(token, userid, object: Callback<FichesResponse> {
             override fun onResponse(call: Call<FichesResponse>, response: Response<FichesResponse>) {

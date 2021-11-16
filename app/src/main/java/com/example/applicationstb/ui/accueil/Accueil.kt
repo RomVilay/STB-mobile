@@ -1,21 +1,23 @@
 package com.example.applicationstb.ui.accueil
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.edit
 import com.example.applicationstb.R
+import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar
 
 class Accueil : Fragment() {
@@ -53,6 +55,11 @@ class Accueil : Fragment() {
         val reload = layout.findViewById<Button>(R.id.reload)
         val send = layout.findViewById<Button>(R.id.send)
         val loading = layout.findViewById<CardView>(R.id.loadingHome)
+        val sharedPref = activity?.getSharedPreferences(
+            "identifiants", Context.MODE_PRIVATE)
+        var login = sharedPref?.getString("login","")
+        var pwd = sharedPref?.getString("password","")
+
         deco.setOnClickListener{
             val alertDialogBuilder: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
@@ -72,12 +79,109 @@ class Accueil : Fragment() {
             alertDialogBuilder!!.show()
         }
         reload.setOnClickListener {
-            if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
-                viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+            if (viewModel.isOnline(viewModel.context)) {
+                if ( viewModel.token == "" && viewModel.isOnline(viewModel.context)) {
+                    if ( login == "" && pwd == "") {
+                            val dialogBuilder = AlertDialog.Builder(context)
+                        val inflater = requireActivity().layoutInflater
+                        val view =  inflater.inflate(R.layout.connexion_dialog, null)
+                        val log = view.findViewById<EditText>(R.id.login)
+                        val pass = view.findViewById<EditText>(R.id.pass)
+                        dialogBuilder
+                            .setCancelable(true)
+                            .setView(view)
+                            .setPositiveButton("Connexion", DialogInterface.OnClickListener{
+                                    dialog, id ->
+                                if (log.text.isEmpty() ) {
+                                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Veuillez Saisir votre pseudo utilisateur", 3600)
+                                    mySnackbar.show()
+                                }
+                                if (pass.text.isEmpty() ) {
+                                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Veuillez Saisir votre mot de passe", 3600)
+                                    mySnackbar.show()
+                                }
+                                if (pass.text.length < 5 ) {
+                                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
+                                    mySnackbar.show()
+                                }
+                                else {
+                                    if (sharedPref != null) {
+                                        sharedPref.edit {
+                                            putString("login", log.text.toString())
+                                            putString("password", pass.text.toString())
+                                        }
+                                    }
+                                    viewModel.connection(log.text.toString(), pass.text.toString())
+                                }
+                                dialog.dismiss()
+                            })
+                        val alert = dialogBuilder.create()
+                        alert.show()
+                    } else {
+                        if (login != null && pwd != null) {
+                            viewModel.connection(login,pwd)
+                            Log.i("INFO", viewModel.token.toString())
+                        }
+                    }
+                }
+                if (viewModel.token !== "") {
+                    viewModel.listeFiches(viewModel.token.toString(), login!!)
+                } else {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous ne pouvez pas recharger les fiches , veuillez vous reconnecter à portée du wifi", 3600)
+                    mySnackbar.show()
+                }
             }
         }
         send.setOnClickListener {
-            viewModel.sendFiche(loading)
+            if (viewModel.isOnline(viewModel.context)) {
+                if ( viewModel.token == null && viewModel.isOnline(viewModel.context)) {
+                    if ( login == "" && pwd == "") {
+                        val dialogBuilder = AlertDialog.Builder(context)
+                        val inflater = requireActivity().layoutInflater
+                        val view =  inflater.inflate(R.layout.connexion_dialog, null)
+                        val log = view.findViewById<EditText>(R.id.login)
+                        val pass = view.findViewById<EditText>(R.id.pass)
+                        dialogBuilder
+                            .setCancelable(true)
+                            .setView(view)
+                            .setPositiveButton("Connexion", DialogInterface.OnClickListener{
+                                    dialog, id ->
+                                if (log.text.isEmpty() ) {
+                                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Veuillez Saisir votre pseudo utilisateur", 3600)
+                                    mySnackbar.show()
+                                }
+                                if (pass.text.isEmpty() ) {
+                                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Veuillez Saisir votre mot de passe", 3600)
+                                    mySnackbar.show()
+                                }
+                                if (pass.text.length < 5 ) {
+                                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
+                                    mySnackbar.show()
+                                }
+                                else {
+                                    if (sharedPref != null) {
+                                        sharedPref.edit {
+                                            putString("login", log.text.toString())
+                                            putString("password", pass.text.toString())
+                                        }
+                                    }
+                                    viewModel.connection(log.text.toString(), pass.text.toString())
+                                }
+                                dialog.dismiss()
+                            })
+                        val alert = dialogBuilder.create()
+                        alert.show()
+                    } else {
+                        if (login != null && pwd != null) {
+                            viewModel.connection(login,pwd)
+                        }
+                    }
+                }
+                viewModel.sendFiche(loading)
+            } else {
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous ne pouvez pas envoyer les fiches, veuillez vous reconnecter à portée du wifi", 3600)
+                mySnackbar.show()
+            }
         }
         dm.setOnClickListener {
             if (viewModel.demontages.size > 0) {

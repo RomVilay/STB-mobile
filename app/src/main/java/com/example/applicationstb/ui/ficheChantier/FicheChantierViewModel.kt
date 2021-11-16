@@ -68,7 +68,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
 
 
     fun back(view:View){
-        //console.log(signatures)
+        Log.i("INFO",token!!+" "+username!!)
         val action = FicheChantierDirections.deChantierversAccueil(token!!,username!!)
         Navigation.findNavController(view).navigate(action)
     }
@@ -179,6 +179,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     @RequiresApi(Build.VERSION_CODES.O)
     fun localSave(view:View){
         Log.i("INFO","local save")
+        Log.i("INFO","pictures ${chantier.value!!.photos!!.size}")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
             //Log.i("INFO","${ch}")
