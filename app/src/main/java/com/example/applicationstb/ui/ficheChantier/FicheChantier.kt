@@ -23,11 +23,14 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -93,7 +96,6 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
             viewModel.photos.value = chantier?.photos?.toMutableList()
-            if ( chantier?.photos?.size!! > 0) Log.i("INFO", chantier?.photos!![0])
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
@@ -106,7 +108,6 @@ class FicheChantier : Fragment() {
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
-            Log.i("INFO","updated")
             sAdapter.update(it)
         })
 
@@ -124,35 +125,48 @@ class FicheChantier : Fragment() {
         }
 
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            if (!test) {
-                requestPermissions(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
-                // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(requireActivity().packageManager).also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        // Error occurred while creating the File
-                        Log.i("INFO","error while creating file")
-                        null
-                    }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "com.example.applicationstb.fileprovider",
-                            it
+            runBlocking {
+                var job = launch {
+                    viewModel.getImageName()
+                }
+                job.join()
+                if (viewModel.imageName !== null) {
+                    var test = ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) == PackageManager.PERMISSION_GRANTED
+                    if (!test) {
+                        requestPermissions(
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ), 1
                         )
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                        //viewModel.addSchema(photoURI)
+                    }
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                        // Ensure that there's a camera activity to handle the intent
+                        cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                            // Create the File where the photo should go
+                            val photoFile: File? = try {
+                                createImageFile()
+                            } catch (ex: IOException) {
+                                // Error occurred while creating the File
+                                Log.i("INFO", "error while creating file")
+                                null
+                            }
+                            // Continue only if the File was successfully created
+                            photoFile?.also {
+                                val photoURI: Uri = FileProvider.getUriForFile(
+                                    requireContext(),
+                                    "com.example.applicationstb.fileprovider",
+                                    it
+                                )
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                                //viewModel.addSchema(photoURI)
+                            }
+                        }
                     }
                 }
             }
@@ -230,7 +244,7 @@ class FicheChantier : Fragment() {
             viewModel.chantier.value = chantier
             viewModel.getTime()
             for (i in viewModel.chantier.value?.photos!!) {
-                Log.i("INFO","photo: ${i}")
+               // Log.i("INFO","photo: ${i}")
             }
             viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
         }
@@ -259,6 +273,7 @@ class FicheChantier : Fragment() {
                 viewModel.addPhoto(0,uri)
 
             }
+            //viewModel.
             Log.i("INFO",uri.toString())
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
@@ -270,12 +285,12 @@ class FicheChantier : Fragment() {
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
+        Log.i("INFO","nom utilisé"+viewModel.imageName.value.toString().removeSuffix(".jpg"))
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.imageName.value.toString().removeSuffix(".jpg"),/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -285,7 +300,7 @@ class FicheChantier : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.imageName.value.toString().removeSuffix(".jpg"),/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -301,13 +316,14 @@ class FicheChantier : Fragment() {
     }
 
     fun Bitmap.saveImage(context: Context): Uri? {
+        //Log.i("INFO",viewModel.imageName.value.toString())
         val values = ContentValues()
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
         values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "sign_${viewModel.chantier.value!!.numFiche}")
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, viewModel.imageName.value.toString())
 
         val uri: Uri? =
                 context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)

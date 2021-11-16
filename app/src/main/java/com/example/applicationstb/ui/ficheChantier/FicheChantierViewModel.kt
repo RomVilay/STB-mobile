@@ -17,15 +17,15 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.applicationstb.model.*
-import com.example.applicationstb.repository.ChantierResponse
-import com.example.applicationstb.repository.Repository
-import com.example.applicationstb.repository.VehiculesResponse
+import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
 
 class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
@@ -39,6 +39,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
     var start = MutableLiveData<Date>()
+    var image =MutableLiveData<File>()
+    var imageName = MutableLiveData<String>()
     init {
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -163,7 +165,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO","quick save")
         getTime()
         var size = chantier.value?.photos?.size?.minus(1)
-        Log.i("INFO","signature tech: ${chantier.value?.signatureTech}  signature client: ${chantier.value?.signatureClient}")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
             //Log.i("INFO","${ch}")
@@ -207,7 +208,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                         if (resp != null) {
                             val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                             mySnackbar.show()
-                            Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
+                           // Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
                         }
                     } else {
                         val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
@@ -249,4 +250,58 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
         return false
     }
+    fun getImage(name: String?){
+        var request =   repository.getURLPhoto(token!!,name!!,object: Callback<URLPhotoResponse> {
+            var i : File? = null
+            override fun onResponse(
+                call: Call<URLPhotoResponse>,
+                response: Response<URLPhotoResponse>
+            ) {
+                if (response.code() == 200) {
+                    var resp = response.body()
+                    repository.getPhoto(token!!,resp?.url!!, object: Callback<PhotoResponse> {
+                        override fun onResponse(
+                            call: Call<PhotoResponse>,
+                            response: Response<PhotoResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                image.value = response.body()!!.photo
+                            }
+                        }
+
+                        override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
+                            Log.e("Error","erreur ${t.message}")
+                        }
+
+                    })
+                }
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+    }
+   suspend fun getImageName() = withContext(Dispatchers.IO){
+       repository.getURLToUploadPhoto(token!!, object: Callback<URLPhotoResponse2>{
+            override fun onResponse(
+                call: Call<URLPhotoResponse2>,
+                response: Response<URLPhotoResponse2>
+            ) {
+                if (response.code() == 200) {
+                    imageName.value = response.body()!!.name
+                    Log.i("INFO", "nom renvoyé "+response.body()!!.name!!)
+                }
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse2>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+
+        })
+    }
+    fun upload(file: File){
+        repository.uploadPhoto(token!!,)
+    }
+
 }

@@ -10,6 +10,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
@@ -26,6 +27,7 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
@@ -42,6 +44,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var bobinages: MutableList<Bobinage> = mutableListOf();
     var demontages: MutableList<DemontageMoteur> = mutableListOf();
     var remontages: MutableList<Remontage> = mutableListOf();
+
     fun connection (username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
