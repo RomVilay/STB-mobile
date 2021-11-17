@@ -76,12 +76,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             list.add(imageName.value!!.name!!)
         }
         chantier?.value?.photos = list?.toTypedArray()
-        var tab = photos.value
-        tab!!.add(photo.toString())
-        for (i in chantier.value!!.photos!!) {
-            Log.i("INFO", i)
-        }
-        photos.value = tab!!
+        photos.value = list!!
         quickSave()
     }
     fun setSchema(sch: String){
@@ -314,17 +309,16 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
       job.join()
     }
     fun sendPhoto(photo:File){
-        Log.i("INFO","envoi")
         repository.uploadPhoto(token!!,imageName.value!!.url!!,photo, object: Callback<URLPhotoResponse> {
             override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
                     Log.i("INFO", response.code().toString())
+                    Log.i("INFO","envoyé")
             }
 
             override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
                 Log.i("INFO",t.message!!)
             }
         })
-        Log.i("INFO","envoyé")
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO","Exception handled: ${throwable.localizedMessage}")

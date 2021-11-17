@@ -22,8 +22,8 @@ class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
             }
             fun bind(photo:String){
                 if (photo !== "") {
-                uri = Uri.parse(photo)
-                schema.setImageURI(Uri.parse(photo))
+                uri = Uri.parse("/storage/emulated/0/Pictures/test_pictures/"+photo)
+                schema.setImageURI(Uri.parse("/storage/emulated/0/Pictures/test_pictures/"+photo))
                     }
             }
         }

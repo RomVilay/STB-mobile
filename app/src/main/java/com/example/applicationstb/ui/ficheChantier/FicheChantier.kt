@@ -97,7 +97,14 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
-            viewModel.photos.value = chantier?.photos?.toMutableList()
+            val listPhotos = chantier?.photos?.toMutableList()
+            /*val iter = listPhotos!!.iterator()
+             while (iter.hasNext()){
+                 var i = iter.next()
+                   i = "/storage/emulated/0/Pictures/test_pictures/"+i
+                 Log.i("INFO", i)
+            }*/
+            viewModel.photos.value = listPhotos
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
@@ -106,7 +113,7 @@ class FicheChantier : Fragment() {
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,item.toString())
+            viewModel.fullScreen(layout,"/storage/emulated/0/Pictures/test_pictures/"+item.toString())
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
@@ -289,13 +296,12 @@ class FicheChantier : Fragment() {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
             val dir = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
             if (dir.exists()) {
                 val from = File(dir, currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
                 val to = File(dir, viewModel.imageName.value!!.name)
                 if (from.exists()) from.renameTo(to)
-                currentPhotoPath = from.absolutePath
                 try {
+                    viewModel.addPhoto(0,Uri.parse(to.absolutePath))
                     viewModel.sendPhoto(to)
                 } catch (e: java.lang.Exception) {
                     Log.e("EXCEPTION",e.message!!)
