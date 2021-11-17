@@ -3,10 +3,13 @@ package com.example.applicationstb.repository
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
+import com.squareup.moshi.Moshi
 import okhttp3.RequestBody
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 
@@ -101,9 +104,9 @@ interface APIstb  {
     @GET("/clients/{id}")
     fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
     @PUT("{address}")
-    fun uploadPhoto( @Header("auth-token") token:String, @Path("address") address:String, @Body body: RequestBody )
+    fun uploadPhoto( @Header("auth-token") token:String, @Path("address") address:String, @Body body: RequestBody ): Call<URLPhotoResponse>
     @GET("/images/put")
-    fun getURLToUploadPhoto( @Header("auth-token") token:String) : Call<URLPhotoResponse2>
+    suspend fun getURLToUploadPhoto( @Header("auth-token") token:String) : Response<URLPhotoResponse2>
     @GET("/images/get/{photoName}")
     fun getURLPhoto(@Header("auth-token") token:String, photoName: String): Call<URLPhotoResponse>
     @GET("{address}")

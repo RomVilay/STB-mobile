@@ -2917,11 +2917,12 @@ class Repository (var context:Context) {
         call.enqueue(callback)
     }
     // photo requests
-    fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse2>) {
+    suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token)
+   /* fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse2>) {
         var call = service.getURLToUploadPhoto(token)
         call.enqueue(callback)
-    }
-    fun uploadPhoto(token: String, address: String, photo: File){
+    }*/
+    fun uploadPhoto(token: String, address: String, photo: File, param: Callback<URLPhotoResponse>){
         var body = RequestBody.create(MediaType.parse("image/jpeg"),photo)
         var call = service.uploadPhoto(token, address, body)
         var photo :String? = null

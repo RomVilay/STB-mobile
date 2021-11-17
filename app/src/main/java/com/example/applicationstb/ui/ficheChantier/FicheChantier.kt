@@ -24,11 +24,14 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
@@ -59,7 +62,6 @@ class FicheChantier : Fragment() {
         var list = arguments?.get("listChantiers") as Array<Chantier>
         viewModel.token = arguments?.get("Token") as String
         viewModel.username = arguments?.get("username") as String
-        Log.i("INFO","token: ${viewModel.token} - username: ${viewModel.username}")
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
         val lin = layout.findViewById<LinearLayout>(R.id.linearCh)
@@ -124,12 +126,14 @@ class FicheChantier : Fragment() {
             viewModel.quickSave()
         }
 
-        btnPhoto.setOnClickListener {
-            runBlocking {
-                var job = launch {
-                    viewModel.getImageName()
+        btnPhoto.setOnClickListener{
+            lifecycleScope.launch(Dispatchers.IO){
+                viewModel.getNameURI()
+                try {
+                    Log.i("INFO","name ${viewModel.imageName.value!!.name!!} - uri ${viewModel.imageName.value!!.url}")
+                } catch (e: java.lang.Exception){
+                   // Log.e("EXCEPTION", e.message!!)
                 }
-                job.join()
                 if (viewModel.imageName !== null) {
                     var test = ActivityCompat.checkSelfPermission(
                         requireContext(),
@@ -164,7 +168,6 @@ class FicheChantier : Fragment() {
                                 )
                                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                                 startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                                //viewModel.addSchema(photoURI)
                             }
                         }
                     }
@@ -265,47 +268,68 @@ class FicheChantier : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val dir = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+
         if (requestCode == PHOTO_RESULT) {
             val photo: Bitmap = data?.extras?.get("data") as Bitmap
             val uri = context?.let { photo.saveImage(it.applicationContext) }
             if (uri != null) {
-                Log.i("INFO",uri.toString())
+                Log.i("INFO","uri:"+uri.toString())
                 viewModel.addPhoto(0,uri)
-
+                /*var picture = File(uri.path)
+                try {
+                    viewModel.sendPhoto(data?.extras?.get("data") as File)
+                } catch (e: java.lang.Exception) {
+                    Log.e("EXCEPTION",e.message!!)
+                }*/
             }
-            //viewModel.
             Log.i("INFO",uri.toString())
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
+            val dir = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
             viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
+            if (dir.exists()) {
+                val from = File(dir, currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+                val to = File(dir, viewModel.imageName.value!!.name)
+                if (from.exists()) from.renameTo(to)
+                currentPhotoPath = from.absolutePath
+                try {
+                    viewModel.sendPhoto(to)
+                } catch (e: java.lang.Exception) {
+                    Log.e("EXCEPTION",e.message!!)
+                }
+            }
+            //viewModel.sendPhoto(data?.extras?.get("data") as File)
         }
     }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
-        Log.i("INFO","nom utilisé"+viewModel.imageName.value.toString().removeSuffix(".jpg"))
+      //  Log.i("INFO","nom utilisé"+viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"))
         // Create an image file name
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                viewModel.imageName.value.toString().removeSuffix(".jpg"),/* prefix */
+                viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
                 // Save a file: path for use with ACTION_VIEW intents
                 currentPhotoPath = absolutePath
+                Log.i("INFO",currentPhotoPath)
             }
         } else {
             makeFolder()
             return File.createTempFile(
-                viewModel.imageName.value.toString().removeSuffix(".jpg"),/* prefix */
+                viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
                 // Save a file: path for use with ACTION_VIEW intents
                 currentPhotoPath = absolutePath
+                Log.i("INFO",currentPhotoPath)
             }
         }
     }
@@ -319,11 +343,9 @@ class FicheChantier : Fragment() {
         //Log.i("INFO",viewModel.imageName.value.toString())
         val values = ContentValues()
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
         values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, viewModel.imageName.value.toString())
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, viewModel.imageName.value!!.name.toString())
 
         val uri: Uri? =
                 context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)

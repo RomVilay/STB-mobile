@@ -5,23 +5,17 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.View
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +26,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var context = getApplication<Application>().applicationContext
     var token: String? = null;
     var username: String? = null;
-    var repository = Repository(context);
+    var repository = Repository(context );
     var listeChantiers = arrayListOf<Chantier>()
     var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<Uri?>()
@@ -40,7 +34,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var schema = MutableLiveData<String>()
     var start = MutableLiveData<Date>()
     var image =MutableLiveData<File>()
-    var imageName = MutableLiveData<String>()
+    var imageName = MutableLiveData<URLPhotoResponse2>()
     init {
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -79,10 +73,15 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO", "add photo")
        var list = chantier?.value?.photos?.toMutableList()
         if (list != null) {
-            list.add(photo.toString())
+            list.add(imageName.value!!.name!!)
         }
         chantier?.value?.photos = list?.toTypedArray()
-        photos.value = list!!
+        var tab = photos.value
+        tab!!.add(photo.toString())
+        for (i in chantier.value!!.photos!!) {
+            Log.i("INFO", i)
+        }
+        photos.value = tab!!
         quickSave()
     }
     fun setSchema(sch: String){
@@ -282,7 +281,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         })
     }
-   suspend fun getImageName() = withContext(Dispatchers.IO){
+  /* suspend fun getImageName() = withContext(Dispatchers.IO){
        repository.getURLToUploadPhoto(token!!, object: Callback<URLPhotoResponse2>{
             override fun onResponse(
                 call: Call<URLPhotoResponse2>,
@@ -299,9 +298,36 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
 
         })
+    }*/
+    suspend fun getNameURI() = runBlocking {
+        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val resp1 = repository.getURLToUploadPhoto(token!!)
+            withContext(Dispatchers.Main){
+                if (resp1.isSuccessful) {
+                    imageName.postValue(resp1.body())
+                    Log.i("INFO",resp1.body()?.name!!)
+                } else {
+                    exceptionHandler
+                }
+            }
+        }
+      job.join()
     }
-    fun upload(file: File){
-        repository.uploadPhoto(token!!,)
+    fun sendPhoto(photo:File){
+        Log.i("INFO","envoi")
+        repository.uploadPhoto(token!!,imageName.value!!.url!!,photo, object: Callback<URLPhotoResponse> {
+            override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
+                    Log.i("INFO", response.code().toString())
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                Log.i("INFO",t.message!!)
+            }
+        })
+        Log.i("INFO","envoyé")
+    }
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
     }
 
 }
