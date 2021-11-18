@@ -2112,6 +2112,14 @@ class Repository (var context:Context) {
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
     val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
+    fun servicePhoto(): APIstb{
+        return Retrofit.Builder()
+            .baseUrl("http://195.154.107.195:9000")
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
+            .build()
+            .create(APIstb::class.java)
+    }
     var db : LocalDatabase? = null;
     var chantierDao : ChantierDao? = null;
     var bobinageDao : BobinageDao ? = null;
@@ -2922,10 +2930,11 @@ class Repository (var context:Context) {
         var call = service.getURLToUploadPhoto(token)
         call.enqueue(callback)
     }*/
-    fun uploadPhoto(token: String, address: String, photo: File, param: Callback<URLPhotoResponse>){
+    fun uploadPhoto(token: String,name: String, address: List<String>, photo: File, param: Callback<URLPhotoResponse>){
         var body = RequestBody.create(MediaType.parse("image/jpeg"),photo)
-        var call = service.uploadPhoto(token, address, body)
+        var call = servicePhoto().uploadPhoto(token, name, address[0],address[1].removePrefix("X-Amz-Credential="),address[2].removePrefix("X-Amz-Date="),address[3].removePrefix("X-Amz-Expires="),address[4].removePrefix("X-Amz-SignedHeaders="),address[5].removePrefix("X-Amz-Signature="), body)
         var photo :String? = null
+       call.enqueue(param)
     }
     fun getURLPhoto(token: String, photoName: String, callback: Callback<URLPhotoResponse>){
         var call = service.getURLPhoto(token,photoName)

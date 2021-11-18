@@ -309,10 +309,21 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
       job.join()
     }
     fun sendPhoto(photo:File){
-        repository.uploadPhoto(token!!,imageName.value!!.url!!,photo, object: Callback<URLPhotoResponse> {
+        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+        var s2 = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/")
+        var tab = s.split("&").toMutableList()
+        tab.forEach {
+            Log.i("INFO",it)
+        }
+        Log.i("INFO",s2.contains("?").toString())
+        s2 = s2.replace("%2F","/")
+        s2 = s2.replace("%3F","?")
+        tab[1] = tab[1].replace("%2F","/")
+        Log.i("INFO","url:"+imageName.value!!.name!!)
+        repository.uploadPhoto(token!!,imageName.value!!.name!!,tab.toList(), photo, object: Callback<URLPhotoResponse> {
             override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
-                    Log.i("INFO", response.code().toString())
-                    Log.i("INFO","envoyé")
+                    Log.i("INFO", response.code().toString()+" - "+response.message())
+                    Log.i("INFO","envoyé ${call.request().url()}")
             }
 
             override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {

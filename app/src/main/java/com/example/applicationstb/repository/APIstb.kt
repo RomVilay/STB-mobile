@@ -103,8 +103,8 @@ interface APIstb  {
     fun getAllClients(@Header("auth-token") token:String): Call<ClientsResponse>
     @GET("/clients/{id}")
     fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
-    @PUT("{address}")
-    fun uploadPhoto( @Header("auth-token") token:String, @Path("address") address:String, @Body body: RequestBody ): Call<URLPhotoResponse>
+    @PUT("/images/{name}")
+    fun uploadPhoto( @Header("auth-token") token:String, @Path("name", encoded = true) name:String,@Query("X-Amz-Algorithm") algo:String ,@Query(value = "X-Amz-Credential", encoded = true ) cred:String ,@Query("X-Amz-Date") date:String ,@Query("X-Amz-Expires") Expires:String ,@Query("X-Amz-SignedHeaders") SignedHeaders:String ,@Query("X-Amz-Signature") Signature:String,@Body body: RequestBody ): Call<URLPhotoResponse>
     @GET("/images/put")
     suspend fun getURLToUploadPhoto( @Header("auth-token") token:String) : Response<URLPhotoResponse2>
     @GET("/images/get/{photoName}")
