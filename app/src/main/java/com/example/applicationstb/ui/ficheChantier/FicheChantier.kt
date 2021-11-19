@@ -83,6 +83,15 @@ class FicheChantier : Fragment() {
         val adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeChantiers.map { it.numFiche })
         var visibility = View.VISIBLE
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(layout,"/storage/emulated/0/Pictures/test_pictures/"+item.toString())
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
         selectButton.setOnClickListener {
             lin.visibility = View.VISIBLE
             var chantier = viewModel.listeChantiers.find{it.numFiche == spinner.selectedItem}
@@ -97,28 +106,40 @@ class FicheChantier : Fragment() {
             if (viewModel.chantier.value!!.telContact !== null)  numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null)  dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
-            val listPhotos = chantier?.photos?.toMutableList()
+            lifecycleScope.launch (Dispatchers.IO){
+                var test = ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+                if (!test) {
+                    requestPermissions(
+                        arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ), 1
+                    )
+                }
+                val listPhotos = chantier?.photos?.toMutableList()
+                var iter = listPhotos?.listIterator()
+                while (iter?.hasNext() == true) {
+                    Log.i("INFO",iter.nextIndex().toString())
+                    viewModel.getPhotoFile(iter.next().toString(), iter.nextIndex())
+                    //iter.set(viewModel.getPhotoFile(iter.toString())!!)
+                }
+
+            }
+
             /*val iter = listPhotos!!.iterator()
              while (iter.hasNext()){
                  var i = iter.next()
                    i = "/storage/emulated/0/Pictures/test_pictures/"+i
                  Log.i("INFO", i)
             }*/
-            viewModel.photos.value = listPhotos
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
         //var stech: Bitmap? = sview.extraBitmap
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
-        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
-            viewModel.setSchema(item)
-            viewModel.fullScreen(layout,"/storage/emulated/0/Pictures/test_pictures/"+item.toString())
-        })
-        photos.adapter = sAdapter
-        viewModel.photos.observe(viewLifecycleOwner, {
-            sAdapter.update(it)
-        })
 
         materiel.doAfterTextChanged {
             if (materiel.text.isNotEmpty()) viewModel.chantier.value?.materiel = materiel.text.toString()
@@ -311,12 +332,14 @@ class FicheChantier : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @Throws(IOException::class)
     private fun createImageFile(): File {
       //  Log.i("INFO","nom utilisé"+viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"))
         // Create an image file name
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         if (storageDir.exists()) {
+            if (viewModel.isOnline(requireContext())) {
             return File.createTempFile(
                 viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
                 ".jpg", /* suffix */
@@ -325,6 +348,17 @@ class FicheChantier : Fragment() {
                 // Save a file: path for use with ACTION_VIEW intents
                 currentPhotoPath = absolutePath
                 Log.i("INFO",currentPhotoPath)
+            }
+            } else {
+                return File.createTempFile(
+                    viewModel.chantier.value!!.numFiche+"_"+viewModel.chantier.value!!.photos!!.size,/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                    Log.i("INFO",currentPhotoPath)
+                }
             }
         } else {
             makeFolder()

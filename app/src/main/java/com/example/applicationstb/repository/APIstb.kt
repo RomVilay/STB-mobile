@@ -5,6 +5,7 @@ import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
 import com.squareup.moshi.Moshi
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
@@ -108,7 +109,8 @@ interface APIstb  {
     @GET("/images/put")
     suspend fun getURLToUploadPhoto( @Header("auth-token") token:String) : Response<URLPhotoResponse2>
     @GET("/images/get/{photoName}")
-    fun getURLPhoto(@Header("auth-token") token:String, photoName: String): Call<URLPhotoResponse>
-    @GET("{address}")
-    fun getPhoto(@Header("auth-token") token:String, @Path("address") address: String): Call<PhotoResponse>
+    suspend fun getURLPhoto(@Header("auth-token") token:String, @Path("photoName")photoName: String ): Response <URLPhotoResponse>
+    @Streaming
+    @GET
+    suspend fun getPhoto(@Url address: String): Response<ResponseBody>
 }

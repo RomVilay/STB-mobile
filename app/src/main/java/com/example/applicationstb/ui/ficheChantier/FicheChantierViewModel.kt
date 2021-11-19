@@ -1,13 +1,18 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.app.Application
+import android.content.ContentValues
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.View
 import androidx.navigation.Navigation
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -16,10 +21,14 @@ import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.*
 
 class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
@@ -244,7 +253,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
         return false
     }
-    fun getImage(name: String?){
+  /*  fun getImage(name: String?){
         var request =   repository.getURLPhoto(token!!,name!!,object: Callback<URLPhotoResponse> {
             var i : File? = null
             override fun onResponse(
@@ -275,7 +284,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 Log.e("Error","erreur ${t.message}")
             }
         })
-    }
+    }*/
   /* suspend fun getImageName() = withContext(Dispatchers.IO){
        repository.getURLToUploadPhoto(token!!, object: Callback<URLPhotoResponse2>{
             override fun onResponse(
@@ -310,16 +319,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
     fun sendPhoto(photo:File){
         var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
-        var s2 = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/")
         var tab = s.split("&").toMutableList()
         tab.forEach {
             Log.i("INFO",it)
         }
-        Log.i("INFO",s2.contains("?").toString())
-        s2 = s2.replace("%2F","/")
-        s2 = s2.replace("%3F","?")
         tab[1] = tab[1].replace("%2F","/")
-        Log.i("INFO","url:"+imageName.value!!.name!!)
         repository.uploadPhoto(token!!,imageName.value!!.name!!,tab.toList(), photo, object: Callback<URLPhotoResponse> {
             override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
                     Log.i("INFO", response.code().toString()+" - "+response.message())
@@ -331,8 +335,95 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         })
     }
+    suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
+        var file: String? = null
+        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val resp1 = repository.getURLPhoto(token!!,photoName)
+            withContext(Dispatchers.Main){
+                if (resp1.isSuccessful) {
+                    if (resp1.code() == 200) {
+                       file = resp1.body()?.url!!
+                        Log.i("INFO","url de la photo ${photoName} :"+resp1.body()?.url!!)
+                    }
+                } else {
+                    exceptionHandler
+                }
+            }
+        }
+        job.join()
+        var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var resp2 = repository.getPhoto(file!!)
+            withContext(Dispatchers.Main){
+                if( resp2.isSuccessful) {
+                    var bitmap = BitmapFactory.decodeStream(resp2.body()?.byteStream())
+                    bitmap.saveImage(context,photoName)
+                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
+                   // photos?.value!!.add(p)
+                   // Log.i("INFO", "chemin:"+p)
+                } else{
+                    exceptionHandler
+                }
+            }
+        }
+        job2.join()
+        return@runBlocking file
+    }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
+    }
+
+    fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String):String{
+        if (body==null)
+            return ""
+        var input: InputStream? = null
+        try {
+            input = body.byteStream()
+            val fos = FileOutputStream(pathWhereYouWantToSaveFile)
+            fos.use { output ->
+                val buffer = ByteArray(4 * 1024) // or other buffer size
+                var read: Int
+                while (input.read(buffer).also { read = it } != -1) {
+                    output.write(buffer, 0, read)
+                }
+                output.flush()
+            }
+            return pathWhereYouWantToSaveFile
+        }catch (e:Exception){
+            Log.e("saveFile",e.toString())
+        }
+        finally {
+            input?.close()
+        }
+        return ""
+    }
+    fun Bitmap.saveImage(context: Context, name:String): Uri? {
+        //Log.i("INFO",viewModel.imageName.value.toString())
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, name)
+
+        val uri: Uri? =
+            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.i("INFO",uri.toString())
+            return uri
+        }
+        return null
+    }
+    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
 }

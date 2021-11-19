@@ -2926,25 +2926,16 @@ class Repository (var context:Context) {
     }
     // photo requests
     suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token)
-   /* fun getURLToUploadPhoto(token:String, callback: Callback<URLPhotoResponse2>) {
-        var call = service.getURLToUploadPhoto(token)
-        call.enqueue(callback)
-    }*/
+
     fun uploadPhoto(token: String,name: String, address: List<String>, photo: File, param: Callback<URLPhotoResponse>){
         var body = RequestBody.create(MediaType.parse("image/jpeg"),photo)
         var call = servicePhoto().uploadPhoto(token, name, address[0],address[1].removePrefix("X-Amz-Credential="),address[2].removePrefix("X-Amz-Date="),address[3].removePrefix("X-Amz-Expires="),address[4].removePrefix("X-Amz-SignedHeaders="),address[5].removePrefix("X-Amz-Signature="), body)
         var photo :String? = null
        call.enqueue(param)
     }
-    fun getURLPhoto(token: String, photoName: String, callback: Callback<URLPhotoResponse>){
-        var call = service.getURLPhoto(token,photoName)
-        call.enqueue(callback)
-    }
+    suspend fun getURLPhoto(token: String, photoName: String) = service.getURLPhoto(token,photoName)
 
-    fun getPhoto(token: String, address: String, callback: Callback<PhotoResponse>) {
-            var call = service.getPhoto(token, address)
-            call.enqueue(callback)
-    }
+    suspend fun getPhoto( address: String)  = service.getPhoto(address)
 
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
