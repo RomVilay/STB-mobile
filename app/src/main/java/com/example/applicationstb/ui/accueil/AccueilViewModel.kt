@@ -97,14 +97,15 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         val resp = response.body()
                                         if (resp != null) {
                                             viewModelScope.launch(Dispatchers.IO){
-                                                /*var photos = resp.fiche?.photos?.toMutableList()
+                                                var photos = resp.fiche?.photos?.toMutableList()
                                                 var iter = photos?.listIterator()
                                                 while (iter?.hasNext() == true) {
-                                                    Log.i("INFO",iter.nextIndex().toString())
+                                                    //Log.i("INFO",iter.nextIndex().toString())
                                                     getPhotoFile(iter.next().toString(), iter.nextIndex())
+                                                    //Log.i("INFO",getPhotoFile(iter.next().toString(), iter.nextIndex())!!)
                                                     //iter.set(getPhotoFile(iter.next().toString(), iter.nextIndex())!!)
                                                 }
-                                                resp.fiche?.photos = photos?.toTypedArray()*/
+                                                resp.fiche?.photos = photos?.toTypedArray()
                                                 var ch = repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
                                                 if (ch == null) {
                                                     repository.insertChantierLocalDatabase(resp!!.fiche!!)
@@ -1223,32 +1224,37 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         })
     }
     suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
-        var file: String? = null
-        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val resp1 = repository.getURLPhoto(token!!,photoName)
-            withContext(Dispatchers.Main){
-                if (resp1.isSuccessful) {
-                    if (resp1.code() == 200) {
-                        file = resp1.body()?.url!!
-                        Log.i("INFO","url de la photo ${photoName} :"+resp1.body()?.url!!)
-                        CoroutineScope((Dispatchers.IO + exceptionHandler2)).launch {
-                            saveImage(
-                                Glide.with(context)
-                                .asBitmap()
-                                .load(resp1.body()!!.url!!)
-                                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                                .error(android.R.drawable.stat_notify_error)
-                                .submit()
-                                .get(), photoName)
+        var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            .toString() +"/test_pictures/"+photoName)
+        Log.i("INFO","fichier ${file.absolutePath} exist: ${file.exists().toString()}")
+        var path: String? = null
+        if (!file.exists()) {
+            var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                val resp1 = repository.getURLPhoto(token!!, photoName)
+                withContext(Dispatchers.Main) {
+                    if (resp1.isSuccessful) {
+                        if (resp1.code() == 200) {
+                            path = resp1.body()?.url!!
+                            Log.i("INFO", "url de la photo ${photoName} :" + resp1.body()?.url!!)
+                            CoroutineScope((Dispatchers.IO + exceptionHandler2)).launch {
+                                saveImage(
+                                    Glide.with(context)
+                                        .asBitmap()
+                                        .load(resp1.body()!!.url!!)
+                                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                                        .error(android.R.drawable.stat_notify_error)
+                                        .submit()
+                                        .get(), photoName
+                                )
+                            }
                         }
+                    } else {
+                        exceptionHandler
                     }
-                } else {
-                    exceptionHandler
                 }
             }
-        }
-        job.join()
-        /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            job.join()
+            /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             var resp2 = repository.getPhoto(file!!)
             withContext(Dispatchers.Main){
                 if( resp2.isSuccessful) {
@@ -1264,7 +1270,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         }
         job2.join()*/
-        return@runBlocking file
+        } else{
+            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() +"/test_pictures/"+photoName
+        }
+        return@runBlocking path
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
@@ -1295,7 +1305,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
 
             // Add the image to the system gallery
-            updateStorage(context,name)
+            galleryAddPic(savedImagePath)
+            //updateStorage(context,name)
             //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
         }
         return savedImagePath

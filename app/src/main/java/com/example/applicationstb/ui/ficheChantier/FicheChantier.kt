@@ -120,14 +120,14 @@ class FicheChantier : Fragment() {
                     )
                 }
                 val listPhotos = chantier?.photos?.toMutableList()
-                if (viewModel.isOnline(requireContext())) {
-                    var iter = listPhotos?.listIterator()
-                    while (iter?.hasNext() == true) {
-                        Log.i("INFO", iter.nextIndex().toString())
-                        viewModel.getPhotoFile(iter.next().toString(), iter.nextIndex())
-                        //iter.set(viewModel.getPhotoFile(iter.toString())!!)
-                    }
+                var iter = listPhotos?.listIterator()
+                while (iter?.hasNext() == true) {
+                    Log.i("INFO", iter.next())
+                    //iter.set(viewModel.getPhotoFile(iter.toString())!!)
                 }
+                /*if (viewModel.isOnline(requireContext())) {
+
+                }*/
                 viewModel.photos.postValue(listPhotos)
             }
             sAdapter.update(viewModel.photos.value!!)
