@@ -97,15 +97,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         val resp = response.body()
                                         if (resp != null) {
                                             viewModelScope.launch(Dispatchers.IO){
-                                                var photos = resp.fiche?.photos?.toMutableList()
+                                                /*var photos = resp.fiche?.photos?.toMutableList()
                                                 var iter = photos?.listIterator()
                                                 while (iter?.hasNext() == true) {
-                                                    //Log.i("INFO",iter.nextIndex().toString())
-                                                    getPhotoFile(iter.next().toString(), iter.nextIndex())
-                                                    //Log.i("INFO",getPhotoFile(iter.next().toString(), iter.nextIndex())!!)
-                                                    //iter.set(getPhotoFile(iter.next().toString(), iter.nextIndex())!!)
+                                                    getPhotoFile(iter.next().toString())
                                                 }
-                                                resp.fiche?.photos = photos?.toTypedArray()
+                                                resp.fiche?.photos = photos?.toTypedArray()*/
                                                 var ch = repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
                                                 if (ch == null) {
                                                     repository.insertChantierLocalDatabase(resp!!.fiche!!)
@@ -144,7 +141,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             if (resp2 != null) {
                                                                 Log.i("INFO","fiche DemontagePompe :${resp.fiche!!.numFiche}")
                                                                 //demontages!!.add(resp.fiche!!)
+
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoP =
                                                                         repository.getByIdDemoPompeLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -190,6 +194,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                     Log.i("INFO","fiche DemontageMonophase :${resp.fiche!!.numFiche}")
                                                                     //demontages!!.add(resp.fiche!!)
                                                                     viewModelScope.launch(Dispatchers.IO) {
+                                                                        var photos = resp.fiche?.photos?.toMutableList()
+                                                                        var iter = photos?.listIterator()
+                                                                        while (iter?.hasNext() == true) {
+                                                                            getPhotoFile(iter.next().toString())
+                                                                        }
+                                                                        resp.fiche?.photos = photos?.toTypedArray()
                                                                         var demoM =
                                                                             repository.getByIdDemoMonoLocalDatabse(
                                                                                 resp2.fiche!!._id
@@ -235,6 +245,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 Log.i("INFO","fiche DemontageAlternateur :${resp.fiche!!.numFiche}")
                                                                 //demontages!!.add(resp.fiche!!)
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoA =
                                                                         repository.getByIdDemoAlterLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -279,6 +295,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 Log.i("INFO","fiche DemontageRotorBobine :${resp.fiche!!.numFiche}")
                                                                 //demontages!!.add(resp.fiche!!)
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoRB =
                                                                         repository.getByIdDemoRBLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -321,6 +343,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             val resp2 = response.body()
                                                             if (resp2 != null) {
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoCC =
                                                                         repository.getByIdDemoCCLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -362,6 +390,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 //Log.i("INFO","fiche DemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
                                                                 //demontages!!.add(resp.fiche!!)
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoT =
                                                                         repository.getByIdDemoTriLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -417,11 +451,18 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 val demoTri = repository.getRemontageTriphase(token, resp.fiche!!._id, object: Callback<RemontageTriphaseResponse>{
                                                     override fun onResponse(call: Call<RemontageTriphaseResponse>, response: Response<RemontageTriphaseResponse>) {
                                                         if ( response.code() == 200 ) {
+
                                                             val resp2 = response.body()
                                                             if (resp2 != null) {
                                                                 //Log.i("INFO","fiche RemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
                                                                 //demontages!!.add(resp.fiche!!)
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoT =
                                                                         repository.getByIdRemoTriLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -465,6 +506,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 //Log.i("INFO","fiche RemontageCC :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
                                                                 //demontages!!.add(resp.fiche!!)
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoT =
                                                                         repository.getByIdRemoCCLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -512,6 +559,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 //Log.i("INFO","fiche RemontageCC :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
                                                                 //demontages!!.add(resp.fiche!!)
                                                                 viewModelScope.launch(Dispatchers.IO) {
+                                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                                    var iter = photos?.listIterator()
+                                                                    while (iter?.hasNext() == true) {
+                                                                        getPhotoFile(iter.next().toString())
+                                                                    }
+                                                                    resp.fiche?.photos = photos?.toTypedArray()
                                                                     var demoT =
                                                                         repository.getByIdRemoLocalDatabse(
                                                                             resp2.fiche!!._id
@@ -568,6 +621,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                            // Log.i("INFO","fiche bobinage :${resp.fiche!!._id} - spires : ${resp.fiche!!.nbSpires}")
                                             if (!bobinages.contains(resp!!.fiche!!)) bobinages!!.add(resp.fiche!!)
                                             viewModelScope.launch(Dispatchers.IO){
+                                                var photos = resp.fiche?.photos?.toMutableList()
+                                                var iter = photos?.listIterator()
+                                                while (iter?.hasNext() == true) {
+                                                    getPhotoFile(iter.next().toString())
+                                                }
+                                                resp.fiche?.photos = photos?.toTypedArray()
                                                 var b = repository.getByIdBobinageLocalDatabse(resp.fiche!!._id)
                                                 if (b == null) {
                                                     repository.insertBobinageLocalDatabase(resp!!.fiche!!)
@@ -683,6 +742,35 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
                         var ch = fiche.toChantier()
+                        runBlocking {
+                            var photos =ch.photos?.toMutableList()
+                            var iter = photos?.listIterator()
+                            while (iter?.hasNext() == true) {
+                                var name = iter.next()
+                                var test = getPhotoFile(name)
+                                var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                    getNameURI()
+                                }
+                                job.join()
+                                var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                    val dir = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+                                    val from = File(
+                                        dir,
+                                        "/storage/emulated/0/Pictures/test_pictures/${name}"
+                                    )
+                                    val to = File(dir, imageName.value!!.name!!)
+                                    if (from.exists()) from.renameTo(to)
+                                    try {
+                                        sendPhoto(to)
+                                    } catch (e: java.lang.Exception) {
+                                        Log.e("EXCEPTION", e.message!!)
+                                    }
+                                    iter.set(imageName.value!!.name!!)
+                                }
+                            }
+                            ch.photos = photos?.toTypedArray()
+                            Log.i("INFO", ch.photos.toString())
+                        }
                         val resp = repository.patchChantier(
                             token!!,
                             ch._id,
@@ -1223,9 +1311,67 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
-    suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
+    suspend fun getPhotoFile(photoName: String) : String? = runBlocking {
         var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             .toString() +"/test_pictures/"+photoName)
+        Log.i("INFO","fichier ${file.absolutePath} exist: ${file.exists().toString()}")
+        var path: String? = null
+        if (!file.exists()) {
+            var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                val resp1 = repository.getURLPhoto(token!!, photoName)
+                withContext(Dispatchers.Main) {
+                    if (resp1.isSuccessful) {
+                        if (resp1.code() == 200) {
+                            path = resp1.body()?.url!!
+                            Log.i("INFO", "url de la photo ${photoName} :" + resp1.body()?.url!!)
+                            CoroutineScope((Dispatchers.IO + exceptionHandler2)).launch {
+                                saveImage(
+                                    Glide.with(context)
+                                        .asBitmap()
+                                        .load(resp1.body()!!.url!!)
+                                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                                        .error(android.R.drawable.stat_notify_error)
+                                        .submit()
+                                        .get(), photoName
+                                )
+                            }
+                        }
+                    } else {
+                        exceptionHandler
+                        path = null
+                    }
+                }
+            }
+            job.join()
+            /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var resp2 = repository.getPhoto(file!!)
+            withContext(Dispatchers.Main){
+                if( resp2.isSuccessful) {
+                    saveImage(Glide.with(this@withContext)
+                        .asBitmap()
+                        .load(resp2.))
+                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
+                   // photos?.value!!.add(p)
+                   // Log.i("INFO", "chemin:"+p)
+                } else{
+                    exceptionHandler
+                }
+            }
+        }
+        job2.join()*/
+        } else{
+            if (file.exists()) {
+                path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                    .toString() + "/test_pictures/" + photoName
+            } else {
+                path = null
+            }
+        }
+        return@runBlocking path
+    }
+    suspend fun getSignature(photoName: String) : String? = runBlocking {
+        var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            .toString() +"/test_signature/"+photoName)
         Log.i("INFO","fichier ${file.absolutePath} exist: ${file.exists().toString()}")
         var path: String? = null
         if (!file.exists()) {
@@ -1272,7 +1418,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         job2.join()*/
         } else{
             path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .toString() +"/test_pictures/"+photoName
+                .toString() +"/test_signature/"+photoName
         }
         return@runBlocking path
     }

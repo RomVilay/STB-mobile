@@ -739,12 +739,13 @@
             <EditText
                 android:id="@+id/observations"
                 android:layout_width="499dp"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/round_textview"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Observations"
                 android:inputType="textMultiLine"
+                android:minLines="1"
                 android:padding="7dp" />
 
             <LinearLayout
