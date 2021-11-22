@@ -120,15 +120,17 @@ class FicheChantier : Fragment() {
                     )
                 }
                 val listPhotos = chantier?.photos?.toMutableList()
-                var iter = listPhotos?.listIterator()
-                while (iter?.hasNext() == true) {
-                    Log.i("INFO",iter.nextIndex().toString())
-                    viewModel.getPhotoFile(iter.next().toString(), iter.nextIndex())
-                    //iter.set(viewModel.getPhotoFile(iter.toString())!!)
+                if (viewModel.isOnline(requireContext())) {
+                    var iter = listPhotos?.listIterator()
+                    while (iter?.hasNext() == true) {
+                        Log.i("INFO", iter.nextIndex().toString())
+                        viewModel.getPhotoFile(iter.next().toString(), iter.nextIndex())
+                        //iter.set(viewModel.getPhotoFile(iter.toString())!!)
+                    }
                 }
-
+                viewModel.photos.postValue(listPhotos)
             }
-
+            sAdapter.update(viewModel.photos.value!!)
             /*val iter = listPhotos!!.iterator()
              while (iter.hasNext()){
                  var i = iter.next()
@@ -156,7 +158,9 @@ class FicheChantier : Fragment() {
 
         btnPhoto.setOnClickListener{
             lifecycleScope.launch(Dispatchers.IO){
-                viewModel.getNameURI()
+                if (viewModel.isOnline(requireContext())) {
+                    viewModel.getNameURI()
+                }
                 try {
                     Log.i("INFO","name ${viewModel.imageName.value!!.name!!} - uri ${viewModel.imageName.value!!.url}")
                 } catch (e: java.lang.Exception){
@@ -303,7 +307,7 @@ class FicheChantier : Fragment() {
             val uri = context?.let { photo.saveImage(it.applicationContext) }
             if (uri != null) {
                 Log.i("INFO","uri:"+uri.toString())
-                viewModel.addPhoto(0,uri)
+                viewModel.addPhoto(uri)
                 /*var picture = File(uri.path)
                 try {
                     viewModel.sendPhoto(data?.extras?.get("data") as File)
@@ -318,14 +322,24 @@ class FicheChantier : Fragment() {
             //imageView.setImageBitmap(photo)
             val dir = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
             if (dir.exists()) {
-                val from = File(dir, currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
-                val to = File(dir, viewModel.imageName.value!!.name)
-                if (from.exists()) from.renameTo(to)
-                try {
-                    viewModel.addPhoto(0,Uri.parse(to.absolutePath))
-                    viewModel.sendPhoto(to)
-                } catch (e: java.lang.Exception) {
-                    Log.e("EXCEPTION",e.message!!)
+                if (viewModel.isOnline(requireContext())) {
+                    val from = File(
+                        dir,
+                        currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")
+                    )
+                    val to = File(dir, viewModel.imageName.value!!.name)
+                    if (from.exists()) from.renameTo(to)
+                    try {
+                        viewModel.addPhoto( Uri.parse(to.absolutePath))
+                        viewModel.sendPhoto(to)
+                        viewModel.quickSave()
+                    } catch (e: java.lang.Exception) {
+                        Log.e("EXCEPTION", e.message!!)
+                    }
+                } else {
+                    Log.i("INFO","local photo path:"+currentPhotoPath)
+                    viewModel.addPhoto(Uri.parse(currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")))
+                    viewModel.quickSave()
                 }
             }
             //viewModel.sendPhoto(data?.extras?.get("data") as File)
@@ -357,19 +371,30 @@ class FicheChantier : Fragment() {
                 ).apply {
                     // Save a file: path for use with ACTION_VIEW intents
                     currentPhotoPath = absolutePath
-                    Log.i("INFO",currentPhotoPath)
                 }
             }
         } else {
             makeFolder()
-            return File.createTempFile(
-                viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
-            ).apply {
-                // Save a file: path for use with ACTION_VIEW intents
-                currentPhotoPath = absolutePath
-                Log.i("INFO",currentPhotoPath)
+            if (viewModel.isOnline(requireContext())) {
+                return File.createTempFile(
+                    viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                    Log.i("INFO",currentPhotoPath)
+                }
+            } else {
+                return File.createTempFile(
+                    viewModel.chantier.value!!.numFiche+"_"+viewModel.chantier.value!!.photos!!.size,/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                    Log.i("INFO","local photo path:"+currentPhotoPath)
+                }
             }
         }
     }

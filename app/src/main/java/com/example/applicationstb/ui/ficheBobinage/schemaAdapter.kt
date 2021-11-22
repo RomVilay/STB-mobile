@@ -40,8 +40,7 @@ class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
         holder.itemView.setOnClickListener{callback(schema)}
     }
     fun update (list: MutableList<String>){
-        this.schemas = list ///erreur du type sur l'objet transmis
-        //Log.i("INFO",schemas.toString())
+        this.schemas = list
         notifyDataSetChanged()
     }
 

@@ -1,10 +1,16 @@
 package com.example.applicationstb.ui.accueil
 
 import android.app.Application
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -16,18 +22,21 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.bumptech.glide.Glide
 import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.connexion.ConnexionDirections
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
@@ -44,6 +53,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var bobinages: MutableList<Bobinage> = mutableListOf();
     var demontages: MutableList<DemontageMoteur> = mutableListOf();
     var remontages: MutableList<Remontage> = mutableListOf();
+    var image =MutableLiveData<File>()
+    var imageName = MutableLiveData<URLPhotoResponse2>()
 
     fun connection (username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
@@ -86,6 +97,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         val resp = response.body()
                                         if (resp != null) {
                                             viewModelScope.launch(Dispatchers.IO){
+                                                /*var photos = resp.fiche?.photos?.toMutableList()
+                                                var iter = photos?.listIterator()
+                                                while (iter?.hasNext() == true) {
+                                                    Log.i("INFO",iter.nextIndex().toString())
+                                                    getPhotoFile(iter.next().toString(), iter.nextIndex())
+                                                    //iter.set(getPhotoFile(iter.next().toString(), iter.nextIndex())!!)
+                                                }
+                                                resp.fiche?.photos = photos?.toTypedArray()*/
                                                 var ch = repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
                                                 if (ch == null) {
                                                     repository.insertChantierLocalDatabase(resp!!.fiche!!)
@@ -1170,6 +1189,167 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         }
         return false
+    }
+    suspend fun getNameURI() = runBlocking {
+        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val resp1 = repository.getURLToUploadPhoto(token!!)
+            withContext(Dispatchers.Main){
+                if (resp1.isSuccessful) {
+                    imageName.postValue(resp1.body())
+                    Log.i("INFO",resp1.body()?.name!!)
+                } else {
+                    exceptionHandler
+                }
+            }
+        }
+        job.join()
+    }
+    fun sendPhoto(photo:File){
+        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+        var tab = s.split("&").toMutableList()
+        tab.forEach {
+            Log.i("INFO",it)
+        }
+        tab[1] = tab[1].replace("%2F","/")
+        repository.uploadPhoto(token!!,imageName.value!!.name!!,tab.toList(), photo, object: Callback<URLPhotoResponse> {
+            override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
+                Log.i("INFO", response.code().toString()+" - "+response.message())
+                Log.i("INFO","envoyé ${call.request().url()}")
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                Log.i("INFO",t.message!!)
+            }
+        })
+    }
+    suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
+        var file: String? = null
+        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val resp1 = repository.getURLPhoto(token!!,photoName)
+            withContext(Dispatchers.Main){
+                if (resp1.isSuccessful) {
+                    if (resp1.code() == 200) {
+                        file = resp1.body()?.url!!
+                        Log.i("INFO","url de la photo ${photoName} :"+resp1.body()?.url!!)
+                        CoroutineScope((Dispatchers.IO + exceptionHandler2)).launch {
+                            saveImage(
+                                Glide.with(context)
+                                .asBitmap()
+                                .load(resp1.body()!!.url!!)
+                                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                                .error(android.R.drawable.stat_notify_error)
+                                .submit()
+                                .get(), photoName)
+                        }
+                    }
+                } else {
+                    exceptionHandler
+                }
+            }
+        }
+        job.join()
+        /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var resp2 = repository.getPhoto(file!!)
+            withContext(Dispatchers.Main){
+                if( resp2.isSuccessful) {
+                    saveImage(Glide.with(this@withContext)
+                        .asBitmap()
+                        .load(resp2.))
+                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
+                   // photos?.value!!.add(p)
+                   // Log.i("INFO", "chemin:"+p)
+                } else{
+                    exceptionHandler
+                }
+            }
+        }
+        job2.join()*/
+        return@runBlocking file
+    }
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
+    }
+    val exceptionHandler2 = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO","erreur enregistrement: ${throwable.localizedMessage}")
+    }
+    private fun saveImage(image: Bitmap, name: String): String? {
+        Log.i("INFO","start")
+        var savedImagePath: String? = null
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() + "/test_pictures/"
+        )
+        var success = true
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs()
+        }
+        if (success) {
+            val imageFile = File(storageDir, name)
+            savedImagePath = imageFile.getAbsolutePath()
+            try {
+                val fOut: OutputStream = FileOutputStream(imageFile)
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+                fOut.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // Add the image to the system gallery
+            updateStorage(context,name)
+            //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
+        }
+        return savedImagePath
+    }
+    fun updateStorage(context: Context, name: String): Uri? {
+        //Log.i("INFO",viewModel.imageName.value.toString())
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(MediaStore.Images.Media.DISPLAY_NAME,name)
+
+        val uri: Uri? =
+            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.i("INFO",uri.toString())
+            return uri
+        }
+        return null
+    }
+    private fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
+    }
+    fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String):String{
+        if (body==null)
+            return ""
+        var input: InputStream? = null
+        try {
+            input = body.byteStream()
+            val fos = FileOutputStream(pathWhereYouWantToSaveFile)
+            fos.use { output ->
+                val buffer = ByteArray(4 * 1024) // or other buffer size
+                var read: Int
+                while (input.read(buffer).also { read = it } != -1) {
+                    output.write(buffer, 0, read)
+                }
+                output.flush()
+            }
+            return pathWhereYouWantToSaveFile
+        }catch (e:Exception){
+            Log.e("saveFile",e.toString())
+        }
+        finally {
+            input?.close()
+        }
+        return ""
     }
 
     // TODO: Implement the ViewModel

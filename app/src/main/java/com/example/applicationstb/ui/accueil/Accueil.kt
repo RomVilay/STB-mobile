@@ -1,8 +1,10 @@
 package com.example.applicationstb.ui.accueil
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import com.example.applicationstb.R
 import com.example.applicationstb.ui.ficheChantier.DawingView
@@ -38,6 +41,18 @@ class Accueil : Fragment() {
         viewModel.token = arguments?.get("Token") as? String
         viewModel.username = arguments?.get("Username") as? String
         if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
+            var test = ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+            if (!test) {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), 1
+                )
+            }
             viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
         } else {
             val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'êtes pas connecté au réseau Internet.", 3600)

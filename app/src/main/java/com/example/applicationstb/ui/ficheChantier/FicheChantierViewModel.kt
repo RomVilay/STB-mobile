@@ -1,8 +1,10 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
@@ -17,6 +19,8 @@ import android.util.Log
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
+import com.bumptech.glide.Glide
+import com.example.applicationstb.MainActivity
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
@@ -78,13 +82,18 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         Navigation.findNavController(view).navigate(action)
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addPhoto(index:Int, photo: Uri) {
+    fun addPhoto(photo: Uri) {
         Log.i("INFO", "add photo")
        var list = chantier?.value?.photos?.toMutableList()
         if (list != null) {
-            list.add(imageName.value!!.name!!)
+            if (isOnline(context)) {
+                list.add(imageName.value!!.name!!)
+            } else {
+                //Log.i("INFO", photo.path.toString())
+                list.add(photo.path.toString())
+            }
         }
-        chantier?.value?.photos = list?.toTypedArray()
+        chantier.value?.photos = list?.toTypedArray()
         photos.value = list!!
         quickSave()
     }
@@ -344,6 +353,15 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     if (resp1.code() == 200) {
                        file = resp1.body()?.url!!
                         Log.i("INFO","url de la photo ${photoName} :"+resp1.body()?.url!!)
+                        CoroutineScope((Dispatchers.IO + exceptionHandler2)).launch {
+                            saveImage(Glide.with(context)
+                                .asBitmap()
+                                .load(resp1.body()!!.url!!)
+                                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                                .error(android.R.drawable.stat_notify_error)
+                                .submit()
+                                .get(), photoName)
+                        }
                     }
                 } else {
                     exceptionHandler
@@ -351,12 +369,13 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         job.join()
-        var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+        /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             var resp2 = repository.getPhoto(file!!)
             withContext(Dispatchers.Main){
                 if( resp2.isSuccessful) {
-                    var bitmap = BitmapFactory.decodeStream(resp2.body()?.byteStream())
-                    bitmap.saveImage(context,photoName)
+                    saveImage(Glide.with(this@withContext)
+                        .asBitmap()
+                        .load(resp2.))
                    // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
                    // photos?.value!!.add(p)
                    // Log.i("INFO", "chemin:"+p)
@@ -365,13 +384,70 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 }
             }
         }
-        job2.join()
+        job2.join()*/
         return@runBlocking file
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
     }
+    val exceptionHandler2 = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO","erreur enregistrement: ${throwable.localizedMessage}")
+    }
+    private fun saveImage(image: Bitmap, name: String): String? {
+        Log.i("INFO","start")
+        var savedImagePath: String? = null
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() + "/test_pictures/"
+        )
+        var success = true
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs()
+        }
+        if (success) {
+            val imageFile = File(storageDir, name)
+            savedImagePath = imageFile.getAbsolutePath()
+            try {
+                val fOut: OutputStream = FileOutputStream(imageFile)
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+                fOut.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
+            // Add the image to the system gallery
+            updateStorage(context,name)
+            //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
+        }
+        return savedImagePath
+    }
+    fun updateStorage(context: Context, name: String): Uri? {
+        //Log.i("INFO",viewModel.imageName.value.toString())
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(MediaStore.Images.Media.DISPLAY_NAME,name)
+
+        val uri: Uri? =
+            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.i("INFO",uri.toString())
+            return uri
+        }
+        return null
+    }
+    private fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
+    }
     fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String):String{
         if (body==null)
             return ""
@@ -395,35 +471,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             input?.close()
         }
         return ""
-    }
-    fun Bitmap.saveImage(context: Context, name:String): Uri? {
-        //Log.i("INFO",viewModel.imageName.value.toString())
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
-        values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, name)
-
-        val uri: Uri? =
-            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        if (uri != null) {
-            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
-            values.put(MediaStore.Images.Media.IS_PENDING, false)
-            context.contentResolver.update(uri, values, null, null)
-            Log.i("INFO",uri.toString())
-            return uri
-        }
-        return null
-    }
-    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
-        if (outputStream != null) {
-            try {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
     }
 
 }
