@@ -1109,9 +1109,69 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 job2.join()
                             }
                             ch.photos = photos?.toTypedArray()
-                        }
-                        ch.photos?.forEach {
-                            Log.i("INFO", "photo envoyée : ${it}")
+                            if (ch.signatureClient !== null) {
+                                var job3 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job3.join()
+                                var job4 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir = Environment.getExternalStoragePublicDirectory(
+                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                            )
+                                            val from = File(
+                                                dir,
+                                                ch.signatureClient!!
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i(
+                                                "INFO","signature client"+
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job4.join()
+                                ch.signatureClient = imageName.value!!.name
+
+                            }
+                            if (ch.signatureTech !== null) {
+                                var job3 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job3.join()
+                                var job4 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir = Environment.getExternalStoragePublicDirectory(
+                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                            )
+                                            val from = File(
+                                                dir,
+                                                ch.signatureTech!!
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i(
+                                                "INFO","signature tech"+
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job4.join()
+                            }
+                            ch.signatureTech = imageName.value!!.name
                         }
                         val resp = repository.patchChantier(
                             token!!,

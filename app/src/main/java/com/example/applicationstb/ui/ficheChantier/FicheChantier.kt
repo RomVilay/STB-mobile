@@ -250,8 +250,8 @@ class FicheChantier : Fragment() {
             alert.setOnDismissListener {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
-                viewModel.signatures.add(0, uri)
-                viewModel.chantier.value?.signatureClient = uri.toString()
+                viewModel.signatures.add(uri)
+                viewModel.chantier.value?.signatureClient = uri
                 viewModel.quickSave()
             }
         }
@@ -270,7 +270,8 @@ class FicheChantier : Fragment() {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
                 viewModel.signatures.add(uri)
-                viewModel.chantier.value?.signatureTech = uri.toString()
+                viewModel.chantier.value?.signatureTech = uri
+                //Log.i("INFO",sign.exists().toString())
                 viewModel.quickSave()
             }
         }
@@ -316,13 +317,12 @@ class FicheChantier : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val dir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-        //Log.i("INFO",(resultCode < 0 || resultCode > 0).toString())
         if (resultCode < 0 || resultCode > 0) {
             if (requestCode == PHOTO_RESULT) {
                 val photo: Bitmap = data?.extras?.get("data") as Bitmap
                 val uri = context?.let { photo.saveImage(it.applicationContext) }
                 if (uri != null) {
-                    Log.i("INFO", "uri:" + uri.toString())
+                    Log.i("INFO", "uri:" +uri)
                     viewModel.addPhoto(uri)
                     viewModel.galleryAddPic(uri.path)
                     /*var picture = File(uri.path)

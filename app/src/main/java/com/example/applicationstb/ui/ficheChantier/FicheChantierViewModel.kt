@@ -42,7 +42,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var repository = Repository(context );
     var listeChantiers = arrayListOf<Chantier>()
     var chantier = MutableLiveData<Chantier>()
-    var signatures = arrayListOf<Uri?>()
+    var signatures = arrayListOf<String?>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
     var start = MutableLiveData<Date>()
