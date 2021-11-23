@@ -23,7 +23,12 @@ class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
             fun bind(photo:String){
                 if (photo !== "") {
                 uri = Uri.parse("/storage/emulated/0/Pictures/test_pictures/"+photo)
-                schema.setImageURI(Uri.parse("/storage/emulated/0/Pictures/test_pictures/"+photo))
+                    try {
+                        schema.setImageURI(Uri.parse("/storage/emulated/0/Pictures/test_pictures/" + photo))
+                    } catch (e: Exception) {
+                        schema.visibility = View.GONE
+                        Log.e("exception", e.message!!)
+                    }
                     }
             }
         }
