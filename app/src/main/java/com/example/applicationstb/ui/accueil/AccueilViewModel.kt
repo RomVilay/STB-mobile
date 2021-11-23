@@ -1103,7 +1103,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
-                                        //iter.set(imageName.value!!.name!!)
+                                        iter.set(imageName.value!!.name!!)
 
                                     }
                                 job2.join()
@@ -1642,9 +1642,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
-        tab.forEach {
-           Log.i("INFO",it)
-       }
         repository.uploadPhoto(
             token!!,
             imageName.value!!.name!!,
