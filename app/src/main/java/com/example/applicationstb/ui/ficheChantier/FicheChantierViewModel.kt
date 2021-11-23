@@ -416,30 +416,12 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
 
             // Add the image to the system gallery
-            updateStorage(context,name)
+            galleryAddPic(savedImagePath)
             //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
         }
         return savedImagePath
     }
-    fun updateStorage(context: Context, name: String): Uri? {
-        //Log.i("INFO",viewModel.imageName.value.toString())
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
-        values.put(MediaStore.Images.Media.IS_PENDING, true)
-        values.put(MediaStore.Images.Media.DISPLAY_NAME,name)
-
-        val uri: Uri? =
-            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        if (uri != null) {
-            values.put(MediaStore.Images.Media.IS_PENDING, false)
-            context.contentResolver.update(uri, values, null, null)
-            Log.i("INFO",uri.toString())
-            return uri
-        }
-        return null
-    }
-    private fun galleryAddPic(imagePath: String?) {
+    fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
             val f = File(path)
