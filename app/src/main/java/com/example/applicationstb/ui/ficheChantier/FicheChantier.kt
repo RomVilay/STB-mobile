@@ -169,6 +169,7 @@ class FicheChantier : Fragment() {
         }
 
         btnPhoto.setOnClickListener {
+            Log.i("INFO",viewModel.chantier.value?.numFiche!!)
             runBlocking {
                 lifecycleScope.launch(Dispatchers.IO) {
                     // var job = CoroutineScope(Dispatchers.IO).launch {
@@ -250,7 +251,10 @@ class FicheChantier : Fragment() {
             alert.setOnDismissListener {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
-                Log.i("INFO", "uri client: "+uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/"))
+                Log.i(
+                    "INFO",
+                    "uri client: " + uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/")
+                )
                 viewModel.signatures.add(uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/"))
                 viewModel.chantier.value?.signatureClient =
                     uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/")
@@ -391,7 +395,7 @@ class FicheChantier : Fragment() {
                 }
             } else {
                 return File.createTempFile(
-                    viewModel.chantier.value!!.numFiche + "_" + viewModel.chantier.value!!.photos!!.size,/* prefix */
+                    viewModel.chantier.value?.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
                     ".jpg", /* suffix */
                     storageDir /* directory */
                 ).apply {
@@ -403,7 +407,7 @@ class FicheChantier : Fragment() {
             makeFolder()
             if (viewModel.isOnline(requireContext())) {
                 return File.createTempFile(
-                    viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
+                    viewModel.imageName.value?.name.toString().removeSuffix(".jpg"),/* prefix */
                     ".jpg", /* suffix */
                     storageDir /* directory */
                 ).apply {
@@ -413,7 +417,7 @@ class FicheChantier : Fragment() {
                 }
             } else {
                 return File.createTempFile(
-                    viewModel.chantier.value!!.numFiche + "_" + viewModel.chantier.value!!.photos!!.size,/* prefix */
+                    viewModel.chantier.value!!.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
                     ".jpg", /* suffix */
                     storageDir /* directory */
                 ).apply {
