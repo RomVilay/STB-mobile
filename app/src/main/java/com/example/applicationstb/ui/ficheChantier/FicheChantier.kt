@@ -250,8 +250,10 @@ class FicheChantier : Fragment() {
             alert.setOnDismissListener {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
-                viewModel.signatures.add(uri)
-                viewModel.chantier.value?.signatureClient = uri
+                Log.i("INFO", "uri client: "+uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/"))
+                viewModel.signatures.add(uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/"))
+                viewModel.chantier.value?.signatureClient =
+                    uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/")
                 viewModel.quickSave()
             }
         }
@@ -269,8 +271,9 @@ class FicheChantier : Fragment() {
             alert.setOnDismissListener {
                 var v = alert.findViewById<DawingView>(R.id.dawingView)
                 var uri = v.showLog()
-                viewModel.signatures.add(uri)
-                viewModel.chantier.value?.signatureTech = uri
+                viewModel.signatures.add(uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/"))
+                viewModel.chantier.value?.signatureTech =
+                    uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/")
                 //Log.i("INFO",sign.exists().toString())
                 viewModel.quickSave()
             }
@@ -322,7 +325,7 @@ class FicheChantier : Fragment() {
                 val photo: Bitmap = data?.extras?.get("data") as Bitmap
                 val uri = context?.let { photo.saveImage(it.applicationContext) }
                 if (uri != null) {
-                    Log.i("INFO", "uri:" +uri)
+                    Log.i("INFO", "uri:" + uri)
                     viewModel.addPhoto(uri)
                     viewModel.galleryAddPic(uri.path)
                     /*var picture = File(uri.path)
@@ -365,7 +368,7 @@ class FicheChantier : Fragment() {
                 //viewModel.sendPhoto(data?.extras?.get("data") as File)
             }
         }
-        Log.i("INFO","photos ${viewModel.photos.value?.size}")
+        Log.i("INFO", "photos ${viewModel.photos.value?.size}")
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

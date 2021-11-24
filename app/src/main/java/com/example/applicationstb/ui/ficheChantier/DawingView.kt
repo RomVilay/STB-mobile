@@ -148,7 +148,6 @@ class DawingView : View {
             saveImageToStream(this, context.contentResolver.openOutputStream(uri))
             values.put(MediaStore.Images.Media.IS_PENDING, false)
             context.contentResolver.update(uri, values, null, null)
-            Log.i("INFO",uri.encodedPath!!)
             return uri
         }
         return null

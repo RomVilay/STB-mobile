@@ -1119,20 +1119,20 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                         try {
                                             val dir = Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                Environment.DIRECTORY_PICTURES + "/test_signatures"
                                             )
                                             val from = File(
                                                 dir,
                                                 ch.signatureClient!!
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
-                                            sendPhoto(from)
                                             Log.i(
                                                 "INFO","signature client"+
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
                                             if (from.exists()) from.renameTo(to)
+                                            sendPhoto(to)
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -1151,20 +1151,20 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                         try {
                                             val dir = Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                Environment.DIRECTORY_PICTURES + "/test_signatures"
                                             )
                                             val from = File(
                                                 dir,
                                                 ch.signatureTech!!
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
-                                            sendPhoto(from)
                                             Log.i(
                                                 "INFO","signature tech"+
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
                                             if (from.exists()) from.renameTo(to)
+                                            sendPhoto(to)
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -1697,11 +1697,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun sendPhoto(photo: File) {
-        Log.i("INFO",photo.exists().toString())
         var s =
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
+        Log.i("INFO",photo.name)
         repository.uploadPhoto(
             token!!,
             imageName.value!!.name!!,
