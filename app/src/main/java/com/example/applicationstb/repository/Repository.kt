@@ -2011,52 +2011,52 @@ class LoginResponse(
     var error: String?
 )
 class FichesResponse(
-    var fiches:Array<Fiche>?
+    var data:Array<Fiche>?
 )
 class ChantierResponse(
-    var fiche:Chantier?
+    var data:Chantier?
 )
 class BobinageResponse(
-    var fiche:Bobinage?
+    var data:Bobinage?
 )
 class DemontageTriphaseResponse(
-    var fiche: Triphase?
+    var data: Triphase?
 )
 class DemontageCCResponse(
-    var fiche: CourantContinu?
+    var data: CourantContinu?
 )
 class DemontagePompeResponse(
-    var fiche: DemontagePompe?
+    var data: DemontagePompe?
 )
 class RemontageTriphaseResponse(
-    var fiche: RemontageTriphase?
+    var data: RemontageTriphase?
 )
 class RemontageCCResponse(
-    var fiche: RemontageCourantC?
+    var data: RemontageCourantC?
 )
 class VehiculesResponse(
-    var vehicule:Vehicule?
+    var data:Vehicule?
 )
 class DemontageResponse(
-    var fiche:DemontageMoteur?
+    var data:DemontageMoteur?
 )
 class DemontagesResponse(
-    var fiches:Array<DemontageMoteur>?
+    var data:Array<DemontageMoteur>?
 )
 class DemontageAlternateurResponse(
-    var fiche:DemontageAlternateur?
+    var data:DemontageAlternateur?
 )
 class DemontageMonophaseResponse(
-    var fiche:DemontageMonophase?
+    var data:DemontageMonophase?
 )
 class DemontageRotorBobineResponse(
-    var fiche:DemontageRotorBobine?
+    var data:DemontageRotorBobine?
 )
 class RemontageResponse(
-    var fiche:Remontage?
+    var data:Remontage?
 )
 class ClientsResponse(
-    var client:Client?
+    var data:Client?
 )
 class CustomDateAdapter : JsonAdapter <Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())

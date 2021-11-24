@@ -96,9 +96,9 @@ interface APIstb  {
 
     @GET("/fiches/{ficheId}")
     fun getDemontageRotorBobine(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageRotorBobineResponse>
-    @GET("/vehicules")
+    @GET("/vehicles")
     fun getAllVehicules(@Header("auth-token") token:String): Call<VehiculesResponse>
-    @GET("/vehicules/{id}")
+    @GET("/vehicles/{id}")
     fun getVehiculeById(@Header("auth-token") token:String, @Path("id") id:String ): Call<VehiculesResponse>
     @GET("/clients")
     fun getAllClients(@Header("auth-token") token:String): Call<ClientsResponse>

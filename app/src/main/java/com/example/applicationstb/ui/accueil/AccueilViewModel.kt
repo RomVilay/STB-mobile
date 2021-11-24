@@ -88,13 +88,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             ) {
                 if (response.code() == 200) {
                     val resp = response.body()
-                    Log.i("INFO", "${resp!!.fiches!!.size}")
+                    Log.i("INFO", "${resp!!.data!!.size}")
                     if (resp != null) {
-                        fiches = resp.fiches
+                        fiches = resp.data
                     }
                     var nbCh = 0;
                     var nbBo = 0;
-                    for (fiche in resp!!.fiches!!) {
+                    for (fiche in resp!!.data!!) {
                         if (fiche.type == 1L) {
                             val resp = repository.getChantier(
                                 token,
@@ -109,28 +109,28 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val resp = response.body()
                                             if (resp != null) {
                                                 viewModelScope.launch(Dispatchers.IO) {
-                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                    var photos = resp.data?.photos?.toMutableList()
                                                     var iter = photos?.listIterator()
                                                     while (iter?.hasNext() == true) {
                                                         getPhotoFile(iter.next().toString())
                                                     }
-                                                    resp.fiche?.photos = photos?.toTypedArray()
+                                                    resp.data?.photos = photos?.toTypedArray()
                                                     var ch =
-                                                        repository.getByIdChantierLocalDatabse(resp.fiche!!._id)
+                                                        repository.getByIdChantierLocalDatabse(resp.data!!._id)
                                                     if (ch == null) {
-                                                        repository.insertChantierLocalDatabase(resp!!.fiche!!)
-                                                        Log.i("INFO", "${resp!!.fiche!!.vehicule}")
-                                                        if (resp!!.fiche!!.vehicule !== null) getVehicule(
-                                                            resp!!.fiche!!.vehicule!!
+                                                        repository.insertChantierLocalDatabase(resp!!.data!!)
+                                                        Log.i("INFO", "${resp!!.data!!.vehicule}")
+                                                        if (resp!!.data!!.vehicule !== null) getVehicule(
+                                                            resp!!.data!!.vehicule!!
                                                         )
-                                                        if (!chantiers.contains(resp!!.fiche!!)) chantiers!!.add(
-                                                            resp!!.fiche!!
+                                                        if (!chantiers.contains(resp!!.data!!)) chantiers!!.add(
+                                                            resp!!.data!!
                                                         )
                                                         Log.i("INFO", "ajout en bdd locale")
                                                     } else {
                                                         //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
                                                     }
-                                                    //Log.i("INFO","fiche chantier :${ch!!._id} - matériel : ${ch!!.materiel}")
+                                                    //Log.i("INFO","data chantier :${ch!!._id} - matériel : ${ch!!.materiel}")
                                                 }
                                             }
                                         } else {
@@ -163,10 +163,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val resp = response.body()
                                             if (resp != null) {
                                                 // fiche demontage pompe
-                                                if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 1) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 1) {
                                                     val demoTri = repository.getDemontagePompe(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object : Callback<DemontagePompeResponse> {
                                                             override fun onResponse(
                                                                 call: Call<DemontagePompeResponse>,
@@ -177,7 +177,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                     if (resp2 != null) {
                                                                         Log.i(
                                                                             "INFO",
-                                                                            "fiche DemontagePompe :${resp.fiche!!.numFiche}"
+                                                                            "fiche DemontagePompe :${resp.data!!.numFiche}"
                                                                         )
                                                                         //demontages!!.add(resp.fiche!!)
 
@@ -185,7 +185,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -194,21 +194,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoP =
                                                                                 repository.getByIdDemoPompeLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoP == null) {
                                                                                 repository.insertDemoPompeLocalDatabase(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 if (!demontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) demontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -243,11 +243,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         })
                                                 }
                                                 // fiche demontage Monophase
-                                                if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 2) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 2) {
                                                     runBlocking {
                                                         val demoTri = repository.getDemontageMono(
                                                             token,
-                                                            resp.fiche!!._id,
+                                                            resp.data!!._id,
                                                             object :
                                                                 Callback<DemontageMonophaseResponse> {
                                                                 override fun onResponse(
@@ -259,14 +259,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         if (resp2 != null) {
                                                                             Log.i(
                                                                                 "INFO",
-                                                                                "fiche DemontageMonophase :${resp.fiche!!.numFiche}"
+                                                                                "fiche DemontageMonophase :${resp.data!!.numFiche}"
                                                                             )
                                                                             //demontages!!.add(resp.fiche!!)
                                                                             viewModelScope.launch(
                                                                                 Dispatchers.IO
                                                                             ) {
                                                                                 var photos =
-                                                                                    resp.fiche?.photos?.toMutableList()
+                                                                                    resp.data?.photos?.toMutableList()
                                                                                 var iter =
                                                                                     photos?.listIterator()
                                                                                 while (iter?.hasNext() == true) {
@@ -275,21 +275,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                             .toString()
                                                                                     )
                                                                                 }
-                                                                                resp.fiche?.photos =
+                                                                                resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoM =
                                                                                     repository.getByIdDemoMonoLocalDatabse(
-                                                                                        resp2.fiche!!._id
+                                                                                        resp2.data!!._id
                                                                                     )
                                                                                 if (demoM == null) {
                                                                                     repository.insertDemoMonoLocalDatabase(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                     if (!demontages.contains(
-                                                                                            resp2!!.fiche!!
+                                                                                            resp2!!.data!!
                                                                                         )
                                                                                     ) demontages!!.add(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                     Log.i(
                                                                                         "INFO",
@@ -325,11 +325,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                                 // fiche demontage Alternateur
-                                                if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 3) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 3) {
                                                     val demoTri =
                                                         repository.getDemontageAlternateur(
                                                             token,
-                                                            resp.fiche!!._id,
+                                                            resp.data!!._id,
                                                             object :
                                                                 Callback<DemontageAlternateurResponse> {
                                                                 override fun onResponse(
@@ -341,14 +341,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         if (resp2 != null) {
                                                                             Log.i(
                                                                                 "INFO",
-                                                                                "fiche DemontageAlternateur :${resp.fiche!!.numFiche}"
+                                                                                "fiche DemontageAlternateur :${resp.data!!.numFiche}"
                                                                             )
                                                                             //demontages!!.add(resp.fiche!!)
                                                                             viewModelScope.launch(
                                                                                 Dispatchers.IO
                                                                             ) {
                                                                                 var photos =
-                                                                                    resp.fiche?.photos?.toMutableList()
+                                                                                    resp.data?.photos?.toMutableList()
                                                                                 var iter =
                                                                                     photos?.listIterator()
                                                                                 while (iter?.hasNext() == true) {
@@ -357,21 +357,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                             .toString()
                                                                                     )
                                                                                 }
-                                                                                resp.fiche?.photos =
+                                                                                resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoA =
                                                                                     repository.getByIdDemoAlterLocalDatabse(
-                                                                                        resp2.fiche!!._id
+                                                                                        resp2.data!!._id
                                                                                     )
                                                                                 if (demoA == null) {
                                                                                     repository.insertDemoAlterLocalDatabase(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                     if (!demontages.contains(
-                                                                                            resp2!!.fiche!!
+                                                                                            resp2!!.data!!
                                                                                         )
                                                                                     ) demontages!!.add(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                     Log.i(
                                                                                         "INFO",
@@ -406,10 +406,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             })
                                                 }
                                                 // fiche demontage Rotor
-                                                if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 4) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 4) {
                                                     val demoTri = repository.getDemontageRB(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object :
                                                             Callback<DemontageRotorBobineResponse> {
                                                             override fun onResponse(
@@ -421,14 +421,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                     if (resp2 != null) {
                                                                         Log.i(
                                                                             "INFO",
-                                                                            "fiche DemontageRotorBobine :${resp.fiche!!.numFiche}"
+                                                                            "fiche DemontageRotorBobine :${resp.data!!.numFiche}"
                                                                         )
                                                                         //demontages!!.add(resp.fiche!!)
                                                                         viewModelScope.launch(
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -437,21 +437,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoRB =
                                                                                 repository.getByIdDemoRBLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoRB == null) {
                                                                                 repository.insertDemoRBLocalDatabase(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 if (!demontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) demontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -486,10 +486,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         })
                                                 }
                                                 // fiche demontage Courant Continu
-                                                if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 5) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 5) {
                                                     val demoTri = repository.getDemontageCC(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object : Callback<DemontageCCResponse> {
                                                             override fun onResponse(
                                                                 call: Call<DemontageCCResponse>,
@@ -502,7 +502,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -511,21 +511,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoCC =
                                                                                 repository.getByIdDemoCCLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoCC == null) {
                                                                                 repository.insertDemoCCLocalDatabase(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 if (!demontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) demontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -560,10 +560,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         })
                                                 }
                                                 //fiche demontage triphase
-                                                if (resp.fiche!!.typeFicheDemontage !== null && resp.fiche!!.typeFicheDemontage!! == 6) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 6) {
                                                     val demoTri = repository.getDemontageTriphase(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object :
                                                             Callback<DemontageTriphaseResponse> {
                                                             override fun onResponse(
@@ -579,7 +579,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -588,21 +588,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoT =
                                                                                 repository.getByIdDemoTriLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoT == null) {
                                                                                 repository.insertDemoTriLocalDatabase(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 if (!demontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) demontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -666,10 +666,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         if (response.code() == 200) {
                                             val resp = response.body()
                                             if (resp != null) {
-                                                if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 6) {
+                                                if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 6) {
                                                     val demoTri = repository.getRemontageTriphase(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object :
                                                             Callback<RemontageTriphaseResponse> {
                                                             override fun onResponse(
@@ -686,7 +686,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -695,21 +695,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoT =
                                                                                 repository.getByIdRemoTriLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoT == null) {
                                                                                 repository.insertRemoTriLocalDatabase(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 if (!remontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) remontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -743,10 +743,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             }
                                                         })
                                                 }
-                                                if (resp.fiche!!.typeFicheRemontage !== null && resp.fiche!!.typeFicheRemontage!! == 5) {
+                                                if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 5) {
                                                     val demoTri = repository.getRemontageCC(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object : Callback<RemontageCCResponse> {
                                                             override fun onResponse(
                                                                 call: Call<RemontageCCResponse>,
@@ -761,7 +761,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -770,21 +770,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoT =
                                                                                 repository.getByIdRemoCCLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoT == null) {
                                                                                 repository.insertRemoCCLocalDatabase(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 if (!remontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) remontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -818,10 +818,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             }
                                                         })
                                                 }
-                                                if (resp.fiche!!.typeFicheRemontage !== null && (resp.fiche!!.typeFicheRemontage == 3 || resp.fiche!!.typeFicheRemontage == 4 || resp.fiche!!.typeFicheRemontage == 1 || resp.fiche!!.typeFicheRemontage == 2)) {
+                                                if (resp.data!!.typeFicheRemontage !== null && (resp.data!!.typeFicheRemontage == 3 || resp.data!!.typeFicheRemontage == 4 || resp.data!!.typeFicheRemontage == 1 || resp.data!!.typeFicheRemontage == 2)) {
                                                     val remo = repository.getRemontage(
                                                         token,
-                                                        resp.fiche!!._id,
+                                                        resp.data!!._id,
                                                         object : Callback<RemontageResponse> {
                                                             override fun onResponse(
                                                                 call: Call<RemontageResponse>,
@@ -836,7 +836,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                             Dispatchers.IO
                                                                         ) {
                                                                             var photos =
-                                                                                resp.fiche?.photos?.toMutableList()
+                                                                                resp.data?.photos?.toMutableList()
                                                                             var iter =
                                                                                 photos?.listIterator()
                                                                             while (iter?.hasNext() == true) {
@@ -845,21 +845,21 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         .toString()
                                                                                 )
                                                                             }
-                                                                            resp.fiche?.photos =
+                                                                            resp.data?.photos =
                                                                                 photos?.toTypedArray()
                                                                             var demoT =
                                                                                 repository.getByIdRemoLocalDatabse(
-                                                                                    resp2.fiche!!._id
+                                                                                    resp2.data!!._id
                                                                                 )
                                                                             if (demoT == null) {
                                                                                 repository.insertRemoLocalDatabase(
-                                                                                    resp2.fiche!!
+                                                                                    resp2.data!!
                                                                                 )
                                                                                 if (!remontages.contains(
-                                                                                        resp2!!.fiche!!
+                                                                                        resp2!!.data!!
                                                                                     )
                                                                                 ) remontages!!.add(
-                                                                                    resp2!!.fiche!!
+                                                                                    resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
                                                                                     "INFO",
@@ -919,20 +919,20 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val resp = response.body()
                                             if (resp != null) {
                                                 // Log.i("INFO","fiche bobinage :${resp.fiche!!._id} - spires : ${resp.fiche!!.nbSpires}")
-                                                if (!bobinages.contains(resp!!.fiche!!)) bobinages!!.add(
-                                                    resp.fiche!!
+                                                if (!bobinages.contains(resp!!.data!!)) bobinages!!.add(
+                                                    resp.data!!
                                                 )
                                                 viewModelScope.launch(Dispatchers.IO) {
-                                                    var photos = resp.fiche?.photos?.toMutableList()
+                                                    var photos = resp.data?.photos?.toMutableList()
                                                     var iter = photos?.listIterator()
                                                     while (iter?.hasNext() == true) {
                                                         getPhotoFile(iter.next().toString())
                                                     }
-                                                    resp.fiche?.photos = photos?.toTypedArray()
+                                                    resp.data?.photos = photos?.toTypedArray()
                                                     var b =
-                                                        repository.getByIdBobinageLocalDatabse(resp.fiche!!._id)
+                                                        repository.getByIdBobinageLocalDatabse(resp.data!!._id)
                                                     if (b == null) {
-                                                        repository.insertBobinageLocalDatabase(resp!!.fiche!!)
+                                                        repository.insertBobinageLocalDatabase(resp!!.data!!)
                                                         Log.i("INFO", "ajout en bdd locale")
                                                     }
                                                     //Log.i("INFO","fiche bobinage :${b!!._id} - spires : ${b!!.nbSpires}")
@@ -1036,13 +1036,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 ) {
                     if (response.code() == 200) {
                         val resp = response.body()
-                        Log.i("INFO", "vehicule ${resp!!.vehicule!!.nom}")
+                        Log.i("INFO", "vehicule ${resp!!.data!!.nom}")
                         viewModelScope.launch(Dispatchers.IO) {
                             var local =
-                                repository.getByIdVehiculesLocalDatabse(resp!!.vehicule!!._id)
+                                repository.getByIdVehiculesLocalDatabse(resp!!.data!!._id)
                             if (local == null) {
-                                Log.i("INFO", "ajout ${resp!!.vehicule!!.nom} en bdd locale")
-                                repository.insertVehiculesLocalDatabase(resp!!.vehicule!!)
+                                Log.i("INFO", "ajout ${resp!!.data!!.nom} en bdd locale")
+                                repository.insertVehiculesLocalDatabase(resp!!.data!!)
                             }
                         }
 
@@ -1219,6 +1219,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listb.size > 0) {
                     for (fiche in listb) {
                         var ch = fiche.toBobinage()
+                        var photos = ch.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(ch.numFiche!!).toString())
+                            if (name.contains(ch.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        ch.photos = photos?.toTypedArray()
                         val resp = repository.patchBobinage(
                             token!!,
                             ch._id,
@@ -1263,6 +1303,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listDT.size > 0) {
                     for (fiche in listDT) {
                         var dt = fiche.toTriphase()
+                        var photos = dt.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(dt.numFiche!!).toString())
+                            if (name.contains(dt.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        dt.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageTriphase(
                             token!!,
                             dt._id,
@@ -1307,6 +1387,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listCC.size > 0) {
                     for (fiche in listCC) {
                         var dcc = fiche.toCContinu()
+                        var photos = dcc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(dcc.numFiche!!).toString())
+                            if (name.contains(dcc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        dcc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageCC(
                             token!!,
                             dcc._id,
@@ -1351,6 +1471,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listRT.size > 0) {
                     for (fiche in listRT) {
                         var dt = fiche.toRTriphase()
+                        var photos = dt.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(dt.numFiche!!).toString())
+                            if (name.contains(dt.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        dt.photos = photos?.toTypedArray()
                         val resp = repository.patchRemontageTriphase(
                             token!!,
                             dt._id,
@@ -1395,6 +1555,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listRCC.size > 0) {
                     for (fiche in listRCC) {
                         var rc = fiche.toRCourantC()
+                        var photos = rc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                            if (name.contains(rc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rc.photos = photos?.toTypedArray()
                         val resp = repository.patchRemontageCC(
                             token!!,
                             rc._id,
@@ -1439,6 +1639,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listRm.size > 0) {
                     for (fiche in listRm) {
                         var rc = fiche.toRemo()
+                        var photos = rc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                            if (name.contains(rc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rc.photos = photos?.toTypedArray()
                         val resp = repository.patchRemontage(
                             token!!,
                             rc._id,
@@ -1483,6 +1723,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listDP.size > 0) {
                     for (fiche in listDP) {
                         var rc = fiche.toDemoPompe()
+                        var photos = rc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                            if (name.contains(rc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontagePompe(
                             token!!,
                             rc._id,
@@ -1527,6 +1807,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listDM.size > 0) {
                     for (fiche in listDM) {
                         var rc = fiche.toMonophase()
+                        var photos = rc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                            if (name.contains(rc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageMono(
                             token!!,
                             rc._id,
@@ -1571,6 +1891,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listDA.size > 0) {
                     for (fiche in listDA) {
                         var rc = fiche.toDemontageAlternateur()
+                        var photos = rc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                            if (name.contains(rc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageAlter(
                             token!!,
                             rc._id,
@@ -1615,6 +1975,46 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 if (listDRB.size > 0) {
                     for (fiche in listDRB) {
                         var rc = fiche.toDemoRotorB()
+                        var photos = rc.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                            if (name.contains(rc.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i("INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageRotor(
                             token!!,
                             rc._id,
