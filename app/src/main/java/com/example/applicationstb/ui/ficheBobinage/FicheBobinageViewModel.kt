@@ -82,8 +82,8 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     if (response.code() == 200) {
                         val resp = response.body()
                         if (resp != null) {
-                            Log.i("INFO", "${resp.fiche!!._id}")
-                            bobinage.value = resp.fiche!!
+                            Log.i("INFO", "${resp.data!!._id}")
+                            bobinage.value = resp.data!!
                             sections.value = bobinage.value!!.sectionsFils!!
                             schemas.value = mutableListOf()
                         }

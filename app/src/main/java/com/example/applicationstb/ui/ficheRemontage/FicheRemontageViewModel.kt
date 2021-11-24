@@ -306,7 +306,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 call: Call<DemontagesResponse>,
                                 response: Response<DemontagesResponse>
                             ) {
-                                var l = response.body()!!.fiches!!
+                                var l = response.body()!!.data!!
                                 for (f in l) {
                                     Log.i("INFO","add fiche")
                                     getFichesDemontage(f._id)
@@ -411,7 +411,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<DemontageResponse>
                 ) {
                     runBlocking {
-                        var fiche = response.body()?.fiche
+                        var fiche = response.body()?.data
                         if (fiche !== null) {
                             Log.i("INFO", (fiche.typeFicheDemontage == selection.value?.typeFicheRemontage).toString())
                             if (fiche.typeFicheDemontage == 1 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
@@ -427,8 +427,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 fiche
                                                 var copy = listeDemo.value?.toMutableList()
                                                 if (copy != null) {
-                                                    demo.value = response.body()!!.fiche!!
-                                                    copy.add(response.body()!!.fiche!!)
+                                                    demo.value = response.body()!!.data!!
+                                                    copy.add(response.body()!!.data!!)
                                                     listeDemo.value = copy.toTypedArray()
                                                     //setListeDemo(copy.toTypedArray())
                                                 }
@@ -457,9 +457,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 response: Response<DemontageMonophaseResponse>
                                             ) {
                                                 if (response.code() == 200) {
-                                                    demo.value = response.body()!!.fiche!!
+                                                    demo.value = response.body()!!.data!!
                                                     var copy = listeDemo.value?.toMutableList()
-                                                    copy?.add(response.body()!!.fiche!!)
+                                                    copy?.add(response.body()!!.data!!)
                                                     listeDemo.value = copy?.toTypedArray()
                                                     Log.i("INFO", listeDemo.value!!.size.toString())
                                                 }
@@ -486,9 +486,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                             response: Response<DemontageAlternateurResponse>
                                         ) {
                                             if (response.code() == 200) {
-                                                demo.value = response.body()!!.fiche!!
+                                                demo.value = response.body()!!.data!!
                                                 var copy = listeDemo.value?.toMutableList()
-                                                copy?.add(response.body()!!.fiche!!)
+                                                copy?.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
                                             }
                                         }
@@ -515,11 +515,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                             if (response.code() == 200) {
                                                 Log.i(
                                                     "INFO",
-                                                    "type fiche ${response.body()?.fiche?.javaClass}"
+                                                    "type fiche ${response.body()?.data?.javaClass}"
                                                 )
-                                                demo.value = response.body()!!.fiche!!
+                                                demo.value = response.body()!!.data!!
                                                 var copy = listeDemo.value?.toMutableList()
-                                                copy?.add(response.body()!!.fiche!!)
+                                                copy?.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
                                             }
                                         }
@@ -543,9 +543,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 response: Response<DemontageCCResponse>
                                             ) {
                                                 if (response.code() == 200) {
-                                                    demo.value = response.body()!!.fiche!!
+                                                    demo.value = response.body()!!.data!!
                                                     var copy = listeDemo.value?.toMutableList()
-                                                    copy?.add(response.body()!!.fiche!!)
+                                                    copy?.add(response.body()!!.data!!)
                                                     listeDemo.value = copy?.toTypedArray()
                                                 }
                                             }
@@ -568,9 +568,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                             response: Response<DemontageTriphaseResponse>
                                         ) {
                                             if (response.code() == 200) {
-                                                demo.value = response.body()!!.fiche!!
+                                                demo.value = response.body()!!.data!!
                                                 var copy = listeDemo.value?.toMutableList()
-                                                copy?.add(response.body()!!.fiche!!)
+                                                copy?.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
                                             }
                                         }

@@ -112,7 +112,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     val resp = response.body()
                     if (resp != null) {
                         //Log.i("INFO","${resp.fiche!!.client.enterprise}")
-                        chantier.value = resp.fiche!!
+                        chantier.value = resp.data!!
                     }
                 } else {
                     Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
