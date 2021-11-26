@@ -88,6 +88,7 @@ class AlternateurFragment : Fragment() {
         var tensionVExcitation	 = layout.findViewById<EditText>(R.id.tw3)
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var fiche = viewModel.selection.value!! as DemontageAlternateur
+        viewModel.photos.value = fiche.photos!!.toMutableList()
         if (fiche.isolementMasseStatorPrincipalU !== null) isolementMasseStatorPrincipalU.setText(fiche.isolementMasseStatorPrincipalU.toString())
         if (fiche.isolementMasseStatorPrincipalV !== null) isolementMasseStatorPrincipalV.setText(fiche.isolementMasseStatorPrincipalV.toString())
         if (fiche.isolementMasseStatorPrincipalW !== null) isolementMasseStatorPrincipalW.setText(fiche.isolementMasseStatorPrincipalW.toString())
@@ -372,6 +373,7 @@ class AlternateurFragment : Fragment() {
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
+        if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
