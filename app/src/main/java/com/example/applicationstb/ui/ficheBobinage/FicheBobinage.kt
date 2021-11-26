@@ -82,7 +82,7 @@ class FicheBobinage : Fragment() {
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
         var details = layout.findViewById<TextView>(R.id.titreDetails)
         val adapter = FillAdapter(viewModel.sections!!.value!!)
-        val sAdapter = schemaAdapter(viewModel.schemas.value!! ,{ item ->
+        val sAdapter = schemaAdapter(viewModel.photos.value!! ,{ item ->
             viewModel.setSchema(item)
             viewModel.fullScreen(
                 layout,
@@ -126,17 +126,17 @@ class FicheBobinage : Fragment() {
         schemas = layout.findViewById(R.id.schemas)
         schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
-        viewModel.schemas.observe(viewLifecycleOwner, {
-            Log.i("INFO",viewModel.schemas.value?.size.toString())
-            if (viewModel.schemas.value !== null) {
-                sAdapter.update(viewModel.schemas.value!!)
-                if (viewModel.schemas.value?.size == 0) {
+        viewModel.photos.observe(viewLifecycleOwner, {
+           
+            if (viewModel.photos.value !== null) {
+                sAdapter.update(viewModel.photos.value!!)
+                if (viewModel.photos.value?.size == 0) {
                     schemas.visibility = View.GONE
                 } else {
                     schemas.visibility = View.VISIBLE
                 }
             } else {
-                viewModel.schemas.value = mutableListOf()
+                viewModel.photos.value = mutableListOf()
             }
         })
 
@@ -157,8 +157,9 @@ class FicheBobinage : Fragment() {
                 var bobinage = viewModel.listeBobinage.find { it.numFiche == spinner.selectedItem }
                 viewModel.bobinage.value = bobinage
                 viewModel.sections.value = bobinage?.sectionsFils
-                viewModel.schemas.value = bobinage?.schemas
+                viewModel.photos.value = bobinage?.photos!!.toMutableList()
                 if (bobinage != null) {
+                   if (bobinage.photos !== null) sAdapter.update(bobinage.photos!!.toMutableList())
                     marque.setText(bobinage?.marqueMoteur)
                     if (bobinage.courant !== null) {
                         courant.setText(bobinage?.courant.toString())
@@ -495,7 +496,7 @@ class FicheBobinage : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            viewModel.addSchema(0,Uri.parse(currentPhotoPath))
+            viewModel.addSchema(currentPhotoPath)
             //galleryAddPic()
         }
     }

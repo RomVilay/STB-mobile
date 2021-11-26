@@ -2,6 +2,7 @@ package com.example.applicationstb.ui.ficheBobinage
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
 
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
@@ -33,7 +35,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var repository = Repository(getApplication<Application>().applicationContext);
     var listeBobinage = arrayListOf<Bobinage>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
-    var schemas = MutableLiveData<MutableList<String>>(mutableListOf())
+    var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var bobinage = MutableLiveData<Bobinage>()
     var schema = MutableLiveData<String>()
     var token: String? = null;
@@ -45,30 +47,6 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
         }
-        /*var i =0
-        while (i<10)
-        {
-            var bobinage = Bobinage (i.toString(),
-                    i.toString() ,
-                    client,
-                    "Dupond M.",
-                    3369077543,
-                    arrayOf<User>(tech),
-                    tech,
-                    "Bocsh",
-                    "asynchrone triphasé",
-                    200 ,
-                    300,
-                    10,
-                    "1",
-                    "20Hz",
-                    "10A",
-                    true
-            )
-            listeBobinage.add(bobinage);
-            i++;
-        }*/
-        //bobinage.value = listeBobinage[0]
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -85,7 +63,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                             Log.i("INFO", "${resp.data!!._id}")
                             bobinage.value = resp.data!!
                             sections.value = bobinage.value!!.sectionsFils!!
-                            schemas.value = mutableListOf()
+                            photos.value = mutableListOf()
                         }
                     } else {
                         Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
@@ -136,13 +114,14 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO", sch.toString())
     }
 
-    fun addSchema(index:Int,photo: Uri) {
+    fun addSchema(photo:String) {
         var list = bobinage?.value?.photos?.toMutableList()
         if (list != null) {
-            list.add(photo.toString())
+            list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
-        bobinage?.value?.photos = list?.toTypedArray()
-        schemas.value = list!!
+        bobinage?.value?.photos = list!!.toTypedArray()
+        photos.value = list
+        quickSave()
     }
 
     fun fullScreen(view: View, uri: String) {
@@ -261,5 +240,14 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         return false
+    }
+    fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
     }
 }
