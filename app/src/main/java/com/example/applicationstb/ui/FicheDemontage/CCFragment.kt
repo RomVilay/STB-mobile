@@ -108,6 +108,7 @@ class CCFragment : Fragment() {
              if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
              if (fiche.intensiteExcitation !== null )vVI.setText(fiche.intensiteExcitation.toString())
             if (fiche.observations !== null) observations.setText(fiche.observations.toString())
+        viewModel.photos.value = fiche.photos!!.toMutableList()
         if (fiche.status!! < 3L) {
             isopmu.doAfterTextChanged {
                 if (isopmu.text.isNotEmpty() && isopmu.hasFocus()) {
@@ -281,6 +282,7 @@ class CCFragment : Fragment() {
             sAdapter.update(it)
             photos.visibility == View.VISIBLE
         })
+        if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
 
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),

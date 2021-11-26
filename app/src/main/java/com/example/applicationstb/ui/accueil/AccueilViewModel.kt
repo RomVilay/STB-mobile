@@ -1396,7 +1396,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 var listCC: List<DemontageCCEntity> =
                     repository.getAllDemontageCCLocalDatabase()
                 //Log.i("INFO", "token : ${user!!.token}")
-                Log.i("INFO", "nb de fiches DemontageTriphase: ${listCC.size}")
+                Log.i("INFO", "nb de fiches DemontageCourantContinu: ${listCC.size}")
                 if (listCC.size > 0) {
                     for (fiche in listCC) {
                         var dcc = fiche.toCContinu()
@@ -1404,39 +1404,47 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
-                            Log.i("INFO", name.contains(dcc.numFiche!!).toString())
-                            if (name.contains(dcc.numFiche!!)) {
-                                Log.i("INFO", "fichier à upload : ${name}")
-                                //var test = getPhotoFile(name)
-                                var job =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        getNameURI()
+                            if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+                                runBlocking {
+                                    if (name.contains(dcc.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
+                                        var job =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI()
+                                            }
+                                        job.join()
+                                        var job2 =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                try {
+                                                    val dir =
+                                                        Environment.getExternalStoragePublicDirectory(
+                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                        )
+                                                    val from = File(
+                                                        dir,
+                                                        name
+                                                    )
+                                                    val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
+                                                    if (from.exists()) from.renameTo(to)
+                                                    sendPhoto(to)
+                                                    iter.set(imageName.value!!.name!!)
+                                                } catch (e: java.lang.Exception) {
+                                                    Log.e("EXCEPTION", e.message!!)
+                                                }
+                                            }
+                                        job2.join()
                                     }
-                                job.join()
-                                var job2 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        try {
-                                            val dir =
-                                                Environment.getExternalStoragePublicDirectory(
-                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                )
-                                            val from = File(
-                                                dir,
-                                                name
-                                            )
-                                            val to = File(dir, imageName.value!!.name!!)
-                                            iter.set(imageName.value!!.name!!)
-                                            sendPhoto(from)
-                                            Log.i("INFO",
-                                                from.exists()
-                                                    .toString() + " - path ${from.absolutePath}"
-                                            )
-                                            if (from.exists()) from.renameTo(to)
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!!)
-                                        }
-                                    }
-                                job2.join()
+                                }
+                            }
+                            if (name == ""){
+                                iter.remove()
                             }
                         }
                         dcc.photos = photos?.toTypedArray()
