@@ -363,7 +363,6 @@ class FicheChantier : Fragment() {
                             Log.e("EXCEPTION", e.message!!)
                         }
                     } else {
-                        Log.i("INFO", "local photo path:" + currentPhotoPath)
                         viewModel.addPhoto(Uri.parse(currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")))
                         viewModel.galleryAddPic(currentPhotoPath)
                         viewModel.quickSave()

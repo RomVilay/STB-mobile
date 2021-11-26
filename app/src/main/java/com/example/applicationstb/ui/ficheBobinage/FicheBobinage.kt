@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -83,7 +84,10 @@ class FicheBobinage : Fragment() {
         val adapter = FillAdapter(viewModel.sections!!.value!!)
         val sAdapter = schemaAdapter(viewModel.schemas.value!! ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,item.toString())
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
         })
         var visibility = View.VISIBLE
         //champs fils
@@ -443,7 +447,7 @@ class FicheBobinage : Fragment() {
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -454,7 +458,7 @@ class FicheBobinage : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {

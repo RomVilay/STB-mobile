@@ -2,6 +2,7 @@ package com.example.applicationstb.ui.FicheDemontage
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -27,6 +28,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
 
 class FicheDemontageViewModel(application: Application) : AndroidViewModel(application) {
@@ -68,13 +70,15 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
 
-    fun addPhoto(index:Int,photo: Uri) {
+    fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
         if (list != null) {
-            list.add(photo.toString())
+            list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
         selection.value?.photos = list?.toTypedArray()
         photos.value = list!!
+        galleryAddPic(photo)
+        localSave()
     }
     fun setSchema(sch: String){
         schema.value = sch
@@ -520,6 +524,15 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         }
         return false
+    }
+    fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
     }
 
 }

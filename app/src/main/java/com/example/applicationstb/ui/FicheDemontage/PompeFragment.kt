@@ -247,7 +247,10 @@ class PompeFragment : Fragment() {
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,item.toString())
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
@@ -396,7 +399,7 @@ class PompeFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
+            viewModel.addPhoto(currentPhotoPath)
         }
     }
 
@@ -408,7 +411,7 @@ class PompeFragment : Fragment() {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -418,7 +421,7 @@ class PompeFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {

@@ -1095,12 +1095,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 )
                                                 val to = File(dir, imageName.value!!.name!!)
                                                 iter.set(imageName.value!!.name!!)
-                                                sendPhoto(from)
                                                 Log.i("INFO",
                                                     from.exists()
                                                         .toString() + " - path ${from.absolutePath}"
                                                 )
                                                 if (from.exists()) from.renameTo(to)
+                                                sendPhoto(to)
                                             } catch (e: java.lang.Exception) {
                                                 Log.e("EXCEPTION", e.message!!)
                                             }
@@ -1108,7 +1108,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     job2.join()
                                 }
                             }
-                            ch.photos = photos?.toTypedArray()
+                            ch.photos =  photos?.filter { it == "" }?.toTypedArray()
                             Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                 var job3 =
@@ -1258,7 +1258,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 job2.join()
                             }
                         }
-                        ch.photos = photos?.toTypedArray()
+                        ch.photos =  photos?.filter { it == "" }?.toTypedArray()
+                        for (i in 0..ch.photos!!.size-1) {
+                            Log.i("INFO","${ch.photos!![i]} - ${photos?.get(i)}")
+                        }
                         val resp = repository.patchBobinage(
                             token!!,
                             ch._id,
@@ -1307,42 +1310,55 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
-                            Log.i("INFO", name.contains(dt.numFiche!!).toString())
-                            if (name.contains(dt.numFiche!!)) {
-                                Log.i("INFO", "fichier à upload : ${name}")
-                                //var test = getPhotoFile(name)
-                                var job =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        getNameURI()
+                            if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+                                runBlocking {
+                                    if (name.contains(dt.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
+                                        var job =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI()
+                                            }
+                                        job.join()
+                                        var job2 =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                try {
+                                                    val dir =
+                                                        Environment.getExternalStoragePublicDirectory(
+                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                        )
+                                                    val from = File(
+                                                        dir,
+                                                        name
+                                                    )
+                                                    val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
+                                                    if (from.exists()) from.renameTo(to)
+                                                    sendPhoto(to)
+                                                    iter.set(imageName.value!!.name!!)
+                                                } catch (e: java.lang.Exception) {
+                                                    Log.e("EXCEPTION", e.message!!)
+                                                }
+                                            }
+                                        job2.join()
                                     }
-                                job.join()
-                                var job2 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        try {
-                                            val dir =
-                                                Environment.getExternalStoragePublicDirectory(
-                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                )
-                                            val from = File(
-                                                dir,
-                                                name
-                                            )
-                                            val to = File(dir, imageName.value!!.name!!)
-                                            iter.set(imageName.value!!.name!!)
-                                            sendPhoto(from)
-                                            Log.i("INFO",
-                                                from.exists()
-                                                    .toString() + " - path ${from.absolutePath}"
-                                            )
-                                            if (from.exists()) from.renameTo(to)
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!!)
-                                        }
-                                    }
-                                job2.join()
+                                }
+                            }
+                            if (name == ""){
+                                iter.remove()
                             }
                         }
+
+                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = photos?.toTypedArray()
+                        for (i in 0..dt.photos!!.size-1) {
+                            Log.i("INFO", "l1: ${dt.photos!![i]} - vide: ${dt.photos!![i] == ""}")//- l2: ${photos!!.size}")
+                        }
                         val resp = repository.patchDemontageTriphase(
                             token!!,
                             dt._id,
@@ -1475,7 +1491,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
-                            Log.i("INFO", name.contains(dt.numFiche!!).toString())
+                            Log.i("INFO", name.contains(dt.numFiche!!).toString()+" fichier ${name} - numfiche ${dt.numFiche!!}")
                             if (name.contains(dt.numFiche!!)) {
                                 Log.i("INFO", "fichier à upload : ${name}")
                                 //var test = getPhotoFile(name)
@@ -2089,7 +2105,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             withContext(Dispatchers.Main) {
                 if (resp1.isSuccessful) {
                     imageName.postValue(resp1.body())
-                    Log.i("INFO", resp1.body()?.name!!)
+                    //Log.i("INFO", resp1.body()?.name!!)
                 } else {
                     exceptionHandler
                 }
@@ -2103,7 +2119,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
-        Log.i("INFO",photo.name)
+        //Log.i("INFO",photo.name)
         repository.uploadPhoto(
             token!!,
             imageName.value!!.name!!,
@@ -2246,7 +2262,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         return@runBlocking path
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
+        Log.i("INFO", "Exception handled: ${throwable.localizedMessage} - ${throwable.cause}")
     }
     val exceptionHandler2 = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "erreur enregistrement: ${throwable.localizedMessage}")

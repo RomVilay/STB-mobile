@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -362,7 +363,10 @@ class AlternateurFragment : Fragment() {
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,item.toString())
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
@@ -450,7 +454,7 @@ class AlternateurFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
+            viewModel.addPhoto(currentPhotoPath)
         }
     }
 
@@ -462,7 +466,7 @@ class AlternateurFragment : Fragment() {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -472,7 +476,7 @@ class AlternateurFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {

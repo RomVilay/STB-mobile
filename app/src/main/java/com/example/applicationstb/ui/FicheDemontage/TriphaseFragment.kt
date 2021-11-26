@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -54,8 +55,10 @@ class TriphaseFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         var layout = inflater.inflate(R.layout.fragment_triphase, container, false)
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
         var infos = layout.findViewById<FrameLayout>(R.id.infoLayout)
@@ -81,24 +84,24 @@ class TriphaseFragment : Fragment() {
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var ter = layout.findViewById<Button>(R.id.termTri)
         var fiche = viewModel.selection.value!! as Triphase
-             if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
-            if (fiche.isolementPhaseMasseStatorVM !== null)VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
-            if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
-            if (fiche.isolementPhasePhaseStatorUV !== null)UV.setText(fiche.isolementPhasePhaseStatorUV!!.toString())
-            if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!.toString()) else 0
-            if (fiche.isolementPhasePhaseStatorVW!== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!.toString()) else 0
-            if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
-            if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
-            if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
-            if (fiche.tensionU !== null) VU.setText(fiche.tensionU!!.toString()) else 0
-            if (fiche.tensionV !== null) VV.setText(fiche.tensionV!!.toString()) else 0
-            if (fiche.tensionW !== null) VW.setText(fiche.tensionW!!.toString()) else 0
-            if (fiche.intensiteU !== null) VUI.setText(fiche.intensiteU!!.toString()) else 0
-            if (fiche.intensiteV !== null) VVI.setText(fiche.intensiteV!!.toString()) else 0
-            if (fiche.intensiteW !== null) VWI.setText(fiche.intensiteW!!.toString()) else 0
-            if (fiche.dureeEssai !== null) dessai.setText(fiche.dureeEssai!!.toString()) else 0
-            if (fiche.observations !== null) obs.setText(fiche.observations)
-        if ( fiche.status!! < 3L) {
+        if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
+        if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
+        if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
+        if (fiche.isolementPhasePhaseStatorUV !== null) UV.setText(fiche.isolementPhasePhaseStatorUV!!.toString())
+        if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!.toString()) else 0
+        if (fiche.isolementPhasePhaseStatorVW !== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!.toString()) else 0
+        if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
+        if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
+        if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
+        if (fiche.tensionU !== null) VU.setText(fiche.tensionU!!.toString()) else 0
+        if (fiche.tensionV !== null) VV.setText(fiche.tensionV!!.toString()) else 0
+        if (fiche.tensionW !== null) VW.setText(fiche.tensionW!!.toString()) else 0
+        if (fiche.intensiteU !== null) VUI.setText(fiche.intensiteU!!.toString()) else 0
+        if (fiche.intensiteV !== null) VVI.setText(fiche.intensiteV!!.toString()) else 0
+        if (fiche.intensiteW !== null) VWI.setText(fiche.intensiteW!!.toString()) else 0
+        if (fiche.dureeEssai !== null) dessai.setText(fiche.dureeEssai!!.toString()) else 0
+        if (fiche.observations !== null) obs.setText(fiche.observations)
+        if (fiche.status!! < 3L) {
             UM.doAfterTextChanged {
                 if (UM.text.isNotEmpty() && UM.hasFocus()) fiche.isolementPhaseMasseStatorUM =
                     UM.text.toString().toFloat()
@@ -234,7 +237,7 @@ class TriphaseFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
-            Log.i("INFO","cote : ${fiche.coteAccouplement}")
+            Log.i("INFO", "cote : ${fiche.coteAccouplement}")
             viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
@@ -247,14 +250,18 @@ class TriphaseFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
-                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            viewModel.enregistrer(
+                                requireActivity().findViewById<CoordinatorLayout>(
+                                    R.id.demoLayout
+                                )
+                            )
                         })
                 builder.create()
             }
             alertDialog?.show()
         }
-        retour.setOnClickListener{
-            if (viewModel.selection.value?.status == 3L){
+        retour.setOnClickListener {
+            if (viewModel.selection.value?.status == 3L) {
                 activity?.onBackPressed()
             } else {
                 viewModel.retour(layout)
@@ -264,22 +271,30 @@ class TriphaseFragment : Fragment() {
 
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList(), { item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,item.toString())
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            Log.i("INFO",test.toString())
+            var test = ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO", test.toString())
             if (test == false) {
-                requestPermissions(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), 1
+                )
             }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
@@ -290,7 +305,7 @@ class TriphaseFragment : Fragment() {
                         createImageFile()
                     } catch (ex: IOException) {
                         // Error occurred while creating the File
-                        Log.i("INFO","error while creating file")
+                        Log.i("INFO", "error while creating file")
                         null
                     }
                     // Continue only if the File was successfully created
@@ -319,12 +334,13 @@ class TriphaseFragment : Fragment() {
         // Inflate the layout for this fragment
         return layout
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
+            viewModel.addPhoto(currentPhotoPath)
         }
     }
 
@@ -332,15 +348,34 @@ class TriphaseFragment : Fragment() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
         }
+    }
+
+    fun makeFolder() {
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        storageDir.mkdir()
     }
 
 
