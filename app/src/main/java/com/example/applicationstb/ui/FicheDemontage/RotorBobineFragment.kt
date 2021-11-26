@@ -123,6 +123,55 @@ class RotorBobineFragment : Fragment() {
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var term = layout.findViewById<Button>(R.id.termRB)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                    }
+                }
+            }
+        }
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+        if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
         if (fiche.status!! < 3L) {
             isolementPhaseMasseStatorUM.doAfterTextChanged {
                 if (isolementPhaseMasseStatorUM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM =
@@ -362,53 +411,6 @@ class RotorBobineFragment : Fragment() {
                 viewModel.retour(layout)
             }
         }
-        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
-        btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            if (test == false) {
-                requestPermissions(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
-                // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(requireActivity().packageManager).also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        // Error occurred while creating the File
-                        Log.i("INFO","error while creating file")
-                        null
-                    }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "com.example.applicationstb.fileprovider",
-                            it
-                        )
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                        //viewModel.addSchema(photoURI)
-                    }
-                }
-            }
-        }
-        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
-            viewModel.setSchema(item)
-            viewModel.fullScreen(
-                layout,
-                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
-            )
-        })
-        photos.adapter = sAdapter
-        viewModel.photos.observe(viewLifecycleOwner, {
-            sAdapter.update(it)
-        })
         // Inflate the layout for this fragment
         val fmanager = childFragmentManager
         fmanager.commit {

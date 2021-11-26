@@ -154,7 +154,43 @@ class MonophaseFragment : Fragment() {
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
-
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        sAdapter.update(fiche.photos!!.toMutableList())
+        btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                    }
+                }
+            }
+        }
         retour.setOnClickListener {
             if (viewModel.selection.value?.status == 3L){
             activity?.onBackPressed()
@@ -194,49 +230,13 @@ class MonophaseFragment : Fragment() {
             replace<InfoMoteurFragment>(R.id.infosLayout)
             setReorderingAllowed(true)
         }
-        btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            Log.i("INFO",test.toString())
-            if (test == false) {
-                requestPermissions(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
-                // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(requireActivity().packageManager).also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        // Error occurred while creating the File
-                        Log.i("INFO","error while creating file")
-                        null
-                    }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "com.example.applicationstb.fileprovider",
-                            it
-                        )
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                        //viewModel.addSchema(photoURI)
-                    }
-                }
-            }
-        }
+
         return layout
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
             viewModel.addPhoto(currentPhotoPath)
         }
     }
