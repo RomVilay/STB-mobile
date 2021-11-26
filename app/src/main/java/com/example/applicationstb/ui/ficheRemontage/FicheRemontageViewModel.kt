@@ -2,10 +2,13 @@ package com.example.applicationstb.ui.ficheRemontage
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -15,6 +18,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
@@ -24,6 +28,9 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 import java.util.*
 
 class FicheRemontageViewModel(application: Application) : AndroidViewModel(application) {
@@ -428,9 +435,18 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 var copy = listeDemo.value?.toMutableList()
                                                 if (copy != null) {
                                                     demo.value = response.body()!!.data!!
+                                                    viewModelScope.launch(Dispatchers.IO) {
+                                                        var photos =
+                                                            demo.value!!.photos?.toMutableList()
+                                                        var iter = photos?.listIterator()
+                                                        while (iter?.hasNext() == true) {
+                                                            getPhotoFile(iter.next().toString())
+                                                        }
+                                                        demo.value!!.photos = photos?.toTypedArray()
+                                                    }
                                                     copy.add(response.body()!!.data!!)
                                                     listeDemo.value = copy.toTypedArray()
-                                                    //setListeDemo(copy.toTypedArray())
+
                                                 }
                                             }
                                         }
@@ -458,6 +474,15 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                             ) {
                                                 if (response.code() == 200) {
                                                     demo.value = response.body()!!.data!!
+                                                    viewModelScope.launch(Dispatchers.IO) {
+                                                        var photos =
+                                                            demo.value!!.photos?.toMutableList()
+                                                        var iter = photos?.listIterator()
+                                                        while (iter?.hasNext() == true) {
+                                                            getPhotoFile(iter.next().toString())
+                                                        }
+                                                        demo.value!!.photos = photos?.toTypedArray()
+                                                    }
                                                     var copy = listeDemo.value?.toMutableList()
                                                     copy?.add(response.body()!!.data!!)
                                                     listeDemo.value = copy?.toTypedArray()
@@ -489,6 +514,15 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 demo.value = response.body()!!.data!!
                                                 var copy = listeDemo.value?.toMutableList()
                                                 copy?.add(response.body()!!.data!!)
+                                                viewModelScope.launch(Dispatchers.IO) {
+                                                    var photos =
+                                                        demo.value!!.photos?.toMutableList()
+                                                    var iter = photos?.listIterator()
+                                                    while (iter?.hasNext() == true) {
+                                                        getPhotoFile(iter.next().toString())
+                                                    }
+                                                    demo.value!!.photos = photos?.toTypedArray()
+                                                }
                                                 listeDemo.value = copy?.toTypedArray()
                                             }
                                         }
@@ -518,6 +552,15 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                     "type fiche ${response.body()?.data?.javaClass}"
                                                 )
                                                 demo.value = response.body()!!.data!!
+                                                viewModelScope.launch(Dispatchers.IO) {
+                                                    var photos =
+                                                        demo.value!!.photos?.toMutableList()
+                                                    var iter = photos?.listIterator()
+                                                    while (iter?.hasNext() == true) {
+                                                        getPhotoFile(iter.next().toString())
+                                                    }
+                                                    demo.value!!.photos = photos?.toTypedArray()
+                                                }
                                                 var copy = listeDemo.value?.toMutableList()
                                                 copy?.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
@@ -544,6 +587,15 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                             ) {
                                                 if (response.code() == 200) {
                                                     demo.value = response.body()!!.data!!
+                                                    viewModelScope.launch(Dispatchers.IO) {
+                                                        var photos =
+                                                            demo.value!!.photos?.toMutableList()
+                                                        var iter = photos?.listIterator()
+                                                        while (iter?.hasNext() == true) {
+                                                            getPhotoFile(iter.next().toString())
+                                                        }
+                                                        demo.value!!.photos = photos?.toTypedArray()
+                                                    }
                                                     var copy = listeDemo.value?.toMutableList()
                                                     copy?.add(response.body()!!.data!!)
                                                     listeDemo.value = copy?.toTypedArray()
@@ -569,6 +621,15 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                         ) {
                                             if (response.code() == 200) {
                                                 demo.value = response.body()!!.data!!
+                                                viewModelScope.launch(Dispatchers.IO) {
+                                                    var photos =
+                                                        demo.value!!.photos?.toMutableList()
+                                                    var iter = photos?.listIterator()
+                                                    while (iter?.hasNext() == true) {
+                                                        getPhotoFile(iter.next().toString())
+                                                    }
+                                                   demo.value!!.photos = photos?.toTypedArray()
+                                                }
                                                 var copy = listeDemo.value?.toMutableList()
                                                 copy?.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
@@ -594,6 +655,119 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             })
         }
         return demo.value
+    }
+    suspend fun getPhotoFile(photoName: String): String? = runBlocking {
+        var file = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() + "/test_pictures/" + photoName
+        )
+        Log.i("INFO", "fichier ${file.absolutePath} exist: ${file.exists().toString()}")
+        var path: String? = null
+        if (!file.exists()) {
+            var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                val resp1 = repository.getURLPhoto(token!!, photoName)
+                withContext(Dispatchers.Main) {
+                    if (resp1.isSuccessful) {
+                        if (resp1.code() == 200) {
+                            path = resp1.body()?.url!!
+                            Log.i(
+                                "INFO",
+                                "url de la photo ${photoName} :" + resp1.body()?.url!!.replace(
+                                    "%2F",
+                                    "/"
+                                )
+                            )
+                            CoroutineScope((Dispatchers.IO + exceptionHandler2)).launch {
+                                saveImage(
+                                    Glide.with(context)
+                                        .asBitmap()
+                                        .load(resp1.body()!!.url!!.replace("%2F", "/"))
+                                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                                        .error(android.R.drawable.stat_notify_error)
+                                        .submit()
+                                        .get(), photoName
+                                )
+                            }
+                        }
+                    } else {
+                        exceptionHandler
+                        path = null
+                    }
+                }
+            }
+            job.join()
+            /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var resp2 = repository.getPhoto(file!!)
+            withContext(Dispatchers.Main){
+                if( resp2.isSuccessful) {
+                    saveImage(Glide.with(this@withContext)
+                        .asBitmap()
+                        .load(resp2.))
+                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
+                   // photos?.value!!.add(p)
+                   // Log.i("INFO", "chemin:"+p)
+                } else{
+                    exceptionHandler
+                }
+            }
+        }
+        job2.join()*/
+        } else {
+            if (file.exists()) {
+                path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                    .toString() + "/test_pictures/" + photoName
+            } else {
+                path = null
+            }
+        }
+        return@runBlocking path
+    }
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO", "Exception handled: ${throwable.localizedMessage} - ${throwable.cause}")
+    }
+    val exceptionHandler2 = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO", "erreur enregistrement: ${throwable.localizedMessage}")
+    }
+
+    private fun saveImage(image: Bitmap, name: String): String? {
+        Log.i("INFO", "start")
+        var savedImagePath: String? = null
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() + "/test_pictures/"
+        )
+        Log.i("INFO", storageDir.exists().toString())
+        var success = true
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs()
+        }
+        if (success) {
+            val imageFile = File(storageDir, name)
+            savedImagePath = imageFile.getAbsolutePath()
+            try {
+                val fOut: OutputStream = FileOutputStream(imageFile)
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+                fOut.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // Add the image to the system gallery
+            galleryAddPic(savedImagePath)
+            //updateStorage(context,name)
+            //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
+        }
+        return savedImagePath
+    }
+
+    private fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
