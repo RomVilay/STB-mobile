@@ -101,6 +101,22 @@ class TriphaseFragment : Fragment() {
         if (fiche.intensiteW !== null) VWI.setText(fiche.intensiteW!!.toString()) else 0
         if (fiche.dureeEssai !== null) dessai.setText(fiche.dureeEssai!!.toString()) else 0
         if (fiche.observations !== null) obs.setText(fiche.observations)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList(), { item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+        if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
+
         if (fiche.status!! < 3L) {
             UM.doAfterTextChanged {
                 if (UM.text.isNotEmpty() && UM.hasFocus()) fiche.isolementPhaseMasseStatorUM =
@@ -267,21 +283,6 @@ class TriphaseFragment : Fragment() {
                 viewModel.retour(layout)
             }
         }
-
-
-        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
-        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList(), { item ->
-            viewModel.setSchema(item)
-            viewModel.fullScreen(
-                layout,
-                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
-            )
-        })
-        photos.adapter = sAdapter
-        viewModel.photos.observe(viewLifecycleOwner, {
-            sAdapter.update(it)
-        })
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(
                 requireContext(),
