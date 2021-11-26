@@ -100,6 +100,7 @@ class PompeFragment : Fragment() {
         if (fiche.longueurRotativeComprimee !== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee!!.toString())
         if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString())
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
+        viewModel.photos.value = fiche.photos!!.toMutableList()
         var retour = layout.findViewById<Button>(R.id.retourPompe)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
         if (fiche.status!! < 3L) {
@@ -256,9 +257,7 @@ class PompeFragment : Fragment() {
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
-
-
-
+        if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
         epaisseurPF.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_i4)
