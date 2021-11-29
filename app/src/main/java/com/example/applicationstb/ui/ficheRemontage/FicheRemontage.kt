@@ -115,6 +115,7 @@ class FicheRemontage : Fragment() {
                 btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
                 var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
+                viewModel.getListeDemontage()
                 if (demo!!.typeFicheRemontage == 6) {
                     viewModel.selection.value = demo as RemontageTriphase
                     viewModel.selection.value!!.status = 2L
@@ -285,10 +286,7 @@ class FicheRemontage : Fragment() {
             // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
             if (viewModel.isOnline(viewModel.context)) {
                 runBlocking {
-                    var liste = async {
-                        viewModel.getListeDemontage()
-                    }
-                    liste.await()
+                    viewModel.getListeDemontage()
                     var numFiches = arrayListOf<String>()
                     viewModel.listeDemo.value?.forEach {
                         if (!numFiches.contains(it.numFiche!!)) numFiches.add(it.numFiche!!)
@@ -300,13 +298,14 @@ class FicheRemontage : Fragment() {
                                 numFiches.toTypedArray(),
                                 DialogInterface.OnClickListener { dialog, which ->
                                     Log.i(
-                                        "INFO", "fiche envoyée ${
-                                            viewModel.listeDemo.value?.get(which)?.javaClass
-                                        }"
+                                        "INFO", "fiches existantes: ${viewModel.listeDemo.value!!.size} fiche envoyée ${
+                                            viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!.numFiche
+                                        } index: ${which} - fiche: ${numFiches[which]}"
                                     )
+                                    var fiche = viewModel.listeDemo.value!![which]
                                     viewModel.toFicheDemo(
                                         layout,
-                                        viewModel.listeDemo.value?.get(which)!!
+                                        viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!
                                     )
                                 })
                         builder.create()

@@ -122,8 +122,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
                 var fiche = selection.value!!
                 var remo = repository.getByIdRemoLocalDatabse(fiche._id)
-                Log.i("INFO","${remo !== null}")
-                Log.i("INFO", remo.toString())
                 if (remo !== null) {
                     repository.updateRemoLocalDatabse(fiche.toRemoEntity())
                 } else {
@@ -444,7 +442,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                         }
                                                         demo.value!!.photos = photos?.toTypedArray()
                                                     }
-                                                    copy.add(response.body()!!.data!!)
+                                                    if (!copy.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
                                                     listeDemo.value = copy.toTypedArray()
 
                                                 }
@@ -484,9 +482,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                         demo.value!!.photos = photos?.toTypedArray()
                                                     }
                                                     var copy = listeDemo.value?.toMutableList()
-                                                    copy?.add(response.body()!!.data!!)
+                                                    if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
                                                     listeDemo.value = copy?.toTypedArray()
-                                                    Log.i("INFO", listeDemo.value!!.size.toString())
                                                 }
                                             }
 
@@ -513,7 +510,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                             if (response.code() == 200) {
                                                 demo.value = response.body()!!.data!!
                                                 var copy = listeDemo.value?.toMutableList()
-                                                copy?.add(response.body()!!.data!!)
+                                                if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
                                                 viewModelScope.launch(Dispatchers.IO) {
                                                     var photos =
                                                         demo.value!!.photos?.toMutableList()
@@ -562,7 +559,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                     demo.value!!.photos = photos?.toTypedArray()
                                                 }
                                                 var copy = listeDemo.value?.toMutableList()
-                                                copy?.add(response.body()!!.data!!)
+                                                if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
                                             }
                                         }
@@ -597,7 +594,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                         demo.value!!.photos = photos?.toTypedArray()
                                                     }
                                                     var copy = listeDemo.value?.toMutableList()
-                                                    copy?.add(response.body()!!.data!!)
+                                                    if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
                                                     listeDemo.value = copy?.toTypedArray()
                                                 }
                                             }
@@ -631,7 +628,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                                    demo.value!!.photos = photos?.toTypedArray()
                                                 }
                                                 var copy = listeDemo.value?.toMutableList()
-                                                copy?.add(response.body()!!.data!!)
+                                                if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
                                                 listeDemo.value = copy?.toTypedArray()
                                             }
                                         }
