@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/connexion_dialog.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fiche_bobinage_fragment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fiche_chantier_fragment.xml" value="0.33266733266733267" />
+        <entry key="app/src/main/res/layout/fiche_chantier_fragment.xml" value="0.30583058305830585" />
         <entry key="app/src/main/res/layout/fiche_demontage_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fiche_remontage_fragment.xml" value="0.1641025641025641" />
         <entry key="app/src/main/res/layout/fragment_alternateur.xml" value="0.335" />

@@ -283,6 +283,7 @@ class FicheChantier : Fragment() {
             }
         }
         quit.setOnClickListener {
+            lin.visibility = View.INVISIBLE
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
