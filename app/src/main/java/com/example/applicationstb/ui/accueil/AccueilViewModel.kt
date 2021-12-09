@@ -123,7 +123,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         if (resp!!.data!!.vehicule !== null) getVehicule(
                                                             resp!!.data!!.vehicule!!
                                                         )
-                                                        if (!chantiers.contains(resp!!.data!!)) chantiers!!.add(
+                                                        if (chantiers.indexOf(resp.data!!) == -1) chantiers!!.add(
                                                             resp!!.data!!
                                                         )
                                                         Log.i("INFO", "ajout en bdd locale")
@@ -285,10 +285,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     repository.insertDemoMonoLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
-                                                                                    if (!demontages.contains(
-                                                                                            resp2!!.data!!
-                                                                                        )
-                                                                                    ) demontages!!.add(
+                                                                                    if (demontages.indexOf(resp.data!!) == -1) demontages!!.add(
                                                                                         resp2!!.data!!
                                                                                     )
                                                                                     Log.i(
@@ -367,9 +364,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     repository.insertDemoAlterLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
-                                                                                    if (!demontages.contains(
-                                                                                            resp2!!.data!!
-                                                                                        )
+                                                                                    if (demontages.indexOf(resp.data!!) == -1
                                                                                     ) demontages!!.add(
                                                                                         resp2!!.data!!
                                                                                     )
@@ -447,9 +442,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoRBLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (!demontages.contains(
-                                                                                        resp2!!.data!!
-                                                                                    )
+                                                                                if (demontages.indexOf(resp.data!!) == -1
                                                                                 ) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
@@ -521,10 +514,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoCCLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (!demontages.contains(
-                                                                                        resp2!!.data!!
-                                                                                    )
-                                                                                ) demontages!!.add(
+                                                                                if (demontages.indexOf(resp.data!!) == -1) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
@@ -598,10 +588,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoTriLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (!demontages.contains(
-                                                                                        resp2!!.data!!
-                                                                                    )
-                                                                                ) demontages!!.add(
+                                                                                if (demontages.indexOf(resp.data!!) == -1) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
@@ -780,9 +767,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertRemoCCLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (!remontages.contains(
-                                                                                        resp2!!.data!!
-                                                                                    )
+                                                                                if (remontages.indexOf(resp.data!!) == -1
                                                                                 ) remontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
@@ -855,10 +840,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertRemoLocalDatabase(
                                                                                     resp2.data!!
                                                                                 )
-                                                                                if (!remontages.contains(
-                                                                                        resp2!!.data!!
-                                                                                    )
-                                                                                ) remontages!!.add(
+                                                                                if (remontages.indexOf(resp.data!!) == -1) remontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
@@ -919,7 +901,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val resp = response.body()
                                             if (resp != null) {
                                                 // Log.i("INFO","fiche bobinage :${resp.fiche!!._id} - spires : ${resp.fiche!!.nbSpires}")
-                                                if (!bobinages.contains(resp!!.data!!)) bobinages!!.add(
+                                                if (bobinages.indexOf(resp.data!!) == -1) bobinages!!.add(
                                                     resp.data!!
                                                 )
                                                 viewModelScope.launch(Dispatchers.IO) {
@@ -931,6 +913,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     resp.data?.photos = photos?.toTypedArray()
                                                     var b =
                                                         repository.getByIdBobinageLocalDatabse(resp.data!!._id)
+                                                    Log.i("INFO","présence bdd : "+(b == null).toString())
                                                     if (b == null) {
                                                         repository.insertBobinageLocalDatabase(resp!!.data!!)
                                                         Log.i("INFO", "ajout en bdd locale")
@@ -1117,7 +1100,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             ch.photos = photos?.toTypedArray()
-                            Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
+                            //Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -1150,7 +1133,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 job4.join()
 
                             }
-                            Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
+                            //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

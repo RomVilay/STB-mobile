@@ -75,7 +75,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     it1.username
                                 )
                             }
-                            sendFiche()
+                            sendFiche(loading)
                             if (action != null) {
                                 if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
                                 Navigation.findNavController(view).navigate(action)
@@ -113,7 +113,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun sendFiche() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendFiche(loading: CardView) {
+        if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
         if (isOnline(context) == true) {
             viewModelScope.launch(Dispatchers.IO) {
                 var listCh: List<ChantierEntity> =
@@ -132,7 +134,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(ch.numFiche!!)) {
-                                            Log.i("INFO", "fichier à upload : ${name}")
+                                            Log.i("INFO", "photo offline: ${name.contains(ch.numFiche!!).toString()}")
                                             //var test = getPhotoFile(name)
                                             var job =
                                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -172,7 +174,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             }
                             ch.photos = photos?.toTypedArray()
-                            Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -205,7 +206,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 job4.join()
 
                             }
-                            Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -239,7 +239,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         val resp = repository.patchChantier(
-                            user?.token!!,
+                            user!!.token!!,
                             ch._id,
                             ch,
                             object : Callback<ChantierResponse> {
@@ -331,7 +331,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         ch.photos = photos?.toTypedArray()
                         val resp = repository.patchBobinage(
-                            user?.token!!,
+                            user!!.token!!,
                             ch._id,
                             ch,
                             object : Callback<BobinageResponse> {
@@ -425,7 +425,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageTriphase(
-                            user?.token!!,
+                            user!!.token!!,
                             dt._id,
                             dt,
                             object : Callback<DemontageTriphaseResponse> {
@@ -517,7 +517,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         dcc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageCC(
-                            user?.token!!,
+                            user!!.token!!,
                             dcc._id,
                             dcc,
                             object : Callback<DemontageCCResponse> {
@@ -601,7 +601,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         dt.photos = photos?.toTypedArray()
                         val resp = repository.patchRemontageTriphase(
-                            user?.token!!,
+                            user!!.token!!,
                             dt._id,
                             dt,
                             object : Callback<RemontageTriphaseResponse> {
@@ -685,7 +685,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         rc.photos = photos?.toTypedArray()
                         val resp = repository.patchRemontageCC(
-                            user?.token!!,
+                            user!!.token!!,
                             rc._id,
                             rc,
                             object : Callback<RemontageCCResponse> {
@@ -769,7 +769,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         rc.photos = photos?.toTypedArray()
                         val resp = repository.patchRemontage(
-                            user?.token!!,
+                            user!!.token!!,
                             rc._id,
                             rc,
                             object : Callback<RemontageResponse> {
@@ -861,7 +861,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontagePompe(
-                            user?.token!!,
+                            user!!.token!!,
                             rc._id,
                             rc,
                             object : Callback<DemontagePompeResponse> {
@@ -953,7 +953,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageMono(
-                            user?.token!!,
+                            user!!.token!!,
                             rc._id,
                             rc,
                             object : Callback<DemontageMonophaseResponse> {
@@ -1045,7 +1045,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageAlter(
-                            user?.token!!,
+                            user!!.token!!,
                             rc._id,
                             rc,
                             object : Callback<DemontageAlternateurResponse> {
@@ -1139,7 +1139,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         rc.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageRotor(
-                            user?.token!!,
+                            user!!.token!!,
                             rc._id,
                             rc,
                             object : Callback<DemontageRotorBobineResponse> {
@@ -1179,6 +1179,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         } else {
             Log.i("INFO", "connexion offline")
         }
+        if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -1246,6 +1247,37 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }
+    private fun saveImage(image: Bitmap, name: String): String? {
+        Log.i("INFO", "start")
+        var savedImagePath: String? = null
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .toString() + "/test_pictures/"
+        )
+        Log.i("INFO", storageDir.exists().toString())
+        var success = true
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs()
+        }
+        if (success) {
+            val imageFile = File(storageDir, name)
+            savedImagePath = imageFile.getAbsolutePath()
+            try {
+                val fOut: OutputStream = FileOutputStream(imageFile)
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+                fOut.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // Add the image to the system gallery
+            galleryAddPic(savedImagePath)
+            //updateStorage(context,name)
+            //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
+        }
+        return savedImagePath
+    }
+
     private fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
