@@ -87,6 +87,8 @@ class AlternateurFragment : Fragment() {
         var tensionUExcitation	 = layout.findViewById<EditText>(R.id.tw2)
         var tensionVExcitation	 = layout.findViewById<EditText>(R.id.tw3)
         var obs = layout.findViewById<EditText>(R.id.obs2)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!! as DemontageAlternateur
         viewModel.photos.value = fiche.photos!!.toMutableList()
         if (fiche.isolementMasseStatorPrincipalU !== null) isolementMasseStatorPrincipalU.setText(fiche.isolementMasseStatorPrincipalU.toString())
@@ -116,7 +118,7 @@ class AlternateurFragment : Fragment() {
         if (fiche.observations !== null) obs.setText(fiche.observations!!.toString())
         if (fiche.status!! < 3L) {
             isolementMasseStatorPrincipalU.doAfterTextChanged {
-                if (isolementMasseStatorPrincipalU.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus()) {
+                if (isolementMasseStatorPrincipalU.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus() && isolementMasseStatorPrincipalU.text.matches(regexNombres)) {
                     fiche.isolementMasseStatorPrincipalU =
                         isolementMasseStatorPrincipalU.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -125,7 +127,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseStatorPrincipalV.doAfterTextChanged {
-                if (isolementMasseStatorPrincipalV.text.isNotEmpty() && isolementMasseStatorPrincipalV.hasFocus()) {
+                if (isolementMasseStatorPrincipalV.text.isNotEmpty() && isolementMasseStatorPrincipalV.hasFocus() && isolementMasseStatorPrincipalV.text.matches(regexNombres)) {
                     fiche.isolementMasseStatorPrincipalV =
                         isolementMasseStatorPrincipalV.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -134,7 +136,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseStatorPrincipalW.doAfterTextChanged {
-                if (isolementMasseStatorPrincipalW.text.isNotEmpty() && isolementMasseStatorPrincipalW.hasFocus()) {
+                if (isolementMasseStatorPrincipalW.text.isNotEmpty() && isolementMasseStatorPrincipalW.hasFocus() && isolementMasseStatorPrincipalW.text.matches(regexNombres)) {
                     fiche.isolementMasseStatorPrincipalW =
                         isolementMasseStatorPrincipalW.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -143,7 +145,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseStatorExcitation.doAfterTextChanged {
-                if (isolementMasseStatorExcitation.text.isNotEmpty() && isolementMasseStatorExcitation.hasFocus()) {
+                if (isolementMasseStatorExcitation.text.isNotEmpty() && isolementMasseStatorExcitation.hasFocus() && isolementMasseStatorExcitation.text.matches(regexNombres)) {
                     fiche.isolementMasseStatorExcitation =
                         isolementMasseStatorExcitation.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -152,7 +154,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseRotorPrincipal.doAfterTextChanged {
-                if (isolementMasseRotorPrincipal.text.isNotEmpty() && isolementMasseRotorPrincipal.hasFocus()) {
+                if (isolementMasseRotorPrincipal.text.isNotEmpty() && isolementMasseRotorPrincipal.hasFocus() && isolementMasseRotorPrincipal.text.matches(regexNombres) ) {
                     fiche.isolementMasseRotorPrincipal =
                         isolementMasseRotorPrincipal.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -161,7 +163,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseRotorExcitation.doAfterTextChanged {
-                if (isolementMasseRotorExcitation.text.isNotEmpty() && isolementMasseRotorExcitation.hasFocus()) {
+                if (isolementMasseRotorExcitation.text.isNotEmpty() && isolementMasseRotorExcitation.hasFocus() && isolementMasseRotorExcitation.text.matches(regexNombres)) {
                     fiche.isolementMasseRotorExcitation =
                         isolementMasseRotorExcitation.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -170,7 +172,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceStatorPrincipalU.doAfterTextChanged {
-                if (resistanceStatorPrincipalU.text.isNotEmpty() && resistanceStatorPrincipalU.hasFocus()) {
+                if (resistanceStatorPrincipalU.text.isNotEmpty() && resistanceStatorPrincipalU.hasFocus() && resistanceStatorPrincipalU.text.matches(regexNombres)) {
                     fiche.resistanceStatorPrincipalU =
                         resistanceStatorPrincipalU.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -179,7 +181,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceStatorPrincipalV.doAfterTextChanged {
-                if (resistanceStatorPrincipalV.text.isNotEmpty() && resistanceStatorPrincipalV.hasFocus()) {
+                if (resistanceStatorPrincipalV.text.isNotEmpty() && resistanceStatorPrincipalV.hasFocus() && resistanceStatorPrincipalV.text.matches(regexNombres)) {
                     fiche.resistanceStatorPrincipalV =
                         resistanceStatorPrincipalV.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -188,7 +190,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceStatorPrincipalW.doAfterTextChanged {
-                if (resistanceStatorPrincipalW.text.isNotEmpty() && resistanceStatorPrincipalW.hasFocus()) {
+                if (resistanceStatorPrincipalW.text.isNotEmpty() && resistanceStatorPrincipalW.hasFocus() && resistanceStatorPrincipalW.text.matches(regexNombres)) {
                     fiche.resistanceStatorPrincipalW =
                         resistanceStatorPrincipalW.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -197,7 +199,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceRotorPrincipal.doAfterTextChanged {
-                if (resistanceRotorPrincipal.text.isNotEmpty() && resistanceRotorPrincipal.hasFocus()) {
+                if (resistanceRotorPrincipal.text.isNotEmpty() && resistanceRotorPrincipal.hasFocus() && resistanceRotorPrincipal.text.matches(regexNombres)) {
                     fiche.resistanceRotorPrincipal =
                         resistanceRotorPrincipal.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -206,7 +208,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceStatorExcitation.doAfterTextChanged {
-                if (resistanceStatorExcitation.text.isNotEmpty() && resistanceStatorExcitation.hasFocus()) {
+                if (resistanceStatorExcitation.text.isNotEmpty() && resistanceStatorExcitation.hasFocus() && resistanceStatorExcitation.text.matches(regexNombres)) {
                     fiche.resistanceStatorExcitation =
                         resistanceStatorExcitation.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -215,7 +217,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceRotorExcitation.doAfterTextChanged {
-                if (resistanceRotorExcitation.text.isNotEmpty() && resistanceRotorExcitation.hasFocus()) {
+                if (resistanceRotorExcitation.text.isNotEmpty() && resistanceRotorExcitation.hasFocus() && resistanceRotorExcitation.text.matches(regexNombres)) {
                     fiche.resistanceRotorExcitation =
                         resistanceRotorExcitation.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -224,7 +226,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementPhasePhaseStatorPrincipalUV.doAfterTextChanged {
-                if (isolementPhasePhaseStatorPrincipalUV.text.isNotEmpty() && isolementPhasePhaseStatorPrincipalUV.hasFocus()) {
+                if (isolementPhasePhaseStatorPrincipalUV.text.isNotEmpty() && isolementPhasePhaseStatorPrincipalUV.hasFocus() && isolementPhasePhaseStatorPrincipalUV.text.matches(regexNombres)) {
                     fiche.isolementPhasePhaseStatorPrincipalUV =
                         isolementPhasePhaseStatorPrincipalUV.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -233,7 +235,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementPhasePhaseStatorPrincipalUW.doAfterTextChanged {
-                if (isolementPhasePhaseStatorPrincipalUW.text.isNotEmpty() && isolementPhasePhaseStatorPrincipalUW.hasFocus()) {
+                if (isolementPhasePhaseStatorPrincipalUW.text.isNotEmpty() && isolementPhasePhaseStatorPrincipalUW.hasFocus() && isolementPhasePhaseStatorPrincipalUW.text.matches(regexNombres)) {
                     fiche.isolementPhasePhaseStatorPrincipalUW =
                         isolementPhasePhaseStatorPrincipalUW.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -242,7 +244,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementPhasePhaseStatorPrincipalVW.doAfterTextChanged {
-                if (isolementPhasePhaseStatorPrincipalVW.text.isNotEmpty() && isolementPhasePhaseStatorPrincipalVW.hasFocus()) {
+                if (isolementPhasePhaseStatorPrincipalVW.text.isNotEmpty() && isolementPhasePhaseStatorPrincipalVW.hasFocus() && isolementPhasePhaseStatorPrincipalVW.text.matches(regexNombres)) {
                     fiche.isolementPhasePhaseStatorPrincipalVW =
                         isolementPhasePhaseStatorPrincipalVW.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -265,7 +267,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionV.doAfterTextChanged {
-                if (tensionV.text.isNotEmpty() && tensionV.hasFocus()) {
+                if (tensionV.text.isNotEmpty() && tensionV.hasFocus() && tensionV.text.matches(regexNombres)) {
                     fiche.tensionV = tensionV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -273,7 +275,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionW.doAfterTextChanged {
-                if (tensionW.text.isNotEmpty() && tensionW.hasFocus()) {
+                if (tensionW.text.isNotEmpty() && tensionW.hasFocus() && tensionW.text.matches(regexNombres)) {
                     fiche.tensionW = tensionW.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -281,7 +283,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             intensiteU.doAfterTextChanged {
-                if (intensiteU.text.isNotEmpty() && intensiteU.hasFocus()) {
+                if (intensiteU.text.isNotEmpty() && intensiteU.hasFocus() && intensiteU.text.matches(regexNombres)) {
                     fiche.intensiteU = intensiteU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -289,7 +291,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             intensiteV.doAfterTextChanged {
-                if (intensiteV.text.isNotEmpty() && intensiteV.hasFocus()) {
+                if (intensiteV.text.isNotEmpty() && intensiteV.hasFocus() && intensiteV.text.matches(regexNombres)) {
                     fiche.intensiteV = intensiteV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -297,7 +299,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             intensiteW.doAfterTextChanged {
-                if (intensiteW.text.isNotEmpty() && intensiteW.hasFocus()) {
+                if (intensiteW.text.isNotEmpty() && intensiteW.hasFocus() && intensiteW.text.matches(regexNombres)) {
                     fiche.intensiteW = intensiteW.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -305,7 +307,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionUExcitation.doAfterTextChanged {
-                if (tensionUExcitation.text.isNotEmpty() && tensionUExcitation.hasFocus()) {
+                if (tensionUExcitation.text.isNotEmpty() && tensionUExcitation.hasFocus() && tensionUExcitation.text.matches(regexNombres)) {
                     fiche.tensionExcitation = tensionUExcitation.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -313,8 +315,8 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionVExcitation.doAfterTextChanged {
-                if (tensionVExcitation.text.isNotEmpty() && tensionVExcitation.hasFocus()) fiche.intensiteExcitation =
-                    tensionVExcitation.text.toString().toFloat()
+                if (tensionVExcitation.text.isNotEmpty() && tensionVExcitation.hasFocus() && tensionUExcitation.text.matches(regexNombres))
+                    fiche.intensiteExcitation = tensionVExcitation.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()

@@ -83,6 +83,8 @@ class TriphaseFragment : Fragment() {
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var ter = layout.findViewById<Button>(R.id.termTri)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!! as Triphase
         if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
         if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
@@ -119,103 +121,103 @@ class TriphaseFragment : Fragment() {
 
         if (fiche.status!! < 3L) {
             UM.doAfterTextChanged {
-                if (UM.text.isNotEmpty() && UM.hasFocus()) fiche.isolementPhaseMasseStatorUM =
+                if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
                     UM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VM.doAfterTextChanged {
-                if (VM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorVM =
+                if (VM.text.isNotEmpty() && VM.hasFocus() && VM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorVM =
                     VM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             WM.doAfterTextChanged {
-                if (WM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorWM =
+                if (WM.text.isNotEmpty() && WM.hasFocus() && WM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorWM =
                     WM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             UV.doAfterTextChanged {
-                if (UV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUV =
+                if (UV.text.isNotEmpty() && UV.hasFocus() && UV.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUV =
                     UV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             UW.doAfterTextChanged {
-                if (UW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUW =
+                if (UW.text.isNotEmpty() && UW.hasFocus() && UW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUW =
                     UW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             iVW.doAfterTextChanged {
-                if (iVW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorVW =
+                if (iVW.text.isNotEmpty() && iVW.hasFocus() && iVW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorVW =
                     iVW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RU.doAfterTextChanged {
-                if (RU.text.isNotEmpty()) fiche.resistanceStatorU = RU.text.toString().toFloat()
+                if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU = RU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RV.doAfterTextChanged {
-                if (RV.text.isNotEmpty()) fiche.resistanceStatorV = RV.text.toString().toFloat()
+                if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV = RV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RW.doAfterTextChanged {
-                if (RW.text.isNotEmpty()) fiche.resistanceStatorW = RW.text.toString().toFloat()
+                if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW = RW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VU.doAfterTextChanged {
-                if (VU.text.isNotEmpty()) fiche.tensionU = VU.text.toString().toFloat()
+                if (VU.text.isNotEmpty() && VU.hasFocus() && VU.text.matches(regexNombres)) fiche.tensionU = VU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VV.doAfterTextChanged {
-                if (VV.text.isNotEmpty()) fiche.tensionV = VV.text.toString().toFloat()
+                if (VV.text.isNotEmpty() && VV.hasFocus() && VV.text.matches(regexNombres)) fiche.tensionV = VV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VW.doAfterTextChanged {
-                if (VW.text.isNotEmpty()) fiche.tensionW = VW.text.toString().toFloat()
+                if (VW.text.isNotEmpty() && VW.hasFocus() && VW.text.matches(regexNombres)) fiche.tensionW = VW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VUI.doAfterTextChanged {
-                if (VUI.text.isNotEmpty()) fiche.intensiteU = VUI.text.toString().toFloat()
+                if (VUI.text.isNotEmpty() && VUI.hasFocus() && VUI.text.matches(regexNombres)) fiche.intensiteU = VUI.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VVI.doAfterTextChanged {
-                if (VVI.text.isNotEmpty()) fiche.intensiteV = VVI.text.toString().toFloat()
+                if (VVI.text.isNotEmpty() && VVI.hasFocus() && VVI.text.matches(regexNombres)) fiche.intensiteV = VVI.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VWI.doAfterTextChanged {
-                if (VWI.text.isNotEmpty()) fiche.intensiteW = VWI.text.toString().toFloat()
+                if (VWI.text.isNotEmpty() && VWI.hasFocus() && VWI.text.matches(regexNombres)) fiche.intensiteW = VWI.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             dessai.doAfterTextChanged {
-                if (dessai.text.isNotEmpty()) fiche.dureeEssai = dessai.text.toString().toFloat()
+                if (dessai.text.isNotEmpty() && dessai.hasFocus() && dessai.text.matches(regexNombres)) fiche.dureeEssai = dessai.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()

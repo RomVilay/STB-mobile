@@ -83,6 +83,8 @@ class PompeFragment : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termP)
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!! as DemontagePompe
         Log.i("INFO","sensRoation: ${fiche.sensRotation} - matiere joint: ${fiche.matiere}")
         if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
@@ -168,49 +170,49 @@ class PompeFragment : Fragment() {
                 viewModel.localSave()
             }
             diametreArbre.doAfterTextChanged {
-                if (diametreArbre.text.isNotEmpty()) fiche.diametreArbre =
+                if (diametreArbre.text.isNotEmpty() && diametreArbre.text.matches(regexNombres) && diametreArbre.hasFocus()) fiche.diametreArbre =
                     diametreArbre.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             diametreExtPF.doAfterTextChanged {
-                if (diametreExtPF.text.isNotEmpty()) fiche.diametreExtPF =
+                if (diametreExtPF.text.isNotEmpty() && diametreExtPF.text.matches(regexNombres) && diametreExtPF.hasFocus()) fiche.diametreExtPF =
                     diametreExtPF.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             diametreExtPR.doAfterTextChanged {
-                if (diametreExtPR.text.isNotEmpty()) fiche.diametreExtPR =
+                if (diametreExtPR.text.isNotEmpty() && diametreExtPR.text.matches(regexNombres) && diametreExtPR.hasFocus()) fiche.diametreExtPR =
                     diametreExtPR.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             epaisseurPF.doAfterTextChanged {
-                if (epaisseurPF.text.isNotEmpty()) fiche.epaisseurPF =
+                if (epaisseurPF.text.isNotEmpty() && epaisseurPF.text.matches(regexNombres) && epaisseurPF.hasFocus()) fiche.epaisseurPF =
                     epaisseurPF.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             longueurRotativeNonComprimee.doAfterTextChanged {
-                if (longueurRotativeNonComprimee.text.isNotEmpty()) fiche.longueurRotativeNonComprimee =
+                if (longueurRotativeNonComprimee.text.isNotEmpty() && longueurRotativeNonComprimee.text.matches(regexNombres) && longueurRotativeNonComprimee.hasFocus()) fiche.longueurRotativeNonComprimee =
                     longueurRotativeNonComprimee.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             longueurRotativeComprimee.doAfterTextChanged {
-                if (longueurRotativeComprimee.text.isNotEmpty()) fiche.longueurRotativeComprimee =
+                if (longueurRotativeComprimee.text.isNotEmpty() && longueurRotativeComprimee.text.matches(regexNombres) && longueurRotativeComprimee.hasFocus()) fiche.longueurRotativeComprimee =
                     longueurRotativeComprimee.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             longueurRotativeTravail.doAfterTextChanged {
-                if (longueurRotativeTravail.text.isNotEmpty()) fiche.longueurRotativeTravail =
+                if (longueurRotativeTravail.text.isNotEmpty() && longueurRotativeTravail.text.matches(regexNombres) && longueurRotativeTravail.hasFocus()) fiche.longueurRotativeTravail =
                     longueurRotativeTravail.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()

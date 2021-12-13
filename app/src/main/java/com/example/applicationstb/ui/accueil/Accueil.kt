@@ -84,9 +84,10 @@ class Accueil : Fragment() {
             val alertDialogBuilder: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.apply {
-                    setPositiveButton("se Déconnecter",
+                    setPositiveButton("se Déconnecter et quitter.",
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.toDeconnexion(layout)
+                            System.exit(0)
                         })
                     setNegativeButton("Rester connecté",
                         DialogInterface.OnClickListener { dialog, id ->

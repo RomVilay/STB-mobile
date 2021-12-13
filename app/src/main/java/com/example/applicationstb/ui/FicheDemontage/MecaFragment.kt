@@ -35,6 +35,8 @@ class MecaFragment : Fragment() {
         //couplage
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
         var txtclp = layout.findViewById<EditText>(R.id.autreCpl)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         if (fiche.status == 3L) {
             couplage.isEnabled = false
             txtclp.isEnabled = false

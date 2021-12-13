@@ -84,6 +84,8 @@ class CCFragment : Fragment() {
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var observations = layout.findViewById<EditText>(R.id.observations)
         var retour = layout.findViewById<Button>(R.id.retourCC)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         retour.setOnClickListener {
             if (viewModel.selection.value?.status == 3L){
                 activity?.onBackPressed()
@@ -111,7 +113,7 @@ class CCFragment : Fragment() {
         viewModel.photos.value = fiche.photos!!.toMutableList()
         if (fiche.status!! < 3L) {
             isopmu.doAfterTextChanged {
-                if (isopmu.text.isNotEmpty() && isopmu.hasFocus()) {
+                if (isopmu.text.isNotEmpty() && isopmu.hasFocus() && isopmu.text.matches(regexNombres)) {
                     fiche.isolationMasseInduit =
                         isopmu.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -120,7 +122,7 @@ class CCFragment : Fragment() {
                 }
             }
             isopmv.doAfterTextChanged {
-                if (isopmv.text.isNotEmpty() && isopmv.hasFocus()) {
+                if (isopmv.text.isNotEmpty() && isopmv.hasFocus() && isopmv.text.matches(regexNombres)) {
                     fiche.isolationMassePolesPrincipaux =
                         isopmv.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -129,7 +131,7 @@ class CCFragment : Fragment() {
                 }
             }
             isopmw.doAfterTextChanged {
-                if (isopmw.text.isNotEmpty() && isopmw.hasFocus()) {
+                if (isopmw.text.isNotEmpty() && isopmw.hasFocus() && isopmw.text.matches(regexNombres)) {
                     fiche.isolationMassePolesAuxilliaires =
                         isopmw.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -138,7 +140,7 @@ class CCFragment : Fragment() {
                 }
             }
             isoppU.doAfterTextChanged {
-                if (isoppU.text.isNotEmpty() && isoppU.hasFocus()) {
+                if (isoppU.text.isNotEmpty() && isoppU.hasFocus() && isoppU.text.matches(regexNombres)) {
                     fiche.isolationMassePolesCompensatoires =
                         isoppU.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -147,7 +149,7 @@ class CCFragment : Fragment() {
                 }
             }
             isoppV.doAfterTextChanged {
-                if (isoppV.text.isNotEmpty() && isoppV.hasFocus()) {
+                if (isoppV.text.isNotEmpty() && isoppV.hasFocus() && isoppV.text.matches(regexNombres)) {
                     fiche.isolationMassePorteBalais =
                         isoppV.text.toString().toFloat()
                     viewModel.selection.value = fiche
@@ -156,7 +158,7 @@ class CCFragment : Fragment() {
                 }
             }
             rU.doAfterTextChanged {
-                if (rU.text.isNotEmpty() && rU.hasFocus()) {
+                if (rU.text.isNotEmpty() && rU.hasFocus() && rU.text.matches(regexNombres)) {
                     fiche.resistanceInduit = rU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -164,7 +166,7 @@ class CCFragment : Fragment() {
                 }
             }
             rI.doAfterTextChanged {
-                if (rI.text.isNotEmpty() && rI.hasFocus()) {
+                if (rI.text.isNotEmpty() && rI.hasFocus() && rI.text.matches(regexNombres)) {
                     fiche.resistancePA = rI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -172,7 +174,7 @@ class CCFragment : Fragment() {
                 }
             }
             rV.doAfterTextChanged {
-                if (rV.text.isNotEmpty() && rV.hasFocus()) {
+                if (rV.text.isNotEmpty() && rV.hasFocus() && rV.text.matches(regexNombres)) {
                     fiche.resistancePP = rV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -180,7 +182,7 @@ class CCFragment : Fragment() {
                 }
             }
             rPP.doAfterTextChanged {
-                if (rPP.text.isNotEmpty() && rPP.hasFocus()) {
+                if (rPP.text.isNotEmpty() && rPP.hasFocus() && rPP.text.matches(regexNombres)) {
                     fiche.resistancePC = rPP.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -188,7 +190,7 @@ class CCFragment : Fragment() {
                 }
             }
             vU.doAfterTextChanged {
-                if (vU.text.isNotEmpty() && vU.hasFocus()) {
+                if (vU.text.isNotEmpty() && vU.hasFocus() && vU.text.matches(regexNombres)) {
                     fiche.tensionInduit = vU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -196,7 +198,7 @@ class CCFragment : Fragment() {
                 }
             }
             vV.doAfterTextChanged {
-                if (vV.text.isNotEmpty() && vV.hasFocus()) {
+                if (vV.text.isNotEmpty() && vV.hasFocus() && vV.text.matches(regexNombres)) {
                     fiche.tensionExcitation = vV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -204,7 +206,7 @@ class CCFragment : Fragment() {
                 }
             }
             vUI.doAfterTextChanged {
-                if (vUI.text.isNotEmpty() && vUI.hasFocus()) {
+                if (vUI.text.isNotEmpty() && vUI.hasFocus() && vUI.text.matches(regexNombres)) {
                     fiche.intensiteInduit = vUI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -212,7 +214,7 @@ class CCFragment : Fragment() {
                 }
             }
             vVI.doAfterTextChanged {
-                if (vVI.text.isNotEmpty() && vVI.hasFocus()) {
+                if (vVI.text.isNotEmpty() && vVI.hasFocus() && vVI.text.matches(regexNombres)) {
                     fiche.intensiteExcitation = vVI.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()

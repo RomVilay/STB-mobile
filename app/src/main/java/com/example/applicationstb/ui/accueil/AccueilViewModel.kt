@@ -204,9 +204,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoPompeLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (!demontages.contains(
-                                                                                        resp2!!.data!!
-                                                                                    )
+                                                                                if (demontages.indexOf(resp.data!!) == -1
                                                                                 ) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
@@ -900,10 +898,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         if (response.code() == 200) {
                                             val resp = response.body()
                                             if (resp != null) {
-                                                // Log.i("INFO","fiche bobinage :${resp.fiche!!._id} - spires : ${resp.fiche!!.nbSpires}")
-                                                if (bobinages.indexOf(resp.data!!) == -1) bobinages!!.add(
-                                                    resp.data!!
-                                                )
+                                                 Log.i("INFO","pas dans la liste"+(bobinages.indexOf(resp.data!!) == -1).toString())
                                                 viewModelScope.launch(Dispatchers.IO) {
                                                     var photos = resp.data?.photos?.toMutableList()
                                                     var iter = photos?.listIterator()
@@ -916,6 +911,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     Log.i("INFO","présence bdd : "+(b == null).toString())
                                                     if (b == null) {
                                                         repository.insertBobinageLocalDatabase(resp!!.data!!)
+                                                        if (bobinages.indexOf(resp.data!!) == -1) bobinages!!.add(
+                                                            resp.data!!
+                                                        )
                                                         Log.i("INFO", "ajout en bdd locale")
                                                     }
                                                     //Log.i("INFO","fiche bobinage :${b!!._id} - spires : ${b!!.nbSpires}")

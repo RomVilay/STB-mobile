@@ -53,7 +53,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun login(username: String, psw: String, view: View, loading: CardView){
+    fun login(username: String, psw: String, view: View, loading: CardView) = runBlocking{
         if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
         if (isOnline(context) == true) {
             val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
@@ -75,9 +75,18 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     it1.username
                                 )
                             }
-                            sendFiche(loading)
+                            viewModelScope.launch(
+                                Dispatchers.IO
+                            ) {
+                                var job = launch {
+                                    sendFiche()
+                                }
+                                job.join()
+
+                            }
                             if (action != null) {
-                                if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
+                                if (loading.visibility == View.VISIBLE) loading.visibility =
+                                    View.GONE
                                 Navigation.findNavController(view).navigate(action)
                             }
                             //toAccueil(view)
@@ -114,14 +123,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche(loading: CardView) {
-        if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
+    fun sendFiche() {
         if (isOnline(context) == true) {
             viewModelScope.launch(Dispatchers.IO) {
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
-                Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
                         var ch = fiche.toChantier()
@@ -131,11 +137,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
-                                    //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(ch.numFiche!!)) {
-                                            Log.i("INFO", "photo offline: ${name.contains(ch.numFiche!!).toString()}")
-                                            //var test = getPhotoFile(name)
                                             var job =
                                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                     getNameURI()
@@ -153,11 +156,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                             name
                                                         )
                                                         val to = File(dir, imageName.value!!.name!!)
-                                                        Log.i(
-                                                            "INFO",
-                                                            from.exists()
-                                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                        )
                                                         if (from.exists()) from.renameTo(to)
                                                         sendPhoto(to)
                                                         iter.set(imageName.value!!.name!!)
@@ -223,11 +221,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                 ch.signatureTech!!
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
-                                            Log.i(
-                                                "INFO","signature tech"+
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath}"
-                                            )
                                             if (from.exists()) from.renameTo(to)
                                             ch.signatureTech = imageName.value!!.name
                                             sendPhoto(to)
@@ -237,6 +230,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 job4.join()
                             }
+                            repository.updateChantierLocalDatabse(ch.toEntity())
                         }
                         val resp = repository.patchChantier(
                             user!!.token!!,
@@ -287,11 +281,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(ch.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
                                         var job =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                 getNameURI()
@@ -309,11 +300,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                         name
                                                     )
                                                     val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
                                                     if (from.exists()) from.renameTo(to)
                                                     sendPhoto(to)
                                                     iter.set(imageName.value!!.name!!)
@@ -330,6 +316,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         ch.photos = photos?.toTypedArray()
+                        repository.updateBobinageLocalDatabse(ch.toEntity())
                         val resp = repository.patchBobinage(
                             user!!.token!!,
                             ch._id,
@@ -379,11 +366,10 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(dt.numFiche!!)) {
                                         Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
+
                                         var job =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                 getNameURI()
@@ -424,6 +410,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = photos?.toTypedArray()
+                        repository.updateDemoTriLocalDatabse(dt.toEntity())
                         val resp = repository.patchDemontageTriphase(
                             user!!.token!!,
                             dt._id,
@@ -516,6 +503,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         dcc.photos = photos?.toTypedArray()
+                        repository.updateDemoCCLocalDatabse(dcc.toEntity())
                         val resp = repository.patchDemontageCC(
                             user!!.token!!,
                             dcc._id,
@@ -600,6 +588,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         dt.photos = photos?.toTypedArray()
+                        repository.updateRemoTriLocalDatabse(dt.toEntity())
                         val resp = repository.patchRemontageTriphase(
                             user!!.token!!,
                             dt._id,
@@ -684,6 +673,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateRemoCCLocalDatabse(rc.toEntity())
                         val resp = repository.patchRemontageCC(
                             user!!.token!!,
                             rc._id,
@@ -768,6 +758,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateRemoLocalDatabse(rc.toRemoEntity())
                         val resp = repository.patchRemontage(
                             user!!.token!!,
                             rc._id,
@@ -860,6 +851,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoPompeLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontagePompe(
                             user!!.token!!,
                             rc._id,
@@ -952,6 +944,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoMonoLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageMono(
                             user!!.token!!,
                             rc._id,
@@ -1044,6 +1037,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoAlterLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageAlter(
                             user!!.token!!,
                             rc._id,
@@ -1138,6 +1132,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoRBLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageRotor(
                             user!!.token!!,
                             rc._id,
@@ -1179,7 +1174,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         } else {
             Log.i("INFO", "connexion offline")
         }
-        if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -1272,8 +1266,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
             // Add the image to the system gallery
             galleryAddPic(savedImagePath)
-            //updateStorage(context,name)
-            //Toast.makeText(this, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
         }
         return savedImagePath
     }

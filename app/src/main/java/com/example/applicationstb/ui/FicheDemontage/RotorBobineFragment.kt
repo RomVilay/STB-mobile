@@ -92,6 +92,8 @@ class RotorBobineFragment : Fragment() {
         var intensiteRotor = layout.findViewById<EditText>(R.id.irotor)
         var dureeEssai = layout.findViewById<EditText>(R.id.tpse)
         var observations = layout.findViewById<EditText>(R.id.obs2)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         var btnPhoto = layout.findViewById<Button>(R.id.photo3)
         var fiche = viewModel.selection.value!! as DemontageRotorBobine
         if (fiche.isolementPhaseMasseStatorUM !== null) isolementPhaseMasseStatorUM.setText(fiche.isolementPhaseMasseStatorUM.toString())
@@ -174,119 +176,119 @@ class RotorBobineFragment : Fragment() {
         if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
         if (fiche.status!! < 3L) {
             isolementPhaseMasseStatorUM.doAfterTextChanged {
-                if (isolementPhaseMasseStatorUM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorUM =
+                if (isolementPhaseMasseStatorUM.text.isNotEmpty() && isolementPhaseMasseStatorUM.text.matches(regexNombres) && isolementPhaseMasseStatorUM.hasFocus()) fiche.isolementPhaseMasseStatorUM =
                     isolementPhaseMasseStatorUM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhaseMasseStatorVM.doAfterTextChanged {
-                if (isolementPhaseMasseStatorVM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorVM =
+                if (isolementPhaseMasseStatorVM.text.isNotEmpty()  && isolementPhaseMasseStatorVM.text.matches(regexNombres) && isolementPhaseMasseStatorVM.hasFocus()) fiche.isolementPhaseMasseStatorVM =
                     isolementPhaseMasseStatorVM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhaseMasseStatorWM.doAfterTextChanged {
-                if (isolementPhaseMasseStatorWM.text.isNotEmpty()) fiche.isolementPhaseMasseStatorWM =
+                if (isolementPhaseMasseStatorWM.text.isNotEmpty()  && isolementPhaseMasseStatorWM.text.matches(regexNombres) && isolementPhaseMasseStatorWM.hasFocus()) fiche.isolementPhaseMasseStatorWM =
                     isolementPhaseMasseStatorWM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhaseMasseRotorB1M.doAfterTextChanged {
-                if (isolementPhaseMasseRotorB1M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB1M =
+                if (isolementPhaseMasseRotorB1M.text.isNotEmpty()  && isolementPhaseMasseRotorB1M.text.matches(regexNombres) && isolementPhaseMasseRotorB1M.hasFocus()) fiche.isolementPhaseMasseRotorB1M =
                     isolementPhaseMasseRotorB1M.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhaseMasseRotorB2M.doAfterTextChanged {
-                if (isolementPhaseMasseRotorB2M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB2M =
+                if (isolementPhaseMasseRotorB2M.text.isNotEmpty() && isolementPhaseMasseRotorB2M.text.matches(regexNombres) && isolementPhaseMasseRotorB2M.hasFocus()) fiche.isolementPhaseMasseRotorB2M =
                     isolementPhaseMasseRotorB2M.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhaseMasseRotorB3M.doAfterTextChanged {
-                if (isolementPhaseMasseRotorB3M.text.isNotEmpty()) fiche.isolementPhaseMasseRotorB3M =
+                if (isolementPhaseMasseRotorB3M.text.isNotEmpty() && isolementPhaseMasseRotorB3M.text.matches(regexNombres) && isolementPhaseMasseRotorB3M.hasFocus()) fiche.isolementPhaseMasseRotorB3M =
                     isolementPhaseMasseRotorB3M.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhaseMassePorteBalaisM.doAfterTextChanged {
-                if (isolementPhaseMassePorteBalaisM.text.isNotEmpty()) fiche.isolementPhaseMassePorteBalaisM =
+                if (isolementPhaseMassePorteBalaisM.text.isNotEmpty() && isolementPhaseMassePorteBalaisM.text.matches(regexNombres) && isolementPhaseMassePorteBalaisM.hasFocus()) fiche.isolementPhaseMassePorteBalaisM =
                     isolementPhaseMassePorteBalaisM.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhasePhaseStatorUV.doAfterTextChanged {
-                if (isolementPhasePhaseStatorUV.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUV =
+                if (isolementPhasePhaseStatorUV.text.isNotEmpty() && isolementPhasePhaseStatorUV.text.matches(regexNombres) && isolementPhasePhaseStatorUV.hasFocus()) fiche.isolementPhasePhaseStatorUV =
                     isolementPhasePhaseStatorUV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhasePhaseStatorUW.doAfterTextChanged {
-                if (isolementPhasePhaseStatorUW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorUW =
+                if (isolementPhasePhaseStatorUW.text.isNotEmpty() && isolementPhasePhaseStatorUW.text.matches(regexNombres) && isolementPhasePhaseStatorUW.hasFocus()) fiche.isolementPhasePhaseStatorUW =
                     isolementPhasePhaseStatorUW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             isolementPhasePhaseStatorVW.doAfterTextChanged {
-                if (isolementPhasePhaseStatorVW.text.isNotEmpty()) fiche.isolementPhasePhaseStatorVW =
+                if (isolementPhasePhaseStatorVW.text.isNotEmpty() && isolementPhasePhaseStatorVW.text.matches(regexNombres) && isolementPhasePhaseStatorVW.hasFocus()) fiche.isolementPhasePhaseStatorVW =
                     isolementPhasePhaseStatorVW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceStatorU.doAfterTextChanged {
-                if (resistanceStatorU.text.isNotEmpty()) fiche.resistanceStatorU =
+                if (resistanceStatorU.text.isNotEmpty() && resistanceStatorU.text.matches(regexNombres) && resistanceStatorU.hasFocus()) fiche.resistanceStatorU =
                     resistanceStatorU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceStatorV.doAfterTextChanged {
-                if (resistanceStatorV.text.isNotEmpty()) fiche.resistanceStatorV =
+                if (resistanceStatorV.text.isNotEmpty() && resistanceStatorV.text.matches(regexNombres) && resistanceStatorV.hasFocus()) fiche.resistanceStatorV =
                     resistanceStatorV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceStatorW.doAfterTextChanged {
-                if (resistanceStatorW.text.isNotEmpty()) fiche.resistanceStatorW =
+                if (resistanceStatorW.text.isNotEmpty() && resistanceStatorW.text.matches(regexNombres) && resistanceStatorW.hasFocus()) fiche.resistanceStatorW =
                     resistanceStatorW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceRotorB1B2.doAfterTextChanged {
-                if (resistanceRotorB1B2.text.isNotEmpty()) fiche.resistanceRotorB1B2 =
+                if (resistanceRotorB1B2.text.isNotEmpty() && resistanceRotorB1B2.text.matches(regexNombres) && resistanceRotorB1B2.hasFocus()) fiche.resistanceRotorB1B2 =
                     resistanceRotorB1B2.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceRotorB1B3.doAfterTextChanged {
-                if (resistanceRotorB1B3.text.isNotEmpty()) fiche.resistanceRotorB1B3 =
+                if (resistanceRotorB1B3.text.isNotEmpty()&& resistanceRotorB1B3.text.matches(regexNombres) && resistanceRotorB1B3.hasFocus()) fiche.resistanceRotorB1B3 =
                     resistanceRotorB1B3.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceRotorB2B2.doAfterTextChanged {
-                if (resistanceRotorB2B2.text.isNotEmpty()) fiche.resistanceRotorB2B2 =
+                if (resistanceRotorB2B2.text.isNotEmpty() && resistanceRotorB2B2.text.matches(regexNombres) && resistanceRotorB2B2.hasFocus()) fiche.resistanceRotorB2B2 =
                     resistanceRotorB2B2.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             tensionU.doAfterTextChanged {
-                if (tensionU.text.isNotEmpty()) fiche.tensionU = tensionU.text.toString().toFloat()
+                if (tensionU.text.isNotEmpty() && tensionU.text.matches(regexNombres) && tensionU.hasFocus()) fiche.tensionU = tensionU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -298,48 +300,48 @@ class RotorBobineFragment : Fragment() {
                 viewModel.localSave()
             }
             tensionW.doAfterTextChanged {
-                if (tensionW.text.isNotEmpty()) fiche.tensionW = tensionW.text.toString().toFloat()
+                if (tensionW.text.isNotEmpty() && tensionW.text.matches(regexNombres) && tensionW.hasFocus()) fiche.tensionW = tensionW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             tensionRotor.doAfterTextChanged {
-                if (tensionRotor.text.isNotEmpty()) fiche.tensionRotor =
+                if (tensionRotor.text.isNotEmpty() && tensionRotor.text.matches(regexNombres) && tensionRotor.hasFocus()) fiche.tensionRotor =
                     tensionRotor.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             intensiteU.doAfterTextChanged {
-                if (intensiteU.text.isNotEmpty()) fiche.intensiteU =
+                if (intensiteU.text.isNotEmpty() && intensiteU.text.matches(regexNombres) && intensiteU.hasFocus()) fiche.intensiteU =
                     intensiteU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             intensiteV.doAfterTextChanged {
-                if (intensiteV.text.isNotEmpty()) fiche.intensiteV =
+                if (intensiteV.text.isNotEmpty() && intensiteV.text.matches(regexNombres) && intensiteV.hasFocus()) fiche.intensiteV =
                     intensiteV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             intensiteW.doAfterTextChanged {
-                if (intensiteW.text.isNotEmpty()) fiche.intensiteW =
+                if (intensiteW.text.isNotEmpty() && intensiteW.text.matches(regexNombres) && intensiteW.hasFocus()) fiche.intensiteW =
                     intensiteW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             intensiteRotor.doAfterTextChanged {
-                if (intensiteRotor.text.isNotEmpty()) fiche.intensiteRotor =
+                if (intensiteRotor.text.isNotEmpty() && intensiteRotor.text.matches(regexNombres) && intensiteRotor.hasFocus()) fiche.intensiteRotor =
                     intensiteRotor.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             dureeEssai.doAfterTextChanged {
-                if (dureeEssai.text.isNotEmpty()) fiche.dureeEssai =
+                if (dureeEssai.text.isNotEmpty() && dureeEssai.text.matches(regexNombres) && dureeEssai.hasFocus()) fiche.dureeEssai =
                     dureeEssai.text.toString().toInt()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
