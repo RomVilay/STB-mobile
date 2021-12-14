@@ -87,6 +87,7 @@ class Accueil : Fragment() {
                     setPositiveButton("se Déconnecter et quitter.",
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.toDeconnexion(layout)
+                            
                             System.exit(0)
                         })
                     setNegativeButton("Rester connecté",
