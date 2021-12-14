@@ -83,7 +83,7 @@ class TriphaseFragment : Fragment() {
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var ter = layout.findViewById<Button>(R.id.termTri)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!! as Triphase
         if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0

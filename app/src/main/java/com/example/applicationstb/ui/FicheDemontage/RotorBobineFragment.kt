@@ -92,7 +92,7 @@ class RotorBobineFragment : Fragment() {
         var intensiteRotor = layout.findViewById<EditText>(R.id.irotor)
         var dureeEssai = layout.findViewById<EditText>(R.id.tpse)
         var observations = layout.findViewById<EditText>(R.id.obs2)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var btnPhoto = layout.findViewById<Button>(R.id.photo3)
         var fiche = viewModel.selection.value!! as DemontageRotorBobine

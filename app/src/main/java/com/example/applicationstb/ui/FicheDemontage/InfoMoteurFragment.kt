@@ -39,7 +39,7 @@ class InfoMoteurFragment : Fragment() {
         var optionsAsp = arrayOf<String>("propre","sale","très sale")
         var adaptExt = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
         var typeMoteur = layout.findViewById<EditText>(R.id.typeMoteur)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         aspectExt.adapter = adaptExt
         aspectBte.adapter = adaptExt

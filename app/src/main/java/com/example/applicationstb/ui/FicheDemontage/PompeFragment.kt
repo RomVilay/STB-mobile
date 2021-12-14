@@ -83,7 +83,7 @@ class PompeFragment : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termP)
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!! as DemontagePompe
         Log.i("INFO","sensRoation: ${fiche.sensRotation} - matiere joint: ${fiche.matiere}")

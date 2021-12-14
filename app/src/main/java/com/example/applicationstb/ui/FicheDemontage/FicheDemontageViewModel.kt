@@ -107,6 +107,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             if (selection.value!!.status!! < 3L) {
                 if (selection.value!!.typeFicheDemontage == 1) {
                     var fiche = selection.value!! as DemontagePompe
+                    if (fiche.sensRotation == null) fiche.sensRotation = false
                     fiche.status = 2L
                     var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
                     if (f !== null) {
@@ -118,6 +119,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (selection.value!!.typeFicheDemontage == 2) {
                     var fiche = selection.value!! as DemontageMonophase
                     fiche.status = 2L
+                    if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                    if (fiche.accouplement == null) fiche.accouplement = false
+                    if (fiche.clavette == null) fiche.clavette = false
                     var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
                     if (f !== null) {
                         repository.updateDemoMonoLocalDatabse(fiche.toEntity())
@@ -129,6 +133,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (selection.value!!.typeFicheDemontage == 3) {
                     var fiche = selection.value!! as DemontageAlternateur
                     fiche.status = 2L
+                    if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                    if (fiche.accouplement == null) fiche.accouplement = false
+                    if (fiche.clavette == null) fiche.clavette = false
                     var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
                     if (f !== null) {
                         repository.updateDemoAlterLocalDatabse(fiche.toEntity())
@@ -141,6 +148,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (selection.value!!.typeFicheDemontage == 4) {
                     var fiche = selection.value!! as DemontageRotorBobine
                     fiche.status = 2L
+                    if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                    if (fiche.accouplement == null) fiche.accouplement = false
+                    if (fiche.clavette == null) fiche.clavette = false
                     var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
                     if (f !== null) {
                         repository.updateDemoRBLocalDatabse(fiche.toEntity())
@@ -153,6 +163,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (selection.value!!.typeFicheDemontage == 5) {
                     var fiche = selection.value!! as CourantContinu
                     fiche.status = 2L
+                    if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                    if (fiche.accouplement == null) fiche.accouplement = false
+                    if (fiche.clavette == null) fiche.clavette = false
                     var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
                     if (f !== null) {
                         repository.updateDemoCCLocalDatabse(fiche.toEntity())
@@ -166,6 +179,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                     var fiche = selection.value!! as Triphase
                     fiche.status = 2L
+                    if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                    if (fiche.accouplement == null) fiche.accouplement = false
+                    if (fiche.clavette == null) fiche.clavette = false
                     var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
                     if (f !== null) {
                         repository.updateDemoTriLocalDatabse(fiche.toEntity())

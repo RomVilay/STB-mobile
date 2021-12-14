@@ -84,7 +84,7 @@ class CCFragment : Fragment() {
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var observations = layout.findViewById<EditText>(R.id.observations)
         var retour = layout.findViewById<Button>(R.id.retourCC)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         retour.setOnClickListener {
             if (viewModel.selection.value?.status == 3L){

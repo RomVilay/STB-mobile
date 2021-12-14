@@ -11,7 +11,9 @@
         <entry key="app/src/main/res/layout/fragment_alternateur.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_c_c.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_essais_stat_c_c.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.158203125" />
+        <entry key="app/src/main/res/layout/fragment_info_moteur.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_meca.xml" value="0.1310897435897436" />
+        <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_pompe.xml" value="0.158203125" />
         <entry key="app/src/main/res/layout/fragment_rotor_bobine.xml" value="0.16769743101807802" />
         <entry key="app/src/main/res/layout/fragment_triphase.xml" value="0.335" />

@@ -67,7 +67,7 @@ class MonophaseFragment : Fragment() {
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
         var terminer = layout.findViewById<Button>(R.id.termMo)
         var btnPhoto = layout.findViewById<Button>(R.id.photo2)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value as DemontageMonophase
         if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
@@ -78,42 +78,38 @@ class MonophaseFragment : Fragment() {
         if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
         if (fiche.status!! < 3) {
             isolementPhaseMasse.doAfterTextChanged {
-                if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.text.matches(regexNombres) && isolementPhaseMasse.hasFocus()) fiche.isolementPhaseMasse =
+                if (isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse =
                     isolementPhaseMasse.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceTravail.doAfterTextChanged {
-                if (resistanceTravail.text.isNotEmpty() && resistanceTravail.text.matches(regexNombres) && resistanceTravail.hasFocus()) fiche.resistanceTravail =
-                    resistanceTravail.text.toString().toFloat()
+                if (resistanceTravail.text.isNotEmpty() && (resistanceTravail.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceDemarrage.doAfterTextChanged {
-                if (resistanceDemarrage.text.isNotEmpty() && resistanceDemarrage.text.matches(regexNombres) && resistanceDemarrage.hasFocus()) fiche.resistanceDemarrage =
-                    resistanceDemarrage.text.toString().toFloat()
+                if (resistanceDemarrage.text.isNotEmpty() && (resistanceDemarrage.text.matches(regexNombres) || resistanceDemarrage.text.matches(regexInt)) ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             valeurCondensateur.doAfterTextChanged {
-                if (valeurCondensateur.text.isNotEmpty() && valeurCondensateur.text.matches(regexNombres) && valeurCondensateur.hasFocus()) fiche.valeurCondensateur =
-                    valeurCondensateur.text.toString().toFloat()
+                if (valeurCondensateur.text.isNotEmpty() && (valeurCondensateur.text.matches(regexNombres) || valeurCondensateur.text.matches(regexInt)) ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             tension.doAfterTextChanged {
-                if (tension.text.isNotEmpty() && tension.text.matches(regexNombres) && tension.hasFocus()) fiche.tension = tension.text.toString().toFloat()
+                if (tension.text.isNotEmpty() && (tension.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt) )) fiche.tension = tension.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             intensite.doAfterTextChanged {
-                if (intensite.text.isNotEmpty() && intensite.text.matches(regexNombres) && intensite.hasFocus()) fiche.intensite =
-                    intensite.text.toString().toFloat()
+                if (intensite.text.isNotEmpty() && (intensite.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) )fiche.intensite = intensite.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
