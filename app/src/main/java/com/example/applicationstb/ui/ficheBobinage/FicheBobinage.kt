@@ -285,7 +285,7 @@ class FicheBobinage : Fragment() {
         marque.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -296,7 +296,7 @@ class FicheBobinage : Fragment() {
         courant.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -307,7 +307,7 @@ class FicheBobinage : Fragment() {
         client.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 120
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -318,7 +318,7 @@ class FicheBobinage : Fragment() {
         type.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -329,7 +329,7 @@ class FicheBobinage : Fragment() {
         vitesse.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -340,7 +340,7 @@ class FicheBobinage : Fragment() {
         phases.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -351,7 +351,7 @@ class FicheBobinage : Fragment() {
         frequence.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
@@ -362,7 +362,7 @@ class FicheBobinage : Fragment() {
         puissance.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
-                margins.topMargin = 320
+                margins.topMargin = 220
                 linscroll.layoutParams = margins
             } else{
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams

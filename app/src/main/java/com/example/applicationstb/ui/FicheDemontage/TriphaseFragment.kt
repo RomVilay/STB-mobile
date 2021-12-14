@@ -54,7 +54,8 @@ class TriphaseFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -256,7 +257,8 @@ class TriphaseFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             Log.i("INFO", "cote : ${fiche.coteAccouplement}")
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            //viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {

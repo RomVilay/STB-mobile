@@ -415,9 +415,12 @@ class MecaFragment : Fragment() {
         if (switchJoints.isChecked && fiche.typeJointArriere !== null){
             if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
             refJoints.setText(fiche.refJointArriere)
-        } else if (fiche.refJointAvant !== null) {
-            if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
-            refJoints.setText(fiche.refJointAvant)
+        }
+        if (fiche.typeJointAvant !== null) {
+            typeJoints.setSelection(1)
+            if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
+           // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
+           // refJoints.setText(fiche.refJointAvant)
         }
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
