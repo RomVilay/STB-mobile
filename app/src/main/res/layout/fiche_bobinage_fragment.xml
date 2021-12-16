@@ -81,8 +81,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="551dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
                 android:layout_marginBottom="14sp"
-                android:background="@drawable/round_textview_full_blue">
+                android:background="@drawable/round_textview_full_blue"
+                android:visibility="visible">
 
                 <EditText
                     android:id="@+id/client"
