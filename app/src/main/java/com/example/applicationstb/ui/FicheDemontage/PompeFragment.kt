@@ -371,7 +371,7 @@ class PompeFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         termP.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {

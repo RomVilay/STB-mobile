@@ -56,7 +56,7 @@ class CCFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -250,7 +250,7 @@ class CCFragment : Fragment() {
         enr.setOnClickListener {
             viewModel.getTime()
             viewModel.selection.value!!.status = 2L
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -261,7 +261,7 @@ class CCFragment : Fragment() {
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()
                             viewModel.selection.value!!.status = 3L
-                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
@@ -332,6 +332,7 @@ class CCFragment : Fragment() {
         }
         return layout
     }
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {

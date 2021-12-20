@@ -49,7 +49,8 @@ class MonophaseFragment : Fragment() {
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -200,7 +201,7 @@ class MonophaseFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         terminer.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -212,7 +213,7 @@ class MonophaseFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
-                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
@@ -232,6 +233,7 @@ class MonophaseFragment : Fragment() {
         return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {

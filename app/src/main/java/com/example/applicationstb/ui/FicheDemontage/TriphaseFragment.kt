@@ -25,11 +25,16 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Triphase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -253,11 +258,14 @@ class TriphaseFragment : Fragment() {
         }
 
         enr.setOnClickListener {
-            viewModel.getTime()
-            fiche.status = 2L
-            viewModel.selection.value = fiche
-            Log.i("INFO", "cote : ${fiche.coteAccouplement}")
-            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                viewModel.getTime()
+                fiche.status = 2L
+                viewModel.selection.value = fiche
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.getNameURI()
+                    }
+                Log.i("INFO", "name : ${viewModel.imageName.value?.name}")
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             //viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
@@ -340,6 +348,7 @@ class TriphaseFragment : Fragment() {
         return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {

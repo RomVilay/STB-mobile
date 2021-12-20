@@ -81,6 +81,49 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun listeFiches(token: String, userid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+        for( i in chantiers) {
+            repository.deleteChantierLocalDatabse(i.toEntity())
+        }
+       chantiers.clear()
+            for( i in bobinages) {
+                repository.deleteBobinageLocalDatabse(i.toEntity())
+            }
+       bobinages.clear()
+            for( i in demontages) {
+              when (i.typeFicheDemontage){
+                  1 -> {
+                      var fiche = repository.getByIdDemoPompeLocalDatabse(i._id)
+                      repository.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
+                  }
+                  2 -> {
+                      var fiche = repository.getByIdDemoMonoLocalDatabse(i._id)
+                      repository.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
+                  }
+                  3 -> {
+                      var fiche = repository.getByIdDemoAlterLocalDatabse(i._id)
+                      repository.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
+                  }
+                  4 -> {
+                      var fiche = repository.getByIdDemoRBLocalDatabse(i._id)
+                      repository.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
+                  }
+                  5 -> {
+                      var fiche = repository.getByIdDemoCCLocalDatabse(i._id)
+                      repository.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
+                  }
+                  6 -> {
+                      var fiche = repository.getByIdDemoTriLocalDatabse(i._id)
+                      repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
+                  }
+              }
+            }
+       demontages.clear()
+            for( i in remontages) {
+               repository.deleteRemontageLocalDatabse(i.toRemoEntity())
+            }
+       remontages.clear()
+        }
         val resp = repository.getFichesUser(token, userid, object : Callback<FichesResponse> {
             override fun onResponse(
                 call: Call<FichesResponse>,
@@ -92,8 +135,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     if (resp != null) {
                         fiches = resp.data
                     }
-                    var nbCh = 0;
-                    var nbBo = 0;
                     for (fiche in resp!!.data!!) {
                         if (fiche.type == 1L) {
                             val resp = repository.getChantier(

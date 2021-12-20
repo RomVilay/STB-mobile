@@ -388,7 +388,7 @@ class RotorBobineFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.getTime()
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         term.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -400,7 +400,7 @@ class RotorBobineFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.getTime()
-                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
