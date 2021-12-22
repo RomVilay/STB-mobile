@@ -32,6 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.DemontageAlternateur
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -57,7 +60,7 @@ class AlternateurFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -422,7 +425,10 @@ class AlternateurFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.getTime()
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         term.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -434,7 +440,10 @@ class AlternateurFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.getTime()
-                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
