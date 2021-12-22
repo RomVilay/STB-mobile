@@ -222,7 +222,13 @@ class DemontagePompe(
             epaisseurPF,
             longueurRotativeNonComprimee,
             longueurRotativeComprimee,
-            longueurRotativeTravail
+            longueurRotativeTravail,
+            refRoulementAvant,
+            refRoulementArriere,
+            typeRoulementAvant,
+            typeRoulementArriere,
+            refJointAvant,
+            refJointArriere
         )
     }
 }
