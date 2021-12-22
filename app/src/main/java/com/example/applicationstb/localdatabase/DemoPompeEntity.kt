@@ -28,13 +28,13 @@ data class DemoPompeEntity (
     var typeRessort: Int?,
     var typeJoint: String?,
     var matiere: Int?,
-    var diametreArbre:Float?,
-    var diametreExtPR:Float?,
-    var diametreExtPF:Float?,
-    var epaisseurPF:Float?,
-    var longueurRotativeNonComprimee:Float?,
-    var longueurRotativeComprimee:Float?,
-    var longueurRotativeTravail:Float?
+    var diametreArbre:String?,
+    var diametreExtPR:String?,
+    var diametreExtPF:String?,
+    var epaisseurPF:String?,
+    var longueurRotativeNonComprimee:String?,
+    var longueurRotativeComprimee:String?,
+    var longueurRotativeTravail:String?
 ) {
     fun toDemoPompe(): DemontagePompe{
         return DemontagePompe(

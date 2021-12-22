@@ -23,7 +23,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="1000dp">
 
                     <TextView
                         android:id="@+id/titreMono"
@@ -210,34 +210,29 @@
                         android:id="@+id/DAd1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="50dp"
                         android:text="Diamètre Arbre(d1)"
-                        app:layout_constraintBottom_toBottomOf="@+id/dArbre"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/dArbre"
-                        app:layout_constraintVertical_bias="0.407" />
-
-                    <EditText
-                        android:id="@+id/dArbre"
-                        android:layout_width="65dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="11dp"
-                        android:ems="10"
-                        android:inputType="numberSigned|number|text"
-                        app:layout_constraintStart_toEndOf="@+id/DAd1"
+                        app:layout_constraintStart_toStartOf="@+id/textView53"
                         app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
                     <EditText
+                        android:id="@+id/dArbre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/DAd1"
+                        app:layout_constraintStart_toEndOf="@+id/DAd1"
+                        app:layout_constraintTop_toTopOf="@+id/DAd1" />
+
+                    <EditText
                         android:id="@+id/LC"
-                        android:layout_width="66dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
                         android:ems="10"
-                        android:inputType="numberSigned|number|text"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView54"
                         app:layout_constraintStart_toEndOf="@+id/textView54"
                         app:layout_constraintTop_toTopOf="@+id/textView54"
@@ -245,12 +240,11 @@
 
                     <EditText
                         android:id="@+id/dEPR"
-                        android:layout_width="65dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
                         android:ems="10"
-                        android:inputType="numberSigned|number|text"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView52"
                         app:layout_constraintStart_toEndOf="@+id/textView52"
                         app:layout_constraintTop_toTopOf="@+id/textView52"
@@ -258,68 +252,58 @@
 
                     <EditText
                         android:id="@+id/LNC"
-                        android:layout_width="65dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="4dp"
                         android:ems="10"
-                        android:inputType="numberSigned|number|text"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView53"
                         app:layout_constraintStart_toEndOf="@+id/textView53"
-                        app:layout_constraintTop_toTopOf="@+id/textView57" />
+                        app:layout_constraintTop_toTopOf="@+id/textView53" />
 
                     <TextView
                         android:id="@+id/textView52"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
                         android:layout_marginTop="40dp"
                         android:text="Diamètre Extérieur Partie Rotative(d3)"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView48"
+                        tools:layout_editor_absoluteX="16dp" />
 
                     <TextView
                         android:id="@+id/textView53"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="50dp"
                         android:text="Longueur Partie Rotative Non Comprimée"
-                        app:layout_constraintBottom_toBottomOf="@+id/LNC"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/LNC" />
+                        app:layout_constraintStart_toStartOf="@+id/PRTi3"
+                        app:layout_constraintTop_toBottomOf="@+id/PRTi3" />
 
                     <TextView
                         android:id="@+id/textView54"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginLeft="7dp"
+                        android:layout_marginTop="50dp"
                         android:text="Longueur Partie Rotative Comprimée"
-                        app:layout_constraintBottom_toBottomOf="@+id/dEPR"
-                        app:layout_constraintStart_toEndOf="@+id/dEPR"
-                        app:layout_constraintTop_toTopOf="@+id/dEPR" />
+                        app:layout_constraintStart_toStartOf="@+id/textView52"
+                        app:layout_constraintTop_toBottomOf="@+id/textView52" />
 
                     <TextView
                         android:id="@+id/PRTi3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="25dp"
                         android:text="Longueur Partie Rotative en Travail(I3)"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+                        app:layout_constraintStart_toStartOf="@+id/textView57"
+                        app:layout_constraintTop_toBottomOf="@+id/textView57" />
 
                     <EditText
                         android:id="@+id/LPRT"
-                        android:layout_width="67dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
                         android:ems="10"
-                        android:inputType="numberSigned|number|text"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/PRTi3"
                         app:layout_constraintStart_toEndOf="@+id/PRTi3"
                         app:layout_constraintTop_toTopOf="@+id/PRTi3"
@@ -329,22 +313,18 @@
                         android:id="@+id/DEd7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="50dp"
                         android:text="Diamètre Extérieur(d7)"
-                        app:layout_constraintBottom_toBottomOf="@+id/LPRT"
-                        app:layout_constraintStart_toEndOf="@+id/LPRT"
-                        app:layout_constraintTop_toTopOf="@+id/LPRT"
-                        app:layout_constraintVertical_bias="0.529" />
+                        app:layout_constraintStart_toStartOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="@+id/textView54" />
 
                     <EditText
                         android:id="@+id/dExt"
-                        android:layout_width="65dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
                         android:ems="10"
-                        android:inputType="numberSigned|number|text"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/DEd7"
                         app:layout_constraintStart_toEndOf="@+id/DEd7"
                         app:layout_constraintTop_toTopOf="@+id/DEd7"
@@ -354,36 +334,31 @@
                         android:id="@+id/textView57"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="50dp"
                         android:text="Epaisseur Partie Fixe(I4)"
-                        app:layout_constraintBottom_toBottomOf="@+id/ePF"
-                        app:layout_constraintStart_toEndOf="@+id/LNC"
-                        app:layout_constraintTop_toTopOf="@+id/ePF"
-                        app:layout_constraintVertical_bias="0.555" />
+                        app:layout_constraintStart_toStartOf="@+id/DEd7"
+                        app:layout_constraintTop_toBottomOf="@+id/DEd7" />
 
                     <EditText
                         android:id="@+id/ePF"
-                        android:layout_width="67dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:layout_marginLeft="28dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="8dp"
                         android:ems="10"
-                        android:inputType="numberSigned|number|text"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
                         app:layout_constraintStart_toEndOf="@+id/textView57"
-                        app:layout_constraintTop_toBottomOf="@+id/dExt" />
+                        app:layout_constraintTop_toTopOf="@+id/textView57" />
 
                     <ImageView
                         android:id="@+id/schemaPompe"
                         android:layout_width="480dp"
                         android:layout_height="319dp"
-                        android:layout_marginStart="64dp"
-                        android:layout_marginLeft="64dp"
-                        android:layout_marginTop="390dp"
+                        android:layout_marginStart="76dp"
+                        android:layout_marginTop="20dp"
                         android:src="@drawable/detourage_pompe"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreMono" />
+                        app:layout_constraintTop_toBottomOf="@+id/dArbre" />
 
                     <TextView
                         android:id="@+id/d7"

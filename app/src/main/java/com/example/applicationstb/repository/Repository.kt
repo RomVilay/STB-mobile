@@ -7,6 +7,8 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
@@ -1300,13 +1302,13 @@ class BodyDemoPompe(
     var typeRessort: Int?,
     var typeJoint: String?,
     var matiere: Int?,
-    var diametreArbre:Float?,
-    var diametreExtPR:Float?,
-    var diametreExtPF:Float?,
-    var epaisseurPF:Float?,
-    var longueurRotativeNonComprimee:Float?,
-    var longueurRotativeComprimee:Float?,
-    var longueurRotativeTravail:Float?,
+    var diametreArbre:String?,
+    var diametreExtPR:String?,
+    var diametreExtPF:String?,
+    var epaisseurPF:String?,
+    var longueurRotativeNonComprimee:String?,
+    var longueurRotativeComprimee:String?,
+    var longueurRotativeTravail:String?,
     var observations:String?,
     var dureeTotale:Long?,
     var photos: Array<String>?
@@ -1322,13 +1324,13 @@ class BodyDemoPompe(
         parcel.readInt(),
         parcel.readString(),
         parcel.readInt(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readLong(),
         arrayOf<String>().apply {
@@ -1348,13 +1350,13 @@ class BodyDemoPompe(
         parcel.writeInt(typeRessort!!)
         parcel.writeString(typeJoint!!)
         parcel.writeInt(matiere!!)
-        parcel.writeFloat(diametreArbre!!)
-        parcel.writeFloat(diametreExtPR!!)
-        parcel.writeFloat(diametreExtPF!!)
-        parcel.writeFloat(epaisseurPF!!)
-        parcel.writeFloat(longueurRotativeNonComprimee!!)
-        parcel.writeFloat(longueurRotativeComprimee!!)
-        parcel.writeFloat(longueurRotativeTravail!!)
+        parcel.writeString(diametreArbre!!)
+        parcel.writeString(diametreExtPR!!)
+        parcel.writeString(diametreExtPF!!)
+        parcel.writeString(epaisseurPF!!)
+        parcel.writeString(longueurRotativeNonComprimee!!)
+        parcel.writeString(longueurRotativeComprimee!!)
+        parcel.writeString(longueurRotativeTravail!!)
         parcel.writeString(observations!!)
         parcel.writeLong(dureeTotale!!)
         arrayOf<String>().apply {
@@ -2937,8 +2939,25 @@ class Repository (var context:Context) {
 
     suspend fun getPhoto( address: String)  = service.getPhoto(address)
 
+    val MIGRATION_20_21  = object : Migration(20, 21) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // Create the new table
+            database.execSQL(
+                "CREATE TABLE demontage_pompe_new (_id TEXT NOT NULL,numDevis TEXT, numFiche TEXT, statut INTEGER,client TEXT NOT NULL, contact TEXT, telContact TEXT, dateDebut INTEGER, dureeTotale INTEGER, observation TEXT, photos TEXT, typeFicheDemontage INTEGER NOT NULL, typeMoteur TEXT, marque TEXT, numSerie TEXT, fluide TEXT, sensRotation INTEGER, typeRessort INTEGER, typeJoint TEXT, matiere INTEGER, diametreArbre TEXT, diametreExtPR TEXT, diametreExtPF TEXT, epaisseurPF TEXT, longueurRotativeNonComprimee TEXT, longueurRotativeComprimee TEXT, longueurRotativeTravail TEXT, PRIMARY KEY (_id))"
+            )
+            // Copy the data
+            database.execSQL(
+                "INSERT INTO demontage_pompe_new (_id, numDevis, numFiche,statut, client, contact, telContact,dateDebut, dureeTotale, observation, photos, typeFicheDemontage, typeMoteur, marque, numSerie,fluide, sensRotation, typeRessort, typeJoint, matiere, diametreArbre, diametreExtPR, diametreExtPF, epaisseurPF, longueurRotativeNonComprimee, longueurRotativeComprimee, longueurRotativeTravail) SELECT _id, numDevis, numFiche,statut, client, contact, telContact,dateDebut, dureeTotale, observation, photos, typeFicheDemontage, typeMoteur, marque, numSerie,fluide, sensRotation, typeRessort, typeJoint, matiere, diametreArbre, diametreExtPR, diametreExtPF, epaisseurPF, longueurRotativeNonComprimee, longueurRotativeComprimee, longueurRotativeTravail FROM demontage_pompe"
+            )
+            // Remove the old table
+            database.execSQL("DROP TABLE demontage_pompe")
+            // Change the table name to the correct one
+            database.execSQL("ALTER TABLE demontage_pompe_new RENAME TO demontage_pompe")
+        }
+    }
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
+          .addMigrations(MIGRATION_20_21)
           .build()
       chantierDao = db!!.chantierDao()
       bobinageDao = db!!.bobinageDao()
