@@ -126,6 +126,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     fun sendFiche() {
         if (isOnline(context) == true) {
             viewModelScope.launch(Dispatchers.IO) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    getNameURI()
+                }
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
                 if (listCh.size > 0) {
