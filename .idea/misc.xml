@@ -7,10 +7,11 @@
         <entry key="app/src/main/res/layout/fiche_bobinage_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fiche_chantier_fragment.xml" value="0.30583058305830585" />
         <entry key="app/src/main/res/layout/fiche_demontage_fragment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fiche_remontage_fragment.xml" value="0.1641025641025641" />
+        <entry key="app/src/main/res/layout/fiche_remontage_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_alternateur.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_c_c.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_essais_stat_c_c.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_essais_stat_tri.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_info_moteur.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_meca.xml" value="0.1310897435897436" />
         <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.375" />

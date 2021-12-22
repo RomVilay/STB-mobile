@@ -132,7 +132,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun save(context: Context, view:View) {
-        Log.i("INFO", "iso: ${bobinage.value!!.isolementUT}")
+        bobinage.value!!.status = 2
         if (isOnline(context)) {
             val resp = repository.patchBobinage(
                 token!!,
@@ -173,7 +173,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     }
     fun localSave(view:View){
-        Log.i("INFO","local save fiche ${bobinage.value!!._id}")
+        bobinage.value!!.status = 2
         viewModelScope.launch(Dispatchers.IO){
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             if (bob !== null) {
@@ -206,6 +206,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO","quick save")
         getTime()
         Log.i("INFO","duree après : ${bobinage.value?.dureeTotale}")
+        bobinage.value!!.status = 2
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             //Log.i("INFO","${ch}")

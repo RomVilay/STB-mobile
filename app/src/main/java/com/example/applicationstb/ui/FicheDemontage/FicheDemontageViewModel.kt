@@ -219,6 +219,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     var fiche =
                         repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)!!
                     if (isOnline(context)) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getNameURI()
+                        }
                         var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -307,11 +310,21 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                        localSave()
-                        val mySnackbar =
-                            Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO", "enregistré")
+                        viewModelScope.launch(Dispatchers.IO){
+                            var p = selection.value as DemontagePompe
+                            var pmp = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                            if (pmp !== null ) {
+                                repository.updateDemoPompeLocalDatabse(p.toEntity())
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+
+                            } else  {
+                                repository.insertDemoPompeLocalDatabase(p)
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+
+                            }
+                        }
                     }
                 }
                 2 -> {
@@ -405,11 +418,24 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                        localSave()
-                        val mySnackbar =
-                            Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO", "enregistré")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getNameURI()
+                        }
+                        var m = selection.value!! as DemontageMonophase
+                        viewModelScope.launch(Dispatchers.IO){
+                            var mono = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
+                            if (mono !== null ) {
+                                repository.updateDemoMonoLocalDatabse(m.toEntity())
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "patch local")
+                            } else  {
+                                repository.insertDemoMonoLocalDatabase(m)
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "enregistré local")
+                            }
+                        }
                     }
 
                 }
@@ -418,6 +444,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     if (isOnline(context)) {
                         var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getNameURI()
+                        }
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
@@ -504,16 +533,30 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                        localSave()
-                        val mySnackbar =
-                            Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO", "enregistré")
+                        var a = selection.value!! as DemontageAlternateur
+                        viewModelScope.launch(Dispatchers.IO){
+                            var alter = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
+                            if (alter !== null ) {
+                                repository.updateDemoAlterLocalDatabse(a.toEntity())
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "patch local")
+                            } else  {
+                                repository.insertDemoAlterLocalDatabase(a)
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "enregistré local")
+                            }
+                        }
                     }
 
                 }
                 4 -> {var fiche = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)!!
+                    var rb = selection.value!! as DemontageRotorBobine
                     if (isOnline(context)) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getNameURI()
+                        }
                         var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -604,17 +647,29 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                        localSave()
-                        val mySnackbar =
-                            Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO", "enregistré")
+                        viewModelScope.launch(Dispatchers.IO){
+                            var rotor = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
+                            if (rotor !== null ) {
+                                repository.updateDemoRBLocalDatabse(rb.toEntity())
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "patch local")
+                            } else  {
+                                repository.insertDemoRBLocalDatabase(rb)
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "enregistré local")
+                            }
+                        }
                     }
 
                 }
                 5 -> {
                     var fiche = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)!!
                     if (isOnline(context)) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getNameURI()
+                        }
                         var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -703,17 +758,26 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                        localSave()
-                        val mySnackbar =
-                            Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO", "enregistré")
+                        var c = selection.value!! as CourantContinu
+                        viewModelScope.launch(Dispatchers.IO){
+                            var tri = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                            if (tri !== null ) {
+                                repository.updateDemoCCLocalDatabse(c.toEntity())
+                            } else  {
+                                repository.insertDemoCCLocalDatabase(c)
+                            }
+                            val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                            mySnackbar.show()
+                        }
                     }
                 }
                 6 -> {
                     var fiche: DemontageTriphaseEntity =
                         repository.getByIdDemoTriLocalDatabse(selection.value!!._id)!!.toEntity()
                     if (isOnline(context) == true) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            getNameURI()
+                        }
                         var job = launch {
                             getNameURI()
                         }
@@ -807,14 +871,23 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                       localSave()
-                        val mySnackbar =
-                            Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO", "enregistré")
+                        var t = selection.value!! as Triphase
+                        viewModelScope.launch(Dispatchers.IO){
+                            var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                            if (tri !== null ) {
+                                repository.updateDemoTriLocalDatabse(t.toEntity())
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "patch local")
+                            } else  {
+                                repository.insertDemoTriLocalDatabase(t)
+                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "enregistré local")
+                            }
+                        }
                     }
                 }
-
             }
 
             /*var listRT: List<RemontageTriphaseEntity> =

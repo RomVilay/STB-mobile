@@ -125,7 +125,7 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
-                    layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
+                    //layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
                 }
                 if (demo!!.typeFicheRemontage == 5) {
                     viewModel.selection.value = demo as RemontageCourantC

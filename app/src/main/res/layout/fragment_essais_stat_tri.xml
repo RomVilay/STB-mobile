@@ -92,44 +92,45 @@
                     android:inputType="numberSigned|number|text" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/titreRotor"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_600"
-                    android:gravity="center"
-                    android:text="Rotor"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+            <TextView
+                android:id="@+id/titreRotor"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_600"
+                android:gravity="center"
+                android:text="Rotor"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/isoPMRU"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="U"
-                    android:inputType="numberSigned|number|text" />
+            <EditText
+                android:id="@+id/isoPMRU"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="U"
+                android:inputType="numberSigned|number|text" />
 
-                <EditText
-                    android:id="@+id/isoPMRV"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="V"
-                    android:inputType="numberSigned|number|text" />
+            <EditText
+                android:id="@+id/isoPMRV"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="V"
+                android:inputType="numberSigned|number|text" />
 
-                <EditText
-                    android:id="@+id/isoPMRW"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="W"
-                    android:inputType="numberSigned|number|text" />
-            </TableRow>
+            <EditText
+                android:id="@+id/isoPMRW"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="W"
+                android:inputType="numberSigned|number|text" />
+        </TableRow>
 
         </TableLayout>
 
@@ -207,7 +208,8 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/titreRotor2"
