@@ -264,7 +264,6 @@ class TriphaseFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.getNameURI()
                     }
-                Log.i("INFO", "name : ${viewModel.imageName.value?.name}")
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             //viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
@@ -352,8 +351,6 @@ class TriphaseFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
             viewModel.addPhoto(currentPhotoPath)
         }
     }
