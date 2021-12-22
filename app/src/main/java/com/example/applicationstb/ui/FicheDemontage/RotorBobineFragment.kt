@@ -31,6 +31,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.DemontageRotorBobine
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -388,6 +391,9 @@ class RotorBobineFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.getTime()
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         term.setOnClickListener {
@@ -400,6 +406,9 @@ class RotorBobineFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.getTime()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
                             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
