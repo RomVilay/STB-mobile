@@ -32,6 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.DemontageMonophase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -201,6 +204,9 @@ class MonophaseFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         terminer.setOnClickListener {
@@ -213,6 +219,9 @@ class MonophaseFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
                             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()

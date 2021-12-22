@@ -277,11 +277,15 @@ class TriphaseFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
-                            viewModel.enregistrer(
+                            /*viewModel.enregistrer(
                                 requireActivity().findViewById<CoordinatorLayout>(
                                     R.id.demoLayout
                                 )
-                            )
+                            )*/
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
