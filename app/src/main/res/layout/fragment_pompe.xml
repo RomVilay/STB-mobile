@@ -23,7 +23,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp">
+                    android:layout_height="1100dp">
 
                     <TextView
                         android:id="@+id/titreMono"
@@ -80,7 +80,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
                         android:text="N° serie:"
                         app:layout_constraintBottom_toBottomOf="@+id/numSerie"
                         app:layout_constraintStart_toEndOf="@+id/marc"
@@ -89,10 +88,11 @@
 
                     <EditText
                         android:id="@+id/typeFluide"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="32dp"
+                        android:ems="10"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/txtV"
                         app:layout_constraintStart_toEndOf="@+id/txtV"
                         app:layout_constraintTop_toTopOf="@+id/txtV" />
@@ -112,19 +112,17 @@
                         android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="40dp"
                         android:text="Sens de Rotation :"
-                        app:layout_constraintBottom_toBottomOf="@+id/typeFluide"
-                        app:layout_constraintStart_toEndOf="@+id/typeFluide"
-                        app:layout_constraintTop_toTopOf="@+id/typeFluide" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtV" />
 
                     <Switch
                         android:id="@+id/sensRotation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
                         android:text="Gauche"
                         app:layout_constraintBottom_toBottomOf="@+id/textView8"
                         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -164,22 +162,20 @@
                     <TextView
                         android:id="@+id/textView49"
                         android:layout_width="87dp"
-                        android:layout_height="26dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
                         android:text="Type de Joint"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView47"
-                        app:layout_constraintStart_toEndOf="@+id/textView47"
-                        app:layout_constraintTop_toTopOf="@+id/textView47" />
+                        app:layout_constraintEnd_toEndOf="@+id/nums"
+                        app:layout_constraintStart_toStartOf="@+id/nums"
+                        app:layout_constraintTop_toBottomOf="@+id/nums" />
 
                     <EditText
                         android:id="@+id/tjoint"
-                        android:layout_width="94dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView49"
                         app:layout_constraintStart_toEndOf="@+id/textView49"
                         app:layout_constraintTop_toTopOf="@+id/textView49" />
@@ -201,10 +197,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintStart_toEndOf="@+id/textView50"
-                        app:layout_constraintTop_toBottomOf="@+id/tjoint" />
+                        app:layout_constraintTop_toBottomOf="@+id/sensRotation" />
 
                     <TextView
                         android:id="@+id/DAd1"
@@ -265,10 +260,11 @@
                         android:id="@+id/textView52"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="40dp"
                         android:text="Diamètre Extérieur Partie Rotative(d3)"
-                        app:layout_constraintTop_toBottomOf="@+id/textView48"
-                        tools:layout_editor_absoluteX="16dp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
                     <TextView
                         android:id="@+id/textView53"
@@ -292,7 +288,7 @@
                         android:id="@+id/PRTi3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="30dp"
                         android:text="Longueur Partie Rotative en Travail(I3)"
                         app:layout_constraintStart_toStartOf="@+id/textView57"
                         app:layout_constraintTop_toBottomOf="@+id/textView57" />
