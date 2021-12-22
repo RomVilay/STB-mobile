@@ -547,13 +547,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(dt.numFiche!!)) {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            getNameURI()
+                                        }
                                         Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                       /* var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()*/
                                         imageName.value?.name?.let { Log.i("INFO","nom :"+ it) }
                                         var job2 =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -590,6 +587,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = photos?.toTypedArray()
+                        repository.updateDemoTriLocalDatabse(dt.toEntity())
                         val resp = repository.patchDemontageTriphase(
                             token!!,
                             dt._id,
@@ -681,6 +679,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         dcc.photos = photos?.toTypedArray()
+                        repository.updateDemoCCLocalDatabse(dcc.toEntity())
                         val resp = repository.patchDemontageCC(
                             token!!,
                             dcc._id,
@@ -764,6 +763,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         dt.photos = photos?.toTypedArray()
+                        repository.updateRemoTriLocalDatabse(dt.toEntity())
                         val resp = repository.patchRemontageTriphase(
                             token!!,
                             dt._id,
@@ -847,6 +847,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateRemoCCLocalDatabse(rc.toEntity())
                         val resp = repository.patchRemontageCC(
                             token!!,
                             rc._id,
@@ -930,6 +931,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateRemoLocalDatabse(rc.toRemoEntity())
                         val resp = repository.patchRemontage(
                             token!!,
                             rc._id,
@@ -1021,6 +1023,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoPompeLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontagePompe(
                             token!!,
                             rc._id,
@@ -1112,6 +1115,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoMonoLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageMono(
                             token!!,
                             rc._id,
@@ -1203,6 +1207,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                         }
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoAlterLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageAlter(
                             token!!,
                             rc._id,
@@ -1296,6 +1301,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         rc.photos = photos?.toTypedArray()
+                        repository.updateDemoRBLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageRotor(
                             token!!,
                             rc._id,
