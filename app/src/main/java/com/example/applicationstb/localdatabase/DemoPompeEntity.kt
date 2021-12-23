@@ -40,7 +40,9 @@ data class DemoPompeEntity (
     var typeRoulementAvant: Array<String>?,
     var typeRoulementArriere: Array<String>?,
     var refJointAvant: String?,
-    var refJointArriere: String?
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
 ) {
     fun toDemoPompe(): DemontagePompe{
         return DemontagePompe(

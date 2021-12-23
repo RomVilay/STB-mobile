@@ -14,7 +14,7 @@ import androidx.room.migration.Migration
 
 
 
-@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class, DemoPompeEntity::class, DemontageAlternateurEntity::class,DemontageRotorBEntity::class,DemontageMonophaseEntity::class,ClientEntity::class,VehiculeEntity::class, RemontageEntity::class), version = 21)
+@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class, DemoPompeEntity::class, DemontageAlternateurEntity::class,DemontageRotorBEntity::class,DemontageMonophaseEntity::class,ClientEntity::class,VehiculeEntity::class, RemontageEntity::class), version = 22)
 @TypeConverters (Converters::class)
     abstract class LocalDatabase : RoomDatabase() {
         abstract fun chantierDao(): ChantierDao

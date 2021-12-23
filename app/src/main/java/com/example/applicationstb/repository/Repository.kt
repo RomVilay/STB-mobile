@@ -1311,7 +1311,15 @@ class BodyDemoPompe(
     var longueurRotativeTravail:String?,
     var observations:String?,
     var dureeTotale:Long?,
-    var photos: Array<String>?
+    var photos: Array<String>?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1336,7 +1344,23 @@ class BodyDemoPompe(
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
         },
-    ) {
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        ) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -1360,8 +1384,21 @@ class BodyDemoPompe(
         parcel.writeString(observations!!)
         parcel.writeLong(dureeTotale!!)
         arrayOf<String>().apply {
-            parcel.writeArray(photos)
+            parcel.writeArray(refRoulementAvant)
         }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
     }
 
     override fun describeContents(): Int {
@@ -2643,8 +2680,15 @@ class Repository (var context:Context) {
             fiche.longueurRotativeTravail,
             fiche.observations,
             fiche.dureeTotale,
-            fiche.photos
-        )
+            fiche.photos,
+            fiche.refRoulementAvant,
+            fiche.refRoulementArriere,
+            fiche.typeRoulementAvant,
+            fiche.typeRoulementArriere,
+            fiche.refJointAvant,
+            fiche.refJointArriere,
+            fiche.typeJointAvant,
+            fiche.typeJointArriere)
         var call = service.patchDemontagePompe(token,ficheId,body)
         var fiche:DemontagePompe? = null
         call.enqueue(callback)
@@ -2955,6 +2999,13 @@ class Repository (var context:Context) {
             database.execSQL("ALTER TABLE demontage_pompe_new RENAME TO demontage_pompe")
         }
     }
+    val MIGRATION_21_22  = object : Migration(21, 22) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE demontage_pompe " +
+                    "ADD COLUMN ")
+        }
+    }
+
     suspend fun createDb(){
       db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
           .addMigrations(MIGRATION_20_21)

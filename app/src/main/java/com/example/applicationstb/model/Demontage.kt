@@ -228,7 +228,9 @@ class DemontagePompe(
             typeRoulementAvant,
             typeRoulementArriere,
             refJointAvant,
-            refJointArriere
+            refJointArriere,
+            typeJointAvant,
+            typeJointArriere
         )
     }
 }
