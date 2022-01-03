@@ -3176,12 +3176,6 @@ class Repository(var context: Context) {
     }
     val MIGRATION_21_22 = object : Migration(21, 22) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refRoulementAvant TEXT")
-            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refRoulementArriere TEXT")
-            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeRoulementArriere TEXT")
-            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeRoulementAvant TEXT")
-            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refJointAvant TEXT")
-            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refJointArriere TEXT")
             database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeJointAvant INTEGER")
             database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeJointArriere INTEGER")
         }
