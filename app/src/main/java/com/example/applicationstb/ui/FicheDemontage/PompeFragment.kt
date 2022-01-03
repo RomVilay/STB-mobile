@@ -362,6 +362,328 @@ class PompeFragment : Fragment() {
             }
         }
 
+        var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
+        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
+        var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
+        var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
+        var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
+        if (fiche.status == 3L) {
+            refRoul.isEnabled = false
+            specsRoul.isEnabled = false
+            typeRoulement.isEnabled = false
+        }
+        specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
+        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
+            viewModel.selection.value!!.typeRoulementArriere =
+                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+            viewModel.getTime()
+            viewModel.localSave()
+        }
+        specsRoul.adapter = adapter
+        viewModel.selection.observe(viewLifecycleOwner,{
+            if (switchRoullements.isChecked) {
+                adapter.update(
+                    viewModel.selection.value!!.typeRoulementArriere!!,
+                    viewModel.selection.value!!.refRoulementArriere!!,
+                )
+            } else {
+                adapter.update(
+                    viewModel.selection.value!!.typeRoulementAvant!!,
+                    viewModel.selection.value!!.refRoulementAvant!!,
+                )
+            }
+        })
+        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null && fiche.refRoulementArriere!!.size > 0){
+            refRoul.setText(fiche.refRoulementArriere!![0])
+        } else if( fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
+            refRoul.setText(fiche.refRoulementAvant!![0])}
+        switchRoullements.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                if (viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size > 0) {
+                    var type =
+                        if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>(
+                            "2Z/ECJ",
+                            "2RS/ECP",
+                            "C3",
+                            "M"
+                        ).indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
+                    typeRoulement.setSelection(type)
+                    refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
+                    specsRoul.adapter = roulementAdapter(
+                        viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
+                        viewModel.selection.value!!.refRoulementArriere!!
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
+                    typeRoulement.setSelection(0)
+                    refRoul.setText("")
+                    specsRoul.adapter = roulementAdapter(
+                        arrayOf(),
+                        arrayOf()
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            } else {
+                if (viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.size > 0) {
+                    var type =
+                        if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>(
+                            "2Z/ECJ",
+                            "2RS/ECP",
+                            "C3",
+                            "M"
+                        ).indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
+                    typeRoulement.setSelection(type)
+                    refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
+                    specsRoul.adapter = roulementAdapter(
+                        viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
+                        viewModel.selection.value!!.refRoulementAvant!!
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                        viewModel.selection.value!!.refRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
+                    typeRoulement.setSelection(0)
+                    refRoul.setText("")
+                    specsRoul.adapter = roulementAdapter(
+                        arrayOf(),
+                        arrayOf()
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            }
+        }
+        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var selection = typeRoulement.selectedItem.toString()
+                if (position > 0) {
+                    if (switchRoullements.isChecked) {
+                        if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
+                            var tab =
+                                viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
+                            tab.add(selection)
+                            viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
+                            var tab2 =
+                                viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
+                            tab2.add("")
+                            viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
+                            refRoul.setText("")
+                        } else {
+                            refRoul.setText(
+                                viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(
+                                    selection
+                                )]
+                            )
+                        }
+                        specsRoul.adapter = roulementAdapter(
+                            fiche.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
+                            fiche.refRoulementArriere!!
+                        ) { item ->
+                            viewModel.selection.value!!.typeRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                            viewModel.selection.value!!.refRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    } else {
+                        if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1) {
+                            var tab =
+                                viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                            tab.add(selection)
+                            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                            var tab2 =
+                                viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                            tab2.add("")
+                            viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                            refRoul.setText("")
+                        } else {
+                            refRoul.setText(
+                                viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(
+                                    selection
+                                )]
+                            )
+                        }
+                        /* else {
+                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                        tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
+                        tab2.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
+                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                    }*/
+                        specsRoul.adapter = roulementAdapter(
+                            fiche.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
+                            fiche.refRoulementAvant!!
+                        ) { item ->
+                            viewModel.selection.value!!.typeRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                            viewModel.selection.value!!.refRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            }
+
+        }
+        refRoul.doAfterTextChanged {
+            var index = 0
+            if (switchRoullements.isChecked) {
+                index =   viewModel.selection.value!!.typeRoulementArriere!!.indexOf(typeRoulement.selectedItem)
+            } else {
+                index = viewModel.selection.value!!.typeRoulementAvant!!.indexOf(typeRoulement.selectedItem)
+            }
+            if (index !== -1) {
+                if (switchRoullements.isChecked) {
+                    if (refRoul.text.isNotEmpty()) {
+                        viewModel.selection.value!!.refRoulementArriere!![index] =
+                            refRoul.text.toString()
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
+                            viewModel.selection.value!!.typeRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    if (refRoul.text.isNotEmpty()) {
+                        viewModel.selection.value!!.refRoulementAvant!![index] =
+                            refRoul.text.toString()
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
+                            viewModel.selection.value!!.typeRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                            viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            }
+        }
+        //joints
+        var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
+        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
+        var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
+        var refJoints = layout.findViewById<EditText>(R.id.refJoints)
+        if (fiche.status == 3L) {
+            refJoints.isEnabled = false
+            typeJoints.isEnabled = false
+        }
+        if (switchJoints.isChecked && fiche.typeJointArriere !== null){
+            if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
+            refJoints.setText(fiche.refJointArriere)
+        }
+        if (fiche.typeJointAvant !== null) {
+            typeJoints.setSelection(1)
+            if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
+            // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
+            // refJoints.setText(fiche.refJointAvant)
+        }
+        switchJoints.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                var type = if (viewModel.selection.value!!.typeJointArriere == null) {
+                    typeJoints.setSelection(0)
+                } else { if (viewModel.selection.value!!.typeJointArriere!!) {
+                    typeJoints.setSelection(2)
+                } else {
+                    typeJoints.setSelection(1)
+                }
+                }
+                refJoints.setText(viewModel.selection.value!!.refJointArriere)
+            } else {
+                var type = 0
+                if (viewModel.selection.value!!.typeJointAvant == null) {
+                    typeJoints.setSelection(0)
+                } else {
+                    if (viewModel.selection.value!!.typeJointAvant!!) {
+                        typeJoints.setSelection(2)
+                    } else {
+                        typeJoints.setSelection(1)
+                    }
+                }
+                Log.i("INFO","position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}")
+                refJoints.setText(viewModel.selection.value!!.refJointAvant)
+            }
+        }
+        if( viewModel.selection.value!!.status!! !== 3L) {
+            typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    var selection = typeJoints.selectedItem.toString()
+                    if (switchJoints.isChecked) {
+                        if (position == 2 ) {
+                            viewModel.selection.value!!.typeJointArriere = true
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        if (position == 1){
+                            viewModel.selection.value!!.typeJointArriere = false
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+
+                    } else {
+                        if (position == 2 ) {viewModel.selection.value!!.typeJointAvant = true }
+                        if (position == 1) { viewModel.selection.value!!.typeJointAvant = false}
+
+                    }
+                }
+            }
+
+            refJoints.doAfterTextChanged {
+                if (switchJoints.isChecked) {
+                    viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
+                    viewModel.getTime()
+                    viewModel.localSave()
+                } else {
+
+                    viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+        }
+
 
         retour.setOnClickListener {
             if (viewModel.selection.value?.status == 3L){
@@ -443,6 +765,11 @@ class PompeFragment : Fragment() {
     fun makeFolder(){
         val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
         storageDir.mkdir()
+    }
+    fun removeRef(i:Int, list:Array<String>):Array<String>{
+        var tab = list.toMutableList()
+        tab.removeAt(i)
+        return tab.toTypedArray()
     }
 
 }

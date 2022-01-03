@@ -24,7 +24,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class BodyLogin(var username: String?, var password: String?): Parcelable {
+class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString()
@@ -52,7 +52,16 @@ class BodyLogin(var username: String?, var password: String?): Parcelable {
 }
 
 
-class BodyChantier(var materiel: String?, var objet: String?, var observations: String?, var status: Long?, var dureeTotale: Long?, var photos: Array<String>?, var signatureClient: String?, var signatureTech: String?): Parcelable {
+class BodyChantier(
+    var materiel: String?,
+    var objet: String?,
+    var observations: String?,
+    var status: Long?,
+    var dureeTotale: Long?,
+    var photos: Array<String>?,
+    var signatureClient: String?,
+    var signatureTech: String?
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -96,11 +105,11 @@ class BodyChantier(var materiel: String?, var objet: String?, var observations: 
 }
 
 class BodyBobinage(
-    var marqueMoteur : String?,
+    var marqueMoteur: String?,
     var typeBobinage: String?,
-    var vitesse:Float?,
-    var puissance:Float?,
-    var phases:Long?,
+    var vitesse: Float?,
+    var puissance: Float?,
+    var phases: Long?,
     var frequences: Float?,
     var courant: Float?,
     var nbSpires: Long?,
@@ -115,13 +124,13 @@ class BodyBobinage(
     var isolementVW: Float?,
     var status: Long?,
     var calageEncoches: Boolean?,
-    var sectionsFils: List<Section>? ,
+    var sectionsFils: List<Section>?,
     var observations: String?,
-    var poids:Float?,
-    var tension:Long?,
+    var poids: Float?,
+    var tension: Long?,
     var dureeTotale: Long?,
-    var photos:Array<String>?
-                  ): Parcelable {
+    var photos: Array<String>?
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -144,7 +153,7 @@ class BodyBobinage(
         parcel.readLong(),
         parcel.readBoolean(),
         listOf<Section>().apply {
-            parcel.readList(this,Section::class.java.classLoader)
+            parcel.readList(this, Section::class.java.classLoader)
         },
         parcel.readString(),
         parcel.readFloat(),
@@ -205,64 +214,64 @@ class BodyBobinage(
     }
 }
 
-class BodyDemontageTriphase (
-                      var status: Long?,
-                      var typeMoteur: String?,
-                      var marque: String?,
-                      var numSerie: String?,
-                      var puissance: Float?,
-                      var bride: Float?,
-                      var vitesse : Float?,
-                      var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
-                      var accouplement:Boolean?,
-                      var coteAccouplement:String?,
-                      var clavette: Boolean?,
-                      var aspect:Int?,
-                      var aspectInterieur:Int?,
-                      var couplage:String?,
-                      var flasqueAvant: Int?,
-                      var flasqueArriere: Int?,
-                      var porteeRAvant: Int?,
-                      var porteeRArriere:  Int?,
-                      var boutArbre: Boolean?,
-                      var rondelleElastique: Boolean?,
-                      var refRoulementAvant: Array<String>?,
-                      var refRoulementArriere: Array<String>?,
-                      var typeRoulementAvant: Array<String>?,
-                      var typeRoulementArriere: Array<String>?,
-                      var refJointAvant: String?,
-                      var refJointArriere: String?,
-                      var typeJointAvant: Boolean?,
-                      var typeJointArriere: Boolean?,
-                      var ventilateur: Int?,
-                      var capotV: Int?,
-                      var socleBoiteABorne : Int?,
-                      var capotBoiteABorne : Int?,
-                      var plaqueABorne : Int?,
-                      var presenceSondes: Boolean ?,
-                      var typeSondes: String?,
-                      var equilibrage: Boolean?,
-                      var peinture : String?,
-                      var isolementPhaseMasseStatorUM: Float?,
-                      var isolementPhaseMasseStatorVM: Float?,
-                      var isolementPhaseMasseStatorWM: Float?,
-                      var isolementPhasePhaseStatorUV: Float?,
-                      var isolementPhasePhaseStatorVW: Float?,
-                      var isolementPhasePhaseStatorUW: Float?,
-                      var resistanceStatorU: Float?,
-                      var resistanceStatorV: Float?,
-                      var resistanceStatorW: Float?,
-                      var tensionU: Float?,
-                      var tensionV: Float?,
-                      var tensionW: Float?,
-                      var intensiteU: Float?,
-                      var intensiteV: Float?,
-                      var intensiteW: Float?,
-                      var dureeEssai: Float?,
-                      var dureeTotale: Long?,
-                      var observations: String?,
-                      var photos: Array<String>?
-): Parcelable {
+class BodyDemontageTriphase(
+    var status: Long?,
+    var typeMoteur: String?,
+    var marque: String?,
+    var numSerie: String?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
+    var clavette: Boolean?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere: Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture: String?,
+    var isolementPhaseMasseStatorUM: Float?,
+    var isolementPhaseMasseStatorVM: Float?,
+    var isolementPhaseMasseStatorWM: Float?,
+    var isolementPhasePhaseStatorUV: Float?,
+    var isolementPhasePhaseStatorVW: Float?,
+    var isolementPhasePhaseStatorUW: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var tensionU: Float?,
+    var tensionV: Float?,
+    var tensionW: Float?,
+    var intensiteU: Float?,
+    var intensiteV: Float?,
+    var intensiteW: Float?,
+    var dureeEssai: Float?,
+    var dureeTotale: Long?,
+    var observations: String?,
+    var photos: Array<String>?
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -420,60 +429,61 @@ class BodyDemontageTriphase (
     }
 }
 
-class BodyDemontageCC ( var status: Long?,
-                        var typeMoteur: String?,
-                        var marque: String?,
-                        var numSerie: String?,
-                        var puissance: Float?,
-                        var bride: Float?,
-                        var vitesse : Float?,
-                        var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
-                        var accouplement:Boolean?,
-                        var coteAccouplement:String?,
-                        var clavette: Boolean?,
-                        var aspect:Int?,
-                        var aspectInterieur:Int?,
-                        var couplage:String?,
-                        var flasqueAvant: Int?,
-                        var flasqueArriere: Int?,
-                        var porteeRAvant: Int?,
-                        var porteeRArriere:  Int?,
-                        var boutArbre: Boolean?,
-                        var rondelleElastique: Boolean?,
-                        var refRoulementAvant: Array<String>?,
-                        var refRoulementArriere: Array<String>?,
-                        var typeRoulementAvant: Array<String>?,
-                        var typeRoulementArriere: Array<String>?,
-                        var refJointAvant: String?,
-                        var refJointArriere: String?,
-                        var typeJointAvant: Boolean?,
-                        var typeJointArriere: Boolean?,
-                        var ventilateur: Int?,
-                        var capotV: Int?,
-                        var socleBoiteABorne : Int?,
-                        var capotBoiteABorne : Int?,
-                        var plaqueABorne : Int?,
-                        var presenceSondes: Boolean ?,
-                        var typeSondes: String?,
-                        var equilibrage: Boolean?,
-                        var peinture : String?,
-                        var isolationMasseInduit: Float?,
-                        var isolationMassePolesPrincipaux: Float?,
-                        var isolationMassePolesAuxilliaires: Float?,
-                        var isolationMassePolesCompensatoires: Float?,
-                        var isolationMassePorteBalais: Float?,
-                        var resistanceInduit: Float?,
-                        var resistancePP: Float?,
-                        var resistancePA: Float?,
-                        var resistancePC: Float?,
-                        var tensionInduit: Float?,
-                        var intensiteInduit: Float?,
-                        var tensionExcitation: Float?,
-                        var intensiteExcitation: Float?,
-                        var dureeTotale: Long?,
-                        var observations: String?,
-                        var photos: Array<String>?
-): Parcelable {
+class BodyDemontageCC(
+    var status: Long?,
+    var typeMoteur: String?,
+    var marque: String?,
+    var numSerie: String?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
+    var clavette: Boolean?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere: Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture: String?,
+    var isolationMasseInduit: Float?,
+    var isolationMassePolesPrincipaux: Float?,
+    var isolationMassePolesAuxilliaires: Float?,
+    var isolationMassePolesCompensatoires: Float?,
+    var isolationMassePorteBalais: Float?,
+    var resistanceInduit: Float?,
+    var resistancePP: Float?,
+    var resistancePA: Float?,
+    var resistancePC: Float?,
+    var tensionInduit: Float?,
+    var intensiteInduit: Float?,
+    var tensionExcitation: Float?,
+    var intensiteExcitation: Float?,
+    var dureeTotale: Long?,
+    var observations: String?,
+    var photos: Array<String>?
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -625,7 +635,7 @@ class BodyDemontageCC ( var status: Long?,
     }
 }
 
-class BodyDemontageAlternateur (
+class BodyDemontageAlternateur(
     var observations: String?,
     var typeMoteur: String?,
     var status: Long?,
@@ -633,64 +643,64 @@ class BodyDemontageAlternateur (
     var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
-    var vitesse : Float?,
-    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
-    var accouplement:Boolean?,
-    var coteAccouplement:String?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
     var clavette: Boolean?,
-    var aspect:Int?,
-    var aspectInterieur:Int?,
-    var couplage:String?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
     var flasqueAvant: Int?,
     var flasqueArriere: Int?,
     var porteeRAvant: Int?,
-    var porteeRArriere:  Int?,
+    var porteeRArriere: Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
-   var refRoulementAvant: Array<String>?,
-                      var refRoulementArriere: Array<String>?,
-                      var typeRoulementAvant: Array<String>?,
-                      var typeRoulementArriere: Array<String>?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
     var refJointAvant: String?,
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
     var typeJointArriere: Boolean?,
     var ventilateur: Int?,
     var capotV: Int?,
-    var socleBoiteABorne : Int?,
-    var capotBoiteABorne : Int?,
-    var plaqueABorne : Int?,
-    var presenceSondes: Boolean ?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
     var typeSondes: String?,
     var equilibrage: Boolean?,
-    var peinture : String?,
+    var peinture: String?,
     var isolementMasseStatorPrincipalU: Float?,
     var isolementMasseStatorPrincipalV: Float?,
-    var isolementMasseStatorPrincipalW	: Float?,
-    var isolementMasseRotorPrincipal	: Float?,
-    var isolementMasseStatorExcitation	: Float?,
-    var isolementMasseRotorExcitation	: Float?,
-    var resistanceStatorPrincipalU	: Float?,
-    var resistanceStatorPrincipalV	: Float?,
-    var resistanceStatorPrincipalW	: Float?,
-    var resistanceRotorPrincipal	: Float?,
-    var resistanceStatorExcitation	: Float?,
-    var resistanceRotorExcitation	: Float?,
-    var isolementPhasePhaseStatorPrincipalUV	: Float?,
-    var isolementPhasePhaseStatorPrincipalVW	: Float?,
-    var isolementPhasePhaseStatorPrincipalUW	: Float?,
-    var testDiode : Boolean?,
-    var tensionU	: Float?,
-    var tensionV	: Float?,
-    var tensionW	: Float?,
-    var intensiteU	: Float?,
-    var intensiteV	: Float?,
-    var intensiteW	: Float?,
-    var tensionExcitation	: Float?,
-    var intensiteExcitation	: Float?,
+    var isolementMasseStatorPrincipalW: Float?,
+    var isolementMasseRotorPrincipal: Float?,
+    var isolementMasseStatorExcitation: Float?,
+    var isolementMasseRotorExcitation: Float?,
+    var resistanceStatorPrincipalU: Float?,
+    var resistanceStatorPrincipalV: Float?,
+    var resistanceStatorPrincipalW: Float?,
+    var resistanceRotorPrincipal: Float?,
+    var resistanceStatorExcitation: Float?,
+    var resistanceRotorExcitation: Float?,
+    var isolementPhasePhaseStatorPrincipalUV: Float?,
+    var isolementPhasePhaseStatorPrincipalVW: Float?,
+    var isolementPhasePhaseStatorPrincipalUW: Float?,
+    var testDiode: Boolean?,
+    var tensionU: Float?,
+    var tensionV: Float?,
+    var tensionW: Float?,
+    var intensiteU: Float?,
+    var intensiteV: Float?,
+    var intensiteW: Float?,
+    var tensionExcitation: Float?,
+    var intensiteExcitation: Float?,
     var dureeTotale: Int?,
     var photos: Array<String>?
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -863,7 +873,7 @@ class BodyDemontageAlternateur (
     }
 }
 
-class BodyDemontageRotorBobine (
+class BodyDemontageRotorBobine(
     var observations: String?,
     var typeMoteur: String?,
     var status: Long?,
@@ -871,18 +881,18 @@ class BodyDemontageRotorBobine (
     var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
-    var vitesse : Float?,
-    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
-    var accouplement:Boolean?,
-    var coteAccouplement:String?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
     var clavette: Boolean?,
-    var aspect:Int?,
-    var aspectInterieur:Int?,
-    var couplage:String?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
     var flasqueAvant: Int?,
     var flasqueArriere: Int?,
     var porteeRAvant: Int?,
-    var porteeRArriere:  Int?,
+    var porteeRArriere: Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
     var refRoulementAvant: Array<String>?,
@@ -895,41 +905,41 @@ class BodyDemontageRotorBobine (
     var typeJointArriere: Boolean?,
     var ventilateur: Int?,
     var capotV: Int?,
-    var socleBoiteABorne : Int?,
-    var capotBoiteABorne : Int?,
-    var plaqueABorne : Int?,
-    var presenceSondes: Boolean ?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
     var typeSondes: String?,
     var equilibrage: Boolean?,
-    var peinture : String?,
-    var isolementPhaseMasseStatorUM	: Float?,
-    var isolementPhaseMasseStatorVM	: Float?,
-    var isolementPhaseMasseStatorWM	: Float?,
-    var isolementPhaseMasseRotorB1M	: Float?,
-    var isolementPhaseMasseRotorB2M	: Float?,
-    var isolementPhaseMasseRotorB3M	: Float?,
-    var isolementPhaseMassePorteBalaisM	: Float?,
-    var isolementPhasePhaseStatorUV	: Float?,
-    var isolementPhasePhaseStatorVW	: Float?,
-    var isolementPhasePhaseStatorUW	: Float?,
-    var resistanceStatorU	: Float?,
-    var resistanceStatorV	: Float?,
-    var resistanceStatorW	: Float?,
-    var resistanceRotorB1B2	: Float?,
-    var resistanceRotorB2B2	: Float?,
-    var resistanceRotorB1B3	: Float?,
-    var tensionU	: Float?,
-    var tensionV	: Float?,
-    var tensionW	: Float?,
-    var tensionRotor	: Float?,
-    var intensiteU	: Float?,
-    var intensiteV	: Float?,
-    var intensiteW	: Float?,
-    var intensiteRotor	: Float?,
-    var dureeEssai	: Int?,
+    var peinture: String?,
+    var isolementPhaseMasseStatorUM: Float?,
+    var isolementPhaseMasseStatorVM: Float?,
+    var isolementPhaseMasseStatorWM: Float?,
+    var isolementPhaseMasseRotorB1M: Float?,
+    var isolementPhaseMasseRotorB2M: Float?,
+    var isolementPhaseMasseRotorB3M: Float?,
+    var isolementPhaseMassePorteBalaisM: Float?,
+    var isolementPhasePhaseStatorUV: Float?,
+    var isolementPhasePhaseStatorVW: Float?,
+    var isolementPhasePhaseStatorUW: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var resistanceRotorB1B2: Float?,
+    var resistanceRotorB2B2: Float?,
+    var resistanceRotorB1B3: Float?,
+    var tensionU: Float?,
+    var tensionV: Float?,
+    var tensionW: Float?,
+    var tensionRotor: Float?,
+    var intensiteU: Float?,
+    var intensiteV: Float?,
+    var intensiteW: Float?,
+    var intensiteRotor: Float?,
+    var dureeEssai: Int?,
     var dureeTotale: Int?,
     var photos: Array<String>?
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -1107,7 +1117,7 @@ class BodyDemontageRotorBobine (
     }
 }
 
-class BodyDemontageMonophase (
+class BodyDemontageMonophase(
     var observations: String?,
     var typeMoteur: String?,
     var status: Long?,
@@ -1115,18 +1125,18 @@ class BodyDemontageMonophase (
     var numSerie: String?,
     var puissance: Float?,
     var bride: Float?,
-    var vitesse : Float?,
-    var arbreSortantEntrant:Boolean?, //arbre sortant ou rentrant
-    var accouplement:Boolean?,
-    var coteAccouplement:String?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
     var clavette: Boolean?,
-    var aspect:Int?,
-    var aspectInterieur:Int?,
-    var couplage:String?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
     var flasqueAvant: Int?,
     var flasqueArriere: Int?,
     var porteeRAvant: Int?,
-    var porteeRArriere:  Int?,
+    var porteeRArriere: Int?,
     var boutArbre: Boolean?,
     var rondelleElastique: Boolean?,
     var refRoulementAvant: Array<String>?,
@@ -1139,22 +1149,22 @@ class BodyDemontageMonophase (
     var typeJointArriere: Boolean?,
     var ventilateur: Int?,
     var capotV: Int?,
-    var socleBoiteABorne : Int?,
-    var capotBoiteABorne : Int?,
-    var plaqueABorne : Int?,
-    var presenceSondes: Boolean ?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
     var typeSondes: String?,
     var equilibrage: Boolean?,
-    var peinture : String?,
+    var peinture: String?,
     var isolementPhaseMasse: Float?,
-    var resistanceTravail	: Float?,
-    var resistanceDemarrage	: Float?,
-    var valeurCondensateur	: Float?,
-    var tension	: Float?,
-    var intensite	: Float?,
+    var resistanceTravail: Float?,
+    var resistanceDemarrage: Float?,
+    var valeurCondensateur: Float?,
+    var tension: Float?,
+    var intensite: Float?,
     var dureeTotale: Int?,
     var photos: Array<String>?
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -1302,15 +1312,15 @@ class BodyDemoPompe(
     var typeRessort: Int?,
     var typeJoint: String?,
     var matiere: Int?,
-    var diametreArbre:String?,
-    var diametreExtPR:String?,
-    var diametreExtPF:String?,
-    var epaisseurPF:String?,
-    var longueurRotativeNonComprimee:String?,
-    var longueurRotativeComprimee:String?,
-    var longueurRotativeTravail:String?,
-    var observations:String?,
-    var dureeTotale:Long?,
+    var diametreArbre: String?,
+    var diametreExtPR: String?,
+    var diametreExtPF: String?,
+    var epaisseurPF: String?,
+    var longueurRotativeNonComprimee: String?,
+    var longueurRotativeComprimee: String?,
+    var longueurRotativeTravail: String?,
+    var observations: String?,
+    var dureeTotale: Long?,
     var photos: Array<String>?,
     var refRoulementAvant: Array<String>?,
     var refRoulementArriere: Array<String>?,
@@ -1320,7 +1330,7 @@ class BodyDemoPompe(
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
     var typeJointArriere: Boolean?,
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -1360,7 +1370,7 @@ class BodyDemoPompe(
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readBoolean(),
-        ) {
+    ) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -1428,30 +1438,30 @@ class BodyRemontageTriphase(
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
     var isolementPorteBalaisOhm: Float?,
-     var tensionStator:Boolean?,
-     var tensionStatorU:Float?,
-     var tensionStatorV:Float?,
-     var tensionStatorW:Float?,
-     var tensionInducteurs: Boolean?,
-     var tensionInducteursU: Float?,
-     var tensionInducteursV: Float?,
-     var tensionInducteursW: Float?,
-     var intensiteStator:Boolean?,
-     var intensiteStatorU:Float?,
-     var intensiteStatorV:Float?,
-     var intensiteStatorW:Float?,
-     var intensiteInducteurs: Boolean?,
-     var intensiteInducteursU: Float?,
-     var intensiteInducteursV: Float?,
-     var intensiteInducteursW: Float?,
-     var tensionInduit:Boolean?,
-     var tensionInduitU:Float?,
-     var tensionInduitV:Float?,
-     var tensionInduitW:Float?,
-     var tensionRotor: Boolean?,
-     var tensionRotorU: Float?,
-     var tensionRotorV: Float?,
-     var tensionRotorW: Float?,
+    var tensionStator: Boolean?,
+    var tensionStatorU: Float?,
+    var tensionStatorV: Float?,
+    var tensionStatorW: Float?,
+    var tensionInducteurs: Boolean?,
+    var tensionInducteursU: Float?,
+    var tensionInducteursV: Float?,
+    var tensionInducteursW: Float?,
+    var intensiteStator: Boolean?,
+    var intensiteStatorU: Float?,
+    var intensiteStatorV: Float?,
+    var intensiteStatorW: Float?,
+    var intensiteInducteurs: Boolean?,
+    var intensiteInducteursU: Float?,
+    var intensiteInducteursV: Float?,
+    var intensiteInducteursW: Float?,
+    var tensionInduit: Boolean?,
+    var tensionInduitU: Float?,
+    var tensionInduitV: Float?,
+    var tensionInduitW: Float?,
+    var tensionRotor: Boolean?,
+    var tensionRotorU: Float?,
+    var tensionRotorV: Float?,
+    var tensionRotorW: Float?,
     var intensiteInduit: Boolean,
     var intensiteInduitU: Float?,
     var vitesseU: Float?,
@@ -1486,7 +1496,7 @@ class BodyRemontageTriphase(
     var isolementPhaseRotorVW: Float?,
     var isolementPhaseRotorUW: Float?,
     var photos: Array<String>?
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -1651,6 +1661,7 @@ class BodyRemontageTriphase(
         }
     }
 }
+
 class BodyRemontage(
     var status: Int?,
     var dureeTotale: Long?,
@@ -1662,26 +1673,26 @@ class BodyRemontage(
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
     var isolementPorteBalaisOhm: Float?,
-    var tensionStator:Boolean?,
-    var tensionStatorU:Float?,
-    var tensionStatorV:Float?,
-    var tensionStatorW:Float?,
+    var tensionStator: Boolean?,
+    var tensionStatorU: Float?,
+    var tensionStatorV: Float?,
+    var tensionStatorW: Float?,
     var tensionInducteurs: Boolean?,
     var tensionInducteursU: Float?,
     var tensionInducteursV: Float?,
     var tensionInducteursW: Float?,
-    var intensiteStator:Boolean?,
-    var intensiteStatorU:Float?,
-    var intensiteStatorV:Float?,
-    var intensiteStatorW:Float?,
+    var intensiteStator: Boolean?,
+    var intensiteStatorU: Float?,
+    var intensiteStatorV: Float?,
+    var intensiteStatorW: Float?,
     var intensiteInducteurs: Boolean?,
     var intensiteInducteursU: Float?,
     var intensiteInducteursV: Float?,
     var intensiteInducteursW: Float?,
-    var tensionInduit:Boolean?,
-    var tensionInduitU:Float?,
-    var tensionInduitV:Float?,
-    var tensionInduitW:Float?,
+    var tensionInduit: Boolean?,
+    var tensionInduitU: Float?,
+    var tensionInduitV: Float?,
+    var tensionInduitW: Float?,
     var tensionRotor: Boolean?,
     var tensionRotorU: Float?,
     var tensionRotorV: Float?,
@@ -1703,7 +1714,7 @@ class BodyRemontage(
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
     var photos: Array<String>?
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -1846,26 +1857,26 @@ class BodyRemontageCC(
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
     var isolementPorteBalaisOhm: Float?,
-    var tensionStator:Boolean?,
-    var tensionStatorU:Float?,
-    var tensionStatorV:Float?,
-    var tensionStatorW:Float?,
+    var tensionStator: Boolean?,
+    var tensionStatorU: Float?,
+    var tensionStatorV: Float?,
+    var tensionStatorW: Float?,
     var tensionInducteurs: Boolean?,
     var tensionInducteursU: Float?,
     var tensionInducteursV: Float?,
     var tensionInducteursW: Float?,
-    var intensiteStator:Boolean?,
-    var intensiteStatorU:Float?,
-    var intensiteStatorV:Float?,
-    var intensiteStatorW:Float?,
+    var intensiteStator: Boolean?,
+    var intensiteStatorU: Float?,
+    var intensiteStatorV: Float?,
+    var intensiteStatorW: Float?,
     var intensiteInducteurs: Boolean?,
     var intensiteInducteursU: Float?,
     var intensiteInducteursV: Float?,
     var intensiteInducteursW: Float?,
-    var tensionInduit:Boolean?,
-    var tensionInduitU:Float?,
-    var tensionInduitV:Float?,
-    var tensionInduitW:Float?,
+    var tensionInduit: Boolean?,
+    var tensionInduitU: Float?,
+    var tensionInduitV: Float?,
+    var tensionInduitW: Float?,
     var tensionRotor: Boolean?,
     var tensionRotorU: Float?,
     var tensionRotorV: Float?,
@@ -1895,7 +1906,7 @@ class BodyRemontageCC(
     var releveIsoInduitMasse: Float?,
     var releveIsoInduitInducteurs: Float?,
     var photos: Array<String>?
-): Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -2045,63 +2056,80 @@ class BodyRemontageCC(
 
 class LoginResponse(
     @field:Json(name = "auth-token")
-    var token:String?,
-    var user:User?,
+    var token: String?,
+    var user: User?,
     var error: String?
 )
+
 class FichesResponse(
-    var data:Array<Fiche>?
+    var data: Array<Fiche>?
 )
+
 class ChantierResponse(
-    var data:Chantier?
+    var data: Chantier?
 )
+
 class BobinageResponse(
-    var data:Bobinage?
+    var data: Bobinage?
 )
+
 class DemontageTriphaseResponse(
     var data: Triphase?
 )
+
 class DemontageCCResponse(
     var data: CourantContinu?
 )
+
 class DemontagePompeResponse(
     var data: DemontagePompe?
 )
+
 class RemontageTriphaseResponse(
     var data: RemontageTriphase?
 )
+
 class RemontageCCResponse(
     var data: RemontageCourantC?
 )
+
 class VehiculesResponse(
-    var data:Vehicule?
+    var data: Vehicule?
 )
+
 class DemontageResponse(
-    var data:DemontageMoteur?
+    var data: DemontageMoteur?
 )
+
 class DemontagesResponse(
-    var data:Array<DemontageMoteur>?
+    var data: Array<DemontageMoteur>?
 )
+
 class DemontageAlternateurResponse(
-    var data:DemontageAlternateur?
+    var data: DemontageAlternateur?
 )
+
 class DemontageMonophaseResponse(
-    var data:DemontageMonophase?
+    var data: DemontageMonophase?
 )
+
 class DemontageRotorBobineResponse(
-    var data:DemontageRotorBobine?
+    var data: DemontageRotorBobine?
 )
+
 class RemontageResponse(
-    var data:Remontage?
+    var data: Remontage?
 )
+
 class ClientsResponse(
-    var data:Client?
+    var data: Client?
 )
-class CustomDateAdapter : JsonAdapter <Date>() {
+
+class CustomDateAdapter : JsonAdapter<Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
     @FromJson
-    override fun fromJson(reader: JsonReader ): Date? {
+    override fun fromJson(reader: JsonReader): Date? {
         return try {
             val dateAsString = reader.nextString()
             synchronized(dateFormat) {
@@ -2111,6 +2139,7 @@ class CustomDateAdapter : JsonAdapter <Date>() {
             null
         }
     }
+
     @ToJson
     override fun toJson(writer: JsonWriter, value: Date?) {
         if (value != null) {
@@ -2119,6 +2148,7 @@ class CustomDateAdapter : JsonAdapter <Date>() {
             }
         }
     }
+
     companion object {
         const val SERVER_FORMAT = ("yyyy-MM-dd'T'HH:mm") // define your server format here
     }
@@ -2127,19 +2157,21 @@ class CustomDateAdapter : JsonAdapter <Date>() {
 class URLPhotoResponse(
     var url: String?
 )
+
 class URLPhotoResponse2(
     var url: String?,
     var name: String?
 )
+
 class PhotoResponse(
     var photo: File
 )
 
-class Repository (var context:Context) {
+class Repository(var context: Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter())
     val url = "http://195.154.107.195:4000"
     var okHttpClient = OkHttpClient.Builder()
-        .callTimeout(1,TimeUnit.MINUTES)
+        .callTimeout(1, TimeUnit.MINUTES)
         .connectTimeout(1, TimeUnit.MINUTES)
         .readTimeout(1, TimeUnit.MINUTES)
         .writeTimeout(2, TimeUnit.MINUTES)
@@ -2150,8 +2182,8 @@ class Repository (var context:Context) {
         .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
-    val service : APIstb by lazy {  retrofit.create(APIstb::class.java) }
-    fun servicePhoto(): APIstb{
+    val service: APIstb by lazy { retrofit.create(APIstb::class.java) }
+    fun servicePhoto(): APIstb {
         return Retrofit.Builder()
             .baseUrl("http://195.154.107.195:9000")
             .client(okHttpClient)
@@ -2159,98 +2191,143 @@ class Repository (var context:Context) {
             .build()
             .create(APIstb::class.java)
     }
-    var db : LocalDatabase? = null;
-    var chantierDao : ChantierDao? = null;
-    var bobinageDao : BobinageDao ? = null;
-    var demontageTriphaseDao : DemontageTriphaseDao? = null;
-    var demontageCCDao : DemontageCCDao? = null;
-    var demontageMonoDao : DemontageMonophaseDao? = null;
-    var demontageRBDao : DemontageRotorBobineDao? = null;
-    var demontageAlterDao : DemontageAlternateurDao? = null;
-    var demontagePDao : DemontagePDao? = null;
+
+    var db: LocalDatabase? = null;
+    var chantierDao: ChantierDao? = null;
+    var bobinageDao: BobinageDao? = null;
+    var demontageTriphaseDao: DemontageTriphaseDao? = null;
+    var demontageCCDao: DemontageCCDao? = null;
+    var demontageMonoDao: DemontageMonophaseDao? = null;
+    var demontageRBDao: DemontageRotorBobineDao? = null;
+    var demontageAlterDao: DemontageAlternateurDao? = null;
+    var demontagePDao: DemontagePDao? = null;
     var remontageTriphaseDao: RemontageTriphaseDao? = null;
     var remontageCourantCDao: RemontageCCDao? = null;
     var vehiculeDao: VehiculeDao? = null;
     var clientDao: ClientsDao? = null;
     var remontageDao: RemontageDao? = null;
 
-    fun logUser(username:String,psw:String,callback: Callback<LoginResponse>) {
-        var body = BodyLogin(username,psw)
+    fun logUser(username: String, psw: String, callback: Callback<LoginResponse>) {
+        var body = BodyLogin(username, psw)
         var call = service.loginUser(body)
         var user: User? = null;
         call.enqueue(callback)
     }
-    fun getFiches(token:String, callback:Callback<FichesResponse>) {
+
+    fun getFiches(token: String, callback: Callback<FichesResponse>) {
         var call = service.getFiches(token)
         var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }
-    fun getFichesUser(token:String, userid:String, callback:Callback<FichesResponse>) {
-        var call = service.getFichesUser(token,userid)
+
+    fun getFichesUser(token: String, userid: String, callback: Callback<FichesResponse>) {
+        var call = service.getFichesUser(token, userid)
         var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }
-    fun getFichesForRemontage(token:String, numDevis:String, callback:Callback<DemontagesResponse>) {
-        var call = service.getFichesForRemontage(token,numDevis)
+
+    fun getFichesForRemontage(
+        token: String,
+        numDevis: String,
+        callback: Callback<DemontagesResponse>
+    ) {
+        var call = service.getFichesForRemontage(token, numDevis)
         var fiches: Array<DemontageMoteur>? = null
         call.enqueue(callback)
     }
-    fun getChantier(token:String,ficheId:String, callback:Callback<ChantierResponse>){
-        var call = service.getChantier(token,ficheId)
-        var fiche:Chantier? = null
+
+    fun getChantier(token: String, ficheId: String, callback: Callback<ChantierResponse>) {
+        var call = service.getChantier(token, ficheId)
+        var fiche: Chantier? = null
         call.enqueue(callback)
     }
-    fun getBobinage(token:String,ficheId:String, callback:Callback<BobinageResponse>){
-        var call = service.getBobinage(token,ficheId)
-        var fiche:Bobinage? = null
+
+    fun getBobinage(token: String, ficheId: String, callback: Callback<BobinageResponse>) {
+        var call = service.getBobinage(token, ficheId)
+        var fiche: Bobinage? = null
         call.enqueue(callback)
     }
-    fun getDemontage(token:String,ficheId:String, callback:Callback<DemontageResponse>){
-        val call = service.getDemontage(token,ficheId)
-        var fiche:DemontageMoteur?=null
+
+    fun getDemontage(token: String, ficheId: String, callback: Callback<DemontageResponse>) {
+        val call = service.getDemontage(token, ficheId)
+        var fiche: DemontageMoteur? = null
         call.enqueue(callback)
     }
-   fun getDemontageMono(token:String,ficheId:String, callback:Callback<DemontageMonophaseResponse>){
-        val call = service.getDemontageMonophase(token,ficheId)
-        var fiche:DemontageMonophase?=null
+
+    fun getDemontageMono(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageMonophaseResponse>
+    ) {
+        val call = service.getDemontageMonophase(token, ficheId)
+        var fiche: DemontageMonophase? = null
         call.enqueue(callback)
     }
-    fun getDemontageAlternateur(token:String,ficheId:String, callback:Callback<DemontageAlternateurResponse>){
-        val call = service.getDemontageAlternateur(token,ficheId)
-        var fiche:DemontageAlternateur?=null
+
+    fun getDemontageAlternateur(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageAlternateurResponse>
+    ) {
+        val call = service.getDemontageAlternateur(token, ficheId)
+        var fiche: DemontageAlternateur? = null
         call.enqueue(callback)
     }
-    fun getDemontageRB(token:String,ficheId:String, callback:Callback<DemontageRotorBobineResponse>){
-        val call = service.getDemontageRotorBobine(token,ficheId)
-        var fiche:DemontageRotorBobine?=null
+
+    fun getDemontageRB(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageRotorBobineResponse>
+    ) {
+        val call = service.getDemontageRotorBobine(token, ficheId)
+        var fiche: DemontageRotorBobine? = null
         call.enqueue(callback)
     }
-    fun getDemontageTriphase(token:String,ficheId:String, callback: Callback<DemontageTriphaseResponse>){
-        var call = service.getDemontageTriphase(token,ficheId)
-        var fiche:Triphase? = null
+
+    fun getDemontageTriphase(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageTriphaseResponse>
+    ) {
+        var call = service.getDemontageTriphase(token, ficheId)
+        var fiche: Triphase? = null
         call.enqueue(callback)
     }
-    fun getDemontagePompe(token:String,ficheId:String, callback: Callback<DemontagePompeResponse>){
-        var call = service.getDemoPompe(token,ficheId)
-        var fiche:DemontagePompe? = null
+
+    fun getDemontagePompe(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontagePompeResponse>
+    ) {
+        var call = service.getDemoPompe(token, ficheId)
+        var fiche: DemontagePompe? = null
         call.enqueue(callback)
     }
-    fun getAllVehicules(token:String, callback: Callback<VehiculesResponse>){
+
+    fun getAllVehicules(token: String, callback: Callback<VehiculesResponse>) {
         var call = service.getAllVehicules(token)
-        var vehicules:Array<Vehicule>? = null
+        var vehicules: Array<Vehicule>? = null
         call.enqueue(callback)
     }
-    fun getVehiculesById(token:String, id:String, callback: Callback<VehiculesResponse>){
-        var call = service.getVehiculeById(token,id)
-        var vehicule:Vehicule? = null
+
+    fun getVehiculesById(token: String, id: String, callback: Callback<VehiculesResponse>) {
+        var call = service.getVehiculeById(token, id)
+        var vehicule: Vehicule? = null
         call.enqueue(callback)
     }
-    fun getAllClients(token:String, callback: Callback<ClientsResponse>){
+
+    fun getAllClients(token: String, callback: Callback<ClientsResponse>) {
         var call = service.getAllClients(token)
-        var vehicules:Array<Client>? = null
+        var vehicules: Array<Client>? = null
         call.enqueue(callback)
     }
-    fun patchDemontageTriphase(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
+
+    fun patchDemontageTriphase(
+        token: String,
+        ficheId: String,
+        triphase: Triphase,
+        callback: Callback<DemontageTriphaseResponse>
+    ) {
         var body = BodyDemontageTriphase(
             triphase.status,
             triphase.typeMoteur,
@@ -2309,11 +2386,17 @@ class Repository (var context:Context) {
             triphase.observations,
             triphase.photos
         )
-        var call = service.patchDemontageTriphase(token,ficheId,body)
-        var fiche:Triphase? = null
+        var call = service.patchDemontageTriphase(token, ficheId, body)
+        var fiche: Triphase? = null
         call.enqueue(callback)
     }
-    fun patchDemontageMeca(token:String,ficheId:String, triphase:Triphase, callback:Callback<DemontageTriphaseResponse>){
+
+    fun patchDemontageMeca(
+        token: String,
+        ficheId: String,
+        triphase: Triphase,
+        callback: Callback<DemontageTriphaseResponse>
+    ) {
         var body = BodyDemontageTriphase(
             triphase.status,
             triphase.typeMoteur,
@@ -2372,18 +2455,23 @@ class Repository (var context:Context) {
             triphase.observations,
             triphase.photos
         )
-        var call = service.patchDemontageTriphase(token,ficheId,body)
-        var fiche:Triphase? = null
+        var call = service.patchDemontageTriphase(token, ficheId, body)
+        var fiche: Triphase? = null
         call.enqueue(callback)
     }
 
-    fun getDemontageCC(token:String,ficheId:String, callback: Callback<DemontageCCResponse>){
-        var call = service.getDemontageCC(token,ficheId)
-        var fiche:CourantContinu? = null
+    fun getDemontageCC(token: String, ficheId: String, callback: Callback<DemontageCCResponse>) {
+        var call = service.getDemontageCC(token, ficheId)
+        var fiche: CourantContinu? = null
         call.enqueue(callback)
     }
 
-    fun patchDemontageCC(token:String,ficheId:String, fiche:CourantContinu, callback:Callback<DemontageCCResponse>){
+    fun patchDemontageCC(
+        token: String,
+        ficheId: String,
+        fiche: CourantContinu,
+        callback: Callback<DemontageCCResponse>
+    ) {
         var body = BodyDemontageCC(
             fiche.status,
             fiche.typeMoteur,
@@ -2439,22 +2527,29 @@ class Repository (var context:Context) {
             fiche.observations,
             fiche.photos
         )
-        var call = service.patchDemontageCC(token,ficheId,body)
-        var fiche:CourantContinu? = null
-        call.enqueue(callback)
-    }
-    fun getRemontage(token:String,ficheId:String, callback:Callback<RemontageResponse>){
-        val call = service.getRemontage(token,ficheId)
-        var fiche:Remontage?=null
-        call.enqueue(callback)
-    }
-    fun getRemontageCC(token:String,ficheId:String, callback: Callback<RemontageCCResponse>){
-        var call = service.getRemontageCC(token,ficheId)
-        var fiche:RemontageCourantC? = null
+        var call = service.patchDemontageCC(token, ficheId, body)
+        var fiche: CourantContinu? = null
         call.enqueue(callback)
     }
 
-    fun patchRemontageCC(token:String,ficheId:String, fiche:RemontageCourantC, callback:Callback<RemontageCCResponse>){
+    fun getRemontage(token: String, ficheId: String, callback: Callback<RemontageResponse>) {
+        val call = service.getRemontage(token, ficheId)
+        var fiche: Remontage? = null
+        call.enqueue(callback)
+    }
+
+    fun getRemontageCC(token: String, ficheId: String, callback: Callback<RemontageCCResponse>) {
+        var call = service.getRemontageCC(token, ficheId)
+        var fiche: RemontageCourantC? = null
+        call.enqueue(callback)
+    }
+
+    fun patchRemontageCC(
+        token: String,
+        ficheId: String,
+        fiche: RemontageCourantC,
+        callback: Callback<RemontageCCResponse>
+    ) {
         var body = BodyRemontageCC(
             fiche.status!!.toInt(),
             fiche.dureeTotale,
@@ -2516,18 +2611,28 @@ class Repository (var context:Context) {
             fiche.releveIsoInduitInducteurs,
             fiche.photos
         )
-        Log.i("INFO","tensioninducteurs : ${body.tensionInducteurs}")
-        var call = service.patchRemontageCC(token,ficheId,body)
-        var fiche:RemontageCourantC? = null
-        call.enqueue(callback)
-    }
-    fun getRemontageTriphase(token:String,ficheId:String, callback: Callback<RemontageTriphaseResponse>){
-        var call = service.getRemontageTriphase(token,ficheId)
-        var fiche:RemontageTriphase? = null
+        Log.i("INFO", "tensioninducteurs : ${body.tensionInducteurs}")
+        var call = service.patchRemontageCC(token, ficheId, body)
+        var fiche: RemontageCourantC? = null
         call.enqueue(callback)
     }
 
-    fun patchRemontageTriphase(token:String,ficheId:String, fiche:RemontageTriphase, callback:Callback<RemontageTriphaseResponse>){
+    fun getRemontageTriphase(
+        token: String,
+        ficheId: String,
+        callback: Callback<RemontageTriphaseResponse>
+    ) {
+        var call = service.getRemontageTriphase(token, ficheId)
+        var fiche: RemontageTriphase? = null
+        call.enqueue(callback)
+    }
+
+    fun patchRemontageTriphase(
+        token: String,
+        ficheId: String,
+        fiche: RemontageTriphase,
+        callback: Callback<RemontageTriphaseResponse>
+    ) {
         var body = BodyRemontageTriphase(
             fiche.status!!.toInt(),
             fiche.dureeTotale,
@@ -2598,11 +2703,17 @@ class Repository (var context:Context) {
             fiche.isolementPhaseRotorUW,
             fiche.photos
         )
-        var call = service.patchRemontageTriphase(token,ficheId,body)
-        var fiche:RemontageTriphase? = null
+        var call = service.patchRemontageTriphase(token, ficheId, body)
+        var fiche: RemontageTriphase? = null
         call.enqueue(callback)
     }
-    fun patchRemontage(token:String,ficheId:String, fiche:Remontage, callback:Callback<RemontageResponse>){
+
+    fun patchRemontage(
+        token: String,
+        ficheId: String,
+        fiche: Remontage,
+        callback: Callback<RemontageResponse>
+    ) {
         var body = BodyRemontage(
             fiche.status!!.toInt(),
             fiche.dureeTotale,
@@ -2656,11 +2767,17 @@ class Repository (var context:Context) {
             fiche.acceleration2A,
             fiche.photos
         )
-        var call = service.patchRemontage(token,ficheId,body)
-        var fiche:Remontage? = null
+        var call = service.patchRemontage(token, ficheId, body)
+        var fiche: Remontage? = null
         call.enqueue(callback)
     }
-    fun patchDemontagePompe(token:String,ficheId:String, fiche:DemontagePompe, callback:Callback<DemontagePompeResponse>){
+
+    fun patchDemontagePompe(
+        token: String,
+        ficheId: String,
+        fiche: DemontagePompe,
+        callback: Callback<DemontagePompeResponse>
+    ) {
         var body = BodyDemoPompe(
             fiche.status,
             fiche.typeMoteur,
@@ -2688,14 +2805,20 @@ class Repository (var context:Context) {
             fiche.refJointAvant,
             fiche.refJointArriere,
             fiche.typeJointAvant,
-            fiche.typeJointArriere)
-        var call = service.patchDemontagePompe(token,ficheId,body)
-        var fiche:DemontagePompe? = null
+            fiche.typeJointArriere
+        )
+        var call = service.patchDemontagePompe(token, ficheId, body)
+        var fiche: DemontagePompe? = null
         call.enqueue(callback)
 
     }
 
-    fun patchDemontageMono(token:String,ficheId:String, fiche:DemontageMonophase, callback:Callback<DemontageMonophaseResponse>){
+    fun patchDemontageMono(
+        token: String,
+        ficheId: String,
+        fiche: DemontageMonophase,
+        callback: Callback<DemontageMonophaseResponse>
+    ) {
         var body = BodyDemontageMonophase(
             fiche.observations,
             fiche.typeMoteur,
@@ -2744,15 +2867,18 @@ class Repository (var context:Context) {
             fiche.dureeTotale!!.toInt(),
             fiche.photos
         )
-        var call = service.patchDemontageMonophase(token,ficheId,body)
-        var fiche:DemontageMonophase? = null
+        var call = service.patchDemontageMonophase(token, ficheId, body)
+        var fiche: DemontageMonophase? = null
         call.enqueue(callback)
 
     }
+
     fun patchDemontageAlter(
-        token:String,
-        ficheId:String, fiche:DemontageAlternateur, callback: Callback<DemontageAlternateurResponse>
-    ){
+        token: String,
+        ficheId: String,
+        fiche: DemontageAlternateur,
+        callback: Callback<DemontageAlternateurResponse>
+    ) {
         var body = BodyDemontageAlternateur(
             fiche.observations,
             fiche.typeMoteur,
@@ -2819,12 +2945,18 @@ class Repository (var context:Context) {
             fiche.dureeTotale!!.toInt(),
             fiche.photos
         )
-        var call = service.patchDemontageAlternateur(token,ficheId,body)
-        var fiche:DemontageAlternateur? = null
+        var call = service.patchDemontageAlternateur(token, ficheId, body)
+        var fiche: DemontageAlternateur? = null
         call.enqueue(callback)
 
     }
-    fun patchDemontageRotor(token:String,ficheId:String, fiche:DemontageRotorBobine, callback:Callback<DemontageRotorBobineResponse>){
+
+    fun patchDemontageRotor(
+        token: String,
+        ficheId: String,
+        fiche: DemontageRotorBobine,
+        callback: Callback<DemontageRotorBobineResponse>
+    ) {
         var body = BodyDemontageRotorBobine(
             fiche.observations,
             fiche.typeMoteur,
@@ -2864,41 +2996,46 @@ class Repository (var context:Context) {
             fiche.typeSondes,
             fiche.equilibrage,
             fiche.peinture,
-            fiche.isolementPhaseMasseStatorUM	,
-            fiche.isolementPhaseMasseStatorVM	,
-            fiche.isolementPhaseMasseStatorWM	,
-            fiche.isolementPhaseMasseRotorB1M	,
-            fiche.isolementPhaseMasseRotorB2M	,
-            fiche.isolementPhaseMasseRotorB3M	,
-            fiche.isolementPhaseMassePorteBalaisM	,
-            fiche.isolementPhasePhaseStatorUV	,
-            fiche.isolementPhasePhaseStatorVW	,
-            fiche.isolementPhasePhaseStatorUW	,
-            fiche.resistanceStatorU	,
-            fiche.resistanceStatorV	,
-            fiche.resistanceStatorW	,
-            fiche.resistanceRotorB1B2	,
-            fiche.resistanceRotorB2B2	,
-            fiche.resistanceRotorB1B3	,
-            fiche.tensionU	,
-            fiche.tensionV	,
-            fiche.tensionW	,
-            fiche.tensionRotor	,
-            fiche.intensiteU	,
-            fiche.intensiteV	,
-            fiche.intensiteW	,
-            fiche.intensiteRotor	,
+            fiche.isolementPhaseMasseStatorUM,
+            fiche.isolementPhaseMasseStatorVM,
+            fiche.isolementPhaseMasseStatorWM,
+            fiche.isolementPhaseMasseRotorB1M,
+            fiche.isolementPhaseMasseRotorB2M,
+            fiche.isolementPhaseMasseRotorB3M,
+            fiche.isolementPhaseMassePorteBalaisM,
+            fiche.isolementPhasePhaseStatorUV,
+            fiche.isolementPhasePhaseStatorVW,
+            fiche.isolementPhasePhaseStatorUW,
+            fiche.resistanceStatorU,
+            fiche.resistanceStatorV,
+            fiche.resistanceStatorW,
+            fiche.resistanceRotorB1B2,
+            fiche.resistanceRotorB2B2,
+            fiche.resistanceRotorB1B3,
+            fiche.tensionU,
+            fiche.tensionV,
+            fiche.tensionW,
+            fiche.tensionRotor,
+            fiche.intensiteU,
+            fiche.intensiteV,
+            fiche.intensiteW,
+            fiche.intensiteRotor,
             fiche.dureeEssai,
             fiche.dureeTotale!!.toInt(),
             fiche.photos
         )
-        var call = service.patchDemontageRotorBobine(token,ficheId,body)
-        var fiche:DemontageRotorBobine? = null
+        var call = service.patchDemontageRotorBobine(token, ficheId, body)
+        var fiche: DemontageRotorBobine? = null
         call.enqueue(callback)
 
     }
 
-    fun patchBobinage(token:String,ficheId:String, bobinage:Bobinage, callback:Callback<BobinageResponse>){
+    fun patchBobinage(
+        token: String,
+        ficheId: String,
+        bobinage: Bobinage,
+        callback: Callback<BobinageResponse>
+    ) {
         if (bobinage.resistanceV == null) {
             bobinage.resistanceV = 0f
         }
@@ -2906,9 +3043,10 @@ class Repository (var context:Context) {
             bobinage.resistanceW = 0f
         }
         if (bobinage.isolementUT == null) {
-            bobinage.isolementUT = 0f }
+            bobinage.isolementUT = 0f
+        }
 
-        if (bobinage.isolementVT == null ) {
+        if (bobinage.isolementVT == null) {
             bobinage.isolementVT = 0f
         }
         if (bobinage.isolementWT == null) {
@@ -2920,10 +3058,10 @@ class Repository (var context:Context) {
         if (bobinage.isolementUW == null) {
             bobinage.isolementUW = 0f
         }
-        if (bobinage.isolementVW == null ){
+        if (bobinage.isolementVW == null) {
             bobinage.isolementVW = 0f
         }
-        if (bobinage.poids == null){
+        if (bobinage.poids == null) {
             bobinage.poids = 0f
         }
         var body = BodyBobinage(
@@ -2945,45 +3083,82 @@ class Repository (var context:Context) {
             bobinage.isolementUW,
             bobinage.isolementVW,
             bobinage.status,
-            if (bobinage.calageEncoches !== null){
+            if (bobinage.calageEncoches !== null) {
                 bobinage.calageEncoches
             } else false,
             bobinage.sectionsFils!!.toList(),
-            if (bobinage.observations !== null){
-                bobinage.observations} else "",
+            if (bobinage.observations !== null) {
+                bobinage.observations
+            } else "",
             bobinage.poids,
             0,
             bobinage.dureeTotale,
-            bobinage.photos)
-        var call = service.patchBobinage(token,ficheId,body)
-        var fiche:Bobinage? = null
+            bobinage.photos
+        )
+        var call = service.patchBobinage(token, ficheId, body)
+        var fiche: Bobinage? = null
         call.enqueue(callback)
     }
-    fun patchChantier(token:String,ficheId:String, chantier:Chantier, callback:Callback<ChantierResponse>){
-        var body = BodyChantier(chantier.materiel, chantier.objet, chantier.observations, chantier.status, chantier.dureeTotale, chantier.photos, chantier.signatureClient,chantier.signatureTech)
-        var call = service.patchChantier(token,ficheId,body)
-        var fiche:Chantier? = null
+
+    fun patchChantier(
+        token: String,
+        ficheId: String,
+        chantier: Chantier,
+        callback: Callback<ChantierResponse>
+    ) {
+        var body = BodyChantier(
+            chantier.materiel,
+            chantier.objet,
+            chantier.observations,
+            chantier.status,
+            chantier.dureeTotale,
+            chantier.photos,
+            chantier.signatureClient,
+            chantier.signatureTech
+        )
+        var call = service.patchChantier(token, ficheId, body)
+        var fiche: Chantier? = null
         call.enqueue(callback)
     }
-    fun getVehiculeById(token:String, vehiculeId:String, callback:Callback<VehiculesResponse>) {
-        var call = service.getVehiculeById(token,vehiculeId)
+
+    fun getVehiculeById(token: String, vehiculeId: String, callback: Callback<VehiculesResponse>) {
+        var call = service.getVehiculeById(token, vehiculeId)
         var vehicule: Vehicule? = null
         call.enqueue(callback)
     }
+
     // photo requests
     suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token)
 
-    fun uploadPhoto(token: String,name: String, address: List<String>, photo: File, param: Callback<URLPhotoResponse>){
-        var body = RequestBody.create(MediaType.parse("image/jpeg"),photo)
-        var call = servicePhoto().uploadPhoto(token, name, address[0],address[1].removePrefix("X-Amz-Credential="),address[2].removePrefix("X-Amz-Date="),address[3].removePrefix("X-Amz-Expires="),address[4].removePrefix("X-Amz-SignedHeaders="),address[5].removePrefix("X-Amz-Signature="), body)
-        var photo :String? = null
-       call.enqueue(param)
+    fun uploadPhoto(
+        token: String,
+        name: String,
+        address: List<String>,
+        photo: File,
+        param: Callback<URLPhotoResponse>
+    ) {
+        var body = RequestBody.create(MediaType.parse("image/jpeg"), photo)
+        var call = servicePhoto().uploadPhoto(
+            token,
+            name,
+            address[0],
+            address[1].removePrefix("X-Amz-Credential="),
+            address[2].removePrefix("X-Amz-Date="),
+            address[3].removePrefix("X-Amz-Expires="),
+            address[4].removePrefix("X-Amz-SignedHeaders="),
+            address[5].removePrefix("X-Amz-Signature="),
+            body
+        )
+        var photo: String? = null
+        call.enqueue(param)
     }
-    suspend fun getURLPhoto(token: String, photoName: String) = service.getURLPhoto(token,photoName)
 
-    suspend fun getPhoto( address: String)  = service.getPhoto(address)
+    suspend fun getURLPhoto(token: String, photoName: String) =
+        service.getURLPhoto(token, photoName)
 
-    val MIGRATION_20_21  = object : Migration(20, 21) {
+    suspend fun getPhoto(address: String) = service.getPhoto(address)
+
+    val MIGRATION_20_21 = object : Migration(20, 21) {
         override fun migrate(database: SupportSQLiteDatabase) {
             // Create the new table
             database.execSQL(
@@ -2999,314 +3174,380 @@ class Repository (var context:Context) {
             database.execSQL("ALTER TABLE demontage_pompe_new RENAME TO demontage_pompe")
         }
     }
-    val MIGRATION_21_22  = object : Migration(21, 22) {
+    val MIGRATION_21_22 = object : Migration(21, 22) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("ALTER TABLE demontage_pompe " +
-                    "ADD COLUMN ")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refRoulementAvant TEXT")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refRoulementArriere TEXT")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeRoulementArriere TEXT")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeRoulementAvant TEXT")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refJointAvant TEXT")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN refJointArriere TEXT")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeJointAvant INTEGER")
+            database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeJointArriere INTEGER")
         }
     }
 
-    suspend fun createDb(){
-      db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-          .addMigrations(MIGRATION_20_21)
-          .build()
-      chantierDao = db!!.chantierDao()
-      bobinageDao = db!!.bobinageDao()
-      remontageTriphaseDao = db!!.remontageTriphaseDao()
-      remontageCourantCDao = db!!.remontageCCDao()
-      remontageDao = db!!.remontageDao()
-      demontageTriphaseDao = db!!.demontageTriphaseDao()
-      demontageCCDao = db!!.demontageCCDao()
-      demontagePDao = db!!.demontagePDao()
-      demontageMonoDao = db!!.demontageMonophaseDao()
-      demontageAlterDao = db!!.demontageAlternateurDao()
-      demontageRBDao = db!!.demontageRotorBobineDao()
-      vehiculeDao = db!!.vehiculesDao()
-      clientDao = db!!.clientDao()
-        Log.i("INFO","db créée")
+    suspend fun createDb() {
+        db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
+            //.addMigrations(MIGRATION_20_21, MIGRATION_21_22)
+            .build()
+        chantierDao = db!!.chantierDao()
+        bobinageDao = db!!.bobinageDao()
+        remontageTriphaseDao = db!!.remontageTriphaseDao()
+        remontageCourantCDao = db!!.remontageCCDao()
+        remontageDao = db!!.remontageDao()
+        demontageTriphaseDao = db!!.demontageTriphaseDao()
+        demontageCCDao = db!!.demontageCCDao()
+        demontagePDao = db!!.demontagePDao()
+        demontageMonoDao = db!!.demontageMonophaseDao()
+        demontageAlterDao = db!!.demontageAlternateurDao()
+        demontageRBDao = db!!.demontageRotorBobineDao()
+        vehiculeDao = db!!.vehiculesDao()
+        clientDao = db!!.clientDao()
+        Log.i("INFO", "db créée")
     }
+
     //requêtes chantier
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getAllVehiculesLocalDatabase(): List<VehiculeEntity>{
+    suspend fun getAllVehiculesLocalDatabase(): List<VehiculeEntity> {
         return vehiculeDao!!.getAll()
     }
-    suspend fun insertVehiculesLocalDatabase(vehicule: Vehicule){
+
+    suspend fun insertVehiculesLocalDatabase(vehicule: Vehicule) {
         vehiculeDao!!.insertAll(vehicule.toEntity())
     }
-    suspend fun getByIdVehiculesLocalDatabse( id: String): Vehicule? {
+
+    suspend fun getByIdVehiculesLocalDatabse(id: String): Vehicule? {
         if (vehiculeDao!!.getById(id) !== null) {
             return vehiculeDao!!.getById(id).toVehicule()
         } else return null
     }
-    suspend fun updateVehiculesLocalDatabse( vehicule: VehiculeEntity){
+
+    suspend fun updateVehiculesLocalDatabse(vehicule: VehiculeEntity) {
         vehiculeDao!!.update(vehicule)
     }
-    suspend fun deleteVehiculeLocalDatabse( vehicule: VehiculeEntity){
+
+    suspend fun deleteVehiculeLocalDatabse(vehicule: VehiculeEntity) {
         vehiculeDao!!.delete(vehicule)
     }
-    suspend fun getAllClientsLocalDatabase(): List<ClientEntity>{
+
+    suspend fun getAllClientsLocalDatabase(): List<ClientEntity> {
         return clientDao!!.getAll()
     }
-    suspend fun insertClientsLocalDatabase(client: Client){
+
+    suspend fun insertClientsLocalDatabase(client: Client) {
         clientDao!!.insertAll(client.toEntity())
     }
-    suspend fun updateClientsLocalDatabse( client: ClientEntity){
+
+    suspend fun updateClientsLocalDatabse(client: ClientEntity) {
         clientDao!!.update(client)
     }
-    suspend fun deleteClientsLocalDatabse( client: ClientEntity){
+
+    suspend fun deleteClientsLocalDatabse(client: ClientEntity) {
         clientDao!!.delete(client)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun insertChantierLocalDatabase(chantier: Chantier){
+    suspend fun insertChantierLocalDatabase(chantier: Chantier) {
         chantierDao!!.insertAll(chantier.toEntity())
     }
-   suspend fun getAllChantierLocalDatabase(): List<ChantierEntity>{
+
+    suspend fun getAllChantierLocalDatabase(): List<ChantierEntity> {
         return chantierDao!!.getAll()
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getByIdChantierLocalDatabse(id: String): Chantier? {
         if (chantierDao!!.getById(id) !== null) {
             return chantierDao!!.getById(id).toChantier()
         } else return null
     }
-    suspend fun updateChantierLocalDatabse( chantier: ChantierEntity){
+
+    suspend fun updateChantierLocalDatabse(chantier: ChantierEntity) {
         chantierDao!!.update(chantier)
     }
-    suspend fun deleteChantierLocalDatabse( chantier: ChantierEntity){
+
+    suspend fun deleteChantierLocalDatabse(chantier: ChantierEntity) {
         chantierDao!!.delete(chantier)
     }
+
     //requêtes bobinage
-    suspend fun insertBobinageLocalDatabase(bobinage: Bobinage){
+    suspend fun insertBobinageLocalDatabase(bobinage: Bobinage) {
         bobinageDao!!.insertAll(bobinage.toEntity())
     }
-    suspend fun getAllBobinageLocalDatabase(): List<BobinageEntity>{
+
+    suspend fun getAllBobinageLocalDatabase(): List<BobinageEntity> {
         return bobinageDao!!.getAll()
     }
-    suspend fun getByIdBobinageLocalDatabse(id: String) : Bobinage? {
+
+    suspend fun getByIdBobinageLocalDatabse(id: String): Bobinage? {
         try {
             if (bobinageDao!!.getById(id) !== null) {
                 return bobinageDao!!.getById(id).toBobinage()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateBobinageLocalDatabse( bobinage: BobinageEntity){
+
+    suspend fun updateBobinageLocalDatabse(bobinage: BobinageEntity) {
         bobinageDao!!.update(bobinage)
     }
-    suspend fun deleteBobinageLocalDatabse( bobinage: BobinageEntity){
+
+    suspend fun deleteBobinageLocalDatabse(bobinage: BobinageEntity) {
         bobinageDao!!.delete(bobinage)
     }
+
     //dao demontage triphase
-    suspend fun insertDemoTriLocalDatabase(demo: Triphase){
-       demontageTriphaseDao!!.insertAll(demo.toEntity())
+    suspend fun insertDemoTriLocalDatabase(demo: Triphase) {
+        demontageTriphaseDao!!.insertAll(demo.toEntity())
     }
-    suspend fun getAllDemontageTriLocalDatabase(): List<DemontageTriphaseEntity >{
+
+    suspend fun getAllDemontageTriLocalDatabase(): List<DemontageTriphaseEntity> {
         return demontageTriphaseDao!!.getAll()
     }
-    suspend fun getByIdDemoTriLocalDatabse(id: String) : Triphase? {
+
+    suspend fun getByIdDemoTriLocalDatabse(id: String): Triphase? {
         try {
             if (demontageTriphaseDao!!.getById(id) !== null) {
                 return demontageTriphaseDao!!.getById(id).toTriphase()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateDemoTriLocalDatabse( demo: DemontageTriphaseEntity){
+
+    suspend fun updateDemoTriLocalDatabse(demo: DemontageTriphaseEntity) {
         demontageTriphaseDao!!.update(demo)
     }
-    suspend fun deleteDemontageTriphaseLocalDatabse( demo: DemontageTriphaseEntity){
+
+    suspend fun deleteDemontageTriphaseLocalDatabse(demo: DemontageTriphaseEntity) {
         demontageTriphaseDao!!.delete(demo)
     }
 
     // dao demo courant continu
-    suspend fun insertDemoCCLocalDatabase(demo: CourantContinu){
+    suspend fun insertDemoCCLocalDatabase(demo: CourantContinu) {
         demontageCCDao!!.insertAll(demo.toEntity())
     }
-    suspend fun getAllDemontageCCLocalDatabase(): List<DemontageCCEntity >{
+
+    suspend fun getAllDemontageCCLocalDatabase(): List<DemontageCCEntity> {
         return demontageCCDao!!.getAll()
     }
-    suspend fun getByIdDemoCCLocalDatabse(id: String) : CourantContinu? {
+
+    suspend fun getByIdDemoCCLocalDatabse(id: String): CourantContinu? {
         try {
             if (demontageCCDao!!.getById(id) !== null) {
                 return demontageCCDao!!.getById(id).toCContinu()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateDemoCCLocalDatabse( demo: DemontageCCEntity){
+
+    suspend fun updateDemoCCLocalDatabse(demo: DemontageCCEntity) {
         demontageCCDao!!.update(demo)
     }
-    suspend fun deleteDemontageCCLocalDatabse( demo: DemontageCCEntity){
+
+    suspend fun deleteDemontageCCLocalDatabse(demo: DemontageCCEntity) {
         demontageCCDao!!.delete(demo)
     }
+
     //demo pompes
-    suspend fun insertDemoPompeLocalDatabase(demo: DemontagePompe){
+    suspend fun insertDemoPompeLocalDatabase(demo: DemontagePompe) {
         demontagePDao!!.insertAll(demo.toEntity())
     }
-    suspend fun getAllDemontagePompeLocalDatabase(): List<DemoPompeEntity >{
+
+    suspend fun getAllDemontagePompeLocalDatabase(): List<DemoPompeEntity> {
         return demontagePDao!!.getAll()
     }
-    suspend fun getByIdDemoPompeLocalDatabse(id: String) : DemontagePompe? {
+
+    suspend fun getByIdDemoPompeLocalDatabse(id: String): DemontagePompe? {
         try {
             if (demontagePDao!!.getById(id) !== null) {
                 return demontagePDao!!.getById(id).toDemoPompe()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateDemoPompeLocalDatabse( demo: DemoPompeEntity){
+
+    suspend fun updateDemoPompeLocalDatabse(demo: DemoPompeEntity) {
         demontagePDao!!.update(demo)
     }
-    suspend fun deleteDemontagePompeLocalDatabse( demo: DemoPompeEntity){
+
+    suspend fun deleteDemontagePompeLocalDatabse(demo: DemoPompeEntity) {
         demontagePDao!!.delete(demo)
     }
 
     //demo mono
-    suspend fun insertDemoMonoLocalDatabase(demo: DemontageMonophase){
+    suspend fun insertDemoMonoLocalDatabase(demo: DemontageMonophase) {
         demontageMonoDao!!.insertAll(demo.toEntity())
     }
-    suspend fun getAllDemontageMonoLocalDatabase(): List<DemontageMonophaseEntity>{
+
+    suspend fun getAllDemontageMonoLocalDatabase(): List<DemontageMonophaseEntity> {
         return demontageMonoDao!!.getAll()
     }
-    suspend fun getByIdDemoMonoLocalDatabse(id: String) : DemontageMonophase? {
+
+    suspend fun getByIdDemoMonoLocalDatabse(id: String): DemontageMonophase? {
         try {
             if (demontageMonoDao!!.getById(id) !== null) {
                 return demontageMonoDao!!.getById(id).toMonophase()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateDemoMonoLocalDatabse( demo: DemontageMonophaseEntity){
+
+    suspend fun updateDemoMonoLocalDatabse(demo: DemontageMonophaseEntity) {
         demontageMonoDao!!.update(demo)
     }
-    suspend fun deleteDemontageMonoLocalDatabse( demo: DemontageMonophaseEntity){
+
+    suspend fun deleteDemontageMonoLocalDatabse(demo: DemontageMonophaseEntity) {
         demontageMonoDao!!.delete(demo)
     }
+
     //demo Alternateur
-    suspend fun insertDemoAlterLocalDatabase(demo: DemontageAlternateur){
+    suspend fun insertDemoAlterLocalDatabase(demo: DemontageAlternateur) {
         demontageAlterDao!!.insertAll(demo.toEntity())
     }
-    suspend fun getAllDemontageAlterLocalDatabase(): List<DemontageAlternateurEntity>{
+
+    suspend fun getAllDemontageAlterLocalDatabase(): List<DemontageAlternateurEntity> {
         return demontageAlterDao!!.getAll()
     }
-    suspend fun getByIdDemoAlterLocalDatabse(id: String) : DemontageAlternateur? {
+
+    suspend fun getByIdDemoAlterLocalDatabse(id: String): DemontageAlternateur? {
         try {
             if (demontageAlterDao!!.getById(id) !== null) {
                 return demontageAlterDao!!.getById(id).toDemontageAlternateur()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateDemoAlterLocalDatabse( demo: DemontageAlternateurEntity){
+
+    suspend fun updateDemoAlterLocalDatabse(demo: DemontageAlternateurEntity) {
         demontageAlterDao!!.update(demo)
     }
-    suspend fun deleteDemontageAlterLocalDatabse( demo: DemontageAlternateurEntity){
+
+    suspend fun deleteDemontageAlterLocalDatabse(demo: DemontageAlternateurEntity) {
         demontageAlterDao!!.delete(demo)
     }
+
     //demo Rotor
-    suspend fun insertDemoRBLocalDatabase(demo: DemontageRotorBobine){
+    suspend fun insertDemoRBLocalDatabase(demo: DemontageRotorBobine) {
         demontageRBDao!!.insertAll(demo.toEntity())
     }
-    suspend fun getAllDemontageRBLocalDatabase(): List<DemontageRotorBEntity>{
+
+    suspend fun getAllDemontageRBLocalDatabase(): List<DemontageRotorBEntity> {
         return demontageRBDao!!.getAll()
     }
-    suspend fun getByIdDemoRBLocalDatabse(id: String) : DemontageRotorBobine? {
+
+    suspend fun getByIdDemoRBLocalDatabse(id: String): DemontageRotorBobine? {
         try {
             if (demontageRBDao!!.getById(id) !== null) {
                 return demontageRBDao!!.getById(id).toDemoRotorB()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateDemoRBLocalDatabse( demo: DemontageRotorBEntity){
+
+    suspend fun updateDemoRBLocalDatabse(demo: DemontageRotorBEntity) {
         demontageRBDao!!.update(demo)
     }
-    suspend fun deleteDemontageRBLocalDatabse( demo: DemontageRotorBEntity){
+
+    suspend fun deleteDemontageRBLocalDatabse(demo: DemontageRotorBEntity) {
         demontageRBDao!!.delete(demo)
     }
 
     //dao remontage triphase
-    suspend fun insertRemoTriLocalDatabase(remo: RemontageTriphase){
+    suspend fun insertRemoTriLocalDatabase(remo: RemontageTriphase) {
         remontageTriphaseDao!!.insertAll(remo.toEntity())
     }
-    suspend fun getAllRemontageTriLocalDatabase(): List<RemontageTriphaseEntity>{
+
+    suspend fun getAllRemontageTriLocalDatabase(): List<RemontageTriphaseEntity> {
         return remontageTriphaseDao!!.getAll()
     }
-    suspend fun getByIdRemoTriLocalDatabse(id: String) : RemontageTriphase? {
+
+    suspend fun getByIdRemoTriLocalDatabse(id: String): RemontageTriphase? {
         try {
             if (remontageTriphaseDao!!.getById(id) !== null) {
                 return remontageTriphaseDao!!.getById(id).toRTriphase()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateRemoTriLocalDatabse( remo: RemontageTriphaseEntity){
+
+    suspend fun updateRemoTriLocalDatabse(remo: RemontageTriphaseEntity) {
         remontageTriphaseDao!!.update(remo)
     }
-    suspend fun deleteRemontageTriphaseLocalDatabse( remo: RemontageTriphaseEntity){
+
+    suspend fun deleteRemontageTriphaseLocalDatabse(remo: RemontageTriphaseEntity) {
         remontageTriphaseDao!!.delete(remo)
     }
+
     //dao remontage
-    suspend fun insertRemoLocalDatabase(remo: Remontage){
+    suspend fun insertRemoLocalDatabase(remo: Remontage) {
         remontageDao!!.insertAll(remo.toRemoEntity())
     }
-    suspend fun getAllRemontageLocalDatabase(): List<RemontageEntity>{
+
+    suspend fun getAllRemontageLocalDatabase(): List<RemontageEntity> {
         return remontageDao!!.getAll()
     }
-    suspend fun getByIdRemoLocalDatabse(id: String) : Remontage? {
+
+    suspend fun getByIdRemoLocalDatabse(id: String): Remontage? {
         try {
             if (remontageDao!!.getById(id) !== null) {
                 return remontageDao!!.getById(id).toRemo()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateRemoLocalDatabse( remo: RemontageEntity){
+
+    suspend fun updateRemoLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.update(remo)
     }
-    suspend fun deleteRemontageLocalDatabse( remo: RemontageEntity){
+
+    suspend fun deleteRemontageLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.delete(remo)
     }
 
     // dao remo courant continu
-    suspend fun insertRemoCCLocalDatabase(remo: RemontageCourantC){
+    suspend fun insertRemoCCLocalDatabase(remo: RemontageCourantC) {
         remontageCourantCDao!!.insertAll(remo.toEntity())
     }
-    suspend fun getAllRemontageCCLocalDatabase(): List<RemontageCCEntity>{
+
+    suspend fun getAllRemontageCCLocalDatabase(): List<RemontageCCEntity> {
         return remontageCourantCDao!!.getAll()
     }
-    suspend fun getByIdRemoCCLocalDatabse(id: String) : RemontageCourantC? {
+
+    suspend fun getByIdRemoCCLocalDatabse(id: String): RemontageCourantC? {
         try {
             if (remontageCourantCDao!!.getById(id) !== null) {
                 return remontageCourantCDao!!.getById(id).toRCourantC()
             } else return null
-        } catch (e:Error){
-            Log.i("e",e.message!!)
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
             return null
         }
     }
-    suspend fun updateRemoCCLocalDatabse( remo: RemontageCCEntity){
+
+    suspend fun updateRemoCCLocalDatabse(remo: RemontageCCEntity) {
         remontageCourantCDao!!.update(remo)
     }
-    suspend fun deleteRemontageCCLocalDatabse( remo: RemontageCCEntity){
+
+    suspend fun deleteRemontageCCLocalDatabse(remo: RemontageCCEntity) {
         remontageCourantCDao!!.delete(remo)
     }
 }
