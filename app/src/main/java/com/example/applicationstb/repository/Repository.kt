@@ -3189,7 +3189,7 @@ class Repository(var context: Context) {
 
     suspend fun createDb() {
         db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-            //.addMigrations(MIGRATION_20_21, MIGRATION_21_22)
+            .addMigrations(MIGRATION_20_21, MIGRATION_21_22)
             .build()
         chantierDao = db!!.chantierDao()
         bobinageDao = db!!.bobinageDao()
