@@ -78,6 +78,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             viewModelScope.launch(
                                 Dispatchers.IO
                             ) {
+                                getNameURI()
                                 var job = launch {
                                     sendFiche()
                                 }
