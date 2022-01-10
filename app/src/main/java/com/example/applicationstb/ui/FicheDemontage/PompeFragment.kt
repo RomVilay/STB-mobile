@@ -366,6 +366,12 @@ class PompeFragment : Fragment() {
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
+        if (fiche.typeRoulementAvant!!.size > 0) {
+            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant!![0]))
+        }
+        if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
+            refRoul.setText(fiche.refRoulementAvant!![0])
+        }
         var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
         if (fiche.status == 3L) {
             refRoul.isEnabled = false
@@ -374,8 +380,7 @@ class PompeFragment : Fragment() {
         }
         specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
         var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
-            viewModel.selection.value!!.typeRoulementArriere =
-                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+            viewModel.selection.value!!.typeRoulementArriere = removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
             viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
             viewModel.getTime()
             viewModel.localSave()
@@ -483,7 +488,7 @@ class PompeFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeRoulement.selectedItem.toString()
-                if (position > 0) {
+                if (position > 0 && selection !== "") {
                     if (switchRoullements.isChecked) {
                         if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
                             var tab =

@@ -29,9 +29,9 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (typeRoulement.size > 0) {
+        if (typeRoulement.size > 0 ) {
             holder.type.text = typeRoulement[position]
-            if (refRoulement[position].length > 0 && refRoulement[position] !== null) holder.ref.text =
+            if (refRoulement[position].length > 0 && refRoulement[position] !== "") holder.ref.text =
                 refRoulement[position] else holder.ref.text = "N/A"
             holder.suppr.setOnClickListener {
                 var tab = typeRoulement.toMutableList()
