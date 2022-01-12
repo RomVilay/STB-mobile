@@ -77,9 +77,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
 
 
     fun back(view:View){
-        Log.i("INFO",token!!+" "+username!!)
-        val action = FicheChantierDirections.deChantierversAccueil(token!!,username!!)
-        Navigation.findNavController(view).navigate(action)
+        Navigation.findNavController(view).popBackStack()
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun addPhoto(photo: Uri) {
