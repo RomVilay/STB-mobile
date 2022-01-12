@@ -79,16 +79,19 @@ class Accueil : Fragment() {
             "identifiants", Context.MODE_PRIVATE)
         var login = sharedPref?.getString("login","")
         var pwd = sharedPref?.getString("password","")
+        val exit = layout.findViewById<TextView>(R.id.exit)
 
         deco.setOnClickListener{
             val alertDialogBuilder: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.apply {
-                    setPositiveButton("se Déconnecter et quitter.",
+                    setPositiveButton("se Déconnecter ",
                         DialogInterface.OnClickListener { dialog, id ->
+                            sharedPref?.edit {
+                                putString("login","")
+                                putString("password","")
+                            }
                             viewModel.toDeconnexion(layout)
-                            
-                            System.exit(0)
                         })
                     setNegativeButton("Rester connecté",
                         DialogInterface.OnClickListener { dialog, id ->
@@ -244,6 +247,10 @@ class Accueil : Fragment() {
                 list.visibility = View.GONE
             }
         }
+        exit.setOnClickListener {
+            activity?.finish()
+        }
+
         return layout
     }
 

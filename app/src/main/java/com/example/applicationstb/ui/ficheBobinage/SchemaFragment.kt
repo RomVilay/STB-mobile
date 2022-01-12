@@ -1,5 +1,6 @@
 package com.example.applicationstb.ui.ficheBobinage
 
+import android.animation.Animator
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
