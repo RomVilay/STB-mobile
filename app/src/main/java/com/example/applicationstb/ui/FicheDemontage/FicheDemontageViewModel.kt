@@ -102,8 +102,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun retour(view: View) {
-        var action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
-        Navigation.findNavController(view).navigate(action)
+        Navigation.findNavController(view).popBackStack()
+        /*var action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
+        Navigation.findNavController(view).navigate(action)*/
     }
 
     fun getTime() {

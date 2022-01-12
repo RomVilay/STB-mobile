@@ -293,8 +293,9 @@ class TriphaseFragment : Fragment() {
         }
         retour.setOnClickListener {
             if (viewModel.selection.value?.status == 3L) {
-                activity?.onBackPressed()
+            activity?.finish()
             } else {
+                Log.i("INFO","retour")
                 viewModel.retour(layout)
             }
         }
