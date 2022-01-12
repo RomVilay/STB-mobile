@@ -14,8 +14,6 @@ class SchemaViewModel : ViewModel() {
         schemaUri.value = uri
     }
     fun back(view: View){
-        fun back(view: View){
-            Navigation.findNavController(view).navigate(R.id.de_fscreen_vers_fb)
-        }
+            Navigation.findNavController(view).popBackStack()
     }
 }
