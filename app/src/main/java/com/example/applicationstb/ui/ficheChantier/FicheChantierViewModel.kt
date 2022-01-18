@@ -189,21 +189,16 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun localSave(view:View){
-        Log.i("INFO","local save")
-        Log.i("INFO","pictures ${chantier.value!!.photos!!.size}")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
-            //Log.i("INFO","${ch}")
             if (ch !== null) {
                 repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
                 val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                 mySnackbar.show()
-                //Log.i("INFO","patch ${chantier.value!!._id}")
             } else {
                 val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                 mySnackbar.show()
                 repository.insertChantierLocalDatabase(chantier.value!!)
-                //Log.i("INFO","insert ${chantier.value!!._id}")
             }
         }
     }

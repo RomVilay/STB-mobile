@@ -127,9 +127,10 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     fun sendFiche() {
         if (isOnline(context) == true) {
             viewModelScope.launch(Dispatchers.IO) {
-                CoroutineScope(Dispatchers.IO).launch {
+                var job = CoroutineScope(Dispatchers.IO).launch {
                     getNameURI()
                 }
+                job.join()
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
                 if (listCh.size > 0) {
@@ -141,8 +142,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
+                                    //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(ch.numFiche!!)) {
+                                            Log.i("INFO", "fichier à upload : ${name}")
+                                            //var test = getPhotoFile(name)
                                             var job =
                                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                     getNameURI()
@@ -160,6 +164,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                             name
                                                         )
                                                         val to = File(dir, imageName.value!!.name!!)
+                                                        Log.i(
+                                                            "INFO",
+                                                            from.exists()
+                                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                        )
                                                         if (from.exists()) from.renameTo(to)
                                                         sendPhoto(to)
                                                         iter.set(imageName.value!!.name!!)
@@ -176,6 +185,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             }
                             ch.photos = photos?.toTypedArray()
+                            //Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -208,6 +218,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 job4.join()
 
                             }
+                            //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -225,6 +236,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                 ch.signatureTech!!
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
+                                            Log.i(
+                                                "INFO","signature tech"+
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath}"
+                                            )
                                             if (from.exists()) from.renameTo(to)
                                             ch.signatureTech = imageName.value!!.name
                                             sendPhoto(to)
@@ -234,7 +250,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 job4.join()
                             }
-                            repository.updateChantierLocalDatabse(ch.toEntity())
                         }
                         val resp = repository.patchChantier(
                             user!!.token!!,
