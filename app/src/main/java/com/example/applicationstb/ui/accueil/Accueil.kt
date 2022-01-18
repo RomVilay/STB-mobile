@@ -19,6 +19,7 @@ import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
+import androidx.navigation.findNavController
 import com.example.applicationstb.R
 import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar

@@ -416,11 +416,7 @@ class RotorBobineFragment : Fragment() {
             alertDialog?.show()
         }
         retour.setOnClickListener {
-            if (viewModel.selection.value?.status == 3L){
-                activity?.onBackPressed()
-            } else {
-                viewModel.retour(layout)
-            }
+            viewModel.retour(layout)
         }
         // Inflate the layout for this fragment
         val fmanager = childFragmentManager

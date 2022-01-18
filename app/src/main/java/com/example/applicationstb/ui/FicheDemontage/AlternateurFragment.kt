@@ -415,11 +415,7 @@ class AlternateurFragment : Fragment() {
         }
 
         retour.setOnClickListener {
-            if (viewModel.selection.value?.status == 3L){
-                activity?.onBackPressed()
-            } else {
-                viewModel.back(layout)
-            }
+            viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
             fiche.status = 2L

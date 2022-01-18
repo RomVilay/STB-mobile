@@ -120,11 +120,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
     fun localSave() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (selection.value!!.status!! < 3L) {
                 if (selection.value!!.typeFicheDemontage == 1) {
                     var fiche = selection.value!! as DemontagePompe
                     if (fiche.sensRotation == null) fiche.sensRotation = false
-                    fiche.status = 2L
                     var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
                     if (f !== null) {
                         repository.updateDemoPompeLocalDatabse(fiche.toEntity())
@@ -134,7 +132,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 if (selection.value!!.typeFicheDemontage == 2) {
                     var fiche = selection.value!! as DemontageMonophase
-                    fiche.status = 2L
                     if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                     if (fiche.accouplement == null) fiche.accouplement = false
                     if (fiche.clavette == null) fiche.clavette = false
@@ -148,7 +145,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 if (selection.value!!.typeFicheDemontage == 3) {
                     var fiche = selection.value!! as DemontageAlternateur
-                    fiche.status = 2L
                     if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                     if (fiche.accouplement == null) fiche.accouplement = false
                     if (fiche.clavette == null) fiche.clavette = false
@@ -163,7 +159,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 if (selection.value!!.typeFicheDemontage == 4) {
                     var fiche = selection.value!! as DemontageRotorBobine
-                    fiche.status = 2L
                     if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                     if (fiche.accouplement == null) fiche.accouplement = false
                     if (fiche.clavette == null) fiche.clavette = false
@@ -178,7 +173,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 if (selection.value!!.typeFicheDemontage == 5) {
                     var fiche = selection.value!! as CourantContinu
-                    fiche.status = 2L
                     if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                     if (fiche.accouplement == null) fiche.accouplement = false
                     if (fiche.clavette == null) fiche.clavette = false
@@ -194,7 +188,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (selection.value!!.typeFicheDemontage == 6) {
 
                     var fiche = selection.value!! as Triphase
-                    fiche.status = 2L
                     if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                     if (fiche.accouplement == null) fiche.accouplement = false
                     if (fiche.clavette == null) fiche.clavette = false
@@ -207,7 +200,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                     }
                 }
-            }
+
         }
     }
 
@@ -773,8 +766,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     }
                 }
                 6 -> {
-                    var fiche: DemontageTriphaseEntity =
-                        repository.getByIdDemoTriLocalDatabse(selection.value!!._id)!!.toEntity()
+                    var fiche: DemontageTriphaseEntity = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)!!.toEntity()
                     if (isOnline(context) == true) {
                         CoroutineScope(Dispatchers.IO).launch {
                             getNameURI()

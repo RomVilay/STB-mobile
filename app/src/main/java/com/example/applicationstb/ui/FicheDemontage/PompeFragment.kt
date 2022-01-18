@@ -691,11 +691,7 @@ class PompeFragment : Fragment() {
 
 
         retour.setOnClickListener {
-            if (viewModel.selection.value?.status == 3L){
-                activity?.onBackPressed()
-            } else {
-                viewModel.retour(layout)
-            }
+            viewModel.retour(layout)
         }
         enregistrer.setOnClickListener {
             viewModel.getTime()

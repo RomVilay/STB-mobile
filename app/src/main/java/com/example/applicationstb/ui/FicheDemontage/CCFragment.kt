@@ -87,11 +87,7 @@ class CCFragment : Fragment() {
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         retour.setOnClickListener {
-            if (viewModel.selection.value?.status == 3L){
-                activity?.onBackPressed()
-            } else {
-                viewModel.back(layout)
-            }
+            viewModel.retour(layout)
         }
         var fiche = viewModel.selection.value!! as CourantContinu
             if(fiche.isolationMasseInduit !== null )isopmu.setText(fiche.isolationMasseInduit.toString())
