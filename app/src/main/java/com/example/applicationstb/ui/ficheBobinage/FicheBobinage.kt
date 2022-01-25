@@ -1,8 +1,11 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.Manifest
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,14 +26,19 @@ import androidx.core.view.marginTop
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -250,35 +258,49 @@ class FicheBobinage : Fragment() {
             }
         }
         addschema.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            Log.i("INFO",test.toString())
-            if (test == false) {
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
-                // Ensure that there's a camera activity to handle the intent
-                cameraIntent.resolveActivity(requireActivity().packageManager).also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException ) {
-                        // Error occurred while creating the File
-                        Log.i("INFO","error while creating file: "+ ex)
-                        null
+            runBlocking {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    // var job = CoroutineScope(Dispatchers.IO).launch {
+                    if (viewModel.isOnline(requireContext())) {
+                        viewModel.getNameURI()
                     }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                            requireContext(),
-                            "com.example.applicationstb.fileprovider",
-                            it
+                    //}
+                    //job.join()
+                    var test = ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) == PackageManager.PERMISSION_GRANTED
+                    if (!test) {
+                        requestPermissions(
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ), 1
                         )
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
-                        Log.i("INFO",currentPhotoPath)
+                    }
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                        // Ensure that there's a camera activity to handle the intent
+                        cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                            // Create the File where the photo should go
+                            val photoFile: File? = try {
+                                createImageFile()
+                            } catch (ex: IOException) {
+                                // Error occurred while creating the File
+                                Log.i("INFO", "error while creating file")
+                                null
+                            }
+                            // Continue only if the File was successfully created
+                            photoFile?.also {
+                                val photoURI: Uri = FileProvider.getUriForFile(
+                                    requireContext(),
+                                    "com.example.applicationstb.fileprovider",
+                                    it
+                                )
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                            }
+                        }
                     }
                 }
             }
@@ -529,22 +551,92 @@ class FicheBobinage : Fragment() {
             sendBroad (mediaScanIntent)
         }
     }*/
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        /*if (requestCode == PHOTO_RESULT) {
-            val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            val uri = context?.let { photo.saveImage(it.applicationContext) }
-            if (uri != null) {
-                viewModel.addSchema(0,uri)
+        val dir =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (resultCode < 0 || resultCode > 0) {
+            if (requestCode == PHOTO_RESULT) {
+                val photo: Bitmap = data?.extras?.get("data") as Bitmap
+                val uri = context?.let { photo.saveImage(it.applicationContext) }
+                if (uri != null) {
+                    Log.i("INFO", "uri:" + uri)
+                    viewModel.addPhoto(uri)
+                    viewModel.galleryAddPic(uri.path)
+                    /*var picture = File(uri.path)
+                    try {
+                        viewModel.sendPhoto(data?.extras?.get("data") as File)
+                    } catch (e: java.lang.Exception) {
+                        Log.e("EXCEPTION",e.message!!)
+                    }*/
+                }
+                Log.i("INFO", uri.toString())
             }
-            Log.i("INFO",uri.toString())
-        }*/
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            viewModel.addSchema(currentPhotoPath)
-            //galleryAddPic()
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                //val photo: Bitmap = data?.extras?.get("data") as Bitmap
+                //imageView.setImageBitmap(photo)
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                if (dir.exists()) {
+                    if (viewModel.isOnline(requireContext())) {
+                        val from = File(
+                            dir,
+                            currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")
+                        )
+                        val to = File(dir, viewModel.imageName.value!!.name)
+                        if (from.exists()) from.renameTo(to)
+                        try {
+                            viewModel.addPhoto(Uri.parse(to.absolutePath))
+                            viewModel.galleryAddPic(to.absolutePath)
+                            viewModel.sendPhoto(to)
+                            viewModel.quickSave()
+                        } catch (e: java.lang.Exception) {
+                            Log.e("EXCEPTION", e.message!!)
+                        }
+                    } else {
+                        viewModel.addPhoto(Uri.parse(currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")))
+                        viewModel.galleryAddPic(currentPhotoPath)
+                        viewModel.quickSave()
+                    }
+                }
+                //viewModel.sendPhoto(data?.extras?.get("data") as File)
+            }
+        }
+    }
+
+
+    fun Bitmap.saveImage(context: Context): Uri? {
+        //Log.i("INFO",viewModel.imageName.value.toString())
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/test_pictures")
+        values.put(MediaStore.Images.Media.IS_PENDING, true)
+        values.put(
+            MediaStore.Images.Media.DISPLAY_NAME,
+            viewModel.imageName.value!!.name.toString()
+        )
+
+        val uri: Uri? =
+            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        if (uri != null) {
+            saveImageToStream(this, context.contentResolver.openOutputStream(uri))
+            values.put(MediaStore.Images.Media.IS_PENDING, false)
+            context.contentResolver.update(uri, values, null, null)
+            Log.i("INFO", uri.toString())
+            return uri
+        }
+        return null
+    }
+
+    fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

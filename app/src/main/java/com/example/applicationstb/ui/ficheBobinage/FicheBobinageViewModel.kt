@@ -17,13 +17,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
-import com.example.applicationstb.repository.BobinageResponse
-import com.example.applicationstb.repository.ChantierResponse
-import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,6 +39,8 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var username: String? = null;
     var context = getApplication<Application>().applicationContext
     var start = MutableLiveData<Date>()
+    var image =MutableLiveData<File>()
+    var imageName = MutableLiveData<URLPhotoResponse2>()
 
     init {
         viewModelScope.launch(Dispatchers.IO){
@@ -93,7 +92,21 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         list.add(schema.toString())
         schemas.value = list
     }*/
-
+    fun addPhoto(photo: Uri) {
+        Log.i("INFO", "add photo")
+        var list = bobinage?.value?.photos?.toMutableList()
+        if (list != null) {
+            if (isOnline(context)) {
+                list.add(imageName.value!!.name!!)
+            } else {
+                //Log.i("INFO", photo.path.toString())
+                list.add(photo.path.toString())
+            }
+        }
+        bobinage.value?.photos = list?.toTypedArray()
+        photos.value = list!!
+        quickSave()
+    }
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { Math.sqrt(it.diametre) * (Math.PI / 4) * it.nbBrins }
         //Log.i("info", tab.toString())
@@ -239,6 +252,41 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         return false
+    }
+    suspend fun getNameURI() = runBlocking {
+        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val resp1 = repository.getURLToUploadPhoto(token!!)
+            withContext(Dispatchers.Main){
+                if (resp1.isSuccessful) {
+                    imageName.postValue(resp1.body())
+                    Log.i("INFO",resp1.body()?.name!!)
+                } else {
+                    exceptionHandler
+                }
+            }
+        }
+        job.join()
+    }
+    fun sendPhoto(photo:File){
+        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+        var tab = s.split("&").toMutableList()
+        tab.forEach {
+            Log.i("INFO",it)
+        }
+        tab[1] = tab[1].replace("%2F","/")
+        repository.uploadPhoto(token!!,imageName.value!!.name!!,tab.toList(), photo, object: Callback<URLPhotoResponse> {
+            override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
+                Log.i("INFO", response.code().toString()+" - "+response.message())
+                Log.i("INFO","envoyé ${call.request().url()}")
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                Log.i("INFO",t.message!!)
+            }
+        })
+    }
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
     }
     fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->

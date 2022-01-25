@@ -169,7 +169,6 @@ class FicheChantier : Fragment() {
         }
 
         btnPhoto.setOnClickListener {
-            Log.i("INFO",viewModel.chantier.value?.numFiche!!)
             runBlocking {
                 lifecycleScope.launch(Dispatchers.IO) {
                     // var job = CoroutineScope(Dispatchers.IO).launch {
