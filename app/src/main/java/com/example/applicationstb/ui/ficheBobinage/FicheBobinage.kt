@@ -158,6 +158,7 @@ class FicheBobinage : Fragment() {
                 viewModel.start.value = Date()
                 var bobinage = viewModel.listeBobinage.find { it.numFiche == spinner.selectedItem }
                 viewModel.bobinage.value = bobinage
+                viewModel.bobinage.value!!.status = 2
                 viewModel.sections.value = bobinage?.sectionsFils
                 viewModel.photos.value = bobinage?.photos!!.toMutableList()
                 if (bobinage != null) {
