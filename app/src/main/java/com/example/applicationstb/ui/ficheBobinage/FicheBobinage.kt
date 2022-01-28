@@ -121,7 +121,7 @@ class FicheBobinage : Fragment() {
         var enrg = layout.findViewById<Button>(R.id.enregistrer)
         var quit = layout.findViewById<Button>(R.id.quit)
         var term = layout.findViewById<Button>(R.id.termB)
-        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         if (activity?.let { ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.CAMERA) }
                 == PackageManager.PERMISSION_DENIED)
@@ -137,7 +137,6 @@ class FicheBobinage : Fragment() {
         schemas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         schemas.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
-           
             if (viewModel.photos.value !== null) {
                 sAdapter.update(viewModel.photos.value!!)
                 if (viewModel.photos.value?.size == 0) {
@@ -268,7 +267,7 @@ class FicheBobinage : Fragment() {
                     //job.join()
                     var test = ActivityCompat.checkSelfPermission(
                         requireContext(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                     ) == PackageManager.PERMISSION_GRANTED
                     if (!test) {
                         requestPermissions(
@@ -400,11 +399,11 @@ class FicheBobinage : Fragment() {
             }
         }
         courant.doAfterTextChanged {
-            if (courant.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.courant = courant.text.toString().replace(",",".").toFloat()
+            if (courant.text.isNotEmpty() && courant.text.matches(regexNombres)) viewModel.bobinage.value!!.courant = courant.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         vitesse.doAfterTextChanged {
-            if (vitesse.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().replace(",",".").toFloat()
+            if (vitesse.text.isNotEmpty() && vitesse.text.matches(regexNombres)) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         type.doAfterTextChanged {
@@ -412,15 +411,15 @@ class FicheBobinage : Fragment() {
             viewModel.quickSave()
         }
         phases.doAfterTextChanged {
-            if (phases.text.isNotEmpty() && marque.text.matches(regexInt)) viewModel.bobinage.value!!.phases = phases.text.toString().toLong()
+            if (phases.text.isNotEmpty() && phases.text.matches(regexInt)) viewModel.bobinage.value!!.phases = phases.text.toString().toLong()
             viewModel.quickSave()
         }
         frequence.doAfterTextChanged {
-            if (frequence.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.frequences = frequence.text.toString().replace(",",".").toFloat()
+            if (frequence.text.isNotEmpty() && frequence.text.matches(regexNombres)) viewModel.bobinage.value!!.frequences = frequence.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         puissance.doAfterTextChanged {
-            if (puissance.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.puissance = puissance.text.toString().replace(",",".").toFloat()
+            if (puissance.text.isNotEmpty() && puissance.text.matches(regexNombres)) viewModel.bobinage.value!!.puissance = puissance.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         switch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -428,51 +427,53 @@ class FicheBobinage : Fragment() {
             viewModel.quickSave()
         }
         tension.doAfterTextChanged {
-            if (tension.text.isNotEmpty() && marque.text.matches(regexInt)) viewModel.bobinage.value!!.tension = tension.text.toString().toLong()
+            if (tension.text.isNotEmpty() ) viewModel.bobinage.value!!.tension = tension.text.toString().toLong()
+            Log.i("info","val tension ${viewModel.bobinage.value!!.tension}")
+            viewModel.quickSave()
         }
 
         spire.doAfterTextChanged {
-            if (spire.text.isNotEmpty() && marque.text.matches(regexInt)) viewModel.bobinage.value!!.nbSpires = spire.text.toString().toLong()
+            if (spire.text.isNotEmpty() && spire.text.matches(regexInt)) viewModel.bobinage.value!!.nbSpires = spire.text.toString().toLong()
             viewModel.quickSave()
         }
         poids.doAfterTextChanged {
-            if (poids.text.isNotEmpty()  && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.poids = poids.text.toString().replace(",",".").toFloat()
+            if (poids.text.isNotEmpty()  && poids.text.matches(regexNombres)) viewModel.bobinage.value!!.poids = poids.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         RU.doAfterTextChanged {
-            if(RU.text.isNotEmpty()  && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceU = RU.text.toString().replace(",",".").toFloat()
+            if(RU.text.isNotEmpty()  && RU.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceU = RU.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         RV.doAfterTextChanged {
-            if(RV.text.isNotEmpty()  && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceV = RV.text.toString().replace(",",".").toFloat()
+            if(RV.text.isNotEmpty()  && RV.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceV = RV.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         RW.doAfterTextChanged {
-            if (RW.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceW = RW.text.toString().replace(",",".").toFloat()
+            if (RW.text.isNotEmpty() && RW.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceW = RW.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         IU.doAfterTextChanged {
-            if (IU.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUT = IU.text.toString().replace(",",".").toFloat()
+            if (IU.text.isNotEmpty() && IU.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUT = IU.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         IV.doAfterTextChanged {
-             if (IV.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVT = IV.text.toString().replace(",",".").toFloat()
+             if (IV.text.isNotEmpty() && IV.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVT = IV.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
         IW.doAfterTextChanged {
-            if (IW.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementWT = IW.text.toString().replace(",",".").toFloat()
+            if (IW.text.isNotEmpty() && IW.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementWT = IW.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
-         IIU.doAfterTextChanged {
-             if (IIU.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUV =  IIU.text.toString().replace(",",".").toFloat()
+        IIU.doAfterTextChanged {
+             if (IIU.text.isNotEmpty() && IIU.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUV =  IIU.text.toString().replace(",",".").toFloat()
              viewModel.quickSave()
          }
         IIV.doAfterTextChanged {
-            if (IIV.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUW =   IIV.text.toString().replace(",",".").toFloat()
+            if (IIV.text.isNotEmpty() && IIV.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUW =   IIV.text.toString().replace(",",".").toFloat()
             viewModel.quickSave()
         }
-         IIW.doAfterTextChanged {
-             if (IIW.text.isNotEmpty() && marque.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVW =  IIW.text.toString().replace(",",".").toFloat()
+        IIW.doAfterTextChanged {
+             if (IIW.text.isNotEmpty() && IIW.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVW =  IIW.text.toString().replace(",",".").toFloat()
              viewModel.quickSave()
          }
         obs.doAfterTextChanged {
@@ -490,15 +491,12 @@ class FicheBobinage : Fragment() {
             viewModel.bobinage.value!!.status = 2L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
-            Log.i("INFO","duree: ${viewModel.bobinage.value!!.dureeTotale}")
             viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
-
         term.setOnClickListener {
             viewModel.bobinage.value!!.status = 3L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
-            Log.i("INFO","duree: ${viewModel.bobinage.value!!.dureeTotale}")
             viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
         }
         return layout
@@ -510,47 +508,60 @@ class FicheBobinage : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @Throws(IOException::class)
     private fun createImageFile(): File {
+        //  Log.i("INFO","nom utilisé"+viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"))
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         if (storageDir.exists()) {
-            return File.createTempFile(
-                viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
-            ).apply {
-                // Save a file: path for use with ACTION_VIEW intents
-                currentPhotoPath = absolutePath
-                schemas.visibility = View.VISIBLE
+            if (viewModel.isOnline(requireContext())) {
+                return File.createTempFile(
+                    viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                    Log.i("INFO", currentPhotoPath)
+                }
+            } else {
+                return File.createTempFile(
+                    viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                }
             }
         } else {
             makeFolder()
-            return File.createTempFile(
-                viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
-            ).apply {
-                // Save a file: path for use with ACTION_VIEW intents
-                currentPhotoPath = absolutePath
-                schemas.visibility = View.VISIBLE
+            if (viewModel.isOnline(requireContext())) {
+                return File.createTempFile(
+                    viewModel.imageName.value?.name.toString().removeSuffix(".jpg"),/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                    Log.i("INFO", currentPhotoPath)
+                }
+            } else {
+                return File.createTempFile(
+                    viewModel.bobinage.value!!.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+                ).apply {
+                    // Save a file: path for use with ACTION_VIEW intents
+                    currentPhotoPath = absolutePath
+                    Log.i("INFO", "local photo path:" + currentPhotoPath)
+                }
             }
         }
     }
 
-    fun makeFolder(){
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
-        storageDir.mkdir()
-    }
-
-    /*private fun galleryAddPic() {
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-            val f = File(currentPhotoPath)
-            mediaScanIntent.data = Uri.fromFile(f)
-            sendBroad (mediaScanIntent)
-        }
-    }*/
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -606,6 +617,12 @@ class FicheBobinage : Fragment() {
     }
 
 
+    fun makeFolder() {
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        storageDir.mkdir()
+    }
+
     fun Bitmap.saveImage(context: Context): Uri? {
         //Log.i("INFO",viewModel.imageName.value.toString())
         val values = ContentValues()
@@ -628,6 +645,7 @@ class FicheBobinage : Fragment() {
         }
         return null
     }
+
 
     fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
         if (outputStream != null) {

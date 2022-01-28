@@ -3091,7 +3091,7 @@ class Repository(var context: Context) {
                 bobinage.observations
             } else "",
             bobinage.poids,
-            0,
+            bobinage.tension,
             bobinage.dureeTotale,
             bobinage.photos
         )
