@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
+import com.example.applicationstb.model.Section
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -89,7 +90,15 @@ class FicheBobinage : Fragment() {
         var dates = layout.findViewById<LinearLayout>(R.id.dates)
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
         var details = layout.findViewById<TextView>(R.id.titreDetails)
-        val adapter = FillAdapter(viewModel.sections!!.value!!)
+        var som = layout.findViewById<TextView>(R.id.somme)
+        val adapter = FillAdapter(viewModel.sections!!.value!!, {diametre,nb, position ->
+            viewModel.sections.value?.set(position, Section(nb,diametre))
+            var s = viewModel.somme(viewModel.sections.value!!)
+            som.setText(s.toString())
+            Log.i("info","nbBrins "+ nb)
+            viewModel.quickSave()
+
+        })
         val sAdapter = schemaAdapter(viewModel.photos.value!! ,{ item ->
             viewModel.setSchema(item)
             viewModel.fullScreen(
@@ -116,7 +125,6 @@ class FicheBobinage : Fragment() {
         var addschema = layout.findViewById<Button>(R.id.addschema)
         var tension = layout.findViewById<EditText>(R.id.tension)
         var obs = layout.findViewById<EditText>(R.id.observations)
-        var som = layout.findViewById<TextView>(R.id.somme)
         var spire = layout.findViewById<EditText>(R.id.spire)
         var enrg = layout.findViewById<Button>(R.id.enregistrer)
         var quit = layout.findViewById<Button>(R.id.quit)

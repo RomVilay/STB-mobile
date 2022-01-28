@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/fragment_rotor_bobine.xml" value="0.16769743101807802" />
         <entry key="app/src/main/res/layout/fragment_triphase.xml" value="0.335" />
         <entry key="app/src/main/res/layout/infos_roulement.xml" value="0.1528846153846154" />
+        <entry key="app/src/main/res/layout/row.xml" value="0.25" />
         <entry key="app/src/main/res/layout/schema_fragment.xml" value="0.14775641025641026" />
       </map>
     </option>

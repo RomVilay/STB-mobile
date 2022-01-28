@@ -5,20 +5,22 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TextView
+    <EditText
         android:id="@+id/dia"
         android:layout_width="214dp"
         android:layout_height="45dp"
         android:background="@drawable/cell"
         android:gravity="center"
+        android:inputType="number|text"
         android:textSize="20sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/br"
         android:layout_width="214dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/cell"
         android:gravity="center"
+        android:inputType="number|text"
         android:textSize="20sp" />
 </LinearLayout>
