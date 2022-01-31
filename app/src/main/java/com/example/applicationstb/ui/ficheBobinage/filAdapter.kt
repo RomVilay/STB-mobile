@@ -33,26 +33,24 @@ class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, I
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.diametre.setText(list[position].diametre.toString())
         holder.nbBrins.setText(list[position].nbBrins.toString())
-        holder.diametre.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
+        /*holder.diametre.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {*/
                 holder.diametre.doAfterTextChanged {
                     if (holder.diametre.text.toString().matches(regexNombres)) callback(
                         holder.diametre.text.toString().toDouble(),
                         list[position].nbBrins,
                         position
                     )
+                /*}
+            }*/
+        }
+                holder.nbBrins.doAfterTextChanged {
+                    if (holder.nbBrins.text.toString().matches(regexNombres)) callback(
+                        list[position].diametre,
+                        holder.nbBrins.text.toString().toLong(),
+                        position
+                    )
                 }
-            }
-        }
-        holder.nbBrins.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                if (holder.nbBrins.text.toString().matches(regexNombres)) callback(
-                    list[position].diametre,
-                    holder.nbBrins.text.toString().toLong(),
-                    position
-                )
-            }
-        }
 
     }
 
