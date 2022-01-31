@@ -64,7 +64,7 @@
         android:fillViewport="true"
         android:fitsSystemWindows="false"
         android:scrollY="30dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -293,12 +293,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
                     android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
                     android:background="@drawable/round_textview_full_white"
                     android:ems="7"
                     android:gravity="center"
                     android:hint="tensions"
-                    android:inputType="numberSigned|number"
+                    android:inputType="text"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/dates"
                     app:layout_constraintStart_toEndOf="@+id/dates"
@@ -606,7 +605,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="numberSigned|number|text" />
+                    android:inputType="numberSigned|text" />
 
                 <TextView
                     android:id="@+id/Iintensité"
