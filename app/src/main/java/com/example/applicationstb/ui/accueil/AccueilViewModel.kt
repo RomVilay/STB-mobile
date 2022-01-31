@@ -979,7 +979,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                     Log.i(
                         "INFO",
-                        " nb de chantier :${chantiers.size} - nb bobinages : ${bobinages.size}"
+                        " nb de chantier :${resp.data?.filter { it.type == 1L }!!.size} - nb bobinages : ${resp.data?.filter { it.type == 4L }!!.size}"
                     )
                 } else {
                     Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
