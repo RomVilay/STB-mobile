@@ -467,11 +467,11 @@ class BodyDemontageCC(
     var typeSondes: String?,
     var equilibrage: Boolean?,
     var peinture: String?,
-    var isolationMasseInduit: Float?,
-    var isolationMassePolesPrincipaux: Float?,
-    var isolationMassePolesAuxilliaires: Float?,
-    var isolationMassePolesCompensatoires: Float?,
-    var isolationMassePorteBalais: Float?,
+    var isolementMasseInduit: Float?,
+    var isolementMassePolesPrincipaux: Float?,
+    var isolementMassePolesAuxilliaires: Float?,
+    var isolementMassePolesCompensatoires: Float?,
+    var isolementMassePorteBalais: Float?,
     var resistanceInduit: Float?,
     var resistancePP: Float?,
     var resistancePA: Float?,
@@ -599,11 +599,11 @@ class BodyDemontageCC(
         parcel.writeString(typeSondes!!)
         parcel.writeBoolean(equilibrage!!)
         parcel.writeString(peinture!!)
-        parcel.writeFloat(isolationMasseInduit!!)
-        parcel.writeFloat(isolationMassePolesPrincipaux!!)
-        parcel.writeFloat(isolationMassePolesAuxilliaires!!)
-        parcel.writeFloat(isolationMassePolesCompensatoires!!)
-        parcel.writeFloat(isolationMassePorteBalais!!)
+        parcel.writeFloat(isolementMasseInduit!!)
+        parcel.writeFloat(isolementMassePolesPrincipaux!!)
+        parcel.writeFloat(isolementMassePolesAuxilliaires!!)
+        parcel.writeFloat(isolementMassePolesCompensatoires!!)
+        parcel.writeFloat(isolementMassePorteBalais!!)
         parcel.writeFloat(resistanceInduit!!)
         parcel.writeFloat(resistancePP!!)
         parcel.writeFloat(resistancePA!!)
@@ -2510,11 +2510,11 @@ class Repository(var context: Context) {
             fiche.typeSondes,
             fiche.equilibrage,
             fiche.peinture,
-            fiche.isolationMasseInduit,
-            fiche.isolationMassePolesPrincipaux,
-            fiche.isolationMassePolesAuxilliaires,
-            fiche.isolationMassePolesCompensatoires,
-            fiche.isolationMassePorteBalais,
+            fiche.isolementMasseInduit,
+            fiche.isolementMassePolesPrincipaux,
+            fiche.isolementMassePolesAuxilliaires,
+            fiche.isolementMassePolesCompensatoires,
+            fiche.isolementMassePorteBalais,
             fiche.resistanceInduit,
             fiche.resistancePP,
             fiche.resistancePA,
