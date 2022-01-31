@@ -205,32 +205,101 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view: View){
-        if (isOnline(context)){
-            val resp = repository.patchChantier(token!!, chantier.value!!._id, chantier!!.value!!, object: Callback<ChantierResponse> {
-                override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
-                    if ( response.code() == 200 ) {
-                        val resp = response.body()
-                        if (resp != null) {
-                            val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
-                            mySnackbar.show()
-                           // Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
+        if (isOnline(context)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                getNameURI()
+            }
+            viewModelScope.launch(Dispatchers.IO) {
+                var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
+                var photos = chantier.value?.photos?.toMutableList()
+                var iter = photos?.listIterator()
+                while (iter?.hasNext() == true) {
+                    var name = iter.next()
+                    if (name !== "") {
+                        runBlocking {
+                            if (name.contains(ch?.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            Log.i(
+                                                "INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                            sendPhoto(to)
+                                            iter.set(imageName.value!!.name!!)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
                         }
-                    } else {
-                        val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
-                        mySnackbar.show()
-                        Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                    }
+                    if (name == "") {
+                        iter.remove()
                     }
                 }
-                override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
-                    val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
-                    mySnackbar.show()
-                    Log.e("Error","${t.stackTraceToString()}")
-                    Log.e("Error","erreur ${t.message}")
-                }
-            })
-        } else {
-            localSave(view)
-        }
+                ch?.photos = photos?.toTypedArray()
+                ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
+                chantier.postValue(ch!!)
+                val resp = repository.patchChantier(
+                    token!!,
+                    chantier.value!!._id,
+                    ch!!,
+                    object : Callback<ChantierResponse> {
+                        override fun onResponse(
+                            call: Call<ChantierResponse>,
+                            response: Response<ChantierResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    // Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
+                                }
+                            } else {
+                                val mySnackbar =
+                                    Snackbar.make(view, "erreur lors de l'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                            val mySnackbar =
+                                Snackbar.make(view, "erreur lors de l'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.e("Error", "${t.stackTraceToString()}")
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
+            }
+            } else {
+                localSave(view)
+            }
+
 
     }
     @RequiresApi(Build.VERSION_CODES.M)
