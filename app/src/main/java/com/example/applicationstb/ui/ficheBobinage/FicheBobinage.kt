@@ -105,7 +105,8 @@ class FicheBobinage : Fragment() {
             som.setText(s.toString())
             Log.i("info", "nbBrins " + nb)
             viewModel.quickSave()
-
+        }, {position ->
+            viewModel.quickSave()
         })
         val sAdapter = schemaAdapter(viewModel.photos.value!!, { item ->
             viewModel.setSchema(item)
@@ -169,6 +170,7 @@ class FicheBobinage : Fragment() {
         recycler.adapter = adapter
         viewModel.sections.observe(viewLifecycleOwner, {
             adapter.update(it)
+            Log.i("Info","liste section ${viewModel.sections.value!!.size}")
         })
 
         schemas = layout.findViewById(R.id.schemas)
@@ -316,6 +318,8 @@ class FicheBobinage : Fragment() {
                 var s = viewModel.somme(viewModel.sections.value!!)
                 som.setText(s.toString())
                 viewModel.quickSave()
+                nbBrins.setText("")
+                diam.setText("")
             } else {
                 val mySnackbar = Snackbar.make(
                     layout,

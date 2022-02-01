@@ -3,6 +3,7 @@ package com.example.applicationstb.ui.ficheBobinage
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Section
 
-class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, Int) -> Unit) :
+class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, Int) -> Unit, var callback2:(Int) ->Unit) :
     RecyclerView.Adapter<FillAdapter.ViewHolder>() {
     var regexNombres = Regex("^\\d*\\.?\\d*\$")
 
@@ -18,10 +19,12 @@ class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, I
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var diametre: EditText
         var nbBrins: EditText
+        var suppr:Button
 
         init {
             diametre = view.findViewById(R.id.dia)
             nbBrins = view.findViewById(R.id.br)
+            suppr = view.findViewById(R.id.supprsection)
         }
     }
 
@@ -36,7 +39,7 @@ class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, I
         /*holder.diametre.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {*/
                 holder.diametre.doAfterTextChanged {
-                    if (holder.diametre.text.toString().matches(regexNombres)) callback(
+                    if (holder.diametre.text.toString().matches(regexNombres) && holder.diametre.text.isNotEmpty()) callback(
                         holder.diametre.text.toString().toDouble(),
                         list[position].nbBrins,
                         position
@@ -45,12 +48,18 @@ class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, I
             }*/
         }
                 holder.nbBrins.doAfterTextChanged {
-                    if (holder.nbBrins.text.toString().matches(regexNombres)) callback(
+                    if (holder.nbBrins.text.toString().matches(regexNombres) && holder.nbBrins.text.isNotEmpty()) callback(
                         list[position].diametre,
                         holder.nbBrins.text.toString().toLong(),
                         position
                     )
                 }
+        holder.suppr.setOnClickListener {
+            list.removeAt(position)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
+            callback2(position)
+        }
 
     }
 
