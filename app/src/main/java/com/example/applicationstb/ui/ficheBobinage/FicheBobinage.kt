@@ -265,7 +265,7 @@ class FicheBobinage : Fragment() {
                             "autre"
                         ).indexOf(bobinage.branchement!!)
                     )
-                    if (arrayOf<String>(
+                    if (bobinage.branchement !== null && arrayOf<String>(
                             "",
                             "parallèle",
                             "demi-parallèle",
