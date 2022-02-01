@@ -127,9 +127,14 @@ class BodyBobinage(
     var sectionsFils: List<Section>?,
     var observations: String?,
     var poids: Float?,
-    var tension: Long?,
+    var tension: String?,
     var dureeTotale: Long?,
-    var photos: Array<String>?
+    var photos: Array<String>?,
+    var presenceSondes: Boolean?,
+    var typeSondes:String?,
+    val pasPolaire:String?,
+    var branchement:String?,
+    var nbEncoches:Long?
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -157,11 +162,16 @@ class BodyBobinage(
         },
         parcel.readString(),
         parcel.readFloat(),
-        parcel.readLong(),
+        parcel.readString(),
         parcel.readLong(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
-        }
+        },
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readLong(),
     ) {
     }
 
@@ -191,11 +201,16 @@ class BodyBobinage(
         }
         parcel.writeString(observations!!)
         parcel.writeFloat(poids!!)
-        parcel.writeLong(tension!!)
+        parcel.writeString(tension!!)
         parcel.writeLong(dureeTotale!!)
         arrayOf<String>().apply {
             parcel.writeArray(this)
         }
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes)
+        parcel.writeString(pasPolaire)
+        parcel.writeString(branchement)
+        parcel.writeLong(nbEncoches!!)
     }
 
     override fun describeContents(): Int {
@@ -3093,7 +3108,12 @@ class Repository(var context: Context) {
             bobinage.poids,
             bobinage.tension,
             bobinage.dureeTotale,
-            bobinage.photos
+            bobinage.photos,
+            bobinage.presenceSondes,
+            bobinage.typeSondes,
+            bobinage.pasPolaire,
+            bobinage.branchement,
+            bobinage.nbEncoches
         )
         var call = service.patchBobinage(token, ficheId, body)
         var fiche: Bobinage? = null
@@ -3189,7 +3209,7 @@ class Repository(var context: Context) {
 
     suspend fun createDb() {
         db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-            .addMigrations(MIGRATION_20_21, MIGRATION_21_22)
+            .fallbackToDestructiveMigration()
             .build()
         chantierDao = db!!.chantierDao()
         bobinageDao = db!!.bobinageDao()

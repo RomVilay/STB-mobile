@@ -41,7 +41,12 @@ data class BobinageEntity (
     var isolementUW : Float?,
     var isolementVW : Float?,
     var poids : Float?,
-    var tension: Long?
+    var tension: String?,
+    var presenceSonde: Boolean?,
+    var typeSonde:String?,
+    val pasPolaire:String?,
+    var branchement:String?,
+    var nbEncoches:Long?
     ){
     fun toBobinage() : Bobinage {
         return Bobinage(
@@ -80,7 +85,13 @@ data class BobinageEntity (
             isolementVW,
             null,
             poids,
-            tension)
+            tension,
+            presenceSonde,
+            typeSonde,
+            pasPolaire,
+            branchement,
+            nbEncoches
+            )
     }
 
 }

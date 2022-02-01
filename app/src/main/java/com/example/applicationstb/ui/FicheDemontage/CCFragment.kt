@@ -90,11 +90,11 @@ class CCFragment : Fragment() {
             viewModel.retour(layout)
         }
         var fiche = viewModel.selection.value!! as CourantContinu
-            if(fiche.isolationMasseInduit !== null )isopmu.setText(fiche.isolationMasseInduit.toString())
-            if(fiche.isolationMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolationMassePolesPrincipaux.toString())  //pole principal
-            if(fiche.isolationMassePolesAuxilliaires !== null ) isopmw.setText(fiche.isolationMassePolesAuxilliaires.toString())  //pole auxilliare
-            if(fiche.isolationMassePolesCompensatoires !==null) isoppU.setText(fiche.isolationMassePolesCompensatoires.toString()) // pôle compensatoire
-            if(fiche.isolationMassePorteBalais !== null) isoppV.setText(fiche.isolationMassePorteBalais.toString()) // pôle porte balais
+            if(fiche.isolementMasseInduit !== null )isopmu.setText(fiche.isolementMasseInduit.toString())
+            if(fiche.isolementMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolementMassePolesPrincipaux.toString())  //pole principal
+            if(fiche.isolementMassePolesAuxilliaires !== null ) isopmw.setText(fiche.isolementMassePolesAuxilliaires.toString())  //pole auxilliare
+            if(fiche.isolementMassePolesCompensatoires !==null) isoppU.setText(fiche.isolementMassePolesCompensatoires.toString()) // pôle compensatoire
+            if(fiche.isolementMassePorteBalais !== null) isoppV.setText(fiche.isolementMassePorteBalais.toString()) // pôle porte balais
             //resistances
              if (fiche.resistanceInduit !== null) rU.setText(fiche.resistanceInduit.toString())    //résistance Induit
              if (fiche.resistancePP !== null) rV.setText(fiche.resistancePP.toString())    // résistance pôle principal
@@ -110,7 +110,7 @@ class CCFragment : Fragment() {
         if (fiche.status!! < 3L) {
             isopmu.doAfterTextChanged {
                 if (isopmu.text.isNotEmpty() && isopmu.hasFocus() && isopmu.text.matches(regexNombres)) {
-                    fiche.isolationMasseInduit =
+                    fiche.isolementMasseInduit =
                         isopmu.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -119,7 +119,7 @@ class CCFragment : Fragment() {
             }
             isopmv.doAfterTextChanged {
                 if (isopmv.text.isNotEmpty() && isopmv.hasFocus() && isopmv.text.matches(regexNombres)) {
-                    fiche.isolationMassePolesPrincipaux =
+                    fiche.isolementMassePolesPrincipaux =
                         isopmv.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -128,7 +128,7 @@ class CCFragment : Fragment() {
             }
             isopmw.doAfterTextChanged {
                 if (isopmw.text.isNotEmpty() && isopmw.hasFocus() && isopmw.text.matches(regexNombres)) {
-                    fiche.isolationMassePolesAuxilliaires =
+                    fiche.isolementMassePolesAuxilliaires =
                         isopmw.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -137,7 +137,7 @@ class CCFragment : Fragment() {
             }
             isoppU.doAfterTextChanged {
                 if (isoppU.text.isNotEmpty() && isoppU.hasFocus() && isoppU.text.matches(regexNombres)) {
-                    fiche.isolationMassePolesCompensatoires =
+                    fiche.isolementMassePolesCompensatoires =
                         isoppU.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -146,7 +146,7 @@ class CCFragment : Fragment() {
             }
             isoppV.doAfterTextChanged {
                 if (isoppV.text.isNotEmpty() && isoppV.hasFocus() && isoppV.text.matches(regexNombres)) {
-                    fiche.isolationMassePorteBalais =
+                    fiche.isolementMassePorteBalais =
                         isoppV.text.toString().toFloat()
                     viewModel.selection.value = fiche
                     viewModel.getTime()

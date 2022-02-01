@@ -53,7 +53,12 @@ class Bobinage(idFiche:String,
                var isolementVW : Float?,
                var schemas : MutableList<String>?,
                var poids : Float?,
-               var tension: Long?
+               var tension: String?,
+               var presenceSondes: Boolean?,
+               var typeSondes:String?,
+               var pasPolaire:String?,
+               var branchement:String?,
+               var nbEncoches:Long?
                 ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photos ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
@@ -98,7 +103,12 @@ class Bobinage(idFiche:String,
             isolementUW,
             isolementVW,
             poids,
-            tension)
+            tension,
+            presenceSondes,
+            typeSondes,
+            pasPolaire,
+            branchement,
+            nbEncoches)
     }
               /*  fun getSection(index: Int): String {
                     return "nb brins:"+sectionsFils[index].nbBrins+" - diamètre: "+sectionsFils[index].diametre

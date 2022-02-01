@@ -146,7 +146,6 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     @RequiresApi(Build.VERSION_CODES.M)
     fun save(context: Context, view:View) {
         if (isOnline(context)) {
-
             val resp = repository.patchBobinage(
                 token!!,
                 bobinage.value!!._id,

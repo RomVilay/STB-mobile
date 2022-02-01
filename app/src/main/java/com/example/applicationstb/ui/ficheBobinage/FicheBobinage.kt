@@ -22,6 +22,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -52,17 +53,21 @@ class FicheBobinage : Fragment() {
     }
 
     private val viewModel: FicheBobinageViewModel by activityViewModels()
-    private lateinit var recycler:RecyclerView
-    private lateinit var schemas:RecyclerView
-    private  val PHOTO_RESULT = 1888
+    private lateinit var recycler: RecyclerView
+    private lateinit var schemas: RecyclerView
+    private val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        Log.i("INFO", "tableau fiches: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} ")
+        Log.i(
+            "INFO",
+            "tableau fiches: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} "
+        )
         var list = arguments?.get("listBobinage") as Array<Bobinage>
         viewModel.token = arguments?.get("token") as String
         viewModel.listeBobinage = list.toCollection(ArrayList())
@@ -73,14 +78,17 @@ class FicheBobinage : Fragment() {
 
         //champs détails
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
-        val adapterDevis = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeBobinage.map { it.numFiche })
+        val adapterDevis = ArrayAdapter(
+            requireActivity(),
+            R.layout.support_simple_spinner_dropdown_item,
+            viewModel.listeBobinage.map { it.numFiche })
         spinner.adapter = adapterDevis
         var btnSelect = layout.findViewById<Button>(R.id.btnDemarrer)
         var non = layout.findViewById<TextView>(R.id.non)
         var oui = layout.findViewById<TextView>(R.id.oui)
         var frequence = layout.findViewById<EditText>(R.id.frequence)
         var client = layout.findViewById<EditText>(R.id.client)
-        var puissance= layout.findViewById<EditText>(R.id.puissance)
+        var puissance = layout.findViewById<EditText>(R.id.puissance)
         var courant = layout.findViewById<EditText>(R.id.courant)
         var phases = layout.findViewById<EditText>(R.id.phase)
         var vitesse = layout.findViewById<EditText>(R.id.vitesse)
@@ -91,15 +99,15 @@ class FicheBobinage : Fragment() {
         var dated = layout.findViewById<TextView>(R.id.DateDebut)
         var details = layout.findViewById<TextView>(R.id.titreDetails)
         var som = layout.findViewById<TextView>(R.id.somme)
-        val adapter = FillAdapter(viewModel.sections!!.value!!, {diametre,nb, position ->
-            viewModel.sections.value?.set(position, Section(nb,diametre))
+        val adapter = FillAdapter(viewModel.sections!!.value!!, { diametre, nb, position ->
+            viewModel.sections.value?.set(position, Section(nb, diametre))
             var s = viewModel.somme(viewModel.sections.value!!)
             som.setText(s.toString())
-            Log.i("info","nbBrins "+ nb)
+            Log.i("info", "nbBrins " + nb)
             viewModel.quickSave()
 
         })
-        val sAdapter = schemaAdapter(viewModel.photos.value!! ,{ item ->
+        val sAdapter = schemaAdapter(viewModel.photos.value!!, { item ->
             viewModel.setSchema(item)
             viewModel.fullScreen(
                 layout,
@@ -131,9 +139,31 @@ class FicheBobinage : Fragment() {
         var term = layout.findViewById<Button>(R.id.termB)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
-        if (activity?.let { ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.CAMERA) }
-                == PackageManager.PERMISSION_DENIED)
-            this.activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.CAMERA), PHOTO_RESULT) }
+        var paspolaire = layout.findViewById<EditText>(R.id.paspolaire)
+        var checksonde = layout.findViewById<CheckBox>(R.id.checkSonde)
+        var typesonde = layout.findViewById<EditText>(R.id.typeSondeB)
+        var branchement = layout.findViewById<Spinner>(R.id.branchement)
+        branchement.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "parallèle", "demi-parallèle", "serie", "autre")
+        )
+        var typeBranchement = layout.findViewById<EditText>(R.id.typeBranchement)
+        var nbEncoches = layout.findViewById<EditText>(R.id.nbEncoches)
+        if (activity?.let {
+                ContextCompat.checkSelfPermission(
+                    it.applicationContext,
+                    Manifest.permission.CAMERA
+                )
+            }
+            == PackageManager.PERMISSION_DENIED)
+            this.activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(Manifest.permission.CAMERA),
+                    PHOTO_RESULT
+                )
+            }
         recycler = layout.findViewById(R.id.tab)
         recycler.layoutManager = GridLayoutManager(context, 1)
         recycler.adapter = adapter
@@ -157,8 +187,8 @@ class FicheBobinage : Fragment() {
             }
         })
 
-            /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
-            dateDebut.setText(LocalDateTime.now().format(format))*/
+        /*var format = DateTimeFormatter.ofPattern("DD-MM-YYYY")
+        dateDebut.setText(LocalDateTime.now().format(format))*/
 
         btnSelect.setOnClickListener {
             if (spinner.selectedItem == null) {
@@ -177,7 +207,7 @@ class FicheBobinage : Fragment() {
                 viewModel.sections.value = bobinage?.sectionsFils
                 viewModel.photos.value = bobinage?.photos!!.toMutableList()
                 if (bobinage != null) {
-                   if (viewModel.photos.value !== null) sAdapter.update(viewModel.photos.value!!)
+                    if (viewModel.photos.value !== null) sAdapter.update(viewModel.photos.value!!)
                     marque.setText(bobinage?.marqueMoteur)
                     if (bobinage.courant !== null) {
                         courant.setText(bobinage?.courant.toString())
@@ -217,6 +247,33 @@ class FicheBobinage : Fragment() {
                     if (bobinage.isolementUW !== null) IIV.setText(bobinage?.isolementUW.toString())
                     if (bobinage.isolementVW !== null) IIW.setText(bobinage?.isolementVW.toString())
                     if (bobinage.observations !== null) obs.setText(bobinage?.observations.toString())
+                    if (bobinage.pasPolaire !== null) paspolaire.setText(bobinage?.pasPolaire.toString())
+                    if (bobinage.presenceSondes !== null && bobinage?.presenceSondes!!) checksonde.isChecked =
+                        true
+                    if (bobinage.typeSondes !== null && bobinage.presenceSondes == true) {
+                        typesonde.setText(bobinage.typeSondes.toString())
+                        typesonde.visibility = View.VISIBLE
+                    }
+                    if (bobinage.branchement !== null) branchement.setSelection(
+                        arrayOf<String>(
+                            "",
+                            "parallèle",
+                            "demi-parallèle",
+                            "serie",
+                            "autre"
+                        ).indexOf(bobinage.branchement!!)
+                    )
+                    if (arrayOf<String>(
+                            "",
+                            "parallèle",
+                            "demi-parallèle",
+                            "serie"
+                        ).indexOf(bobinage.branchement!!) == -1
+                    ) {
+                        typeBranchement.visibility = View.VISIBLE
+                        typeBranchement.setText(bobinage.branchement.toString())
+                    }
+                    if (bobinage.nbEncoches !== null) nbEncoches.setText(bobinage.nbEncoches.toString())
                     var formater = DateTimeFormatter.ofPattern("DD-MM-YYYY HH:mm")
                     if (bobinage.dateDebut !== null) dated.setText(bobinage?.dateDebut!!.toLocaleString())
                 }
@@ -227,7 +284,7 @@ class FicheBobinage : Fragment() {
         }
 
         details.setOnClickListener {
-            if (visibility == View.GONE){
+            if (visibility == View.GONE) {
                 visibility = View.VISIBLE
                 details.setText("masquer les détails")
             } else {
@@ -260,7 +317,11 @@ class FicheBobinage : Fragment() {
                 som.setText(s.toString())
                 viewModel.quickSave()
             } else {
-                val mySnackbar = Snackbar.make(layout,"Veuillez préciser le nombre de brins et le diamètre de la section", 3600)
+                val mySnackbar = Snackbar.make(
+                    layout,
+                    "Veuillez préciser le nombre de brins et le diamètre de la section",
+                    3600
+                )
                 mySnackbar.show()
             }
         }
@@ -313,88 +374,88 @@ class FicheBobinage : Fragment() {
             }
         }
         marque.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         courant.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         client.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         type.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         vitesse.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         phases.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         frequence.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
             }
         }
         puissance.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 220
                 linscroll.layoutParams = margins
-            } else{
+            } else {
                 var margins = linscroll.layoutParams as ViewGroup.MarginLayoutParams
                 margins.topMargin = 0
                 linscroll.layoutParams = margins
@@ -407,27 +468,33 @@ class FicheBobinage : Fragment() {
             }
         }
         courant.doAfterTextChanged {
-            if (courant.text.isNotEmpty() && courant.text.matches(regexNombres)) viewModel.bobinage.value!!.courant = courant.text.toString().replace(",",".").toFloat()
+            if (courant.text.isNotEmpty() && courant.text.matches(regexNombres)) viewModel.bobinage.value!!.courant =
+                courant.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         vitesse.doAfterTextChanged {
-            if (vitesse.text.isNotEmpty() && vitesse.text.matches(regexNombres)) viewModel.bobinage.value!!.vitesse = vitesse.text.toString().replace(",",".").toFloat()
+            if (vitesse.text.isNotEmpty() && vitesse.text.matches(regexNombres)) viewModel.bobinage.value!!.vitesse =
+                vitesse.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         type.doAfterTextChanged {
-            if (type.text.isNotEmpty()) viewModel.bobinage.value!!.typeBobinage = type.text.toString()
+            if (type.text.isNotEmpty()) viewModel.bobinage.value!!.typeBobinage =
+                type.text.toString()
             viewModel.quickSave()
         }
         phases.doAfterTextChanged {
-            if (phases.text.isNotEmpty() && phases.text.matches(regexInt)) viewModel.bobinage.value!!.phases = phases.text.toString().toLong()
+            if (phases.text.isNotEmpty() && phases.text.matches(regexInt)) viewModel.bobinage.value!!.phases =
+                phases.text.toString().toLong()
             viewModel.quickSave()
         }
         frequence.doAfterTextChanged {
-            if (frequence.text.isNotEmpty() && frequence.text.matches(regexNombres)) viewModel.bobinage.value!!.frequences = frequence.text.toString().replace(",",".").toFloat()
+            if (frequence.text.isNotEmpty() && frequence.text.matches(regexNombres)) viewModel.bobinage.value!!.frequences =
+                frequence.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         puissance.doAfterTextChanged {
-            if (puissance.text.isNotEmpty() && puissance.text.matches(regexNombres)) viewModel.bobinage.value!!.puissance = puissance.text.toString().replace(",",".").toFloat()
+            if (puissance.text.isNotEmpty() && puissance.text.matches(regexNombres)) viewModel.bobinage.value!!.puissance =
+                puissance.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         switch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -435,55 +502,67 @@ class FicheBobinage : Fragment() {
             viewModel.quickSave()
         }
         tension.doAfterTextChanged {
-            if (tension.text.isNotEmpty() ) viewModel.bobinage.value!!.tension = tension.text.toString().toLong()
-            Log.i("info","val tension ${viewModel.bobinage.value!!.tension}")
+            if (tension.text.isNotEmpty()) viewModel.bobinage.value!!.tension =
+                tension.text.toString()
+            Log.i("info", "val tension ${viewModel.bobinage.value!!.tension}")
             viewModel.quickSave()
         }
 
         spire.doAfterTextChanged {
-            if (spire.text.isNotEmpty() && spire.text.matches(regexInt)) viewModel.bobinage.value!!.nbSpires = spire.text.toString().toLong()
+            if (spire.text.isNotEmpty() && spire.text.matches(regexInt)) viewModel.bobinage.value!!.nbSpires =
+                spire.text.toString().toLong()
             viewModel.quickSave()
         }
         poids.doAfterTextChanged {
-            if (poids.text.isNotEmpty()  && poids.text.matches(regexNombres)) viewModel.bobinage.value!!.poids = poids.text.toString().replace(",",".").toFloat()
+            if (poids.text.isNotEmpty() && poids.text.matches(regexNombres)) viewModel.bobinage.value!!.poids =
+                poids.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         RU.doAfterTextChanged {
-            if(RU.text.isNotEmpty()  && RU.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceU = RU.text.toString().replace(",",".").toFloat()
+            if (RU.text.isNotEmpty() && RU.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceU =
+                RU.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         RV.doAfterTextChanged {
-            if(RV.text.isNotEmpty()  && RV.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceV = RV.text.toString().replace(",",".").toFloat()
+            if (RV.text.isNotEmpty() && RV.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceV =
+                RV.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         RW.doAfterTextChanged {
-            if (RW.text.isNotEmpty() && RW.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceW = RW.text.toString().replace(",",".").toFloat()
+            if (RW.text.isNotEmpty() && RW.text.matches(regexNombres)) viewModel.bobinage.value!!.resistanceW =
+                RW.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         IU.doAfterTextChanged {
-            if (IU.text.isNotEmpty() && IU.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUT = IU.text.toString().replace(",",".").toFloat()
+            if (IU.text.isNotEmpty() && IU.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUT =
+                IU.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         IV.doAfterTextChanged {
-             if (IV.text.isNotEmpty() && IV.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVT = IV.text.toString().replace(",",".").toFloat()
+            if (IV.text.isNotEmpty() && IV.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVT =
+                IV.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         IW.doAfterTextChanged {
-            if (IW.text.isNotEmpty() && IW.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementWT = IW.text.toString().replace(",",".").toFloat()
+            if (IW.text.isNotEmpty() && IW.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementWT =
+                IW.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         IIU.doAfterTextChanged {
-             if (IIU.text.isNotEmpty() && IIU.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUV =  IIU.text.toString().replace(",",".").toFloat()
-             viewModel.quickSave()
-         }
+            if (IIU.text.isNotEmpty() && IIU.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUV =
+                IIU.text.toString().replace(",", ".").toFloat()
+            viewModel.quickSave()
+        }
         IIV.doAfterTextChanged {
-            if (IIV.text.isNotEmpty() && IIV.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUW =   IIV.text.toString().replace(",",".").toFloat()
+            if (IIV.text.isNotEmpty() && IIV.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementUW =
+                IIV.text.toString().replace(",", ".").toFloat()
             viewModel.quickSave()
         }
         IIW.doAfterTextChanged {
-             if (IIW.text.isNotEmpty() && IIW.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVW =  IIW.text.toString().replace(",",".").toFloat()
-             viewModel.quickSave()
-         }
+            if (IIW.text.isNotEmpty() && IIW.text.matches(regexNombres)) viewModel.bobinage.value!!.isolementVW =
+                IIW.text.toString().replace(",", ".").toFloat()
+            viewModel.quickSave()
+        }
         obs.doAfterTextChanged {
             viewModel.bobinage.value!!.observations = obs.text.toString()
             viewModel.quickSave()
@@ -495,17 +574,81 @@ class FicheBobinage : Fragment() {
         quit.setOnClickListener {
             viewModel.back(layout)
         }
+        paspolaire.doAfterTextChanged {
+            if (paspolaire.hasFocus() && paspolaire.text.isNotEmpty())
+            viewModel.bobinage.value!!.pasPolaire = paspolaire.text.toString()
+            viewModel.quickSave()
+        }
+        checksonde.setOnCheckedChangeListener { _, ischeked ->
+            if (ischeked){
+                viewModel.bobinage.value!!.presenceSondes = true
+                typesonde.visibility = View.VISIBLE
+                viewModel.quickSave()
+            } else {
+                viewModel.bobinage.value!!.presenceSondes = false
+                viewModel.bobinage.value!!.typeSondes = ""
+                typesonde.visibility = View.INVISIBLE
+                viewModel.quickSave()
+            }
+        }
+        typesonde.doAfterTextChanged {
+            if (typesonde.hasFocus() && typesonde.text.isNotEmpty()) {
+                viewModel.bobinage.value!!.typeSondes = typesonde.text.toString()
+                viewModel.quickSave()
+            }
+        }
+        branchement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                    if (viewModel.bobinage.value !== null) {
+                        Log.i("info", "branchement: " + branchement.selectedItem.toString())
+                        viewModel.bobinage.value!!.branchement = branchement.selectedItem.toString()
+                        viewModel.quickSave()
+                        if (branchement.selectedItem.toString() == "autre")
+                            typeBranchement.visibility = View.VISIBLE
+                        else
+                            typeBranchement.visibility = View.INVISIBLE
+                    }
+            }
+        }
+        typeBranchement.doAfterTextChanged {
+            if (typeBranchement.hasFocus() && typeBranchement.isVisible && typeBranchement.text.isNotEmpty()) {
+                viewModel.bobinage.value!!.branchement  = typeBranchement.text.toString()
+                viewModel.quickSave()
+            }
+        }
+        nbEncoches.doAfterTextChanged {
+            if (nbEncoches.hasFocus() && nbEncoches.text.isNotEmpty()) {
+                viewModel.bobinage.value!!.nbEncoches = nbEncoches.text.toString().toLong()
+                viewModel.quickSave()
+            }
+        }
+
         enrg.setOnClickListener {
             viewModel.bobinage.value!!.status = 2L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
-            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
+
+            viewModel.save(
+                requireContext(),
+                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
+            )
         }
         term.setOnClickListener {
             viewModel.bobinage.value!!.status = 3L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
-            viewModel.save(requireContext(), layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
+            viewModel.save(
+                requireContext(),
+                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
+            )
         }
         return layout
     }
