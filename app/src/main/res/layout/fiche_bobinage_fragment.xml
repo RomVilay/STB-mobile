@@ -64,7 +64,7 @@
         android:fillViewport="true"
         android:fitsSystemWindows="false"
         android:scrollY="30dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -772,15 +772,24 @@
                 android:layout_height="40dp"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/textView83"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Couplage"
+                    android:textSize="20sp" />
+
                 <Spinner
                     android:id="@+id/branchement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/dropdown_background" />
 
                 <EditText
                     android:id="@+id/typeBranchement"
-                    android:layout_width="95dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/round_textview"
@@ -800,7 +809,7 @@
 
                 <EditText
                     android:id="@+id/nbEncoches"
-                    android:layout_width="wrap_content"
+                    android:layout_width="95dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
