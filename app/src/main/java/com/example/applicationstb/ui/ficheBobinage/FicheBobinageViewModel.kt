@@ -189,7 +189,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                                     } catch (e: java.lang.Exception) {
                                         Log.e("EXCEPTION", e.message!!)
                                     }
-                                    Log.i("INFO", "fichier uploadé: ${imageName.value!!.name}")
+
                                 }
                             job2.join()
                         }

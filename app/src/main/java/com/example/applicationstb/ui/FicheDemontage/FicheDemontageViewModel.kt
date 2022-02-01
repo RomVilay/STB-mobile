@@ -231,6 +231,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 getNameURI()
                                             }
                                         job.join()
+                                        Log.i("INFO", "new name: ${imageName.value!!.name}")
                                         var job2 =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                 try {
@@ -265,6 +266,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                         fiche.photos = photos?.toTypedArray()
                         repository.updateDemoPompeLocalDatabse(fiche.toEntity())
+
                         val resp = repository.patchDemontagePompe(
                             token!!,
                             fiche._id,
