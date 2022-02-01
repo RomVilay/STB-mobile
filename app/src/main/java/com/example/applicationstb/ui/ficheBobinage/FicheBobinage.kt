@@ -629,7 +629,7 @@ class FicheBobinage : Fragment() {
             }
         }
         nbEncoches.doAfterTextChanged {
-            if (nbEncoches.hasFocus() && nbEncoches.text.isNotEmpty()) {
+            if (nbEncoches.hasFocus() && nbEncoches.text.isNotEmpty() && nbEncoches.text.matches(regexInt)) {
                 viewModel.bobinage.value!!.nbEncoches = nbEncoches.text.toString().toLong()
                 viewModel.quickSave()
             }
