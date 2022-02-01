@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -143,13 +144,68 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view:View) {
         if (isOnline(context)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                getNameURI()
+            }
+            viewModelScope.launch(Dispatchers.IO) {
+            var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            var photos = bobinage.value?.photos?.toMutableList()
+            var iter = photos?.listIterator()
+            while (iter?.hasNext() == true) {
+                var name = iter.next()
+                if (name !== "") {
+                    runBlocking {
+                        if (name.contains(bob?.numFiche!!)) {
+                            Log.i("INFO", "fichier à upload : ${name}")
+                            //var test = getPhotoFile(name)
+                            var job =
+                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                    getNameURI()
+                                }
+                            job.join()
+                            var job2 =
+                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                    try {
+                                        val dir =
+                                            Environment.getExternalStoragePublicDirectory(
+                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                            )
+                                        val from = File(
+                                            dir,
+                                            name
+                                        )
+                                        val to = File(dir, imageName.value!!.name!!)
+                                        Log.i(
+                                            "INFO",
+                                            from.exists()
+                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                        )
+                                        if (from.exists()) from.renameTo(to)
+                                        sendPhoto(to)
+                                        iter.set(imageName.value!!.name!!)
+                                    } catch (e: java.lang.Exception) {
+                                        Log.e("EXCEPTION", e.message!!)
+                                    }
+                                    Log.i("INFO", "fichier uploadé: ${imageName.value!!.name}")
+                                }
+                            job2.join()
+                        }
+                    }
+                }
+                if (name == "") {
+                    iter.remove()
+                }
+            }
+            bob?.photos = photos?.toTypedArray()
+            bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
+            bobinage.postValue(bob!!)
             val resp = repository.patchBobinage(
                 token!!,
                 bobinage.value!!._id,
-                bobinage.value!!,
+                bob!!,
                 object : Callback<BobinageResponse> {
                     override fun onResponse(
                         call: Call<BobinageResponse>,
@@ -178,7 +234,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         Log.e("Error", "erreur ${t.message}")
                     }
                 })
-            //localSave(view)
+        }
         } else {
             localSave(view)
         }
