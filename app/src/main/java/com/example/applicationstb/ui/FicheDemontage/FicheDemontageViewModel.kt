@@ -735,6 +735,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                         val resp = response.body()
                                         if (resp != null) {
                                             Log.i("INFO", "fiche enregistrée")
+                                            val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                                            mySnackbar.show()
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
                                             repository.deleteDemontageCCLocalDatabse(
@@ -742,6 +744,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                             )
                                         }
                                     } else {
+                                        val mySnackbar = Snackbar.make(view,"erreur enregistrement", 3600)
+                                        mySnackbar.show()
                                         Log.i(
                                             "INFO",
                                             "code : ${response.code()} - erreur : ${response.message()}"
