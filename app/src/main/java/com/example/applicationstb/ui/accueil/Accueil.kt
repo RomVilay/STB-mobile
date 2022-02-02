@@ -58,7 +58,7 @@ class Accueil : Fragment() {
                         )
                     }
                 }
-                job.invokeOnCompletion { viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString()) }
+                 viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
             }
         } else {
             val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'êtes pas connecté au réseau Internet.", 3600)

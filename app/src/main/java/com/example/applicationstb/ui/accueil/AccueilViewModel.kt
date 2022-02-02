@@ -69,7 +69,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     val resp = response.body()
                     if (resp != null) {
                         token = resp.token
-
                     }
                 }
             }
