@@ -23,5 +23,5 @@ open class Fiche(
    open var dateDebut: Date?,
    open var dureeTotale: Long?,
    open var observations: String?,
-   open var photo: Array<String>?): Parcelable {
+   open var photos: Array<String>?): Parcelable {
 }

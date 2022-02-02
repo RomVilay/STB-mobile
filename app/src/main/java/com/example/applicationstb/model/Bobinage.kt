@@ -31,7 +31,7 @@ class Bobinage(idFiche:String,
                dateDebut: Date?,
                dureeTotale:Long?,
                observation: String?,
-               photo:Array<String>?,
+               photos:Array<String>?,
                var marqueMoteur:String?,
                var typeBobinage:String?,
                var puissance:Float?,
@@ -53,8 +53,13 @@ class Bobinage(idFiche:String,
                var isolementVW : Float?,
                var schemas : MutableList<String>?,
                var poids : Float?,
-               var tension: Long?
-                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photo ){
+               var tension: String?,
+               var presenceSondes: Boolean?,
+               var typeSondes:String?,
+               var pasPolaire:String?,
+               var branchement:String?,
+               var nbEncoches:Long?
+                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photos ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
                 fun addSection(nbBrins: Long, diametre: Double){
@@ -77,6 +82,7 @@ class Bobinage(idFiche:String,
             dateDebut,
             dureeTotale!!,
             observations,
+            photos,
             marqueMoteur,
             typeBobinage,
             vitesse,
@@ -97,7 +103,12 @@ class Bobinage(idFiche:String,
             isolementUW,
             isolementVW,
             poids,
-            tension)
+            tension,
+            presenceSondes,
+            typeSondes,
+            pasPolaire,
+            branchement,
+            nbEncoches)
     }
               /*  fun getSection(index: Int): String {
                     return "nb brins:"+sectionsFils[index].nbBrins+" - diamètre: "+sectionsFils[index].diametre

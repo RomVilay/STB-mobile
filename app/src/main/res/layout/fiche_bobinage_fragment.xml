@@ -64,11 +64,10 @@
         android:fillViewport="true"
         android:fitsSystemWindows="false"
         android:scrollY="30dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linscroll"
@@ -82,8 +81,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="551dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
                 android:layout_marginBottom="14sp"
-                android:background="@drawable/round_textview_full_blue">
+                android:background="@drawable/round_textview_full_blue"
+                android:visibility="visible">
 
                 <EditText
                     android:id="@+id/client"
@@ -292,12 +293,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
                     android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
                     android:background="@drawable/round_textview_full_white"
                     android:ems="7"
                     android:gravity="center"
                     android:hint="tensions"
-                    android:inputType="numberSigned|number"
+                    android:inputType="text"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/dates"
                     app:layout_constraintStart_toEndOf="@+id/dates"
@@ -411,7 +411,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="nbBrins"
+                        android:text="nbFils"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -605,7 +605,7 @@
                     android:background="@drawable/round_textview"
                     android:ems="10"
                     android:gravity="center"
-                    android:inputType="numberSigned|number|text" />
+                    android:inputType="numberSigned|text" />
 
                 <TextView
                     android:id="@+id/Iintensité"
@@ -719,6 +719,107 @@
                     android:inputType="numberSigned|number|text" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView84"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="pas polaire"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/paspolaire"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="text" />
+
+                <CheckBox
+                    android:id="@+id/checkSonde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sondes"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/typeSondeB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView83"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Couplage"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/branchement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/dropdown_background" />
+
+                <EditText
+                    android:id="@+id/typeBranchement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/textView85"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="NB Encoches"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/nbEncoches"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="number|text" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/addschema"
                 android:layout_width="308dp"
@@ -739,12 +840,13 @@
             <EditText
                 android:id="@+id/observations"
                 android:layout_width="499dp"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/round_textview"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Observations"
                 android:inputType="textMultiLine"
+                android:minLines="1"
                 android:padding="7dp" />
 
             <LinearLayout

@@ -20,6 +20,7 @@ data class BobinageEntity (
     var dateDebut: Date?,
     var dureeTotale:Long?,
     var observation: String?,
+    var photos:Array<String>?,
     var marqueMoteur:String?,
     var typeBobinage:String?,
     var vitesse: Float?,
@@ -40,7 +41,12 @@ data class BobinageEntity (
     var isolementUW : Float?,
     var isolementVW : Float?,
     var poids : Float?,
-    var tension: Long?
+    var tension: String?,
+    var presenceSonde: Boolean?,
+    var typeSonde:String?,
+    val pasPolaire:String?,
+    var branchement:String?,
+    var nbEncoches:Long?
     ){
     fun toBobinage() : Bobinage {
         return Bobinage(
@@ -57,7 +63,7 @@ data class BobinageEntity (
             dateDebut,
             dureeTotale,
             observation,
-            null,
+            photos,
             marqueMoteur,
             typeBobinage,
             puissance,
@@ -79,7 +85,13 @@ data class BobinageEntity (
             isolementVW,
             null,
             poids,
-            tension)
+            tension,
+            presenceSonde,
+            typeSonde,
+            pasPolaire,
+            branchement,
+            nbEncoches
+            )
     }
 
 }

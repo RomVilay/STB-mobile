@@ -32,9 +32,12 @@ class MecaFragment : Fragment() {
 
         var layout = inflater.inflate(R.layout.fragment_meca, container, false)
         var fiche = viewModel.selection.value as DemontageMoteur
+        //if (fiche.typeRoulementAvant !== null) fiche.typeRoulementAvant = fiche.typeRoulementAvant!!.filter { it == "" }.toTypedArray()
         //couplage
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
         var txtclp = layout.findViewById<EditText>(R.id.autreCpl)
+        var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
+        var regexInt = Regex("^\\d+")
         if (fiche.status == 3L) {
             couplage.isEnabled = false
             txtclp.isEnabled = false
@@ -166,10 +169,16 @@ class MecaFragment : Fragment() {
         }
         //roulements
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
+        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M","C4"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
         var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
+        if (fiche.typeRoulementAvant !== null && fiche.typeRoulementAvant!!.size > 0) {
+            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M","C4").indexOf(fiche.typeRoulementAvant!![0]))
+        }
+        if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
+            refRoul.setText(fiche.refRoulementAvant!![0])
+        }
         if (fiche.status == 3L) {
             refRoul.isEnabled = false
             specsRoul.isEnabled = false
@@ -286,7 +295,8 @@ class MecaFragment : Fragment() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var selection = typeRoulement.selectedItem.toString()
-                if (position > 0) {
+                Log.i("info", "roulement sélec ${selection}")
+                if (position > 0 && selection !== "Sélectionnez un type") {
                     if (switchRoullements.isChecked) {
                         if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
                             var tab =
@@ -372,8 +382,7 @@ class MecaFragment : Fragment() {
             if (index !== -1) {
                 if (switchRoullements.isChecked) {
                     if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementArriere!![index] =
-                            refRoul.text.toString()
+                        viewModel.selection.value!!.refRoulementArriere!![index] = refRoul.text.toString()
                         specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
                             viewModel.selection.value!!.typeRoulementArriere =
                                 removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
@@ -389,8 +398,7 @@ class MecaFragment : Fragment() {
                         viewModel.selection.value!!.refRoulementAvant!![index] =
                             refRoul.text.toString()
                         specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                            viewModel.selection.value!!.typeRoulementAvant = removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
                             viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
                             viewModel.getTime()
                             viewModel.localSave()
@@ -413,9 +421,12 @@ class MecaFragment : Fragment() {
         if (switchJoints.isChecked && fiche.typeJointArriere !== null){
             if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
             refJoints.setText(fiche.refJointArriere)
-        } else if (fiche.refJointAvant !== null) {
-            if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
-            refJoints.setText(fiche.refJointAvant)
+        }
+        if (fiche.typeJointAvant !== null) {
+            typeJoints.setSelection(1)
+            if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
+           // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
+           // refJoints.setText(fiche.refJointAvant)
         }
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

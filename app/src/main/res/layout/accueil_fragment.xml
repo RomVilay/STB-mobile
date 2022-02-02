@@ -116,6 +116,7 @@
             android:text="Déconnexion"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.339"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
 
@@ -160,6 +161,18 @@
                 android:layout_height="match_parent"
                 android:indeterminate="true" />
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Quitter l'application"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDeco"
+            app:layout_constraintStart_toEndOf="@+id/btnDeco"
+            app:layout_constraintTop_toTopOf="@+id/btnDeco"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

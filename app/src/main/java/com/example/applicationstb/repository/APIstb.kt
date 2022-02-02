@@ -3,9 +3,14 @@ package com.example.applicationstb.repository
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.model.Fiche
 import com.example.applicationstb.model.User
+import com.squareup.moshi.Moshi
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 
@@ -91,13 +96,21 @@ interface APIstb  {
 
     @GET("/fiches/{ficheId}")
     fun getDemontageRotorBobine(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageRotorBobineResponse>
-    @GET("/vehicules")
+    @GET("/vehicles")
     fun getAllVehicules(@Header("auth-token") token:String): Call<VehiculesResponse>
-    @GET("/vehicules/{id}")
+    @GET("/vehicles/{id}")
     fun getVehiculeById(@Header("auth-token") token:String, @Path("id") id:String ): Call<VehiculesResponse>
     @GET("/clients")
     fun getAllClients(@Header("auth-token") token:String): Call<ClientsResponse>
     @GET("/clients/{id}")
     fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
-
+    @PUT("/images/{name}")
+    fun uploadPhoto( @Header("auth-token") token:String, @Path("name", encoded = true) name:String,@Query("X-Amz-Algorithm") algo:String ,@Query(value = "X-Amz-Credential", encoded = true ) cred:String ,@Query("X-Amz-Date") date:String ,@Query("X-Amz-Expires") Expires:String ,@Query("X-Amz-SignedHeaders") SignedHeaders:String ,@Query("X-Amz-Signature") Signature:String,@Body body: RequestBody ): Call<URLPhotoResponse>
+    @GET("/images/put")
+    suspend fun getURLToUploadPhoto( @Header("auth-token") token:String) : Response<URLPhotoResponse2>
+    @GET("/images/get/{photoName}")
+    suspend fun getURLPhoto(@Header("auth-token") token:String, @Path("photoName")photoName: String ): Response <URLPhotoResponse>
+    @Streaming
+    @GET
+    suspend fun getPhoto(@Url address: String): Response<ResponseBody>
 }

@@ -12,10 +12,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,8 +118,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -142,8 +141,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
@@ -197,8 +196,8 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:gravity="center"
-                            android:inputType="numberSigned|number|text"
                             android:hint="val"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -220,8 +219,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
@@ -243,8 +242,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
+                            android:hint="val"
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
@@ -587,7 +586,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="400dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/titre4"
@@ -604,10 +603,11 @@
                     <EditText
                         android:id="@+id/obs2"
                         android:layout_width="648dp"
-                        android:layout_height="92dp"
+                        android:layout_height="wrap_content"
                         android:ems="10"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
+                        android:minLines="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titre4" />
 

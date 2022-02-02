@@ -102,6 +102,7 @@ class FicheRemontage : Fragment() {
          var obs = layout.findViewById<EditText>(R.id.observations)
         var term = layout.findViewById<Button>(R.id.termRemo)
         var btnFichesD = layout.findViewById<Button>(R.id.btnFichesD)
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
 
         btnRemontage.setOnClickListener {
             if (spinner.selectedItem == null) {
@@ -115,6 +116,7 @@ class FicheRemontage : Fragment() {
                 btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
                 var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
+                viewModel.getListeDemontage()
                 if (demo!!.typeFicheRemontage == 6) {
                     viewModel.selection.value = demo as RemontageTriphase
                     viewModel.selection.value!!.status = 2L
@@ -124,7 +126,7 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
-                    layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
+                    //layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
                 }
                 if (demo!!.typeFicheRemontage == 5) {
                     viewModel.selection.value = demo as RemontageCourantC
@@ -285,10 +287,7 @@ class FicheRemontage : Fragment() {
             // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
             if (viewModel.isOnline(viewModel.context)) {
                 runBlocking {
-                    var liste = async {
-                        viewModel.getListeDemontage()
-                    }
-                    liste.await()
+                    viewModel.getListeDemontage()
                     var numFiches = arrayListOf<String>()
                     viewModel.listeDemo.value?.forEach {
                         if (!numFiches.contains(it.numFiche!!)) numFiches.add(it.numFiche!!)
@@ -300,13 +299,14 @@ class FicheRemontage : Fragment() {
                                 numFiches.toTypedArray(),
                                 DialogInterface.OnClickListener { dialog, which ->
                                     Log.i(
-                                        "INFO", "fiche envoyée ${
-                                            viewModel.listeDemo.value?.get(which)?.javaClass
-                                        }"
+                                        "INFO", "fiches existantes: ${viewModel.listeDemo.value!!.size} fiche envoyée ${
+                                            viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!.numFiche
+                                        } index: ${which} - fiche: ${numFiches[which]}"
                                     )
+                                    var fiche = viewModel.listeDemo.value!![which]
                                     viewModel.toFicheDemo(
                                         layout,
-                                        viewModel.listeDemo.value?.get(which)!!
+                                        viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!
                                     )
                                 })
                         builder.create()
@@ -388,15 +388,15 @@ class FicheRemontage : Fragment() {
             }
         }
         isoPBV.doAfterTextChanged {
-            if (isoPBV.hasFocus()) {
-                if (isoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisV =
+            if (isoPBV.hasFocus() ) {
+                if (isoPBV.text.isNotEmpty() && isoPBRB.text.matches(regexNombres)) viewModel.selection.value!!.isolementPorteBalaisV =
                     isoPBV.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         risoPBV.doAfterTextChanged {
-            if (risoPBV.hasFocus()) {
+            if (risoPBV.hasFocus() && risoPBV.text.matches(regexNombres)) {
                 if (risoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisOhm =
                     risoPBV.text.toString().toFloat()
                 viewModel.getTime()
@@ -404,14 +404,14 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionStator.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (tensionStator.hasFocus()) {
+            if (tensionStator.hasFocus() && tensionStator.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionStator = isChecked
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         tensionStatorU.doAfterTextChanged {
-            if (tensionStatorU.text.isNotEmpty() && tensionStatorU.hasFocus()) {
+            if (tensionStatorU.text.isNotEmpty() && tensionStatorU.hasFocus() && tensionStatorU.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionStatorU =
                     tensionStatorU.text.toString().toFloat()
                 viewModel.getTime()
@@ -419,7 +419,7 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionStatorV.doAfterTextChanged {
-            if (tensionStatorV.text.isNotEmpty() && tensionStatorV.hasFocus() ) {
+            if (tensionStatorV.text.isNotEmpty() && tensionStatorV.hasFocus() && tensionStatorV.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionStatorV =
                     tensionStatorV.text.toString().toFloat()
                 viewModel.getTime()
@@ -427,7 +427,7 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionStatorW.doAfterTextChanged {
-            if (tensionStatorW.text.isNotEmpty() && tensionStatorW.hasFocus() ) {
+            if (tensionStatorW.text.isNotEmpty() && tensionStatorW.hasFocus()  && tensionStatorV.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionStatorW =
                     tensionStatorW.text.toString().toFloat()
                 viewModel.getTime()
@@ -438,19 +438,18 @@ class FicheRemontage : Fragment() {
             if (tensionInducteurs.hasFocus()) {
                 viewModel.selection.value!!.tensionInducteurs = isChecked
                 viewModel.getTime()
-                Log.i("Info", viewModel.selection.value!!.tensionInducteurs.toString())
                 viewModel.quickSave()
             }
         }
         tensionInducteursU.doAfterTextChanged {
-            if(tensionInducteursU.text.isNotEmpty() && tensionInducteursU.hasFocus()) {
+            if(tensionInducteursU.text.isNotEmpty() && tensionInducteursU.hasFocus() && tensionInducteursU.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionInducteursU = tensionInducteursU.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         tensionInducteursV.doAfterTextChanged {
-            if(tensionInducteursV.text.isNotEmpty() && tensionInducteursV.hasFocus()) {
+            if(tensionInducteursV.text.isNotEmpty() && tensionInducteursV.hasFocus() && tensionInducteursV.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionInducteursV =
                     tensionInducteursV.text.toString().toFloat()
                 viewModel.getTime()
@@ -458,7 +457,7 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionInducteursW.doAfterTextChanged {
-            if(tensionInducteursW.text.isNotEmpty() && tensionInducteursW.hasFocus()) {
+            if(tensionInducteursW.text.isNotEmpty() && tensionInducteursW.hasFocus() && tensionInducteursW.text.matches(regexNombres)) {
                 viewModel.selection.value!!.tensionInducteursW =
                     tensionInducteursW.text.toString().toFloat()
                 viewModel.getTime()
@@ -469,7 +468,7 @@ class FicheRemontage : Fragment() {
             if(intensiteStator.hasFocus()) viewModel.selection.value!!.intensiteStator = isChecked
         }
         intensiteStatorU.doAfterTextChanged {
-            if (intensiteStatorU.text.isNotEmpty() && intensiteStatorU.hasFocus()) {
+            if (intensiteStatorU.text.isNotEmpty() && intensiteStatorU.hasFocus() && intensiteStatorU.text.matches(regexNombres)) {
                 viewModel.selection.value!!.intensiteStatorU =
                     intensiteStatorU.text.toString().toFloat()
                 viewModel.getTime()
@@ -477,7 +476,7 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteStatorV.doAfterTextChanged {
-            if (intensiteStatorV.text.isNotEmpty() && intensiteStatorV.hasFocus()) {
+            if (intensiteStatorV.text.isNotEmpty() && intensiteStatorV.hasFocus() && intensiteStatorV.text.matches(regexNombres)) {
                 viewModel.selection.value!!.intensiteStatorV =
                     intensiteStatorV.text.toString().toFloat()
                 viewModel.getTime()
@@ -485,7 +484,7 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteInducteursW.doAfterTextChanged {
-            if (intensiteStatorW.text.isNotEmpty() && intensiteStatorW.hasFocus()) {
+            if (intensiteStatorW.text.isNotEmpty() && intensiteStatorW.hasFocus() && intensiteStatorW.text.matches(regexNombres)) {
                 viewModel.selection.value!!.intensiteStatorW =
                     intensiteStatorW.text.toString().toFloat()
                 viewModel.getTime()
@@ -500,7 +499,7 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteInducteursU.doAfterTextChanged {
-            if (intensiteInducteursU.text.isNotEmpty() && intensiteInducteursU.hasFocus()) {
+            if (intensiteInducteursU.text.isNotEmpty() && intensiteInducteursU.hasFocus() ) {
                 viewModel.selection.value!!.intensiteInducteursU =
                     intensiteInducteursU.text.toString().toFloat()
                 viewModel.getTime()

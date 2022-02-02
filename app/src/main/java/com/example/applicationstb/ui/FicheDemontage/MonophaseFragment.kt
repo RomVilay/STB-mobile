@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,6 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.DemontageMonophase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -48,7 +52,8 @@ class MonophaseFragment : Fragment() {
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +71,8 @@ class MonophaseFragment : Fragment() {
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
         var terminer = layout.findViewById<Button>(R.id.termMo)
         var btnPhoto = layout.findViewById<Button>(R.id.photo2)
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
+        var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value as DemontageMonophase
         if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
         if( fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
@@ -82,35 +89,31 @@ class MonophaseFragment : Fragment() {
                 viewModel.localSave()
             }
             resistanceTravail.doAfterTextChanged {
-                if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail =
-                    resistanceTravail.text.toString().toFloat()
+                if (resistanceTravail.text.isNotEmpty() && (resistanceTravail.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceDemarrage.doAfterTextChanged {
-                if (resistanceDemarrage.text.isNotEmpty()) fiche.resistanceDemarrage =
-                    resistanceDemarrage.text.toString().toFloat()
+                if (resistanceDemarrage.text.isNotEmpty() && (resistanceDemarrage.text.matches(regexNombres) || resistanceDemarrage.text.matches(regexInt)) ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             valeurCondensateur.doAfterTextChanged {
-                if (valeurCondensateur.text.isNotEmpty()) fiche.valeurCondensateur =
-                    valeurCondensateur.text.toString().toFloat()
+                if (valeurCondensateur.text.isNotEmpty() && (valeurCondensateur.text.matches(regexNombres) || valeurCondensateur.text.matches(regexInt)) ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             tension.doAfterTextChanged {
-                if (tension.text.isNotEmpty()) fiche.tension = tension.text.toString().toFloat()
+                if (tension.text.isNotEmpty() && (tension.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt) )) fiche.tension = tension.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             intensite.doAfterTextChanged {
-                if (intensite.text.isNotEmpty()) fiche.intensite =
-                    intensite.text.toString().toFloat()
+                if (intensite.text.isNotEmpty() && (intensite.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) )fiche.intensite = intensite.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -144,52 +147,17 @@ class MonophaseFragment : Fragment() {
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
             viewModel.setSchema(item)
-            viewModel.fullScreen(layout,item.toString())
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
         })
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
         })
-
-        retour.setOnClickListener {
-            if (viewModel.selection.value?.status == 3L){
-            activity?.onBackPressed()
-            } else {
-            viewModel.retour(layout)
-            }
-        }
-        enregistrer.setOnClickListener {
-            viewModel.getTime()
-            fiche.status = 2L
-            viewModel.selection.value = fiche
-            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
-        }
-        terminer.setOnClickListener {
-            val alertDialog: AlertDialog? = activity?.let {
-                val builder = AlertDialog.Builder(it)
-                builder.setTitle("Terminer une fiche")
-                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
-                    .setPositiveButton("Terminer",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            viewModel.getTime()
-                            fiche.status = 3L
-                            viewModel.selection.value = fiche
-                            viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
-                        })
-                builder.create()
-            }
-            alertDialog?.show()
-        }
-
-        val fmanager = childFragmentManager
-        fmanager.commit {
-            replace<MecaFragment>(R.id.PartMeca)
-            setReorderingAllowed(true)
-        }
-        fmanager.commit {
-            replace<InfoMoteurFragment>(R.id.infosLayout)
-            setReorderingAllowed(true)
-        }
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        sAdapter.update(fiche.photos!!.toMutableList())
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -225,15 +193,56 @@ class MonophaseFragment : Fragment() {
                 }
             }
         }
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+        enregistrer.setOnClickListener {
+            viewModel.getTime()
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        terminer.setOnClickListener {
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
+        }
+
+        val fmanager = childFragmentManager
+        fmanager.commit {
+            replace<MecaFragment>(R.id.PartMeca)
+            setReorderingAllowed(true)
+        }
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infosLayout)
+            setReorderingAllowed(true)
+        }
+
         return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(0,Uri.parse(currentPhotoPath))
+            viewModel.addPhoto(currentPhotoPath)
         }
     }
 
@@ -245,7 +254,7 @@ class MonophaseFragment : Fragment() {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -255,7 +264,7 @@ class MonophaseFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {

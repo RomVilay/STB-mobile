@@ -39,6 +39,8 @@ class InfoMoteurFragment : Fragment() {
         var optionsAsp = arrayOf<String>("propre","sale","très sale")
         var adaptExt = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
         var typeMoteur = layout.findViewById<EditText>(R.id.typeMoteur)
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
+        var regexInt = Regex("^\\d+")
         aspectExt.adapter = adaptExt
         aspectBte.adapter = adaptExt
 
@@ -84,19 +86,19 @@ class InfoMoteurFragment : Fragment() {
                 viewModel.localSave()
             }
             puissance.doAfterTextChanged {
-                if (puissance.text.isNotEmpty()) viewModel.selection.value!!.puissance =
+                if (puissance.text.isNotEmpty() && puissance.text.matches(regexNombres) && puissance.hasFocus()) viewModel.selection.value!!.puissance =
                     puissance.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.localSave()
             }
             bride.doAfterTextChanged {
-                if (bride.text.isNotEmpty()) viewModel.selection.value!!.bride =
+                if (bride.text.isNotEmpty() && bride.text.matches(regexNombres) && bride.hasFocus()) viewModel.selection.value!!.bride =
                     bride.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.localSave()
             }
             vitesse.doAfterTextChanged {
-                if (vitesse.text.isNotEmpty()) viewModel.selection.value!!.vitesse =
+                if (vitesse.text.isNotEmpty() && vitesse.text.matches(regexNombres) && vitesse.hasFocus()) viewModel.selection.value!!.vitesse =
                     vitesse.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.localSave()

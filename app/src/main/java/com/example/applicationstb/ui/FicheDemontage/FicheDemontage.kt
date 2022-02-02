@@ -14,6 +14,7 @@ import androidx.fragment.app.*
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FicheDemontage : Fragment() {
 
@@ -30,6 +31,7 @@ class FicheDemontage : Fragment() {
         var list = arguments?.get("listDemontages") as Array<DemontageMoteur>
         viewModel.token = arguments?.get("token") as String
         viewModel.listeDemontages = list.toCollection(ArrayList())
+        viewModel.listeDemontages = viewModel.listeDemontages.filter { it.status!! < 3 }.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
@@ -42,7 +44,7 @@ class FicheDemontage : Fragment() {
             viewModel.start.value = Date()
             var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
             viewModel.selection.value = demo
-            Log.i("INFO","type fiche ${viewModel.selection.value?.javaClass}")
+            viewModel.selection.value!!.status = 2L
             /*var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
             viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
             var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }

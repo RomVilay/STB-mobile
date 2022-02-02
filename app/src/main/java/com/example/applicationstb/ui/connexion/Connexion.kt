@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.edit
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.applicationstb.R
 import com.google.android.material.snackbar.Snackbar
@@ -47,7 +48,6 @@ class Connexion : Fragment() {
         val password = layout.findViewById<EditText>(R.id.psw)
         val button = layout.findViewById<Button>(R.id.button)
         if (login !== "") username.setText(login)
-
         if (pwd !== "") password.setText(pwd)
         button.setOnClickListener{
             if (username.text.isEmpty() ) {
@@ -64,7 +64,7 @@ class Connexion : Fragment() {
             }
             else {
                 if (login == "") {
-                    if (sharedPref != null) {
+                    if (sharedPref !== null) {
                         sharedPref.edit {
                             putString("login",username.text.toString())
                             putString("password",password.text.toString())

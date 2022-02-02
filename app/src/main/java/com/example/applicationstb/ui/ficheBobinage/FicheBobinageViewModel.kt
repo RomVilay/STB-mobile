@@ -2,10 +2,12 @@ package com.example.applicationstb.ui.ficheBobinage
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -16,16 +18,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
-import com.example.applicationstb.repository.BobinageResponse
-import com.example.applicationstb.repository.ChantierResponse
-import com.example.applicationstb.repository.Repository
+import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.ficheChantier.FicheChantierDirections
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
 
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
@@ -33,42 +33,20 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var repository = Repository(getApplication<Application>().applicationContext);
     var listeBobinage = arrayListOf<Bobinage>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
-    var schemas = MutableLiveData<MutableList<String>>(mutableListOf())
+    var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var bobinage = MutableLiveData<Bobinage>()
     var schema = MutableLiveData<String>()
     var token: String? = null;
     var username: String? = null;
     var context = getApplication<Application>().applicationContext
     var start = MutableLiveData<Date>()
+    var image =MutableLiveData<File>()
+    var imageName = MutableLiveData<URLPhotoResponse2>()
 
     init {
         viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
         }
-        /*var i =0
-        while (i<10)
-        {
-            var bobinage = Bobinage (i.toString(),
-                    i.toString() ,
-                    client,
-                    "Dupond M.",
-                    3369077543,
-                    arrayOf<User>(tech),
-                    tech,
-                    "Bocsh",
-                    "asynchrone triphasé",
-                    200 ,
-                    300,
-                    10,
-                    "1",
-                    "20Hz",
-                    "10A",
-                    true
-            )
-            listeBobinage.add(bobinage);
-            i++;
-        }*/
-        //bobinage.value = listeBobinage[0]
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -82,10 +60,10 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     if (response.code() == 200) {
                         val resp = response.body()
                         if (resp != null) {
-                            Log.i("INFO", "${resp.fiche!!._id}")
-                            bobinage.value = resp.fiche!!
+                            Log.i("INFO", "${resp.data!!._id}")
+                            bobinage.value = resp.data!!
                             sections.value = bobinage.value!!.sectionsFils!!
-                            schemas.value = mutableListOf()
+                            photos.value = mutableListOf()
                         }
                     } else {
                         Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
@@ -115,7 +93,21 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         list.add(schema.toString())
         schemas.value = list
     }*/
-
+    fun addPhoto(photo: Uri) {
+        Log.i("INFO", "add photo")
+        var list = bobinage?.value?.photos?.toMutableList()
+        if (list != null) {
+            if (isOnline(context)) {
+                list.add(imageName.value!!.name!!)
+            } else {
+                //Log.i("INFO", photo.path.toString())
+                list.add(photo.path.toString())
+            }
+        }
+        bobinage.value?.photos = list?.toTypedArray()
+        photos.value = list!!
+        quickSave()
+    }
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { Math.sqrt(it.diametre) * (Math.PI / 4) * it.nbBrins }
         //Log.i("info", tab.toString())
@@ -136,8 +128,14 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO", sch.toString())
     }
 
-    fun addSchema(index:Int,photo: Uri) {
-        schemas.value!!.add(photo.toString())
+    fun addSchema(photo:String) {
+        var list = bobinage?.value?.photos?.toMutableList()
+        if (list != null) {
+            list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+        }
+        bobinage?.value?.photos = list!!.toTypedArray()
+        photos.value = list
+        quickSave()
     }
 
     fun fullScreen(view: View, uri: String) {
@@ -146,14 +144,68 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view:View) {
-        Log.i("INFO", "iso: ${bobinage.value!!.isolementUT}")
         if (isOnline(context)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                getNameURI()
+            }
+            viewModelScope.launch(Dispatchers.IO) {
+            var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            var photos = bobinage.value?.photos?.toMutableList()
+            var iter = photos?.listIterator()
+            while (iter?.hasNext() == true) {
+                var name = iter.next()
+                if (name !== "") {
+                    runBlocking {
+                        if (name.contains(bob?.numFiche!!)) {
+                            Log.i("INFO", "fichier à upload : ${name}")
+                            //var test = getPhotoFile(name)
+                            var job =
+                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                    getNameURI()
+                                }
+                            job.join()
+                            var job2 =
+                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                    try {
+                                        val dir =
+                                            Environment.getExternalStoragePublicDirectory(
+                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                            )
+                                        val from = File(
+                                            dir,
+                                            name
+                                        )
+                                        val to = File(dir, imageName.value!!.name!!)
+                                        Log.i(
+                                            "INFO",
+                                            from.exists()
+                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                        )
+                                        if (from.exists()) from.renameTo(to)
+                                        sendPhoto(to)
+                                        iter.set(imageName.value!!.name!!)
+                                    } catch (e: java.lang.Exception) {
+                                        Log.e("EXCEPTION", e.message!!)
+                                    }
+
+                                }
+                            job2.join()
+                        }
+                    }
+                }
+                if (name == "") {
+                    iter.remove()
+                }
+            }
+            bob?.photos = photos?.toTypedArray()
+            bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
+            bobinage.postValue(bob!!)
             val resp = repository.patchBobinage(
                 token!!,
                 bobinage.value!!._id,
-                bobinage.value!!,
+                bob!!,
                 object : Callback<BobinageResponse> {
                     override fun onResponse(
                         call: Call<BobinageResponse>,
@@ -182,14 +234,13 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         Log.e("Error", "erreur ${t.message}")
                     }
                 })
-            //localSave(view)
+        }
         } else {
             localSave(view)
         }
 
     }
     fun localSave(view:View){
-        Log.i("INFO","local save fiche ${bobinage.value!!._id}")
         viewModelScope.launch(Dispatchers.IO){
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             if (bob !== null) {
@@ -221,16 +272,12 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     fun quickSave(){
         Log.i("INFO","quick save")
         getTime()
-        Log.i("INFO","duree après : ${bobinage.value?.dureeTotale}")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
-            //Log.i("INFO","${ch}")
             if (ch !== null) {
                 repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
-                //Log.i("INFO","patch ${bobinage.value!!._id}")
             } else {
                 repository.insertBobinageLocalDatabase(bobinage.value!!)
-                //Log.i("INFO","insert ${chantier.value!!._id}")
             }
         }
     }
@@ -256,5 +303,49 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         return false
+    }
+    suspend fun getNameURI() = runBlocking {
+        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val resp1 = repository.getURLToUploadPhoto(token!!)
+            withContext(Dispatchers.Main){
+                if (resp1.isSuccessful) {
+                    imageName.postValue(resp1.body())
+                    Log.i("INFO",resp1.body()?.name!!)
+                } else {
+                    exceptionHandler
+                }
+            }
+        }
+        job.join()
+    }
+    fun sendPhoto(photo:File){
+        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+        var tab = s.split("&").toMutableList()
+        tab.forEach {
+            Log.i("INFO",it)
+        }
+        tab[1] = tab[1].replace("%2F","/")
+        repository.uploadPhoto(token!!,imageName.value!!.name!!,tab.toList(), photo, object: Callback<URLPhotoResponse> {
+            override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
+                Log.i("INFO", response.code().toString()+" - "+response.message())
+                Log.i("INFO","envoyé ${call.request().url()}")
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                Log.i("INFO",t.message!!)
+            }
+        })
+    }
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
+    }
+    fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
     }
 }

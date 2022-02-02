@@ -21,8 +21,15 @@ class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
                 schema = view.findViewById(R.id.schema)
             }
             fun bind(photo:String){
-                uri = Uri.parse(photo)
-                schema.setImageURI(Uri.parse(photo))
+                if (photo !== "") {
+                uri = Uri.parse("/storage/emulated/0/Pictures/test_pictures/"+photo)
+                    try {
+                        schema.setImageURI(Uri.parse("/storage/emulated/0/Pictures/test_pictures/" + photo))
+                    } catch (e: Exception) {
+                        schema.visibility = View.GONE
+                        Log.e("exception", e.message!!)
+                    }
+                    }
             }
         }
 
@@ -38,8 +45,7 @@ class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
         holder.itemView.setOnClickListener{callback(schema)}
     }
     fun update (list: MutableList<String>){
-        this.schemas = list ///erreur du type sur l'objet transmis
-        Log.i("INFO",schemas.toString())
+        this.schemas = list
         notifyDataSetChanged()
     }
 
