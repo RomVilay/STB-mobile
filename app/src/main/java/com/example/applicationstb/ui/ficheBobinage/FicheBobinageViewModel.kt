@@ -272,16 +272,12 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     fun quickSave(){
         Log.i("INFO","quick save")
         getTime()
-        Log.i("INFO","duree après : ${bobinage.value?.dureeTotale}")
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
-            //Log.i("INFO","${ch}")
             if (ch !== null) {
                 repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
-                //Log.i("INFO","patch ${bobinage.value!!._id}")
             } else {
                 repository.insertBobinageLocalDatabase(bobinage.value!!)
-                //Log.i("INFO","insert ${chantier.value!!._id}")
             }
         }
     }
