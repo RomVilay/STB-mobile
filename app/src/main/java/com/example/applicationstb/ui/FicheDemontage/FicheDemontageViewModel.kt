@@ -180,8 +180,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         repository.updateDemoCCLocalDatabse(fiche.toEntity())
 
                     } else {
-                        repository.insertDemoCCLocalDatabase(fiche)
+                        try {
+                            repository.deleteDemontageCCLocalDatabse(fiche.toEntity())
+                        } catch (e:Exception) {
 
+                        }
+                        repository.insertDemoCCLocalDatabase(fiche)
                     }
                 }
                 if (selection.value!!.typeFicheDemontage == 6) {
@@ -670,6 +674,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 5 -> {
                     if (isOnline(context)) {
+                        Log.i("info","fiche id: ${selection.value!!._id}")
                         var dcc = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
@@ -737,11 +742,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                             Log.i("INFO", "fiche enregistrée")
                                             val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                                             mySnackbar.show()
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageCCLocalDatabse(
-                                                dcc.toEntity()
-                                            )
                                         }
                                     } else {
                                         val mySnackbar = Snackbar.make(view,"erreur enregistrement", 3600)

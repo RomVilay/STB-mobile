@@ -82,47 +82,47 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
     fun listeFiches(token: String, userid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-        for( i in chantiers) {
-            repository.deleteChantierLocalDatabse(i.toEntity())
-        }
-       chantiers.clear()
-            for( i in bobinages) {
+            for (i in chantiers) {
+                repository.deleteChantierLocalDatabse(i.toEntity())
+            }
+            chantiers.clear()
+            for (i in bobinages) {
                 repository.deleteBobinageLocalDatabse(i.toEntity())
             }
-       bobinages.clear()
-            for( i in demontages) {
-              when (i.typeFicheDemontage){
-                  1 -> {
-                      var fiche = repository.getByIdDemoPompeLocalDatabse(i._id)
-                      repository.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
-                  }
-                  2 -> {
-                      var fiche = repository.getByIdDemoMonoLocalDatabse(i._id)
-                      repository.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
-                  }
-                  3 -> {
-                      var fiche = repository.getByIdDemoAlterLocalDatabse(i._id)
-                      repository.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
-                  }
-                  4 -> {
-                      var fiche = repository.getByIdDemoRBLocalDatabse(i._id)
-                      repository.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
-                  }
-                  5 -> {
-                      var fiche = repository.getByIdDemoCCLocalDatabse(i._id)
-                      repository.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
-                  }
-                  6 -> {
-                      var fiche = repository.getByIdDemoTriLocalDatabse(i._id)
-                      repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
-                  }
-              }
+            bobinages.clear()
+            for (i in demontages) {
+                when (i.typeFicheDemontage) {
+                    1 -> {
+                        var fiche = repository.getByIdDemoPompeLocalDatabse(i._id)
+                        repository.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
+                    }
+                    2 -> {
+                        var fiche = repository.getByIdDemoMonoLocalDatabse(i._id)
+                        repository.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
+                    }
+                    3 -> {
+                        var fiche = repository.getByIdDemoAlterLocalDatabse(i._id)
+                        repository.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
+                    }
+                    4 -> {
+                        var fiche = repository.getByIdDemoRBLocalDatabse(i._id)
+                        repository.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
+                    }
+                    5 -> {
+                        var fiche = repository.getByIdDemoCCLocalDatabse(i._id)
+                        repository.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
+                    }
+                    6 -> {
+                        var fiche = repository.getByIdDemoTriLocalDatabse(i._id)
+                        repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
+                    }
+                }
             }
-       demontages.clear()
-            for( i in remontages) {
-               repository.deleteRemontageLocalDatabse(i.toRemoEntity())
+            demontages.clear()
+            for (i in remontages) {
+                repository.deleteRemontageLocalDatabse(i.toRemoEntity())
             }
-       remontages.clear()
+            remontages.clear()
         }
         val resp = repository.getFichesUser(token, userid, object : Callback<FichesResponse> {
             override fun onResponse(
@@ -245,7 +245,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoPompeLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (demontages.indexOf(resp.data!!) == -1
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
                                                                                 ) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
@@ -324,7 +326,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     repository.insertDemoMonoLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
-                                                                                    if (demontages.indexOf(resp.data!!) == -1) demontages!!.add(
+                                                                                    if (demontages.indexOf(
+                                                                                            resp.data!!
+                                                                                        ) == -1
+                                                                                    ) demontages!!.add(
                                                                                         resp2!!.data!!
                                                                                     )
                                                                                     Log.i(
@@ -403,7 +408,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     repository.insertDemoAlterLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
-                                                                                    if (demontages.indexOf(resp.data!!) == -1
+                                                                                    if (demontages.indexOf(
+                                                                                            resp.data!!
+                                                                                        ) == -1
                                                                                     ) demontages!!.add(
                                                                                         resp2!!.data!!
                                                                                     )
@@ -453,11 +460,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 if (response.code() == 200) {
                                                                     val resp2 = response.body()
                                                                     if (resp2 != null) {
-                                                                        Log.i(
-                                                                            "INFO",
-                                                                            "fiche DemontageRotorBobine :${resp.data!!.numFiche}"
-                                                                        )
-                                                                        //demontages!!.add(resp.fiche!!)
                                                                         viewModelScope.launch(
                                                                             Dispatchers.IO
                                                                         ) {
@@ -481,7 +483,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoRBLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (demontages.indexOf(resp.data!!) == -1
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
                                                                                 ) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
@@ -553,7 +557,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoCCLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (demontages.indexOf(resp.data!!) == -1) demontages!!.add(
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
+                                                                                ) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
@@ -627,7 +634,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertDemoTriLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (demontages.indexOf(resp.data!!) == -1) demontages!!.add(
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
+                                                                                ) demontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
@@ -806,7 +816,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertRemoCCLocalDatabase(
                                                                                     resp2!!.data!!
                                                                                 )
-                                                                                if (remontages.indexOf(resp.data!!) == -1
+                                                                                if (remontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
                                                                                 ) remontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
@@ -879,7 +891,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.insertRemoLocalDatabase(
                                                                                     resp2.data!!
                                                                                 )
-                                                                                if (remontages.indexOf(resp.data!!) == -1) remontages!!.add(
+                                                                                if (remontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
+                                                                                ) remontages!!.add(
                                                                                     resp2!!.data!!
                                                                                 )
                                                                                 Log.i(
@@ -939,7 +954,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         if (response.code() == 200) {
                                             val resp = response.body()
                                             if (resp != null) {
-                                                 Log.i("INFO","pas dans la liste"+(bobinages.indexOf(resp.data!!) == -1).toString())
+                                                Log.i(
+                                                    "INFO",
+                                                    "pas dans la liste" + (bobinages.indexOf(resp.data!!) == -1).toString()
+                                                )
                                                 viewModelScope.launch(Dispatchers.IO) {
                                                     var photos = resp.data?.photos?.toMutableList()
                                                     var iter = photos?.listIterator()
@@ -949,7 +967,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     resp.data?.photos = photos?.toTypedArray()
                                                     var b =
                                                         repository.getByIdBobinageLocalDatabse(resp.data!!._id)
-                                                    Log.i("INFO","présence bdd : "+(b == null).toString())
+                                                    Log.i(
+                                                        "INFO",
+                                                        "présence bdd : " + (b == null).toString()
+                                                    )
                                                     if (b == null) {
                                                         repository.insertBobinageLocalDatabase(resp!!.data!!)
                                                         if (bobinages.indexOf(resp.data!!) == -1) bobinages!!.add(
@@ -1134,7 +1155,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         }
                                     }
                                 }
-                                if (name == ""){
+                                if (name == "") {
                                     iter.remove()
                                 }
                             }
@@ -1158,9 +1179,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
                                             Log.i(
-                                                "INFO","signature client"+
-                                                from.exists()
-                                                    .toString() + " - path ${from.absolutePath}"
+                                                "INFO", "signature client" +
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath}"
                                             )
                                             if (from.exists()) from.renameTo(to)
                                             ch.signatureClient = imageName.value!!.name
@@ -1191,9 +1212,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
                                             Log.i(
-                                                "INFO","signature tech"+
-                                                from.exists()
-                                                    .toString() + " - path ${from.absolutePath}"
+                                                "INFO", "signature tech" +
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath}"
                                             )
                                             if (from.exists()) from.renameTo(to)
                                             ch.signatureTech = imageName.value!!.name
@@ -1292,7 +1313,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1384,7 +1405,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1478,7 +1499,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1531,7 +1552,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
-                            Log.i("INFO", name.contains(dt.numFiche!!).toString()+" fichier ${name} - numfiche ${dt.numFiche!!}")
+                            Log.i(
+                                "INFO",
+                                name.contains(dt.numFiche!!)
+                                    .toString() + " fichier ${name} - numfiche ${dt.numFiche!!}"
+                            )
                             if (name.contains(dt.numFiche!!)) {
                                 Log.i("INFO", "fichier à upload : ${name}")
                                 //var test = getPhotoFile(name)
@@ -1554,7 +1579,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val to = File(dir, imageName.value!!.name!!)
                                             iter.set(imageName.value!!.name!!)
                                             sendPhoto(from)
-                                            Log.i("INFO",
+                                            Log.i(
+                                                "INFO",
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
@@ -1638,7 +1664,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val to = File(dir, imageName.value!!.name!!)
                                             iter.set(imageName.value!!.name!!)
                                             sendPhoto(from)
-                                            Log.i("INFO",
+                                            Log.i(
+                                                "INFO",
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
@@ -1722,7 +1749,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val to = File(dir, imageName.value!!.name!!)
                                             iter.set(imageName.value!!.name!!)
                                             sendPhoto(from)
-                                            Log.i("INFO",
+                                            Log.i(
+                                                "INFO",
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
@@ -1822,7 +1850,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1914,7 +1942,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -2006,7 +2034,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -2098,7 +2126,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -2280,6 +2308,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
         return@runBlocking path
     }
+
     suspend fun getSignature(photoName: String): String? = runBlocking {
         var file = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
@@ -2335,6 +2364,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
         return@runBlocking path
     }
+
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage} - ${throwable.cause}")
     }
