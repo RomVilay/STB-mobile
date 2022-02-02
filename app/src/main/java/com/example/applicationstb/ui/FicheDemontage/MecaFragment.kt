@@ -169,12 +169,12 @@ class MecaFragment : Fragment() {
         }
         //roulements
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
+        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M","C4"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
         var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
         var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
         if (fiche.typeRoulementAvant !== null && fiche.typeRoulementAvant!!.size > 0) {
-            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant!![0]))
+            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M","C4").indexOf(fiche.typeRoulementAvant!![0]))
         }
         if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
             refRoul.setText(fiche.refRoulementAvant!![0])
