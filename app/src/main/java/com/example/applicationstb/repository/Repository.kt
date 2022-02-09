@@ -4473,6 +4473,11 @@ class Repository(var context: Context) {
         demontageRBDao = db!!.demontageRotorBobineDao()
         vehiculeDao = db!!.vehiculesDao()
         clientDao = db!!.clientDao()
+        demontageMotopompeDao = db!!.demontageMotopompeDao()
+        demontageMotoreducteurDao = db!!.demontageMotoreducteurDao()
+        demontageReducteurDao = db!!.demontageReducteurDao()
+        remontageMotopompeDao = db!!.remontageMotopompeDao()
+        remontageMotoreducteurDao = db!!.remontageMotoreducteurDao()
         Log.i("INFO", "db créée")
     }
 
@@ -4768,11 +4773,9 @@ class Repository(var context: Context) {
     suspend fun insertRemoLocalDatabase(remo: Remontage) {
         remontageDao!!.insertAll(remo.toRemoEntity())
     }
-
     suspend fun getAllRemontageLocalDatabase(): List<RemontageEntity> {
         return remontageDao!!.getAll()
     }
-
     suspend fun getByIdRemoLocalDatabse(id: String): Remontage? {
         try {
             if (remontageDao!!.getById(id) !== null) {
@@ -4783,11 +4786,9 @@ class Repository(var context: Context) {
             return null
         }
     }
-
     suspend fun updateRemoLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.update(remo)
     }
-
     suspend fun deleteRemontageLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.delete(remo)
     }
@@ -4796,11 +4797,9 @@ class Repository(var context: Context) {
     suspend fun insertRemoCCLocalDatabase(remo: RemontageCourantC) {
         remontageCourantCDao!!.insertAll(remo.toEntity())
     }
-
     suspend fun getAllRemontageCCLocalDatabase(): List<RemontageCCEntity> {
         return remontageCourantCDao!!.getAll()
     }
-
     suspend fun getByIdRemoCCLocalDatabse(id: String): RemontageCourantC? {
         try {
             if (remontageCourantCDao!!.getById(id) !== null) {
@@ -4811,12 +4810,116 @@ class Repository(var context: Context) {
             return null
         }
     }
-
     suspend fun updateRemoCCLocalDatabse(remo: RemontageCCEntity) {
         remontageCourantCDao!!.update(remo)
     }
-
     suspend fun deleteRemontageCCLocalDatabse(remo: RemontageCCEntity) {
         remontageCourantCDao!!.delete(remo)
     }
+
+    suspend fun insertDemoMotopompeDatabase(demo: DemontageMotopompe) {
+        demontageMotopompeDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageMotopompeLocalDatabase(): List<DemontageMotopompeEntity> {
+        return demontageMotopompeDao!!.getAll()
+    }
+    suspend fun getByIdDemoMotopompeLocalDatabase(id: String): DemontageMotopompe? {
+        try {
+                return demontageMotopompeDao!!.getById(id).toMotoPompe()
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoMotoPompeLocalDatabase(demo: DemontageMotopompeEntity) {
+        demontageMotopompeDao!!.update(demo)
+    }
+    suspend fun deleteDemontageMotoPompeLocalDatabse(demo: DemontageMotopompeEntity) {
+        demontageMotopompeDao!!.delete(demo)
+    }
+
+    suspend fun insertRemoMotopompeDatabase(demo: RemontageMotopompe) {
+        remontageMotopompeDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllRemontageMotopompeLocalDatabase(): List<RemontageMotopompeEntity> {
+        return remontageMotopompeDao!!.getAll()
+    }
+    suspend fun getByIdRemoMotopompeLocalDatabase(id: String): RemontageMotopompe? {
+        try {
+            return remontageMotopompeDao!!.getById(id).toRemontageMotopompe()
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoMotoPompeLocalDatabase(demo: RemontageMotopompeEntity) {
+        remontageMotopompeDao!!.update(demo)
+    }
+    suspend fun deleteDemontageMotoPompeLocalDatabse(demo: RemontageMotopompeEntity) {
+        remontageMotopompeDao!!.delete(demo)
+    }
+
+    suspend fun insertDemoMotoreducteurDatabase(demo: DemontageMotopompe) {
+        demontageMotopompeDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageMotoreducteurLocalDatabase(): List<DemontageMotoreducteurEntity> {
+        return demontageMotoreducteurDao!!.getAll()
+    }
+    suspend fun getByIdDemoMotoreducteurLocalDatabase(id: String): DemontageMotoreducteur? {
+        try {
+            return demontageMotoreducteurDao!!.getById(id).toDemontageMotoreducteur()
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoMotoreducteurLocalDatabase(demo: DemontageMotoreducteurEntity) {
+        demontageMotoreducteurDao!!.update(demo)
+    }
+    suspend fun deleteDemontageMotoreducteurLocalDatabse(demo: DemontageMotoreducteurEntity) {
+        demontageMotoreducteurDao!!.delete(demo)
+    }
+
+    suspend fun insertRemoMotoreducteurDatabase(demo: RemontageMotoreducteur) {
+        remontageMotoreducteurDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllRemontageMotoreducteurLocalDatabase(): List<RemontageMotoreducteurEntity> {
+        return remontageMotoreducteurDao!!.getAll()
+    }
+    suspend fun getByIdRemoMotoreducteurLocalDatabase(id: String): RemontageMotoreducteur? {
+        try {
+            return remontageMotoreducteurDao!!.getById(id).toRemontageMotoreducteur()
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoMotoreducteurLocalDatabase(demo: RemontageMotoreducteurEntity) {
+        remontageMotoreducteurDao!!.update(demo)
+    }
+    suspend fun deleteDemontageMotoreducteurLocalDatabse(demo: RemontageMotoreducteurEntity) {
+        remontageMotoreducteurDao!!.delete(demo)
+    }
+
+    suspend fun insertDemoReducteurDatabase(demo: DemontageMotopompe) {
+        demontageMotopompeDao!!.insertAll(demo.toEntity())
+    }
+    suspend fun getAllDemontageReducteurLocalDatabase(): List<DemontageReducteurEntity> {
+        return demontageReducteurDao!!.getAll()
+    }
+    suspend fun getByIdDemoReducteurLocalDatabase(id: String): DemontageReducteur? {
+        try {
+            return demontageReducteurDao!!.getById(id).toReducteur()
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+    suspend fun updateDemoReducteurLocalDatabase(demo: DemontageReducteurEntity) {
+        demontageReducteurDao!!.update(demo)
+    }
+    suspend fun deleteDemontageReducteurLocalDatabse(demo: DemontageReducteurEntity) {
+        demontageReducteurDao!!.delete(demo)
+    }
+
 }

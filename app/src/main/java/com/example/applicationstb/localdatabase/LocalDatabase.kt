@@ -5,13 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.applicationstb.model.DemontageAlternateur
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 import androidx.room.migration.Migration
-import com.example.applicationstb.model.DemontageReducteur
-import com.example.applicationstb.model.RemontageMotopompe
-import com.example.applicationstb.model.RemontageMotoreducteur
+import com.example.applicationstb.model.*
 
 
 @Database(
@@ -22,6 +19,11 @@ import com.example.applicationstb.model.RemontageMotoreducteur
         DemontageCCEntity::class,
         RemontageTriphaseEntity::class,
         RemontageCCEntity::class,
+        DemontageMotopompeEntity::class,
+        RemontageMotopompeEntity::class,
+        DemontageMotoreducteurEntity::class,
+        RemontageMotoreducteurEntity::class,
+        DemontageReducteurEntity::class,
         DemoPompeEntity::class,
         DemontageAlternateurEntity::class,
         DemontageRotorBEntity::class,
@@ -29,7 +31,7 @@ import com.example.applicationstb.model.RemontageMotoreducteur
         ClientEntity::class,
         VehiculeEntity::class,
         RemontageEntity::class
-    ), version = 23
+    ), version = 24
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {

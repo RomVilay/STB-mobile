@@ -150,7 +150,7 @@ interface DemontageReducteurDao{
     fun delete(fiche: DemontageReducteurEntity)
 
     @Query("SELECT * FROM demontage_reducteur")
-    fun getAll(): List<DemontageMotoreducteurEntity>
+    fun getAll(): List<DemontageReducteurEntity>
 
     @Query("SELECT * FROM demontage_reducteur WHERE _id LIKE :id")
     fun getById(id: String) : DemontageReducteurEntity

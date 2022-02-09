@@ -65,7 +65,7 @@ interface RemontageMotopompeDao {
     fun delete(fiche: RemontageMotopompeEntity)
 
     @Query("SELECT * FROM remontage_motopompe")
-    fun getAll(): List<RemontageEntity>
+    fun getAll(): List<RemontageMotopompeEntity>
 
     @Query("SELECT * FROM remontage_motopompe WHERE _id LIKE :id")
     fun getById(id: String) : RemontageMotopompeEntity
