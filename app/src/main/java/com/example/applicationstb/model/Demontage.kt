@@ -1,9 +1,12 @@
 package com.example.applicationstb.model
 
 import android.net.Uri
+import android.os.Parcelable
 import android.util.Log
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.ui.FicheDemontage.FicheDemontage
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.util.*
 
@@ -948,9 +951,21 @@ class DemontageMotopompe(
         )
     }
 }
+@Parcelize
+@Serializable
+class Roulement(var title: String?, var roulementAvant: String?, var roulementArriere: String?): Parcelable {
+    override fun toString(): String {
+        return "{\"title\":\"${title}\",\"roulementAvant\":\"${roulementAvant}\",\"roulementArriere\":\"${roulementArriere}\"}"
+    }
+}
+@Parcelize
+@Serializable
+class Joint(var title: String?, var jointAvant: String?, var jointArriere: String?): Parcelable {
+    override fun toString(): String {
+        return "{\"title\":\"${title}\",\"jointAvant\":\"${jointAvant}\",\"jointArriere\":\"${jointArriere}\"}"
+    }
+}
 
-class Roulement(var title: String?, var roulementAvant: String?, var roulementArriere: String?) {}
-class Joint(var title: String?, var jointAvant: String?, var jointArriere: String?) {}
 class DemontageMotoreducteur(
     idFiche: String,
     numDevis: String?,

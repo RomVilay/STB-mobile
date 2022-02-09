@@ -131,10 +131,10 @@ class BodyBobinage(
     var dureeTotale: Long?,
     var photos: Array<String>?,
     var presenceSondes: Boolean?,
-    var typeSondes:String?,
-    val pasPolaire:String?,
-    var branchement:String?,
-    var nbEncoches:Long?
+    var typeSondes: String?,
+    val pasPolaire: String?,
+    var branchement: String?,
+    var nbEncoches: Long?
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1444,6 +1444,7 @@ class BodyDemoPompe(
 
 class BodyDemoMotoPompe(
     var status: Long?,
+    var dureeTotale: Int?,
     var observations: String?,
     var photos: Array<String>?,
     var typeMoteur: String?,
@@ -1521,6 +1522,7 @@ class BodyDemoMotoPompe(
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
+        parcel.readInt(),
         parcel.readString(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
@@ -1610,6 +1612,7 @@ class BodyDemoMotoPompe(
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(status!!)
+        parcel.writeInt(dureeTotale!!)
         parcel.writeString(observations!!)
         arrayOf<String>().apply {
             parcel.writeArray(photos)
@@ -1699,13 +1702,384 @@ class BodyDemoMotoPompe(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<BodyDemoPompe> {
+    companion object CREATOR : Parcelable.Creator<BodyDemoMotoPompe> {
         @RequiresApi(Build.VERSION_CODES.Q)
-        override fun createFromParcel(parcel: Parcel): BodyDemoPompe {
-            return BodyDemoPompe(parcel)
+        override fun createFromParcel(parcel: Parcel): BodyDemoMotoPompe {
+            return BodyDemoMotoPompe(parcel)
         }
 
-        override fun newArray(size: Int): Array<BodyDemoPompe?> {
+        override fun newArray(size: Int): Array<BodyDemoMotoPompe?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyDemoMotoReducteur(
+    var status: Long?,
+    var dureeTotale: Int?,
+    var observations: String?,
+    var photos: Array<String>?,
+    var typeMoteur: String?,
+    var marque: String?,
+    var numSerie: String?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
+    var clavette: Boolean?,
+    var aspect: Int?,
+    var aspectInterieur: Int?,
+    var couplage: String?,
+    var flasqueAvant: Int?,
+    var flasqueArriere: Int?,
+    var porteeRAvant: Int?,
+    var porteeRArriere: Int?,
+    var boutArbre: Boolean?,
+    var rondelleElastique: Boolean?,
+    var refRoulementAvant: Array<String>?,
+    var refRoulementArriere: Array<String>?,
+    var typeRoulementAvant: Array<String>?,
+    var typeRoulementArriere: Array<String>?,
+    var refJointAvant: String?,
+    var refJointArriere: String?,
+    var typeJointAvant: Boolean?,
+    var typeJointArriere: Boolean?,
+    var ventilateur: Int?,
+    var capotV: Int?,
+    var socleBoiteABorne: Int?,
+    var capotBoiteABorne: Int?,
+    var plaqueABorne: Int?,
+    var presenceSondes: Boolean?,
+    var typeSondes: String?,
+    var equilibrage: Boolean?,
+    var peinture: String?,
+    var typeMotoreducteur: String?,
+    var trMinute: Float?,
+    var modele: String?,
+    var indiceReduction: String?,
+    var typeHuile: String?,
+    var quantiteHuile: Float?,
+    var roulements: MutableList<Roulement>?,
+    var joints: MutableList<Joint>?,
+    var isolementPhaseMasseStatorUM: Float?,
+    var isolementPhaseMasseStatorVM: Float?,
+    var isolementPhaseMasseStatorWM: Float?,
+    var isolementPhasePhaseStatorUV: Float?,
+    var isolementPhasePhaseStatorVW: Float?,
+    var isolementPhasePhaseStatorUW: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var tensionU: Float?,
+    var tensionV: Float?,
+    var tensionW: Float?,
+    var intensiteU: Float?,
+    var intensiteV: Float?,
+    var intensiteW: Float?,
+    var dureeEssai: Float?,
+    var isolementPhaseMasse: Float?,
+    var resistanceTravail: Float?,
+    var resistanceDemarrage: Float?,
+    var valeurCondensateur: Float?,
+    var tension: Float?,
+    var intensite: Float?,
+) : Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readInt(),
+        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readFloat(),
+        mutableListOf<Roulement>().apply {
+            parcel.readList(this, Roulement::class.java.classLoader)
+        },
+        mutableListOf<Joint>().apply {
+            parcel.readList(this, Joint::class.java.classLoader)
+        },
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat()
+    ) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
+        parcel.writeInt(dureeTotale!!)
+        parcel.writeString(observations!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
+        parcel.writeString(typeMoteur!!)
+        parcel.writeString(marque!!)
+        parcel.writeString(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeInt(aspect!!)
+        parcel.writeInt(aspectInterieur!!)
+        parcel.writeString(couplage!!)
+        parcel.writeInt(flasqueAvant!!)
+        parcel.writeInt(flasqueArriere!!)
+        parcel.writeInt(porteeRAvant!!)
+        parcel.writeInt(porteeRArriere!!)
+        parcel.writeBoolean(boutArbre!!)
+        parcel.writeBoolean(rondelleElastique!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(refRoulementArriere)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementAvant)
+        }
+        arrayOf<String>().apply {
+            parcel.writeArray(typeRoulementArriere)
+        }
+        parcel.writeString(refJointAvant!!)
+        parcel.writeString(refJointArriere!!)
+        parcel.writeBoolean(typeJointAvant!!)
+        parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeInt(ventilateur!!)
+        parcel.writeInt(capotV!!)
+        parcel.writeInt(socleBoiteABorne!!)
+        parcel.writeInt(capotBoiteABorne!!)
+        parcel.writeInt(plaqueABorne!!)
+        parcel.writeBoolean(presenceSondes!!)
+        parcel.writeString(typeSondes!!)
+        parcel.writeBoolean(equilibrage!!)
+        parcel.writeString(peinture!!)
+        parcel.writeString(typeMotoreducteur)
+        parcel.writeFloat(trMinute!!)
+        parcel.writeString(modele!!)
+        parcel.writeString(indiceReduction!!)
+        parcel.writeString(typeHuile!!)
+        parcel.writeFloat(quantiteHuile!!)
+        mutableListOf<Roulement>().apply {
+            parcel.writeList(this)
+        }
+        mutableListOf<Joint>().apply {
+            parcel.writeList(this)
+        }
+        parcel.writeFloat(isolementPhaseMasseStatorUM!!)
+        parcel.writeFloat(isolementPhaseMasseStatorVM!!)
+        parcel.writeFloat(isolementPhaseMasseStatorWM!!)
+        parcel.writeFloat(isolementPhasePhaseStatorUV!!)
+        parcel.writeFloat(isolementPhasePhaseStatorVW!!)
+        parcel.writeFloat(isolementPhasePhaseStatorUW!!)
+        parcel.writeFloat(resistanceStatorU!!)
+        parcel.writeFloat(resistanceStatorV!!)
+        parcel.writeFloat(resistanceStatorW!!)
+        parcel.writeFloat(tensionU!!)
+        parcel.writeFloat(tensionV!!)
+        parcel.writeFloat(tensionW!!)
+        parcel.writeFloat(intensiteU!!)
+        parcel.writeFloat(intensiteV!!)
+        parcel.writeFloat(intensiteW!!)
+        parcel.writeFloat(dureeEssai!!)
+        parcel.writeFloat(isolementPhaseMasse!!)
+        parcel.writeFloat(resistanceTravail!!)
+        parcel.writeFloat(resistanceDemarrage!!)
+        parcel.writeFloat(valeurCondensateur!!)
+        parcel.writeFloat(tension!!)
+        parcel.writeFloat(intensite!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemoMotoReducteur> {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        override fun createFromParcel(parcel: Parcel): BodyDemoMotoReducteur {
+            return BodyDemoMotoReducteur(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemoMotoReducteur?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyDemontageReducteur(
+    var status: Long?,
+    var dureeTotale: Int?,
+    var observations: String?,
+    var photos: Array<String>?,
+    var marque: String?,
+    var typeMoteur: String?,
+    var numSerie: String?,
+    var puissance: Float?,
+    var bride: Float?,
+    var vitesse: Float?,
+    var arbreSortantEntrant: Boolean?, //arbre sortant ou rentrant
+    var accouplement: Boolean?,
+    var coteAccouplement: String?,
+    var clavette: Boolean?,
+    var peinture: String?,
+    var trMinute: Float?,
+    var modele: String?,
+    var indiceReduction: String?,
+    var typeHuile: String?,
+    var quantiteHuile: Float?,
+    var roulements: MutableList<Roulement>?,
+    var joints: MutableList<Joint>?
+
+):  Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readInt(),
+        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readFloat(),
+        mutableListOf<Roulement>().apply {
+            parcel.readList(this, Roulement::class.java.classLoader)
+        },
+        mutableListOf<Joint>().apply {
+            parcel.readList(this, Joint::class.java.classLoader)
+        }
+    ) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(status!!)
+        parcel.writeInt(dureeTotale!!)
+        parcel.writeString(observations!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
+        parcel.writeString(marque!!)
+        parcel.writeString(typeMoteur!!)
+        parcel.writeString(numSerie!!)
+        parcel.writeFloat(puissance!!)
+        parcel.writeFloat(bride!!)
+        parcel.writeFloat(vitesse!!)
+        parcel.writeBoolean(arbreSortantEntrant!!)
+        parcel.writeBoolean(accouplement!!)
+        parcel.writeString(coteAccouplement!!)
+        parcel.writeBoolean(clavette!!)
+        parcel.writeString(peinture!!)
+        parcel.writeFloat(trMinute!!)
+        parcel.writeString(modele!!)
+        parcel.writeString(indiceReduction!!)
+        parcel.writeString(typeHuile!!)
+        parcel.writeFloat(quantiteHuile!!)
+        mutableListOf<Roulement>().apply {
+            parcel.writeList(this)
+        }
+        mutableListOf<Joint>().apply {
+            parcel.writeList(this)
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyDemontageReducteur> {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        override fun createFromParcel(parcel: Parcel): BodyDemontageReducteur {
+            return BodyDemontageReducteur(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyDemontageReducteur?> {
             return arrayOfNulls(size)
         }
     }
@@ -1953,6 +2327,58 @@ class BodyRemontage(
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementFlasque: Int?,
+    var photos: Array<String>?
+) : Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
+    ) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(status!!)
+        parcel.writeLong(dureeTotale!!)
+        parcel.writeString(observations!!)
+        parcel.writeInt(remontageRoulement!!)
+        parcel.writeInt(collageRoulementPorteeArbre!!)
+        parcel.writeInt(collageRoulementFlasque!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyRemontage> {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        override fun createFromParcel(parcel: Parcel): BodyRemontage {
+            return BodyRemontage(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyRemontage?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+class BodyRemontageMotopompe(
+    var status: Int?,
+    var observations: String?,
+    var dureeTotale: Long?,
+    var photos: Array<String>?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
@@ -1997,71 +2423,110 @@ class BodyRemontage(
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
-    var photos: Array<String>?
+    var typeMotopompe: String?,
+    var isolementPhaseMasse: Float?,
+    var isolementPhase: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var isolementPMStatorU: Float?,
+    var isolementPMStatorV: Float?,
+    var isolementPMStatorW: Float?,
+    var isolementPMRotorU: Float?,
+    var isolementPMRotorV: Float?,
+    var isolementPMRotorW: Float?,
+    var isolementPhaseStatorUV: Float?,
+    var isolementPhaseStatorVW: Float?,
+    var isolementPhaseStatorUW: Float?,
+    var isolementPhaseRotorUV: Float?,
+    var isolementPhaseRotorVW: Float?,
+    var isolementPhaseRotorUW: Float?
+
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
-        parcel.readLong(),
         parcel.readString(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readBoolean(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readInt(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
+        parcel.readLong(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
-        }
+        },
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readBoolean(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readBoolean(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
     ) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(status!!)
-        parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations!!)
+        parcel.writeLong(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
         parcel.writeInt(collageRoulementFlasque!!)
@@ -2109,22 +2574,193 @@ class BodyRemontage(
         parcel.writeFloat(acceleration2H!!)
         parcel.writeFloat(vitesse2A!!)
         parcel.writeFloat(acceleration2A!!)
-        arrayOf<String>().apply {
-            parcel.writeArray(photos)
-        }
+        parcel.writeFloat(isolementPhaseMasse!!)
+        parcel.writeFloat(isolementPhase!!)
+        parcel.writeFloat(resistanceStatorU!!)
+        parcel.writeFloat(resistanceStatorV!!)
+        parcel.writeFloat(resistanceStatorW!!)
+        parcel.writeFloat(isolementPMStatorU!!)
+        parcel.writeFloat(isolementPMStatorV!!)
+        parcel.writeFloat(isolementPMStatorW!!)
+        parcel.writeFloat(isolementPMRotorU!!)
+        parcel.writeFloat(isolementPMRotorV!!)
+        parcel.writeFloat(isolementPMRotorW!!)
+        parcel.writeFloat(isolementPhaseStatorUV!!)
+        parcel.writeFloat(isolementPhaseStatorVW!!)
+        parcel.writeFloat(isolementPhaseRotorUW!!)
+        parcel.writeFloat(isolementPhaseStatorUV!!)
+        parcel.writeFloat(isolementPhaseStatorVW!!)
+        parcel.writeFloat(isolementPhaseRotorUW!!)
     }
 
     override fun describeContents(): Int {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<BodyRemontage> {
+    companion object CREATOR : Parcelable.Creator<BodyRemontageMotopompe> {
         @RequiresApi(Build.VERSION_CODES.Q)
-        override fun createFromParcel(parcel: Parcel): BodyRemontage {
-            return BodyRemontage(parcel)
+        override fun createFromParcel(parcel: Parcel): BodyRemontageMotopompe {
+            return BodyRemontageMotopompe(parcel)
         }
 
-        override fun newArray(size: Int): Array<BodyRemontage?> {
+        override fun newArray(size: Int): Array<BodyRemontageMotopompe?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+class BodyRemontageMotoreducteur(
+    var status: Int?,
+    var observations: String?,
+    var dureeTotale: Long?,
+    var photos: Array<String>?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementFlasque: Int?,
+    var typeMotoreducteur: String?,
+    var isolementPhaseMasse: Float?,
+    var isolementPhase: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var isolementPMStatorU: Float?,
+    var isolementPMStatorV: Float?,
+    var isolementPMStatorW: Float?,
+    var isolementPMRotorU: Float?,
+    var isolementPMRotorV: Float?,
+    var isolementPMRotorW: Float?,
+    var isolementPhaseStatorUV: Float?,
+    var isolementPhaseStatorVW: Float?,
+    var isolementPhaseStatorUW: Float?,
+    var isolementPhaseRotorUV: Float?,
+    var isolementPhaseRotorVW: Float?,
+    var isolementPhaseRotorUW: Float?
+
+) : Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readLong(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+        parcel.readFloat(),
+    ) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(status!!)
+        parcel.writeString(observations!!)
+        parcel.writeLong(dureeTotale!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
+        parcel.writeInt(remontageRoulement!!)
+        parcel.writeInt(collageRoulementPorteeArbre!!)
+        parcel.writeInt(collageRoulementFlasque!!)
+        parcel.writeString(typeMotoreducteur!!)
+        parcel.writeFloat(isolementPhaseMasse!!)
+        parcel.writeFloat(isolementPhase!!)
+        parcel.writeFloat(resistanceStatorU!!)
+        parcel.writeFloat(resistanceStatorV!!)
+        parcel.writeFloat(resistanceStatorW!!)
+        parcel.writeFloat(isolementPMStatorU!!)
+        parcel.writeFloat(isolementPMStatorV!!)
+        parcel.writeFloat(isolementPMStatorW!!)
+        parcel.writeFloat(isolementPMRotorU!!)
+        parcel.writeFloat(isolementPMRotorV!!)
+        parcel.writeFloat(isolementPMRotorW!!)
+        parcel.writeFloat(isolementPhaseStatorUV!!)
+        parcel.writeFloat(isolementPhaseStatorVW!!)
+        parcel.writeFloat(isolementPhaseRotorUW!!)
+        parcel.writeFloat(isolementPhaseStatorUV!!)
+        parcel.writeFloat(isolementPhaseStatorVW!!)
+        parcel.writeFloat(isolementPhaseRotorUW!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyRemontageMotoreducteur> {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        override fun createFromParcel(parcel: Parcel): BodyRemontageMotoreducteur {
+            return BodyRemontageMotoreducteur(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyRemontageMotoreducteur?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+class BodyRemontageReducteur(
+    var status: Int?,
+    var dureeTotale: Long?,
+    var observations: String?,
+    var photos: Array<String>?,
+    var remontageRoulement: Int?,
+    var collageRoulementPorteeArbre: Int?,
+    var collageRoulementFlasque: Int?,
+) : Parcelable {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readLong(),
+        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+    ) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(status!!)
+        parcel.writeLong(dureeTotale!!)
+        parcel.writeString(observations!!)
+        arrayOf<String>().apply {
+            parcel.writeArray(photos)
+        }
+        parcel.writeInt(remontageRoulement!!)
+        parcel.writeInt(collageRoulementPorteeArbre!!)
+        parcel.writeInt(collageRoulementFlasque!!)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyRemontageReducteur> {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        override fun createFromParcel(parcel: Parcel): BodyRemontageReducteur {
+            return BodyRemontageReducteur(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyRemontageReducteur?> {
             return arrayOfNulls(size)
         }
     }
@@ -2360,6 +2996,18 @@ class BobinageResponse(
 class DemontageTriphaseResponse(
     var data: Triphase?
 )
+class DemontageMotoreducteurResponse(
+    var data: DemontageMotoreducteur?
+)
+
+class DemontageMotopompeResponse(
+    var data: DemontageMotopompe?
+)
+
+class DemontageReducteurResponse(
+    var data: DemontageReducteur?
+)
+
 
 class DemontageCCResponse(
     var data: CourantContinu?
@@ -2380,12 +3028,15 @@ class RemontageCCResponse(
 class RemontageMotoreducteurResponse(
     var data: RemontageMotoreducteur?
 )
+
 class RemontageMotopompeResponse(
     var data: RemontageMotopompe?
 )
+
 class RemontageReducteurResponse(
     var data: RemontageReducteur?
 )
+
 class VehiculesResponse(
     var data: Vehicule?
 )
@@ -2494,10 +3145,13 @@ class Repository(var context: Context) {
     var demontageRBDao: DemontageRotorBobineDao? = null;
     var demontageAlterDao: DemontageAlternateurDao? = null;
     var demontagePDao: DemontagePDao? = null;
+    var demontageMotoreducteurDao: DemontageMotoreducteurDao? = null;
+    var demontageMotopompeDao: DemontageMotopompeDao? = null;
+    var demontageReducteurDao: DemontageReducteurDao? = null;
     var remontageTriphaseDao: RemontageTriphaseDao? = null;
     var remontageCourantCDao: RemontageCCDao? = null;
-    var remontageMotoreducteurDao:RemontageMotoreducteurDao? = null;
-    var remontageMotopompeDao:RemontageMotopompeDao? = null;
+    var remontageMotoreducteurDao: RemontageMotoreducteurDao? = null;
+    var remontageMotopompeDao: RemontageMotopompeDao? = null;
     var vehiculeDao: VehiculeDao? = null;
     var clientDao: ClientsDao? = null;
     var remontageDao: RemontageDao? = null;
@@ -2546,6 +3200,19 @@ class Repository(var context: Context) {
     fun getDemontage(token: String, ficheId: String, callback: Callback<DemontageResponse>) {
         val call = service.getDemontage(token, ficheId)
         var fiche: DemontageMoteur? = null
+        call.enqueue(callback)
+    }
+
+    fun getDemontageReducteur(token: String, ficheId: String, callback: Callback<DemontageReducteurResponse>) {
+        val call = service.getDemontageReducteur(token, ficheId)
+        call.enqueue(callback)
+    }
+    fun getDemontageMotoreducteur(token: String, ficheId: String, callback: Callback<DemontageMotoreducteurResponse>) {
+        val call = service.getDemontageMotoreducteur(token, ficheId)
+        call.enqueue(callback)
+    }
+    fun getDemontageMotopompe(token: String, ficheId: String, callback: Callback<DemontageMotopompeResponse>) {
+        val call = service.getDemontageMotopompe(token, ficheId)
         call.enqueue(callback)
     }
 
@@ -2683,6 +3350,208 @@ class Repository(var context: Context) {
         )
         var call = service.patchDemontageTriphase(token, ficheId, body)
         var fiche: Triphase? = null
+        call.enqueue(callback)
+    }
+
+    fun patchDemontageMotopompe(
+        token: String,
+        ficheId: String,
+        motopompe: DemontageMotopompe,
+        callback: Callback<DemontageMotopompeResponse>
+    ) {
+        var body = BodyDemoMotoPompe(
+            motopompe.status,
+            motopompe.dureeTotale!!.toInt(),
+            motopompe.observations,
+            motopompe.photos,
+            motopompe.typeMoteur,
+            motopompe.marque,
+            motopompe.numSerie,
+            motopompe.puissance,
+            motopompe.bride,
+            motopompe.vitesse,
+            motopompe.arbreSortantEntrant,
+            motopompe. accouplement,
+            motopompe.coteAccouplement,
+            motopompe.clavette,
+            motopompe.aspect,
+            motopompe.aspectInterieur,
+            motopompe.couplage,
+            motopompe.flasqueAvant,
+            motopompe.flasqueArriere,
+            motopompe.porteeRArriere,
+            motopompe.porteeRAvant,
+            motopompe.boutArbre,
+            motopompe.rondelleElastique,
+            motopompe.refRoulementAvant,
+            motopompe.refRoulementArriere,
+            motopompe.typeRoulementAvant,
+            motopompe.typeRoulementArriere,
+            motopompe.refJointAvant,
+            motopompe.refJointArriere,
+            motopompe.typeJointAvant,
+            motopompe.typeJointArriere,
+            motopompe.ventilateur,
+            motopompe.capotV,
+            motopompe.socleBoiteABorne,
+            motopompe.capotBoiteABorne,
+            motopompe.plaqueABorne,
+            motopompe.presenceSondes,
+            motopompe.typeSondes,
+            motopompe.equilibrage,
+            motopompe.peinture,
+            motopompe.typeMotopompe,
+            motopompe.fluide,
+            motopompe.sensRotation,
+            motopompe.typeRessort,
+            motopompe.typeJoint,
+            motopompe.matiere,
+            motopompe.diametreArbre,
+            motopompe.diametreExtPR,
+            motopompe.diametreExtPF,
+            motopompe.epaisseurPF,
+            motopompe.longueurRotativeNonComprimee,
+            motopompe.longueurRotativeComprimee,
+            motopompe.longueurRotativeTravail,
+            motopompe.isolementPhaseMasseStatorUM,
+            motopompe.isolementPhaseMasseStatorVM,
+            motopompe.isolementPhaseMasseStatorWM,
+            motopompe.isolementPhasePhaseStatorUV,
+            motopompe.isolementPhasePhaseStatorVW,
+            motopompe.isolementPhasePhaseStatorUW,
+            motopompe.resistanceStatorU,
+            motopompe.resistanceStatorV,
+            motopompe.resistanceStatorW,
+            motopompe.tensionU,
+            motopompe.tensionV,
+            motopompe.tensionW,
+            motopompe.intensiteU,
+            motopompe.intensiteV,
+            motopompe.intensiteW,
+            motopompe.dureeEssai,
+            motopompe.isolementPhaseMasse,
+            motopompe.resistanceTravail,
+            motopompe.resistanceDemarrage,
+            motopompe.valeurCondensateur,
+            motopompe.tension,
+            motopompe.intensite
+        )
+        var call = service.patchDemontageMotopompe(token, ficheId, body)
+        call.enqueue(callback)
+    }
+
+    fun patchDemontageReducteur(
+        token: String,
+        ficheId: String,
+        reducteur: DemontageReducteur,
+        callback: Callback<DemontageReducteurResponse>
+    ) {
+        var body = BodyDemontageReducteur(
+            reducteur.status,
+            reducteur.dureeTotale!!.toInt(),
+            reducteur.observations,
+            reducteur.photos,
+            reducteur.marque,
+            reducteur.typeMoteur,
+            reducteur.numSerie,
+            reducteur.puissance,
+            reducteur.bride,
+            reducteur.vitesse,
+            reducteur.arbreSortantEntrant,
+            reducteur. accouplement,
+            reducteur.coteAccouplement,
+            reducteur.clavette,
+            reducteur.peinture,
+            reducteur.trMinute,
+            reducteur.modele,
+            reducteur.indiceReduction,
+            reducteur.typeHuile,
+            reducteur.quantiteHuile,
+            reducteur.roulements,
+            reducteur.joints
+        )
+        var call = service.patchDemontageReducteur(token, ficheId, body)
+        call.enqueue(callback)
+    }
+    fun patchDemontageMotoreducteur(
+        token: String,
+        ficheId: String,
+        motoreducteur: DemontageMotoreducteur,
+        callback: Callback<DemontageMotoreducteurResponse>
+    ) {
+        var body = BodyDemoMotoReducteur(
+            motoreducteur.status,
+            motoreducteur.dureeTotale!!.toInt(),
+            motoreducteur.observations,
+            motoreducteur.photos,
+            motoreducteur.typeMoteur,
+            motoreducteur.marque,
+            motoreducteur.numSerie,
+            motoreducteur.puissance,
+            motoreducteur.bride,
+            motoreducteur.vitesse,
+            motoreducteur.arbreSortantEntrant,
+            motoreducteur. accouplement,
+            motoreducteur.coteAccouplement,
+            motoreducteur.clavette,
+            motoreducteur.aspect,
+            motoreducteur.aspectInterieur,
+            motoreducteur.couplage,
+            motoreducteur.flasqueAvant,
+            motoreducteur.flasqueArriere,
+            motoreducteur.porteeRArriere,
+            motoreducteur.porteeRAvant,
+            motoreducteur.boutArbre,
+            motoreducteur.rondelleElastique,
+            motoreducteur.refRoulementAvant,
+            motoreducteur.refRoulementArriere,
+            motoreducteur.typeRoulementAvant,
+            motoreducteur.typeRoulementArriere,
+            motoreducteur.refJointAvant,
+            motoreducteur.refJointArriere,
+            motoreducteur.typeJointAvant,
+            motoreducteur.typeJointArriere,
+            motoreducteur.ventilateur,
+            motoreducteur.capotV,
+            motoreducteur.socleBoiteABorne,
+            motoreducteur.capotBoiteABorne,
+            motoreducteur.plaqueABorne,
+            motoreducteur.presenceSondes,
+            motoreducteur.typeSondes,
+            motoreducteur.equilibrage,
+            motoreducteur.peinture,
+            motoreducteur.typeMotoreducteur,
+                    motoreducteur.trMinute,
+            motoreducteur.modele,
+            motoreducteur.indiceReduction,
+            motoreducteur.typeHuile,
+            motoreducteur.quantiteHuile,
+            motoreducteur.roulements,
+            motoreducteur.joints,
+            motoreducteur.isolementPhaseMasseStatorUM,
+            motoreducteur.isolementPhaseMasseStatorVM,
+            motoreducteur.isolementPhaseMasseStatorWM,
+            motoreducteur.isolementPhasePhaseStatorUV,
+            motoreducteur.isolementPhasePhaseStatorVW,
+            motoreducteur.isolementPhasePhaseStatorUW,
+            motoreducteur.resistanceStatorU,
+            motoreducteur.resistanceStatorV,
+            motoreducteur.resistanceStatorW,
+            motoreducteur.tensionU,
+            motoreducteur.tensionV,
+            motoreducteur.tensionW,
+            motoreducteur.intensiteU,
+            motoreducteur.intensiteV,
+            motoreducteur.intensiteW,
+            motoreducteur.dureeEssai,
+            motoreducteur.isolementPhaseMasse,
+            motoreducteur.resistanceTravail,
+            motoreducteur.resistanceDemarrage,
+            motoreducteur.valeurCondensateur,
+            motoreducteur.tension,
+            motoreducteur.intensite
+        )
+        var call = service.patchDemontageMotoreducteur(token, ficheId, body)
         call.enqueue(callback)
     }
 
@@ -2833,12 +3702,29 @@ class Repository(var context: Context) {
         call.enqueue(callback)
     }
 
-    fun getRemontageMotoreducteur(token: String, ficheId: String, callback: Callback<RemontageMotoreducteurResponse>) {
+    fun getRemontageMotoreducteur(
+        token: String,
+        ficheId: String,
+        callback: Callback<RemontageMotoreducteurResponse>
+    ) {
         val call = service.getRemontageMotoreducteur(token, ficheId)
         call.enqueue(callback)
     }
-    fun getRemontageMotopompe(token: String, ficheId: String, callback: Callback<RemontageMotopompeResponse>) {
+
+    fun getRemontageMotopompe(
+        token: String,
+        ficheId: String,
+        callback: Callback<RemontageMotopompeResponse>
+    ) {
         val call = service.getRemontageMotopompe(token, ficheId)
+        call.enqueue(callback)
+    }
+    fun getRemontageReducteur(
+        token: String,
+        ficheId: String,
+        callback: Callback<RemontageReducteurResponse>
+    ) {
+        val call = service.getRemontageReducteur(token, ficheId)
         call.enqueue(callback)
     }
 
@@ -3031,41 +3917,122 @@ class Repository(var context: Context) {
         var fiche: Remontage? = null
         call.enqueue(callback)
     }
-    fun patchRemontageMotoreducteur(
-        token: String,
-        ficheId: String,
-        fiche: Remontage,
-        callback: Callback<RemontageResponse>
-    ) {
-        var body = BodyRemontage(
-            fiche.status!!.toInt(),
-            fiche.dureeTotale,
-            fiche.observations,
-            fiche.remontageRoulement,
-            fiche.collageRoulementPorteeArbre,
-            fiche.collageRoulementFlasque,
-            fiche.photos
-        )
-        var call = service.patchRemontage(token, ficheId, body)
-        var fiche: Remontage? = null
-        call.enqueue(callback)
-    }
+
     fun patchRemontageMotopompe(
         token: String,
         ficheId: String,
-        fiche: Remontage,
+        fiche: RemontageMotopompe,
         callback: Callback<RemontageMotopompeResponse>
     ) {
         var body = BodyRemontageMotopompe(
             fiche.status!!.toInt(),
-            fiche.dureeTotale,
             fiche.observations,
+            fiche.dureeTotale,
+            fiche.photos,
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
             fiche.collageRoulementFlasque,
-            fiche.photos
+            fiche.verificationFixationCouronne,
+            fiche.verificationIsolementPorteBalais,
+            fiche.isolementPorteBalaisV,
+            fiche.isolementPorteBalaisOhm,
+            fiche.tensionStator,
+            fiche.tensionStatorU,
+            fiche.tensionStatorV,
+            fiche.tensionStatorW,
+            fiche.tensionInducteurs,
+            fiche.tensionInducteursU,
+            fiche.tensionInducteursV,
+            fiche.tensionInducteursW,
+            fiche.intensiteStator,
+            fiche.intensiteStatorU,
+            fiche.intensiteStatorV,
+            fiche.intensiteStatorW,
+            fiche.intensiteInducteurs,
+            fiche.intensiteInducteursU,
+            fiche.intensiteInducteursV,
+            fiche.intensiteInducteursW,
+            fiche.tensionInduit,
+            fiche.tensionInduitU,
+            fiche.tensionInduitV,
+            fiche.tensionInduitW,
+            fiche.tensionRotor,
+            fiche.tensionRotorU,
+            fiche.tensionRotorV,
+            fiche.tensionRotorW,
+            fiche.intensiteInduit,
+            fiche.intensiteInduitU,
+            fiche.vitesseU,
+            fiche.puissanceU,
+            fiche.dureeEssai,
+            fiche.sensRotation,
+//essais vibratoires
+            fiche.vitesse1V,  // vitesse 1v
+            fiche.acceleration1V,  //accélération 1v
+            fiche.vitesse2V,  // vitesse 2v
+            fiche.acceleration2V,  //accélération 2v
+            fiche.vitesse1H,  // vitesse 1H
+            fiche.acceleration1H,  //accélération 1H
+            fiche.vitesse2H,  // vitesse 2H
+            fiche.acceleration2H,  //accélération 2H
+            fiche.vitesse2A,  // vitesse 2acceleration
+            fiche.acceleration2A,
+            fiche.typeMotopompe,
+            fiche.isolementPhaseMasse,
+            fiche.isolementPhase,
+            fiche.resistanceStatorU,
+            fiche.resistanceStatorV,
+            fiche.resistanceStatorW,
+            fiche.isolementPMStatorU,
+            fiche.isolementPMStatorV,
+            fiche.isolementPMStatorW,
+            fiche.isolementPMRotorU,
+            fiche.isolementPMRotorV,
+            fiche.isolementPMRotorW,
+            fiche.isolementPhaseStatorUV,
+            fiche.isolementPhaseStatorVW,
+            fiche.isolementPhaseStatorUW,
+            fiche.isolementPhaseRotorUV,
+            fiche.isolementPhaseRotorVW,
+            fiche.isolementPhaseRotorUW
         )
         var call = service.patchRemontageMotopompe(token, ficheId, body)
+        call.enqueue(callback)
+    }
+    fun patchRemontageMotoreducteur(
+        token: String,
+        ficheId: String,
+        fiche: RemontageMotoreducteur,
+        callback: Callback<RemontageMotoreducteurResponse>
+    ) {
+        var body = BodyRemontageMotoreducteur(
+            fiche.status!!.toInt(),
+            fiche.observations,
+            fiche.dureeTotale,
+            fiche.photos,
+            fiche.remontageRoulement,
+            fiche.collageRoulementPorteeArbre,
+            fiche.collageRoulementFlasque,
+            fiche.typeMotoreducteur,
+            fiche.isolementPhaseMasse,
+            fiche.isolementPhase,
+            fiche.resistanceStatorU,
+            fiche.resistanceStatorV,
+            fiche.resistanceStatorW,
+            fiche.isolementPMStatorU,
+            fiche.isolementPMStatorV,
+            fiche.isolementPMStatorW,
+            fiche.isolementPMRotorU,
+            fiche.isolementPMRotorV,
+            fiche.isolementPMRotorW,
+            fiche.isolementPhaseStatorUV,
+            fiche.isolementPhaseStatorVW,
+            fiche.isolementPhaseStatorUW,
+            fiche.isolementPhaseRotorUV,
+            fiche.isolementPhaseRotorVW,
+            fiche.isolementPhaseRotorUW
+        )
+        var call = service.patchRemontageMotoreducteur(token, ficheId, body)
         call.enqueue(callback)
     }
 

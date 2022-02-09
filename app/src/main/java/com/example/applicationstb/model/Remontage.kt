@@ -1,8 +1,6 @@
 package com.example.applicationstb.model
 
-import com.example.applicationstb.localdatabase.RemontageCCEntity
-import com.example.applicationstb.localdatabase.RemontageEntity
-import com.example.applicationstb.localdatabase.RemontageTriphaseEntity
+import com.example.applicationstb.localdatabase.*
 import java.sql.Timestamp
 import java.util.*
 
@@ -516,7 +514,87 @@ class RemontageMotopompe(
     collageRoulementPorteeArbre,
     collageRoulementFlasque,
 ) {
-
+    fun toEntity(): RemontageMotopompeEntity {
+        return RemontageMotopompeEntity(
+            _id,
+            numDevis,
+            numFiche,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale,
+            observations,
+            photos,
+            remontageRoulement,
+            collageRoulementPorteeArbre,
+            collageRoulementFlasque,
+            verificationFixationCouronne,
+            verificationIsolementPorteBalais,
+            isolementPorteBalaisV,
+            isolementPorteBalaisOhm,
+            tensionStator,
+            tensionStatorU,
+            tensionStatorV,
+            tensionStatorW,
+            tensionInducteurs,
+            tensionInducteursU,
+            tensionInducteursV,
+            tensionInducteursW,
+            intensiteStator,
+            intensiteStatorU,
+            intensiteStatorV,
+            intensiteStatorW,
+            intensiteInducteurs,
+            intensiteInducteursU,
+            intensiteInducteursV,
+            intensiteInducteursW,
+            tensionInduit,
+            tensionInduitU,
+            tensionInduitV,
+            tensionInduitW,
+            tensionRotor,
+            tensionRotorU,
+            tensionRotorV,
+            tensionRotorW,
+            intensiteInduit,
+            intensiteInduitU,
+            vitesseU,
+            puissanceU,
+            dureeEssai,
+            sensRotation,
+//essais vibratoires
+            vitesse1V,  // vitesse 1v
+            acceleration1V,  //accélération 1v
+            vitesse2V,  // vitesse 2v
+            acceleration2V,  //accélération 2v
+            vitesse1H,  // vitesse 1H
+            acceleration1H,  //accélération 1H
+            vitesse2H,  // vitesse 2H
+            acceleration2H,  //accélération 2H
+            vitesse2A,  // vitesse 2acceleration
+            acceleration2A,
+            typeMotopompe,
+            isolementPhaseMasse,
+            isolementPhase,
+            resistanceStatorU,
+            resistanceStatorV,
+            resistanceStatorW,
+            isolementPMStatorU,
+            isolementPMStatorV,
+            isolementPMStatorW,
+            isolementPMRotorU,
+            isolementPMRotorV,
+            isolementPMRotorW,
+            isolementPhaseStatorUV,
+            isolementPhaseStatorVW,
+            isolementPhaseStatorUW,
+            isolementPhaseRotorUV,
+            isolementPhaseRotorVW,
+            isolementPhaseRotorUW
+        )
+    }
 }
 
 class RemontageMotoreducteur(
@@ -575,7 +653,45 @@ class RemontageMotoreducteur(
     remontageRoulement,
     collageRoulementPorteeArbre,
     collageRoulementFlasque
-)
+) {
+    fun toEntity(): RemontageMotoreducteurEntity {
+        return RemontageMotoreducteurEntity(
+            _id,
+            numDevis,
+            numFiche,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale,
+            observations,
+            photos,
+            typeFicheRemontage,
+            remontageRoulement,
+            collageRoulementPorteeArbre,
+            collageRoulementFlasque,
+            typeMotoreducteur,
+            isolementPhaseMasse,
+            isolementPhase,
+            resistanceStatorU,
+            resistanceStatorV,
+            resistanceStatorW,
+            isolementPMStatorU,
+            isolementPMStatorV,
+            isolementPMStatorW,
+            isolementPMRotorU,
+            isolementPMRotorV,
+            isolementPMRotorW,
+            isolementPhaseStatorUV,
+            isolementPhaseStatorVW,
+            isolementPhaseStatorUW,
+            isolementPhaseRotorUV,
+            isolementPhaseRotorVW,
+            isolementPhaseRotorUW
+        )
+    }
+}
 
 class RemontageReducteur(
     idFiche: String,
@@ -616,4 +732,24 @@ class RemontageReducteur(
     remontageRoulement,
     collageRoulementPorteeArbre,
     collageRoulementFlasque
-)
+) {
+    fun toEntity(): RemontageEntity {
+        return RemontageEntity(
+            _id,
+            numDevis!!,
+            numFiche,
+            type,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dureeTotale,
+            observations,
+            photos,
+            typeFicheRemontage,
+            remontageRoulement,
+            collageRoulementPorteeArbre,
+            collageRoulementFlasque
+        )
+    }
+}

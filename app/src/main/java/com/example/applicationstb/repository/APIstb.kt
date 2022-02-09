@@ -1,8 +1,6 @@
 package com.example.applicationstb.repository
 
-import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Fiche
-import com.example.applicationstb.model.User
+import com.example.applicationstb.model.*
 import com.squareup.moshi.Moshi
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -113,4 +111,33 @@ interface APIstb  {
     @Streaming
     @GET
     suspend fun getPhoto(@Url address: String): Response<ResponseBody>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemontageMotopompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageMotopompeResponse>
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageMotopompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemoMotoPompe ): Call<DemontageMotopompeResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getRemontageMotopompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageMotopompeResponse>
+    @PATCH("/fiches/{ficheId}")
+    fun patchRemontageMotopompe(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontageMotopompe ): Call<RemontageMotopompeResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemontageMotoreducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageMotoreducteurResponse>
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageMotoreducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemoMotoReducteur ): Call<DemontageMotoreducteurResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getRemontageMotoreducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageMotoreducteurResponse>
+    @PATCH("/fiches/{ficheId}")
+    fun patchRemontageMotoreducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontageMotoreducteur ): Call<RemontageMotoreducteurResponse>
+
+    @GET("/fiches/{ficheId}")
+    fun getDemontageReducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageReducteurResponse>
+    @PATCH("/fiches/{ficheId}")
+    fun patchDemontageReducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyDemontageReducteur ): Call<DemontageReducteurResponse>
+    @GET("/fiches/{ficheId}")
+    fun getRemontageReducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageReducteurResponse>
+
+
 }
