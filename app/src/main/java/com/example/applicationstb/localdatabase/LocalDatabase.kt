@@ -9,27 +9,49 @@ import com.example.applicationstb.model.DemontageAlternateur
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 import androidx.room.migration.Migration
+import com.example.applicationstb.model.DemontageReducteur
+import com.example.applicationstb.model.RemontageMotopompe
+import com.example.applicationstb.model.RemontageMotoreducteur
 
 
+@Database(
+    entities = arrayOf(
+        ChantierEntity::class,
+        BobinageEntity::class,
+        DemontageTriphaseEntity::class,
+        DemontageCCEntity::class,
+        RemontageTriphaseEntity::class,
+        RemontageCCEntity::class,
+        DemoPompeEntity::class,
+        DemontageAlternateurEntity::class,
+        DemontageRotorBEntity::class,
+        DemontageMonophaseEntity::class,
+        ClientEntity::class,
+        VehiculeEntity::class,
+        RemontageEntity::class
+    ), version = 23
+)
+@TypeConverters(Converters::class)
+abstract class LocalDatabase : RoomDatabase() {
+    abstract fun chantierDao(): ChantierDao
+    abstract fun bobinageDao(): BobinageDao
+    abstract fun demontageTriphaseDao(): DemontageTriphaseDao
+    abstract fun demontageCCDao(): DemontageCCDao
+    abstract fun demontagePDao(): DemontagePDao
+    abstract fun demontageAlternateurDao(): DemontageAlternateurDao
+    abstract fun demontageMonophaseDao(): DemontageMonophaseDao
+    abstract fun demontageRotorBobineDao(): DemontageRotorBobineDao
+    abstract fun demontageMotopompeDao(): DemontageMotopompeDao
+    abstract fun demontageMotoreducteurDao(): DemontageMotoreducteurDao
+    abstract fun demontageReducteurDao(): DemontageReducteurDao
+    abstract fun remontageTriphaseDao(): RemontageTriphaseDao
+    abstract fun remontageCCDao(): RemontageCCDao
+    abstract fun remontageMotoreducteurDao(): RemontageMotoreducteurDao
+    abstract fun remontageMotopompeDao(): RemontageMotopompeDao
+    abstract fun remontageDao(): RemontageDao
+    abstract fun vehiculesDao(): VehiculeDao
+    abstract fun clientDao(): ClientsDao
 
-
-
-@Database(entities = arrayOf(ChantierEntity::class, BobinageEntity::class, DemontageTriphaseEntity::class, DemontageCCEntity::class, RemontageTriphaseEntity::class, RemontageCCEntity::class, DemoPompeEntity::class, DemontageAlternateurEntity::class,DemontageRotorBEntity::class,DemontageMonophaseEntity::class,ClientEntity::class,VehiculeEntity::class, RemontageEntity::class), version = 23)
-@TypeConverters (Converters::class)
-    abstract class LocalDatabase : RoomDatabase() {
-        abstract fun chantierDao(): ChantierDao
-        abstract fun bobinageDao(): BobinageDao
-        abstract fun demontageTriphaseDao(): DemontageTriphaseDao
-        abstract fun demontageCCDao(): DemontageCCDao
-        abstract fun demontagePDao(): DemontagePDao
-        abstract fun demontageAlternateurDao(): DemontageAlternateurDao
-        abstract fun demontageMonophaseDao(): DemontageMonophaseDao
-        abstract fun demontageRotorBobineDao(): DemontageRotorBobineDao
-        abstract fun remontageTriphaseDao(): RemontageTriphaseDao
-        abstract fun remontageCCDao(): RemontageCCDao
-        abstract fun remontageDao(): RemontageDao
-        abstract fun vehiculesDao(): VehiculeDao
-        abstract  fun clientDao(): ClientsDao
     @Volatile
     private var INSTANCE: LocalDatabase? = null
 
@@ -47,4 +69,4 @@ import androidx.room.migration.Migration
             instance
         }
     }
-    }
+}

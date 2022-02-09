@@ -108,3 +108,53 @@ interface DemontageRotorBobineDao{
     @Update
     fun update(vararg fiches:DemontageRotorBEntity)
 }
+@Dao
+interface DemontageMotopompeDao{
+    @Insert
+    fun insertAll(vararg fiches:DemontageMotopompeEntity)
+
+    @Delete
+    fun delete(fiche: DemontageMotopompeEntity)
+
+    @Query("SELECT * FROM demontage_motopompe")
+    fun getAll(): List<DemontageMotopompeEntity>
+
+    @Query("SELECT * FROM demontage_motopompe WHERE _id LIKE :id")
+    fun getById(id: String) : DemontageMotopompeEntity
+
+    @Update
+    fun update(vararg fiches:DemontageMotopompeEntity)
+}
+@Dao
+interface DemontageMotoreducteurDao{
+    @Insert
+    fun insertAll(vararg fiches:DemontageMotoreducteurEntity)
+
+    @Delete
+    fun delete(fiche: DemontageMotoreducteurEntity)
+
+    @Query("SELECT * FROM demontage_motoreducteur")
+    fun getAll(): List<DemontageMotoreducteurEntity>
+
+    @Query("SELECT * FROM demontage_motoreducteur WHERE _id LIKE :id")
+    fun getById(id: String) : DemontageMotoreducteurEntity
+
+    @Update
+    fun update(vararg fiches:DemontageMotoreducteurEntity)
+}
+interface DemontageReducteurDao{
+    @Insert
+    fun insertAll(vararg fiches:DemontageReducteurEntity)
+
+    @Delete
+    fun delete(fiche: DemontageReducteurEntity)
+
+    @Query("SELECT * FROM demontage_reducteur")
+    fun getAll(): List<DemontageMotoreducteurEntity>
+
+    @Query("SELECT * FROM demontage_reducteur WHERE _id LIKE :id")
+    fun getById(id: String) : DemontageReducteurEntity
+
+    @Update
+    fun update(vararg fiches:DemontageReducteurEntity)
+}
