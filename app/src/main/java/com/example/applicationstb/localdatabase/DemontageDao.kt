@@ -142,6 +142,7 @@ interface DemontageMotoreducteurDao{
     @Update
     fun update(vararg fiches:DemontageMotoreducteurEntity)
 }
+@Dao
 interface DemontageReducteurDao{
     @Insert
     fun insertAll(vararg fiches:DemontageReducteurEntity)

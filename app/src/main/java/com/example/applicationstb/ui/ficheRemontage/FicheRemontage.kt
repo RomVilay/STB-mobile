@@ -40,7 +40,10 @@ class FicheRemontage : Fragment() {
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
-        val adapterRemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeRemontages.map { it.numFiche  })
+        val adapterRemontages = ArrayAdapter(
+            requireActivity(),
+            R.layout.support_simple_spinner_dropdown_item,
+            viewModel.listeRemontages.map { it.numFiche })
         spinner.adapter = adapterRemontages
         //var infoMoteur = layout.findViewById<CardView>(R.id.infoMoteur)
         var btnRemontage = layout.findViewById<Button>(R.id.btnDemarrer)
@@ -51,55 +54,67 @@ class FicheRemontage : Fragment() {
         var titre = layout.findViewById<TextView>(R.id.titreRemontage)
         var btnDemo = layout.findViewById<Button>(R.id.btnFDemo)
         var spinnerMnt = layout.findViewById<Spinner>(R.id.spinnerMntRll)
-        spinnerMnt.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","à la presse","douille de frappe","chauffe roulement"))
+        spinnerMnt.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(" ", "à la presse", "douille de frappe", "chauffe roulement")
+        )
         var spinnerCPA = layout.findViewById<Spinner>(R.id.spinnerCPA)
-        spinnerCPA.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","avant","arrière","aucun"))
+        spinnerCPA.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(" ", "avant", "arrière", "aucun")
+        )
         var spinnerCIF = layout.findViewById<Spinner>(R.id.spinnerCIF)
-        spinnerCIF.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","avant","arrière","aucun"))
+        spinnerCIF.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(" ", "avant", "arrière", "aucun")
+        )
         var fixCouronne = layout.findViewById<CheckBox>(R.id.fixCouronne)
         var isoPBRB = layout.findViewById<CheckBox>(R.id.isoPBRB)
         var isoPBV = layout.findViewById<EditText>(R.id.isoPBV)
         var risoPBV = layout.findViewById<EditText>(R.id.RisoPBV)
         var tensionStator = layout.findViewById<CheckBox>(R.id.radioButtonS1)
-         var tensionStatorU = layout.findViewById<EditText>(R.id.TSVU)
-         var tensionStatorV = layout.findViewById<EditText>(R.id.TSVV)
-         var tensionStatorW = layout.findViewById<EditText>(R.id.TSVW)
+        var tensionStatorU = layout.findViewById<EditText>(R.id.TSVU)
+        var tensionStatorV = layout.findViewById<EditText>(R.id.TSVV)
+        var tensionStatorW = layout.findViewById<EditText>(R.id.TSVW)
         var tensionInducteurs = layout.findViewById<CheckBox>(R.id.radioButtonI1)
         var tensionInducteursU = layout.findViewById<EditText>(R.id.TIVU)
         var tensionInducteursV = layout.findViewById<EditText>(R.id.TIVV)
         var tensionInducteursW = layout.findViewById<EditText>(R.id.TIVW)
         var intensiteStator = layout.findViewById<CheckBox>(R.id.radioButtonS2)
-         var intensiteStatorU = layout.findViewById<EditText>(R.id.ISVU)
-         var intensiteStatorV = layout.findViewById<EditText>(R.id.ISVV)
-         var intensiteStatorW = layout.findViewById<EditText>(R.id.ISVW)
+        var intensiteStatorU = layout.findViewById<EditText>(R.id.ISVU)
+        var intensiteStatorV = layout.findViewById<EditText>(R.id.ISVV)
+        var intensiteStatorW = layout.findViewById<EditText>(R.id.ISVW)
         var intensiteInducteurs = layout.findViewById<CheckBox>(R.id.radioButtonI2)
         var intensiteInducteursU = layout.findViewById<EditText>(R.id.IIVU)
         var intensiteInducteursV = layout.findViewById<EditText>(R.id.IIVV)
         var intensiteInducteursW = layout.findViewById<EditText>(R.id.IIVW)
         var tensionInduit = layout.findViewById<CheckBox>(R.id.radioInduit)
         var tensionInduitU = layout.findViewById<EditText>(R.id.TIU)
-         var tensionInduitV = layout.findViewById<EditText>(R.id.TIV)
-         var tensionInduitW = layout.findViewById<EditText>(R.id.TIW)
-         var tensionRotor = layout.findViewById<CheckBox>(R.id.radioRotor)
+        var tensionInduitV = layout.findViewById<EditText>(R.id.TIV)
+        var tensionInduitW = layout.findViewById<EditText>(R.id.TIW)
+        var tensionRotor = layout.findViewById<CheckBox>(R.id.radioRotor)
         var tensionRotorU = layout.findViewById<EditText>(R.id.TRU)
         var tensionRotorV = layout.findViewById<EditText>(R.id.TRV)
         var tensionRotorW = layout.findViewById<EditText>(R.id.TRW)
-         var intensiteInduitU = layout.findViewById<EditText>(R.id.IntIndu)
-         var vitesseU = layout.findViewById<EditText>(R.id.vitesseRemo)
-         var puissanceU = layout.findViewById<EditText>(R.id.pRemotri)
-         var dureeEssai = layout.findViewById<EditText>(R.id.dureeEssaiRemoTri)
-         var sensRotation = layout.findViewById<ToggleButton>(R.id.sensRotationS)
-         var V1V = layout.findViewById<EditText>(R.id.V1V)
-         var V1H = layout.findViewById<EditText>(R.id.V1H)
-         var V2V = layout.findViewById<EditText>(R.id.V2V)
-         var V2H = layout.findViewById<EditText>(R.id.V2H)
-         var V2A = layout.findViewById<EditText>(R.id.V2A)
-         var A1V = layout.findViewById<EditText>(R.id.A1V)
-         var A1H = layout.findViewById<EditText>(R.id.A1H)
-         var A2V = layout.findViewById<EditText>(R.id.A2V)
-         var A2H = layout.findViewById<EditText>(R.id.A2H)
-         var A2A = layout.findViewById<EditText>(R.id.A2A)
-         var obs = layout.findViewById<EditText>(R.id.observations)
+        var intensiteInduitU = layout.findViewById<EditText>(R.id.IntIndu)
+        var vitesseU = layout.findViewById<EditText>(R.id.vitesseRemo)
+        var puissanceU = layout.findViewById<EditText>(R.id.pRemotri)
+        var dureeEssai = layout.findViewById<EditText>(R.id.dureeEssaiRemoTri)
+        var sensRotation = layout.findViewById<ToggleButton>(R.id.sensRotationS)
+        var V1V = layout.findViewById<EditText>(R.id.V1V)
+        var V1H = layout.findViewById<EditText>(R.id.V1H)
+        var V2V = layout.findViewById<EditText>(R.id.V2V)
+        var V2H = layout.findViewById<EditText>(R.id.V2H)
+        var V2A = layout.findViewById<EditText>(R.id.V2A)
+        var A1V = layout.findViewById<EditText>(R.id.A1V)
+        var A1H = layout.findViewById<EditText>(R.id.A1H)
+        var A2V = layout.findViewById<EditText>(R.id.A2V)
+        var A2H = layout.findViewById<EditText>(R.id.A2H)
+        var A2A = layout.findViewById<EditText>(R.id.A2A)
+        var obs = layout.findViewById<EditText>(R.id.observations)
         var term = layout.findViewById<Button>(R.id.termRemo)
         var btnFichesD = layout.findViewById<Button>(R.id.btnFichesD)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
@@ -126,6 +141,107 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+                    if (demo.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
+                        demo.verificationIsolementPorteBalais!!
+                    )
+                    if (demo.isolementPorteBalaisV !== null) isoPBV.setText(
+                        demo.isolementPorteBalaisV!!.toString()
+                    )
+                    if (demo.isolementPorteBalaisOhm !== null) risoPBV.setText(
+                        demo.isolementPorteBalaisOhm!!.toString()
+                    )
+                    if (demo.tensionStator !== null) tensionStator.setChecked(
+                        demo.tensionStator!!
+                    )
+                    if (demo.tensionStatorU !== null) tensionStatorU.setText(
+                        demo.tensionStatorU!!.toString()
+                    )
+                    if (demo.tensionStatorV !== null) tensionStatorV.setText(
+                        demo.tensionStatorV!!.toString()
+                    )
+                    if (demo.tensionStatorW !== null) tensionStatorW.setText(
+                        demo.tensionStatorW!!.toString()
+                    )
+                    if (demo.tensionInducteurs !== null) tensionInducteurs.setChecked(
+                        demo.tensionInducteurs!!
+                    )
+                    if (demo.tensionInducteursU !== null) tensionInducteursU.setText(
+                        demo.tensionInducteursU!!.toString()
+                    )
+                    if (demo.tensionInducteursV !== null) tensionInducteursV.setText(
+                        demo.tensionInducteursV!!.toString()
+                    )
+                    if (demo.tensionInducteursW !== null) tensionInducteursW.setText(
+                        demo.tensionInducteursW!!.toString()
+                    )
+                    if (demo.intensiteStator !== null) intensiteStator.setChecked(
+                        demo.intensiteStator!!
+                    )
+                    if (demo.intensiteStatorU !== null) intensiteStatorU.setText(
+                        demo.intensiteStatorU!!.toString()
+                    )
+                    if (demo.intensiteStatorV !== null) intensiteStatorV.setText(
+                        demo.intensiteStatorV!!.toString()
+                    )
+                    if (demo.intensiteStatorW !== null) intensiteStatorW.setText(
+                        demo.intensiteStatorW!!.toString()
+                    )
+                    if (demo.intensiteInducteurs !== null) intensiteInducteurs.setChecked(
+                        demo.intensiteInducteurs!!
+                    )
+                    if (demo.intensiteInducteursU !== null) intensiteInducteursU.setText(
+                        demo.intensiteInducteursU!!.toString()
+                    )
+                    if (demo.intensiteInducteursV !== null) intensiteInducteursV.setText(
+                        demo.intensiteInducteursV!!.toString()
+                    )
+                    if (demo.intensiteInducteursW !== null) intensiteInducteursW.setText(
+                        demo.intensiteInducteursW!!.toString()
+                    )
+                    if (demo.tensionInduit !== null) tensionInduit.setChecked(
+                        demo.tensionInduit!!
+                    )
+                    if (demo.tensionInduitU !== null) tensionInduitU.setText(
+                        demo.tensionInduitU!!.toString()
+                    )
+                    if (demo.tensionInduitV !== null) tensionInduitV.setText(
+                        demo.tensionInduitV!!.toString()
+                    )
+                    if (demo.tensionInduitW !== null) tensionInduitW.setText(
+                        demo.tensionInduitW!!.toString()
+                    )
+                    if (demo.tensionRotor !== null) tensionRotor.setChecked(
+                        demo.tensionRotor!!
+                    )
+                    if (demo.tensionRotorU !== null) tensionRotorU.setText(
+                        demo.tensionRotorU!!.toString()
+                    )
+                    if (demo.tensionRotorV !== null) tensionRotorV.setText(
+                        demo.tensionRotorV!!.toString()
+                    )
+                    if (demo.tensionRotorW !== null) tensionRotorW.setText(
+                        demo.tensionRotorW!!.toString()
+                    )
+                    if (demo.intensiteInduitU !== null) intensiteInduitU.setText(
+                        demo.intensiteInduitU!!.toString()
+                    )
+                    if (demo.vitesseU !== null) vitesseU.setText(demo.vitesseU!!.toString())
+                    if (demo.dureeEssai !== null) dureeEssai.setText(demo.dureeEssai!!.toString())
+                    if (demo.puissanceU !== null) puissanceU.setText(demo.puissanceU!!.toString())
+
+                    if (demo.vitesse1V !== null) V1V.setText(demo.vitesse1V!!.toString())
+                    if (demo.vitesse1H !== null) V1H.setText(demo.vitesse1H!!.toString())
+                    if (demo.vitesse2H !== null) V2H.setText(demo.vitesse2H!!.toString())
+                    if (demo.vitesse2V !== null) V2V.setText(demo.vitesse2V!!.toString())
+                    if (demo.vitesse2A !== null) V2A.setText(demo.vitesse2A!!.toString())
+                    if (demo.acceleration1V !== null) A1V.setText(demo.acceleration1V!!.toString())
+                    if (demo.acceleration1H !== null) A1H.setText(demo.acceleration1H!!.toString())
+                    if (demo.acceleration2V !== null) A2V.setText(demo.acceleration2V!!.toString())
+                    if (demo.acceleration2H !== null) A2H.setText(demo.acceleration2H!!.toString())
+                    if (demo.acceleration2A !== null) A2A.setText(demo.acceleration2A!!.toString())
+                    if (demo.sensRotation !== null && demo.sensRotation == 2) sensRotation.setChecked(
+                        true
+                    ) else sensRotation.setChecked(false)
                     //layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
                 }
                 if (demo!!.typeFicheRemontage == 5) {
@@ -138,6 +254,110 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
+                    if (demo.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
+                        demo.verificationIsolementPorteBalais!!
+                    )
+                    if (demo.isolementPorteBalaisV !== null) isoPBV.setText(
+                        demo.isolementPorteBalaisV!!.toString()
+                    )
+                    if (demo.isolementPorteBalaisOhm !== null) risoPBV.setText(
+                        demo.isolementPorteBalaisOhm!!.toString()
+                    )
+                    if (demo.tensionStator !== null) tensionStator.setChecked(
+                        demo.tensionStator!!
+                    )
+                    if (demo.tensionStatorU !== null) tensionStatorU.setText(
+                        demo.tensionStatorU!!.toString()
+                    )
+                    if (demo.tensionStatorV !== null) tensionStatorV.setText(
+                        demo.tensionStatorV!!.toString()
+                    )
+                    if (demo.tensionStatorW !== null) tensionStatorW.setText(
+                        demo.tensionStatorW!!.toString()
+                    )
+                    if (demo.tensionInducteurs !== null) tensionInducteurs.setChecked(
+                        demo.tensionInducteurs!!
+                    )
+                    if (demo.tensionInducteursU !== null) tensionInducteursU.setText(
+                        demo.tensionInducteursU!!.toString()
+                    )
+                    if (demo.tensionInducteursV !== null) tensionInducteursV.setText(
+                        demo.tensionInducteursV!!.toString()
+                    )
+                    if (demo.tensionInducteursW !== null) tensionInducteursW.setText(
+                        demo.tensionInducteursW!!.toString()
+                    )
+                    if (demo.intensiteStator !== null) intensiteStator.setChecked(
+                        demo.intensiteStator!!
+                    )
+                    if (demo.intensiteStatorU !== null) intensiteStatorU.setText(
+                        demo.intensiteStatorU!!.toString()
+                    )
+                    if (demo.intensiteStatorV !== null) intensiteStatorV.setText(
+                        demo.intensiteStatorV!!.toString()
+                    )
+                    if (demo.intensiteStatorW !== null) intensiteStatorW.setText(
+                        demo.intensiteStatorW!!.toString()
+                    )
+                    if (demo.intensiteInducteurs !== null) intensiteInducteurs.setChecked(
+                        demo.intensiteInducteurs!!
+                    )
+                    if (demo.intensiteInducteursU !== null) intensiteInducteursU.setText(
+                        demo.intensiteInducteursU!!.toString()
+                    )
+                    if (demo.intensiteInducteursV !== null) intensiteInducteursV.setText(
+                        demo.intensiteInducteursV!!.toString()
+                    )
+                    if (demo.intensiteInducteursW !== null) intensiteInducteursW.setText(
+                        demo.intensiteInducteursW!!.toString()
+                    )
+                    if (demo.tensionInduit !== null) tensionInduit.setChecked(
+                        demo.tensionInduit!!
+                    )
+                    if (demo.tensionInduitU !== null) tensionInduitU.setText(
+                        demo.tensionInduitU!!.toString()
+                    )
+                    if (demo.tensionInduitV !== null) tensionInduitV.setText(
+                        demo.tensionInduitV!!.toString()
+                    )
+                    if (demo.tensionInduitW !== null) tensionInduitW.setText(
+                        demo.tensionInduitW!!.toString()
+                    )
+                    if (demo.tensionRotor !== null) tensionRotor.setChecked(
+                        demo.tensionRotor!!
+                    )
+                    if (demo.tensionRotorU !== null) tensionRotorU.setText(
+                        demo.tensionRotorU!!.toString()
+                    )
+                    if (demo.tensionRotorV !== null) tensionRotorV.setText(
+                        demo.tensionRotorV!!.toString()
+                    )
+                    if (demo.tensionRotorW !== null) tensionRotorW.setText(
+                        demo.tensionRotorW!!.toString()
+                    )
+                    if (demo.intensiteInduitU !== null) intensiteInduitU.setText(
+                        demo.intensiteInduitU!!.toString()
+                    )
+                    if (demo.vitesseU !== null) vitesseU.setText(demo.vitesseU!!.toString())
+                    if (demo.dureeEssai !== null) dureeEssai.setText(demo.dureeEssai!!.toString())
+                    if (demo.puissanceU !== null) puissanceU.setText(demo.puissanceU!!.toString())
+
+                    if (demo.vitesse1V !== null) V1V.setText(demo.vitesse1V!!.toString())
+                    if (demo.vitesse1H !== null) V1H.setText(demo.vitesse1H!!.toString())
+                    if (demo.vitesse2H !== null) V2H.setText(demo.vitesse2H!!.toString())
+                    if (demo.vitesse2V !== null) V2V.setText(demo.vitesse2V!!.toString())
+                    if (demo.vitesse2A !== null) V2A.setText(demo.vitesse2A!!.toString())
+                    if (demo.acceleration1V !== null) A1V.setText(demo.acceleration1V!!.toString())
+                    if (demo.acceleration1H !== null) A1H.setText(demo.acceleration1H!!.toString())
+                    if (demo.acceleration2V !== null) A2V.setText(demo.acceleration2V!!.toString())
+                    if (demo.acceleration2H !== null) A2H.setText(demo.acceleration2H!!.toString())
+                    if (demo.acceleration2A !== null) A2A.setText(demo.acceleration2A!!.toString())
+                    if (demo.sensRotation !== null && demo.sensRotation == 2) sensRotation.setChecked(
+                        true
+                    ) else sensRotation.setChecked(false)
+                    if (demo.verificationFixationCouronne !== null) fixCouronne.setChecked(
+                        demo.verificationFixationCouronne!!
+                    )
 
                 }
                 if (demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2 || demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4) {
@@ -161,117 +381,15 @@ class FicheRemontage : Fragment() {
                 if (viewModel.selection.value!!.collageRoulementFlasque !== null) spinnerCIF.setSelection(
                     viewModel.selection.value!!.collageRoulementFlasque!!
                 )
-                if (viewModel.selection.value!!.verificationFixationCouronne !== null) fixCouronne.setChecked(
-                    viewModel.selection.value!!.verificationFixationCouronne!!
-                )
-                if (viewModel.selection.value!!.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
-                    viewModel.selection.value!!.verificationIsolementPorteBalais!!
-                )
-                if (viewModel.selection.value!!.isolementPorteBalaisV !== null) isoPBV.setText(
-                    viewModel.selection.value!!.isolementPorteBalaisV!!.toString()
-                )
-                if (viewModel.selection.value!!.isolementPorteBalaisOhm !== null) risoPBV.setText(
-                    viewModel.selection.value!!.isolementPorteBalaisOhm!!.toString()
-                )
                 if (viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
-                if (viewModel.selection.value!!.tensionStator !== null) tensionStator.setChecked(
-                    viewModel.selection.value!!.tensionStator!!
-                )
-                if (viewModel.selection.value!!.tensionStatorU !== null) tensionStatorU.setText(
-                    viewModel.selection.value!!.tensionStatorU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionStatorV !== null) tensionStatorV.setText(
-                    viewModel.selection.value!!.tensionStatorV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionStatorW !== null) tensionStatorW.setText(
-                    viewModel.selection.value!!.tensionStatorW!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInducteurs !== null) tensionInducteurs.setChecked(
-                    viewModel.selection.value!!.tensionInducteurs!!
-                )
-                if (viewModel.selection.value!!.tensionInducteursU !== null) tensionInducteursU.setText(
-                    viewModel.selection.value!!.tensionInducteursU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInducteursV !== null) tensionInducteursV.setText(
-                    viewModel.selection.value!!.tensionInducteursV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInducteursW !== null) tensionInducteursW.setText(
-                    viewModel.selection.value!!.tensionInducteursW!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteStator !== null) intensiteStator.setChecked(
-                    viewModel.selection.value!!.intensiteStator!!
-                )
-                if (viewModel.selection.value!!.intensiteStatorU !== null) intensiteStatorU.setText(
-                    viewModel.selection.value!!.intensiteStatorU!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteStatorV !== null) intensiteStatorV.setText(
-                    viewModel.selection.value!!.intensiteStatorV!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteStatorW !== null) intensiteStatorW.setText(
-                    viewModel.selection.value!!.intensiteStatorW!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInducteurs !== null) intensiteInducteurs.setChecked(
-                    viewModel.selection.value!!.intensiteInducteurs!!
-                )
-                if (viewModel.selection.value!!.intensiteInducteursU !== null) intensiteInducteursU.setText(
-                    viewModel.selection.value!!.intensiteInducteursU!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInducteursV !== null) intensiteInducteursV.setText(
-                    viewModel.selection.value!!.intensiteInducteursV!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInducteursW !== null) intensiteInducteursW.setText(
-                    viewModel.selection.value!!.intensiteInducteursW!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInduit !== null) tensionInduit.setChecked(
-                    viewModel.selection.value!!.tensionInduit!!
-                )
-                if (viewModel.selection.value!!.tensionInduitU !== null) tensionInduitU.setText(
-                    viewModel.selection.value!!.tensionInduitU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInduitV !== null) tensionInduitV.setText(
-                    viewModel.selection.value!!.tensionInduitV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionInduitW !== null) tensionInduitW.setText(
-                    viewModel.selection.value!!.tensionInduitW!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionRotor !== null) tensionRotor.setChecked(
-                    viewModel.selection.value!!.tensionRotor!!
-                )
-                if (viewModel.selection.value!!.tensionRotorU !== null) tensionRotorU.setText(
-                    viewModel.selection.value!!.tensionRotorU!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionRotorV !== null) tensionRotorV.setText(
-                    viewModel.selection.value!!.tensionRotorV!!.toString()
-                )
-                if (viewModel.selection.value!!.tensionRotorW !== null) tensionRotorW.setText(
-                    viewModel.selection.value!!.tensionRotorW!!.toString()
-                )
-                if (viewModel.selection.value!!.intensiteInduitU !== null) intensiteInduitU.setText(
-                    viewModel.selection.value!!.intensiteInduitU!!.toString()
-                )
-                if (viewModel.selection.value!!.vitesseU !== null) vitesseU.setText(viewModel.selection.value!!.vitesseU!!.toString())
-                if (viewModel.selection.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.selection.value!!.dureeEssai!!.toString())
-                if (viewModel.selection.value!!.puissanceU !== null) puissanceU.setText(viewModel.selection.value!!.puissanceU!!.toString())
-                if (viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
-                if (viewModel.selection.value!!.vitesse1V !== null) V1V.setText(viewModel.selection.value!!.vitesse1V!!.toString())
-                if (viewModel.selection.value!!.vitesse1H !== null) V1H.setText(viewModel.selection.value!!.vitesse1H!!.toString())
-                if (viewModel.selection.value!!.vitesse2H !== null) V2H.setText(viewModel.selection.value!!.vitesse2H!!.toString())
-                if (viewModel.selection.value!!.vitesse2V !== null) V2V.setText(viewModel.selection.value!!.vitesse2V!!.toString())
-                if (viewModel.selection.value!!.vitesse2A !== null) V2A.setText(viewModel.selection.value!!.vitesse2A!!.toString())
-                if (viewModel.selection.value!!.acceleration1V !== null) A1V.setText(viewModel.selection.value!!.acceleration1V!!.toString())
-                if (viewModel.selection.value!!.acceleration1H !== null) A1H.setText(viewModel.selection.value!!.acceleration1H!!.toString())
-                if (viewModel.selection.value!!.acceleration2V !== null) A2V.setText(viewModel.selection.value!!.acceleration2V!!.toString())
-                if (viewModel.selection.value!!.acceleration2H !== null) A2H.setText(viewModel.selection.value!!.acceleration2H!!.toString())
-                if (viewModel.selection.value!!.acceleration2A !== null) A2A.setText(viewModel.selection.value!!.acceleration2A!!.toString())
-                if (viewModel.selection.value!!.sensRotation !== null && viewModel.selection.value!!.sensRotation == 2) sensRotation.setChecked(
-                    true
-                ) else sensRotation.setChecked(false)
+
+
                 //infoMoteur.visibility = View.VISIBLE
                 //essaisDynamiques.visibility = View.VISIBLE
             }
-       }
+        }
 
-        titre.setOnClickListener{
+        titre.setOnClickListener {
         }
         var btnquitter = layout.findViewById<Button>(R.id.quit)
         var btnenregistrer = layout.findViewById<Button>(R.id.enregistrer)
@@ -299,7 +417,8 @@ class FicheRemontage : Fragment() {
                                 numFiches.toTypedArray(),
                                 DialogInterface.OnClickListener { dialog, which ->
                                     Log.i(
-                                        "INFO", "fiches existantes: ${viewModel.listeDemo.value!!.size} fiche envoyée ${
+                                        "INFO",
+                                        "fiches existantes: ${viewModel.listeDemo.value!!.size} fiche envoyée ${
                                             viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!.numFiche
                                         } index: ${which} - fiche: ${numFiches[which]}"
                                     )
@@ -316,27 +435,38 @@ class FicheRemontage : Fragment() {
                     }
                 }
             } else {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.RemontageLayout), "Vous devez être connecté à internet pour réccupérer les fiches de démontage", 3600)
+                val mySnackbar = Snackbar.make(
+                    layout.findViewById<CoordinatorLayout>(R.id.RemontageLayout),
+                    "Vous devez être connecté à internet pour réccupérer les fiches de démontage",
+                    3600
+                )
                 mySnackbar.show()
             }
         }
-        sensRotation.setOnCheckedChangeListener { _, isChecked ->
-            if (sensRotation.hasFocus()) {
-                if (isChecked) {
-                    viewModel.selection.value!!.sensRotation = 2
-                    viewModel.getTime()
-                    viewModel.quickSave()
-                } else {
-                    viewModel.selection.value!!.sensRotation = 1
-                    viewModel.getTime()
-                    viewModel.quickSave()
+        /*    sensRotation.setOnCheckedChangeListener { _, isChecked ->
+                if (sensRotation.hasFocus()) {
+                    if (isChecked) {
+                        viewModel.selection.value!!.sensRotation = 2
+                        viewModel.getTime()
+                        viewModel.quickSave()
+                    } else {
+                        viewModel.selection.value!!.sensRotation = 1
+                        viewModel.getTime()
+                        viewModel.quickSave()
+                    }
                 }
             }
-        }
+
         spinnerMnt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (spinnerMnt.hasFocus()) {
                     if (position > 0) {
                         viewModel.selection.value!!.remontageRoulement = position
@@ -350,7 +480,13 @@ class FicheRemontage : Fragment() {
         spinnerCPA.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (spinnerCPA.hasFocus()) {
                     if (position > 0) {
                         viewModel.selection.value!!.collageRoulementPorteeArbre = position
@@ -363,7 +499,13 @@ class FicheRemontage : Fragment() {
         spinnerCIF.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (spinnerCIF.hasFocus()) {
                     if (position > 0) {
                         viewModel.selection.value!!.collageRoulementFlasque = position
@@ -388,7 +530,7 @@ class FicheRemontage : Fragment() {
             }
         }
         isoPBV.doAfterTextChanged {
-            if (isoPBV.hasFocus() ) {
+            if (isoPBV.hasFocus()) {
                 if (isoPBV.text.isNotEmpty() && isoPBRB.text.matches(regexNombres)) viewModel.selection.value!!.isolementPorteBalaisV =
                     isoPBV.text.toString().toFloat()
                 viewModel.getTime()
@@ -411,7 +553,10 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionStatorU.doAfterTextChanged {
-            if (tensionStatorU.text.isNotEmpty() && tensionStatorU.hasFocus() && tensionStatorU.text.matches(regexNombres)) {
+            if (tensionStatorU.text.isNotEmpty() && tensionStatorU.hasFocus() && tensionStatorU.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.tensionStatorU =
                     tensionStatorU.text.toString().toFloat()
                 viewModel.getTime()
@@ -419,7 +564,10 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionStatorV.doAfterTextChanged {
-            if (tensionStatorV.text.isNotEmpty() && tensionStatorV.hasFocus() && tensionStatorV.text.matches(regexNombres)) {
+            if (tensionStatorV.text.isNotEmpty() && tensionStatorV.hasFocus() && tensionStatorV.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.tensionStatorV =
                     tensionStatorV.text.toString().toFloat()
                 viewModel.getTime()
@@ -427,7 +575,10 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionStatorW.doAfterTextChanged {
-            if (tensionStatorW.text.isNotEmpty() && tensionStatorW.hasFocus()  && tensionStatorV.text.matches(regexNombres)) {
+            if (tensionStatorW.text.isNotEmpty() && tensionStatorW.hasFocus() && tensionStatorV.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.tensionStatorW =
                     tensionStatorW.text.toString().toFloat()
                 viewModel.getTime()
@@ -442,14 +593,21 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionInducteursU.doAfterTextChanged {
-            if(tensionInducteursU.text.isNotEmpty() && tensionInducteursU.hasFocus() && tensionInducteursU.text.matches(regexNombres)) {
-                viewModel.selection.value!!.tensionInducteursU = tensionInducteursU.text.toString().toFloat()
+            if (tensionInducteursU.text.isNotEmpty() && tensionInducteursU.hasFocus() && tensionInducteursU.text.matches(
+                    regexNombres
+                )
+            ) {
+                viewModel.selection.value!!.tensionInducteursU =
+                    tensionInducteursU.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         tensionInducteursV.doAfterTextChanged {
-            if(tensionInducteursV.text.isNotEmpty() && tensionInducteursV.hasFocus() && tensionInducteursV.text.matches(regexNombres)) {
+            if (tensionInducteursV.text.isNotEmpty() && tensionInducteursV.hasFocus() && tensionInducteursV.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.tensionInducteursV =
                     tensionInducteursV.text.toString().toFloat()
                 viewModel.getTime()
@@ -457,7 +615,10 @@ class FicheRemontage : Fragment() {
             }
         }
         tensionInducteursW.doAfterTextChanged {
-            if(tensionInducteursW.text.isNotEmpty() && tensionInducteursW.hasFocus() && tensionInducteursW.text.matches(regexNombres)) {
+            if (tensionInducteursW.text.isNotEmpty() && tensionInducteursW.hasFocus() && tensionInducteursW.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.tensionInducteursW =
                     tensionInducteursW.text.toString().toFloat()
                 viewModel.getTime()
@@ -465,10 +626,13 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteStator.setOnCheckedChangeListener { _, isChecked ->
-            if(intensiteStator.hasFocus()) viewModel.selection.value!!.intensiteStator = isChecked
+            if (intensiteStator.hasFocus()) viewModel.selection.value!!.intensiteStator = isChecked
         }
         intensiteStatorU.doAfterTextChanged {
-            if (intensiteStatorU.text.isNotEmpty() && intensiteStatorU.hasFocus() && intensiteStatorU.text.matches(regexNombres)) {
+            if (intensiteStatorU.text.isNotEmpty() && intensiteStatorU.hasFocus() && intensiteStatorU.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.intensiteStatorU =
                     intensiteStatorU.text.toString().toFloat()
                 viewModel.getTime()
@@ -476,7 +640,10 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteStatorV.doAfterTextChanged {
-            if (intensiteStatorV.text.isNotEmpty() && intensiteStatorV.hasFocus() && intensiteStatorV.text.matches(regexNombres)) {
+            if (intensiteStatorV.text.isNotEmpty() && intensiteStatorV.hasFocus() && intensiteStatorV.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.intensiteStatorV =
                     intensiteStatorV.text.toString().toFloat()
                 viewModel.getTime()
@@ -484,7 +651,10 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteInducteursW.doAfterTextChanged {
-            if (intensiteStatorW.text.isNotEmpty() && intensiteStatorW.hasFocus() && intensiteStatorW.text.matches(regexNombres)) {
+            if (intensiteStatorW.text.isNotEmpty() && intensiteStatorW.hasFocus() && intensiteStatorW.text.matches(
+                    regexNombres
+                )
+            ) {
                 viewModel.selection.value!!.intensiteStatorW =
                     intensiteStatorW.text.toString().toFloat()
                 viewModel.getTime()
@@ -499,7 +669,7 @@ class FicheRemontage : Fragment() {
             }
         }
         intensiteInducteursU.doAfterTextChanged {
-            if (intensiteInducteursU.text.isNotEmpty() && intensiteInducteursU.hasFocus() ) {
+            if (intensiteInducteursU.text.isNotEmpty() && intensiteInducteursU.hasFocus()) {
                 viewModel.selection.value!!.intensiteInducteursU =
                     intensiteInducteursU.text.toString().toFloat()
                 viewModel.getTime()
@@ -602,7 +772,7 @@ class FicheRemontage : Fragment() {
             }
         }
         puissanceU.doAfterTextChanged {
-            if (puissanceU.text.isNotEmpty()  && puissanceU.hasFocus()){
+            if (puissanceU.text.isNotEmpty() && puissanceU.hasFocus()) {
                 viewModel.selection.value!!.puissanceU = puissanceU.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
@@ -616,75 +786,75 @@ class FicheRemontage : Fragment() {
             }
         }
         V1V.doAfterTextChanged {
-            if(V1V.text.isNotEmpty() && V1V.hasFocus()) {
+            if (V1V.text.isNotEmpty() && V1V.hasFocus()) {
                 viewModel.selection.value!!.vitesse1V = V1V.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         V1H.doAfterTextChanged {
-            if(V1H.text.isNotEmpty() && V1H.hasFocus()) {
+            if (V1H.text.isNotEmpty() && V1H.hasFocus()) {
                 viewModel.selection.value!!.vitesse1H = V1H.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         V2V.doAfterTextChanged {
-            if(V2V.text.isNotEmpty() && V2V.hasFocus()) {
+            if (V2V.text.isNotEmpty() && V2V.hasFocus()) {
                 viewModel.selection.value!!.vitesse2V = V2V.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         V2H.doAfterTextChanged {
-            if(V2H.text.isNotEmpty() && V2H.hasFocus()) {
+            if (V2H.text.isNotEmpty() && V2H.hasFocus()) {
                 viewModel.selection.value!!.vitesse2H = V2H.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         V2A.doAfterTextChanged {
-            if(V2A.text.isNotEmpty() && V2A.hasFocus()) {
+            if (V2A.text.isNotEmpty() && V2A.hasFocus()) {
                 viewModel.selection.value!!.vitesse2A = V2A.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         A1V.doAfterTextChanged {
-            if(A1V.text.isNotEmpty() && A1V.hasFocus()) {
+            if (A1V.text.isNotEmpty() && A1V.hasFocus()) {
                 viewModel.selection.value!!.acceleration1V = A1V.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         A1H.doAfterTextChanged {
-            if(A1H.text.isNotEmpty() && A1H.hasFocus()) {
+            if (A1H.text.isNotEmpty() && A1H.hasFocus()) {
                 viewModel.selection.value!!.acceleration1H = A1H.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         A2V.doAfterTextChanged {
-            if(A2V.text.isNotEmpty() && A2V.hasFocus()) {
+            if (A2V.text.isNotEmpty() && A2V.hasFocus()) {
                 viewModel.selection.value!!.acceleration2V = A2V.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         A2H.doAfterTextChanged {
-            if(A2H.text.isNotEmpty() && A2H.hasFocus()) {
+            if (A2H.text.isNotEmpty() && A2H.hasFocus()) {
                 viewModel.selection.value!!.acceleration2H = A2H.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
         }
         A2A.doAfterTextChanged {
-            if(A2A.text.isNotEmpty() && A2A.hasFocus()) {
+            if (A2A.text.isNotEmpty() && A2A.hasFocus()) {
                 viewModel.selection.value!!.acceleration2A = A2A.text.toString().toFloat()
                 viewModel.getTime()
                 viewModel.quickSave()
             }
-        }
+        }*/
         obs.doAfterTextChanged {
             if (obs.text.isNotEmpty() && obs.hasFocus()) {
                 viewModel.selection.value!!.observations = obs.text.toString()
@@ -694,7 +864,10 @@ class FicheRemontage : Fragment() {
         }
 
         btnenregistrer.setOnClickListener {
-            Log.i("INFO","collage inté flasque ${viewModel.selection.value!!.collageRoulementPorteeArbre}")
+            Log.i(
+                "INFO",
+                "collage inté flasque ${viewModel.selection.value!!.collageRoulementPorteeArbre}"
+            )
             var fiche = viewModel.selection.value!!
             if (fiche.dureeTotale !== null) {
                 fiche.dureeTotale =
