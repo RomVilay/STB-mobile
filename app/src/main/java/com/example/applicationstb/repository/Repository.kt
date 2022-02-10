@@ -2003,7 +2003,7 @@ class BodyDemontageReducteur(
     var roulements: MutableList<Roulement>?,
     var joints: MutableList<Joint>?
 
-):  Parcelable {
+) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -2371,6 +2371,7 @@ class BodyRemontage(
         }
     }
 }
+
 class BodyRemontageMotopompe(
     var status: Int?,
     var observations: String?,
@@ -2608,6 +2609,7 @@ class BodyRemontageMotopompe(
         }
     }
 }
+
 class BodyRemontageMotoreducteur(
     var status: Int?,
     var observations: String?,
@@ -2714,6 +2716,7 @@ class BodyRemontageMotoreducteur(
         }
     }
 }
+
 class BodyRemontageReducteur(
     var status: Int?,
     var dureeTotale: Long?,
@@ -2996,6 +2999,7 @@ class BobinageResponse(
 class DemontageTriphaseResponse(
     var data: Triphase?
 )
+
 class DemontageMotoreducteurResponse(
     var data: DemontageMotoreducteur?
 )
@@ -3203,15 +3207,29 @@ class Repository(var context: Context) {
         call.enqueue(callback)
     }
 
-    fun getDemontageReducteur(token: String, ficheId: String, callback: Callback<DemontageReducteurResponse>) {
+    fun getDemontageReducteur(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageReducteurResponse>
+    ) {
         val call = service.getDemontageReducteur(token, ficheId)
         call.enqueue(callback)
     }
-    fun getDemontageMotoreducteur(token: String, ficheId: String, callback: Callback<DemontageMotoreducteurResponse>) {
+
+    fun getDemontageMotoreducteur(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageMotoreducteurResponse>
+    ) {
         val call = service.getDemontageMotoreducteur(token, ficheId)
         call.enqueue(callback)
     }
-    fun getDemontageMotopompe(token: String, ficheId: String, callback: Callback<DemontageMotopompeResponse>) {
+
+    fun getDemontageMotopompe(
+        token: String,
+        ficheId: String,
+        callback: Callback<DemontageMotopompeResponse>
+    ) {
         val call = service.getDemontageMotopompe(token, ficheId)
         call.enqueue(callback)
     }
@@ -3371,7 +3389,7 @@ class Repository(var context: Context) {
             motopompe.bride,
             motopompe.vitesse,
             motopompe.arbreSortantEntrant,
-            motopompe. accouplement,
+            motopompe.accouplement,
             motopompe.coteAccouplement,
             motopompe.clavette,
             motopompe.aspect,
@@ -3458,7 +3476,7 @@ class Repository(var context: Context) {
             reducteur.bride,
             reducteur.vitesse,
             reducteur.arbreSortantEntrant,
-            reducteur. accouplement,
+            reducteur.accouplement,
             reducteur.coteAccouplement,
             reducteur.clavette,
             reducteur.peinture,
@@ -3473,6 +3491,7 @@ class Repository(var context: Context) {
         var call = service.patchDemontageReducteur(token, ficheId, body)
         call.enqueue(callback)
     }
+
     fun patchDemontageMotoreducteur(
         token: String,
         ficheId: String,
@@ -3491,7 +3510,7 @@ class Repository(var context: Context) {
             motoreducteur.bride,
             motoreducteur.vitesse,
             motoreducteur.arbreSortantEntrant,
-            motoreducteur. accouplement,
+            motoreducteur.accouplement,
             motoreducteur.coteAccouplement,
             motoreducteur.clavette,
             motoreducteur.aspect,
@@ -3521,7 +3540,7 @@ class Repository(var context: Context) {
             motoreducteur.equilibrage,
             motoreducteur.peinture,
             motoreducteur.typeMotoreducteur,
-                    motoreducteur.trMinute,
+            motoreducteur.trMinute,
             motoreducteur.modele,
             motoreducteur.indiceReduction,
             motoreducteur.typeHuile,
@@ -3719,6 +3738,7 @@ class Repository(var context: Context) {
         val call = service.getRemontageMotopompe(token, ficheId)
         call.enqueue(callback)
     }
+
     fun getRemontageReducteur(
         token: String,
         ficheId: String,
@@ -3999,6 +4019,7 @@ class Repository(var context: Context) {
         var call = service.patchRemontageMotopompe(token, ficheId, body)
         call.enqueue(callback)
     }
+
     fun patchRemontageMotoreducteur(
         token: String,
         ficheId: String,
@@ -4773,9 +4794,11 @@ class Repository(var context: Context) {
     suspend fun insertRemoLocalDatabase(remo: Remontage) {
         remontageDao!!.insertAll(remo.toRemoEntity())
     }
+
     suspend fun getAllRemontageLocalDatabase(): List<RemontageEntity> {
         return remontageDao!!.getAll()
     }
+
     suspend fun getByIdRemoLocalDatabse(id: String): Remontage? {
         try {
             if (remontageDao!!.getById(id) !== null) {
@@ -4786,9 +4809,11 @@ class Repository(var context: Context) {
             return null
         }
     }
+
     suspend fun updateRemoLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.update(remo)
     }
+
     suspend fun deleteRemontageLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.delete(remo)
     }
@@ -4797,9 +4822,11 @@ class Repository(var context: Context) {
     suspend fun insertRemoCCLocalDatabase(remo: RemontageCourantC) {
         remontageCourantCDao!!.insertAll(remo.toEntity())
     }
+
     suspend fun getAllRemontageCCLocalDatabase(): List<RemontageCCEntity> {
         return remontageCourantCDao!!.getAll()
     }
+
     suspend fun getByIdRemoCCLocalDatabse(id: String): RemontageCourantC? {
         try {
             if (remontageCourantCDao!!.getById(id) !== null) {
@@ -4810,9 +4837,11 @@ class Repository(var context: Context) {
             return null
         }
     }
+
     suspend fun updateRemoCCLocalDatabse(remo: RemontageCCEntity) {
         remontageCourantCDao!!.update(remo)
     }
+
     suspend fun deleteRemontageCCLocalDatabse(remo: RemontageCCEntity) {
         remontageCourantCDao!!.delete(remo)
     }
@@ -4820,20 +4849,26 @@ class Repository(var context: Context) {
     suspend fun insertDemoMotopompeDatabase(demo: DemontageMotopompe) {
         demontageMotopompeDao!!.insertAll(demo.toEntity())
     }
+
     suspend fun getAllDemontageMotopompeLocalDatabase(): List<DemontageMotopompeEntity> {
         return demontageMotopompeDao!!.getAll()
     }
+
     suspend fun getByIdDemoMotopompeLocalDatabase(id: String): DemontageMotopompe? {
         try {
+            if (demontageMotopompeDao!!.getById(id) !== null) {
                 return demontageMotopompeDao!!.getById(id).toMotoPompe()
+            } else return null
         } catch (e: Error) {
             Log.i("e", e.message!!)
             return null
         }
     }
+
     suspend fun updateDemoMotoPompeLocalDatabase(demo: DemontageMotopompeEntity) {
         demontageMotopompeDao!!.update(demo)
     }
+
     suspend fun deleteDemontageMotoPompeLocalDatabse(demo: DemontageMotopompeEntity) {
         demontageMotopompeDao!!.delete(demo)
     }
@@ -4841,9 +4876,11 @@ class Repository(var context: Context) {
     suspend fun insertRemoMotopompeDatabase(demo: RemontageMotopompe) {
         remontageMotopompeDao!!.insertAll(demo.toEntity())
     }
+
     suspend fun getAllRemontageMotopompeLocalDatabase(): List<RemontageMotopompeEntity> {
         return remontageMotopompeDao!!.getAll()
     }
+
     suspend fun getByIdRemoMotopompeLocalDatabase(id: String): RemontageMotopompe? {
         try {
             return remontageMotopompeDao!!.getById(id).toRemontageMotopompe()
@@ -4852,30 +4889,38 @@ class Repository(var context: Context) {
             return null
         }
     }
+
     suspend fun updateDemoMotoPompeLocalDatabase(demo: RemontageMotopompeEntity) {
         remontageMotopompeDao!!.update(demo)
     }
+
     suspend fun deleteDemontageMotoPompeLocalDatabse(demo: RemontageMotopompeEntity) {
         remontageMotopompeDao!!.delete(demo)
     }
 
-    suspend fun insertDemoMotoreducteurDatabase(demo: DemontageMotopompe) {
-        demontageMotopompeDao!!.insertAll(demo.toEntity())
+    suspend fun insertDemoMotoreducteurDatabase(demo: DemontageMotoreducteur) {
+        demontageMotoreducteurDao!!.insertAll(demo.toEntity())
     }
+
     suspend fun getAllDemontageMotoreducteurLocalDatabase(): List<DemontageMotoreducteurEntity> {
         return demontageMotoreducteurDao!!.getAll()
     }
+
     suspend fun getByIdDemoMotoreducteurLocalDatabase(id: String): DemontageMotoreducteur? {
         try {
-            return demontageMotoreducteurDao!!.getById(id).toDemontageMotoreducteur()
+            if (demontageMotoreducteurDao!!.getById(id) !== null) {
+                return demontageMotoreducteurDao!!.getById(id).toDemontageMotoreducteur()
+            } else return null
         } catch (e: Error) {
             Log.i("e", e.message!!)
             return null
         }
     }
+
     suspend fun updateDemoMotoreducteurLocalDatabase(demo: DemontageMotoreducteurEntity) {
         demontageMotoreducteurDao!!.update(demo)
     }
+
     suspend fun deleteDemontageMotoreducteurLocalDatabse(demo: DemontageMotoreducteurEntity) {
         demontageMotoreducteurDao!!.delete(demo)
     }
@@ -4883,9 +4928,11 @@ class Repository(var context: Context) {
     suspend fun insertRemoMotoreducteurDatabase(demo: RemontageMotoreducteur) {
         remontageMotoreducteurDao!!.insertAll(demo.toEntity())
     }
+
     suspend fun getAllRemontageMotoreducteurLocalDatabase(): List<RemontageMotoreducteurEntity> {
         return remontageMotoreducteurDao!!.getAll()
     }
+
     suspend fun getByIdRemoMotoreducteurLocalDatabase(id: String): RemontageMotoreducteur? {
         try {
             return remontageMotoreducteurDao!!.getById(id).toRemontageMotoreducteur()
@@ -4894,19 +4941,23 @@ class Repository(var context: Context) {
             return null
         }
     }
+
     suspend fun updateDemoMotoreducteurLocalDatabase(demo: RemontageMotoreducteurEntity) {
         remontageMotoreducteurDao!!.update(demo)
     }
+
     suspend fun deleteDemontageMotoreducteurLocalDatabse(demo: RemontageMotoreducteurEntity) {
         remontageMotoreducteurDao!!.delete(demo)
     }
 
-    suspend fun insertDemoReducteurDatabase(demo: DemontageMotopompe) {
-        demontageMotopompeDao!!.insertAll(demo.toEntity())
+    suspend fun insertDemoReducteurDatabase(demo: DemontageReducteur) {
+        demontageReducteurDao!!.insertAll(demo.toEntity())
     }
+
     suspend fun getAllDemontageReducteurLocalDatabase(): List<DemontageReducteurEntity> {
         return demontageReducteurDao!!.getAll()
     }
+
     suspend fun getByIdDemoReducteurLocalDatabase(id: String): DemontageReducteur? {
         try {
             return demontageReducteurDao!!.getById(id).toReducteur()
@@ -4915,9 +4966,11 @@ class Repository(var context: Context) {
             return null
         }
     }
+
     suspend fun updateDemoReducteurLocalDatabase(demo: DemontageReducteurEntity) {
         demontageReducteurDao!!.update(demo)
     }
+
     suspend fun deleteDemontageReducteurLocalDatabse(demo: DemontageReducteurEntity) {
         demontageReducteurDao!!.delete(demo)
     }

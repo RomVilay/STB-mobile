@@ -115,6 +115,18 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         var fiche = repository.getByIdDemoTriLocalDatabse(i._id)
                         repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
                     }
+                    7 -> {
+                        var fiche = repository.getByIdDemoMotopompeLocalDatabase(i._id)
+                        repository.deleteDemontageMotoPompeLocalDatabse(fiche!!.toEntity())
+                    }
+                    8 -> {
+                        var fiche = repository.getByIdDemoReducteurLocalDatabase(i._id)
+                        repository.deleteDemontageReducteurLocalDatabse(fiche!!.toEntity())
+                    }
+                    9 -> {
+                        var fiche = repository.getByIdDemoMotoreducteurLocalDatabase(i._id)
+                        repository.deleteDemontageMotoreducteurLocalDatabse(fiche!!.toEntity())
+                    }
                 }
             }
             demontages.clear()
@@ -662,6 +674,234 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                                                             override fun onFailure(
                                                                 call: Call<DemontageTriphaseResponse>,
+                                                                t: Throwable
+                                                            ) {
+                                                                Log.e(
+                                                                    "Error",
+                                                                    "erreur ${t.message}"
+                                                                )
+                                                            }
+                                                        })
+                                                }
+                                                //fiche demontage motopompe
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 7) {
+                                                    val demoMP = repository.getDemontageMotopompe(
+                                                        token,
+                                                        resp.data!!._id,
+                                                        object :
+                                                            Callback<DemontageMotopompeResponse> {
+                                                            override fun onResponse(
+                                                                call: Call<DemontageMotopompeResponse>,
+                                                                response: Response<DemontageMotopompeResponse>
+                                                            ) {
+                                                                if (response.code() == 200) {
+                                                                    val resp2 = response.body()
+                                                                    if (resp2 != null) {
+                                                                        viewModelScope.launch(
+                                                                            Dispatchers.IO
+                                                                        ) {
+                                                                            var photos =
+                                                                                resp.data?.photos?.toMutableList()
+                                                                            var iter =
+                                                                                photos?.listIterator()
+                                                                            while (iter?.hasNext() == true) {
+                                                                                getPhotoFile(
+                                                                                    iter.next()
+                                                                                        .toString()
+                                                                                )
+                                                                            }
+                                                                            resp.data?.photos =
+                                                                                photos?.toTypedArray()
+                                                                            var demoT =
+                                                                                repository.getByIdDemoMotopompeLocalDatabase(
+                                                                                    resp2.data!!._id
+                                                                                )
+                                                                            if (demoT == null) {
+                                                                                repository.insertDemoMotopompeDatabase(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
+                                                                                ) demontages!!.add(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "ajout demo motopompe en bdd locale"
+                                                                                )
+                                                                            } else {
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "fiche déjà en bdd"
+                                                                                )
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            override fun onFailure(
+                                                                call: Call<DemontageMotopompeResponse>,
+                                                                t: Throwable
+                                                            ) {
+                                                                Log.e(
+                                                                    "Error",
+                                                                    "erreur ${t.message}"
+                                                                )
+                                                            }
+                                                        })
+                                                }
+                                                //fiche demontage reducteur
+                                                /*if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 8) {
+                                                    val demoReducteur = repository.getDemontageReducteur(
+                                                        token,
+                                                        resp.data!!._id,
+                                                        object :
+                                                            Callback<DemontageReducteurResponse> {
+                                                            override fun onResponse(
+                                                                call: Call<DemontageReducteurResponse>,
+                                                                response: Response<DemontageReducteurResponse>
+                                                            ) {
+                                                                if (response.code() == 200) {
+                                                                    val resp2 = response.body()
+                                                                    if (resp2 != null) {
+                                                                        //Log.i("INFO","fiche DemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                        //demontages!!.add(resp.fiche!!)
+                                                                        viewModelScope.launch(
+                                                                            Dispatchers.IO
+                                                                        ) {
+                                                                            var photos =
+                                                                                resp.data?.photos?.toMutableList()
+                                                                            var iter =
+                                                                                photos?.listIterator()
+                                                                            while (iter?.hasNext() == true) {
+                                                                                getPhotoFile(
+                                                                                    iter.next()
+                                                                                        .toString()
+                                                                                )
+                                                                            }
+                                                                            resp.data?.photos =
+                                                                                photos?.toTypedArray()
+                                                                            var demoT =
+                                                                                repository.getByIdDemoReducteurLocalDatabase(
+                                                                                    resp2.data!!._id
+                                                                                )
+                                                                            if (demoT == null) {
+                                                                                repository.insertDemoReducteurDatabase(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
+                                                                                ) demontages!!.add(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "ajout demo tri en bdd locale"
+                                                                                )
+                                                                            } else {
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "fiche déjà en bdd"
+                                                                                )
+                                                                                // if (!demontages.contains(demoT)) demontages!!.add(demoT)
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            override fun onFailure(
+                                                                call: Call<DemontageReducteurResponse>,
+                                                                t: Throwable
+                                                            ) {
+                                                                Log.e(
+                                                                    "Error",
+                                                                    "erreur ${t.message}"
+                                                                )
+                                                            }
+                                                        })
+                                                } */
+                                                //fiche demontage motoreducteur
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 9) {
+                                                    val demoMotored = repository.getDemontageMotoreducteur(
+                                                        token,
+                                                        resp.data!!._id,
+                                                        object :
+                                                            Callback<DemontageMotoreducteurResponse> {
+                                                            override fun onResponse(
+                                                                call: Call<DemontageMotoreducteurResponse>,
+                                                                response: Response<DemontageMotoreducteurResponse>
+                                                            ) {
+                                                                if (response.code() == 200) {
+                                                                    val resp2 = response.body()
+                                                                    if (resp2 != null) {
+                                                                        //Log.i("INFO","fiche DemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                        //demontages!!.add(resp.fiche!!)
+                                                                        viewModelScope.launch(
+                                                                            Dispatchers.IO
+                                                                        ) {
+                                                                            var photos =
+                                                                                resp.data?.photos?.toMutableList()
+                                                                            var iter =
+                                                                                photos?.listIterator()
+                                                                            while (iter?.hasNext() == true) {
+                                                                                getPhotoFile(
+                                                                                    iter.next()
+                                                                                        .toString()
+                                                                                )
+                                                                            }
+                                                                            resp.data?.photos =
+                                                                                photos?.toTypedArray()
+                                                                            var demoT =
+                                                                                repository.getByIdDemoMotoreducteurLocalDatabase(
+                                                                                    resp2.data!!._id
+                                                                                )
+                                                                            if (demoT == null) {
+                                                                                repository.insertDemoMotoreducteurDatabase(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                if (demontages.indexOf(
+                                                                                        resp.data!!
+                                                                                    ) == -1
+                                                                                ) demontages!!.add(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "ajout demo motored en bdd locale"
+                                                                                )
+                                                                            } else {
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "fiche déjà en bdd"
+                                                                                )
+                                                                                // if (!demontages.contains(demoT)) demontages!!.add(demoT)
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            override fun onFailure(
+                                                                call: Call<DemontageMotoreducteurResponse>,
                                                                 t: Throwable
                                                             ) {
                                                                 Log.e(
