@@ -4890,11 +4890,11 @@ class Repository(var context: Context) {
         }
     }
 
-    suspend fun updateDemoMotoPompeLocalDatabase(demo: RemontageMotopompeEntity) {
+    suspend fun updateRemoMotoPompeLocalDatabase(demo: RemontageMotopompeEntity) {
         remontageMotopompeDao!!.update(demo)
     }
 
-    suspend fun deleteDemontageMotoPompeLocalDatabse(demo: RemontageMotopompeEntity) {
+    suspend fun deleteRemontageMotoPompeLocalDatabse(demo: RemontageMotopompeEntity) {
         remontageMotopompeDao!!.delete(demo)
     }
 
@@ -4942,11 +4942,11 @@ class Repository(var context: Context) {
         }
     }
 
-    suspend fun updateDemoMotoreducteurLocalDatabase(demo: RemontageMotoreducteurEntity) {
+    suspend fun updateRemoMotoreducteurLocalDatabase(demo: RemontageMotoreducteurEntity) {
         remontageMotoreducteurDao!!.update(demo)
     }
 
-    suspend fun deleteDemontageMotoreducteurLocalDatabse(demo: RemontageMotoreducteurEntity) {
+    suspend fun deleteRemontageMotoreducteurLocalDatabse(demo: RemontageMotoreducteurEntity) {
         remontageMotoreducteurDao!!.delete(demo)
     }
 
