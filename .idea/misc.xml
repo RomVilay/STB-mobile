@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_motopompe.xml" value="0.2073019801980198" />
         <entry key="app/src/main/res/layout/fragment_pompe.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_reducteur.xml" value="0.30010952902519167" />
         <entry key="app/src/main/res/layout/fragment_rotor_bobine.xml" value="0.16769743101807802" />
         <entry key="app/src/main/res/layout/fragment_triphase.xml" value="0.335" />
         <entry key="app/src/main/res/layout/infos_roulement.xml" value="0.1528846153846154" />
