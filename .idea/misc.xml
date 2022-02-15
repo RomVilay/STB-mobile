@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/round_form_background.xml" value="0.14892578125" />
         <entry key="app/src/main/res/drawable/dropdown_background.xml" value="0.248046875" />
+        <entry key="app/src/main/res/drawable/round_textview_full_grey.xml" value="0.14892578125" />
         <entry key="app/src/main/res/layout/accueil_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/connexion_dialog.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fiche_bobinage_fragment.xml" value="0.335" />
@@ -19,11 +21,12 @@
         <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_motopompe.xml" value="0.2073019801980198" />
         <entry key="app/src/main/res/layout/fragment_pompe.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_reducteur.xml" value="0.30010952902519167" />
+        <entry key="app/src/main/res/layout/fragment_reducteur.xml" value="0.35714285714285715" />
         <entry key="app/src/main/res/layout/fragment_rotor_bobine.xml" value="0.16769743101807802" />
         <entry key="app/src/main/res/layout/fragment_triphase.xml" value="0.335" />
         <entry key="app/src/main/res/layout/infos_roulement.xml" value="0.1528846153846154" />
         <entry key="app/src/main/res/layout/row.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/rowreducteur.xml" value="0.5" />
         <entry key="app/src/main/res/layout/schema_fragment.xml" value="0.14775641025641026" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2081736909323116" />
       </map>

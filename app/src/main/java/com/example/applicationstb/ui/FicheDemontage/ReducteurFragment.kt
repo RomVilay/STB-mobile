@@ -1,0 +1,570 @@
+package com.example.applicationstb.ui.FicheDemontage
+
+import android.Manifest
+import android.app.AlertDialog
+import android.content.ContentValues
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.SystemClock
+import android.provider.MediaStore
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import com.example.applicationstb.R
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.model.DemontagePompe
+import com.example.applicationstb.model.DemontageReducteur
+import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+
+
+class ReducteurFragment : Fragment() {
+    private val viewModel: FicheDemontageViewModel by activityViewModels()
+    private lateinit var photos: RecyclerView
+    private  val PHOTO_RESULT = 1888
+    lateinit var currentPhotoPath: String
+    val REQUEST_IMAGE_CAPTURE = 1
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        var layout = inflater.inflate(R.layout.fragment_pompe, container, false)
+        var peinture = layout.findViewById<EditText>(R.id.peintureRed)
+        var trMin = layout.findViewById<EditText>(R.id.trMin)
+        var modele = layout.findViewById<EditText>(R.id.modele)
+        var indiceReduction = layout.findViewById<EditText>(R.id.indRed)
+        var typeHuile = layout.findViewById<EditText>(R.id.typeHuile)
+        var quantiteHuile = layout.findViewById<EditText>(R.id.qteHuile)
+        var typeRoulementAv = layout.findViewById<EditText>(R.id.typeRoulementAv)
+        var typeRoulementAr = layout.findViewById<EditText>(R.id.typeRoulementAr)
+        var refRoulementAv = layout.findViewById<EditText>(R.id.refAv)
+        var refRoulementAr = layout.findViewById<EditText>(R.id.refAr)
+        var typeJointAv = layout.findViewById<EditText>(R.id.typeJointAv)
+        var refJointAv = layout.findViewById<EditText>(R.id.refJointAv)
+        var typeJointAr = layout.findViewById<EditText>(R.id.typeJointAr)
+        var refJointAr = layout.findViewById<EditText>(R.id.refJointsAr)
+        var obs = layout.findViewById<EditText>(R.id.obs2)
+        var termP = layout.findViewById<Button>(R.id.termP)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
+        var regexInt = Regex("^\\d+")
+        var fiche = viewModel.selection.value!! as DemontageReducteur
+
+        if (fiche.observations !== null) obs.setText(fiche.observations!!)
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        var retour = layout.findViewById<Button>(R.id.retourPompe)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
+        if (fiche.status!! < 3L) {
+
+            obs.doAfterTextChanged {
+                fiche.observations = obs.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+        } else {
+
+            obs.isEnabled = false
+            btnPhoto.visibility = View.INVISIBLE
+            enregistrer.visibility = View.GONE
+        }
+
+
+        var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+        if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
+
+
+        btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                    }
+                }
+            }
+        }
+
+        var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
+        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
+        var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
+        var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
+        if (fiche.typeRoulementAvant!!.size > 0) {
+            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant!![0]))
+        }
+        if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
+            refRoul.setText(fiche.refRoulementAvant!![0])
+        }
+        var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
+        if (fiche.status == 3L) {
+            refRoul.isEnabled = false
+            specsRoul.isEnabled = false
+            typeRoulement.isEnabled = false
+        }
+        specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
+        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
+            viewModel.selection.value!!.typeRoulementArriere = removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+            viewModel.getTime()
+            viewModel.localSave()
+        }
+        specsRoul.adapter = adapter
+        viewModel.selection.observe(viewLifecycleOwner,{
+            if (switchRoullements.isChecked) {
+                adapter.update(
+                    viewModel.selection.value!!.typeRoulementArriere!!,
+                    viewModel.selection.value!!.refRoulementArriere!!,
+                )
+            } else {
+                adapter.update(
+                    viewModel.selection.value!!.typeRoulementAvant!!,
+                    viewModel.selection.value!!.refRoulementAvant!!,
+                )
+            }
+        })
+        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null && fiche.refRoulementArriere!!.size > 0){
+            refRoul.setText(fiche.refRoulementArriere!![0])
+        } else if( fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
+            refRoul.setText(fiche.refRoulementAvant!![0])}
+        switchRoullements.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                if (viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size > 0) {
+                    var type =
+                        if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>(
+                            "2Z/ECJ",
+                            "2RS/ECP",
+                            "C3",
+                            "M"
+                        ).indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
+                    typeRoulement.setSelection(type)
+                    refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
+                    specsRoul.adapter = roulementAdapter(
+                        viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
+                        viewModel.selection.value!!.refRoulementArriere!!
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
+                    typeRoulement.setSelection(0)
+                    refRoul.setText("")
+                    specsRoul.adapter = roulementAdapter(
+                        arrayOf(),
+                        arrayOf()
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            } else {
+                if (viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.size > 0) {
+                    var type =
+                        if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>(
+                            "2Z/ECJ",
+                            "2RS/ECP",
+                            "C3",
+                            "M"
+                        ).indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
+                    typeRoulement.setSelection(type)
+                    refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
+                    specsRoul.adapter = roulementAdapter(
+                        viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
+                        viewModel.selection.value!!.refRoulementAvant!!
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                        viewModel.selection.value!!.refRoulementAvant =
+                            removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
+                    typeRoulement.setSelection(0)
+                    refRoul.setText("")
+                    specsRoul.adapter = roulementAdapter(
+                        arrayOf(),
+                        arrayOf()
+                    ) { item ->
+                        viewModel.selection.value!!.typeRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                        viewModel.selection.value!!.refRoulementArriere =
+                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            }
+        }
+        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var selection = typeRoulement.selectedItem.toString()
+                if (position > 0 && selection !== "") {
+                    if (switchRoullements.isChecked) {
+                        if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
+                            var tab =
+                                viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
+                            tab.add(selection)
+                            viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
+                            var tab2 =
+                                viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
+                            tab2.add("")
+                            viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
+                            refRoul.setText("")
+                        } else {
+                            refRoul.setText(
+                                viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(
+                                    selection
+                                )]
+                            )
+                        }
+                        specsRoul.adapter = roulementAdapter(
+                            fiche.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
+                            fiche.refRoulementArriere!!
+                        ) { item ->
+                            viewModel.selection.value!!.typeRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                            viewModel.selection.value!!.refRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    } else {
+                        if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1) {
+                            var tab =
+                                viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                            tab.add(selection)
+                            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                            var tab2 =
+                                viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                            tab2.add("")
+                            viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                            refRoul.setText("")
+                        } else {
+                            refRoul.setText(
+                                viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(
+                                    selection
+                                )]
+                            )
+                        }
+                        /* else {
+                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
+                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
+                        tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
+                        tab2.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
+                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
+                    }*/
+                        specsRoul.adapter = roulementAdapter(
+                            fiche.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
+                            fiche.refRoulementAvant!!
+                        ) { item ->
+                            viewModel.selection.value!!.typeRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                            viewModel.selection.value!!.refRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            }
+
+        }
+        refRoul.doAfterTextChanged {
+            var index = 0
+            if (switchRoullements.isChecked) {
+                index =   viewModel.selection.value!!.typeRoulementArriere!!.indexOf(typeRoulement.selectedItem)
+            } else {
+                index = viewModel.selection.value!!.typeRoulementAvant!!.indexOf(typeRoulement.selectedItem)
+            }
+            if (index !== -1) {
+                if (switchRoullements.isChecked) {
+                    if (refRoul.text.isNotEmpty()) {
+                        viewModel.selection.value!!.refRoulementArriere!![index] =
+                            refRoul.text.toString()
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
+                            viewModel.selection.value!!.typeRoulementArriere =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
+                            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                } else {
+                    if (refRoul.text.isNotEmpty()) {
+                        viewModel.selection.value!!.refRoulementAvant!![index] =
+                            refRoul.text.toString()
+                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
+                            viewModel.selection.value!!.typeRoulementAvant =
+                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
+                            viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        viewModel.getTime()
+                        viewModel.localSave()
+                    }
+                }
+            }
+        }
+        //joints
+        var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
+        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
+        var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
+        var refJoints = layout.findViewById<EditText>(R.id.refJoints)
+        if (fiche.status == 3L) {
+            refJoints.isEnabled = false
+            typeJoints.isEnabled = false
+        }
+        if (switchJoints.isChecked && fiche.typeJointArriere !== null){
+            if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
+            refJoints.setText(fiche.refJointArriere)
+        }
+        if (fiche.typeJointAvant !== null) {
+            typeJoints.setSelection(1)
+            if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
+            // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
+            // refJoints.setText(fiche.refJointAvant)
+        }
+        switchJoints.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                var type = if (viewModel.selection.value!!.typeJointArriere == null) {
+                    typeJoints.setSelection(0)
+                } else { if (viewModel.selection.value!!.typeJointArriere!!) {
+                    typeJoints.setSelection(2)
+                } else {
+                    typeJoints.setSelection(1)
+                }
+                }
+                refJoints.setText(viewModel.selection.value!!.refJointArriere)
+            } else {
+                var type = 0
+                if (viewModel.selection.value!!.typeJointAvant == null) {
+                    typeJoints.setSelection(0)
+                } else {
+                    if (viewModel.selection.value!!.typeJointAvant!!) {
+                        typeJoints.setSelection(2)
+                    } else {
+                        typeJoints.setSelection(1)
+                    }
+                }
+                Log.i("INFO","position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}")
+                refJoints.setText(viewModel.selection.value!!.refJointAvant)
+            }
+        }
+        if( viewModel.selection.value!!.status!! !== 3L) {
+            typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    var selection = typeJoints.selectedItem.toString()
+                    if (switchJoints.isChecked) {
+                        if (position == 2 ) {
+                            viewModel.selection.value!!.typeJointArriere = true
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        if (position == 1){
+                            viewModel.selection.value!!.typeJointArriere = false
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+
+                    } else {
+                        if (position == 2 ) {viewModel.selection.value!!.typeJointAvant = true }
+                        if (position == 1) { viewModel.selection.value!!.typeJointAvant = false}
+
+                    }
+                }
+            }
+
+            refJoints.doAfterTextChanged {
+                if (switchJoints.isChecked) {
+                    viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
+                    viewModel.getTime()
+                    viewModel.localSave()
+                } else {
+
+                    viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+        }
+
+
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+        enregistrer.setOnClickListener {
+            viewModel.getTime()
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        termP.setOnClickListener {
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
+        }
+
+
+
+        return layout
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
+            //imageView.setImageBitmap(photo)
+            viewModel.addPhoto(currentPhotoPath)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        }
+    }
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
+    }
+    fun removeRef(i:Int, list:Array<String>):Array<String>{
+        var tab = list.toMutableList()
+        tab.removeAt(i)
+        return tab.toTypedArray()
+    }
+
+}

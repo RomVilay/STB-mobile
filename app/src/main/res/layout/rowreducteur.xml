@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/row"
-    android:layout_width="wrap_content"
+    android:layout_width="600dp"
     android:layout_height="wrap_content"
+    android:background="@drawable/cell"
     android:orientation="horizontal">
 
     <EditText
         android:id="@+id/typeAv"
-        android:layout_width="214dp"
-        android:layout_height="45dp"
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
         android:background="@drawable/cell"
         android:gravity="center"
         android:inputType="number|text"
@@ -16,7 +17,27 @@
 
     <EditText
         android:id="@+id/refAv"
-        android:layout_width="214dp"
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/cell"
+        android:gravity="center"
+        android:inputType="number|text"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/typeAr"
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/cell"
+        android:gravity="center"
+        android:inputType="number|text"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/refAr"
+        android:layout_width="125dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/cell"

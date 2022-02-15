@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
@@ -22,8 +21,8 @@ class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, I
         var suppr:Button
 
         init {
-            diametre = view.findViewById(R.id.dia)
-            nbBrins = view.findViewById(R.id.br)
+            diametre = view.findViewById(R.id.typeAv)
+            nbBrins = view.findViewById(R.id.refAv)
             suppr = view.findViewById(R.id.supprsection)
         }
     }
