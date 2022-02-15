@@ -67,8 +67,6 @@ class MotopompeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_motopompe, container, false)
-        var marque = layout.findViewById<TextView>(R.id.marc)
-        var numSerie = layout.findViewById<TextView>(R.id.numSerie)
         var fluide = layout.findViewById<EditText>(R.id.typeFluide)
         var sensRotation = layout.findViewById<Switch>(R.id.sensRotation)
         var typeRessort = layout.findViewById<Spinner>(R.id.typePompe)
@@ -88,35 +86,40 @@ class MotopompeFragment : Fragment() {
         var diametreExtPF = layout.findViewById<EditText>(R.id.dExt)
         var longueurRotativeNonComprimee = layout.findViewById<EditText>(R.id.LNC)
         var epaisseurPF = layout.findViewById<EditText>(R.id.ePF)
-        var typemotopompe = layout.findViewById<Spinner>(R.id.typemotopompe)
-        var obs = layout.findViewById<EditText>(R.id.obs2)
-        var termP = layout.findViewById<Button>(R.id.termmp)
+        var infosMoteur = layout.findViewById<CardView>(R.id.info)
         var partMono = layout.findViewById<CardView>(R.id.moteur_mono)
         var partMeca = layout.findViewById<CardView>(R.id.mecamp)
         var partTri = layout.findViewById<CardView>(R.id.moteur_triphase)
+        val fmanager = childFragmentManager
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infosLayout)
+            setReorderingAllowed(true)
+        }
+        var typemotopompe = layout.findViewById<Spinner>(R.id.typemotopompe)
+        typemotopompe.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","Triphasé","Monophasé"))
+        var obs = layout.findViewById<EditText>(R.id.obs2)
+        var termP = layout.findViewById<Button>(R.id.termmp)
         var btnPhoto = layout.findViewById<Button>(R.id.photo)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
+        //triphase
+        var UM = layout.findViewById<EditText>(R.id.isopmU)
+        var VM = layout.findViewById<EditText>(R.id.isopmV)
+        var WM = layout.findViewById<EditText>(R.id.isopmW)
+        var UV = layout.findViewById<EditText>(R.id.isoppU)
+        var UW = layout.findViewById<EditText>(R.id.isoppV)
+        var iVW = layout.findViewById<EditText>(R.id.isoppW)
+        var RU = layout.findViewById<EditText>(R.id.rU)
+        var RV = layout.findViewById<EditText>(R.id.rV)
+        var RW = layout.findViewById<EditText>(R.id.rW)
+        //mono
+        var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmUe)
+        var resistanceTravail = layout.findViewById<EditText>(R.id.isopmVe)
+        var resistanceDemarrage	= layout.findViewById<EditText>(R.id.rdem)
+        var valeurCondensateur	= layout.findViewById<EditText>(R.id.condens)
+        var tension	= layout.findViewById<EditText>(R.id.vVe)
+        var intensite	= layout.findViewById<EditText>(R.id.vWe)
         var fiche = viewModel.selection.value!! as DemontageMotopompe
-        if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
-        if (fiche.marque !== null) marque.setText(fiche.marque!!.toString())
-        if (fiche.fluide !== null) fluide.setText(fiche.fluide!!.toString())
-        if (fiche.sensRotation !== null ) sensRotation.setChecked(!fiche.sensRotation!!)
-        if (fiche.typeRessort !== null) typeRessort.setSelection(fiche.typeRessort!!)
-        if (fiche.matiere !== null) matiere.setSelection(fiche.matiere!!)
-        if (fiche.typeJoint !== null) typeJoint.setText(fiche.typeJoint.toString())
-        if (fiche.diametreArbre !== null) diametreArbre.setText(fiche.diametreArbre!!.toString())
-        if (fiche.diametreExtPR !== null) diametreExtPR.setText(fiche.diametreExtPR!!.toString())
-        if (fiche.diametreExtPF !== null) diametreExtPF.setText(fiche.diametreExtPF!!.toString())
-        if (fiche.epaisseurPF !== null) epaisseurPF.setText(fiche.epaisseurPF!!.toString())
-        if (fiche.longueurRotativeNonComprimee !== null) longueurRotativeNonComprimee.setText(fiche.longueurRotativeNonComprimee!!.toString())
-        if (fiche.longueurRotativeComprimee !== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee!!.toString())
-        if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString())
-        if (fiche.observations !== null) obs.setText(fiche.observations!!)
-        viewModel.photos.value = fiche.photos!!.toMutableList()
-        var retour = layout.findViewById<Button>(R.id.retourmp)
-        var enregistrer = layout.findViewById<Button>(R.id.enregistrermp)
-        typemotopompe.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","Triphasé","Monophasé"))
         typemotopompe.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -136,10 +139,10 @@ class MotopompeFragment : Fragment() {
                         replace<MecaFragment>(R.id.partMeca)
                         setReorderingAllowed(true)
                     }
-                    fmanager.commit {
-                        replace<InfoMoteurFragment>(R.id.infoLayout)
-                        setReorderingAllowed(true)
-                    }
+                    fiche.typeMotopompe = "1"
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
                 }
                 if (typemotopompe.selectedItem.toString() == "Monophasé") {
                     partMeca.visibility = View.VISIBLE
@@ -150,27 +153,51 @@ class MotopompeFragment : Fragment() {
                         replace<MecaFragment>(R.id.partMeca)
                         setReorderingAllowed(true)
                     }
-                    fmanager.commit {
-                        replace<InfoMoteurFragment>(R.id.infosLayout)
-                        setReorderingAllowed(true)
-                    }
+                    fiche.typeMotopompe = "2"
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
                 }
 
             }
         }
-        /*if (fiche.status!! < 3L) {
-            marque.doAfterTextChanged {
-                fiche.marque = marque.text.toString()
-                viewModel.selection.value = fiche
-                viewModel.getTime()
-                viewModel.localSave()
-            }
-            numSerie.doAfterTextChanged {
-                fiche.numSerie = numSerie.text.toString()
-                viewModel.selection.value = fiche
-                viewModel.getTime()
-                viewModel.localSave()
-            }
+        if (fiche.typeMotopompe !== null) typemotopompe.setSelection(fiche.typeMotopompe!!.toInt())
+        if (fiche.fluide !== null) fluide.setText(fiche.fluide!!.toString())
+        if (fiche.sensRotation !== null ) sensRotation.setChecked(!fiche.sensRotation!!)
+        if (fiche.typeRessort !== null) typeRessort.setSelection(fiche.typeRessort!!)
+        if (fiche.matiere !== null) matiere.setSelection(fiche.matiere!!)
+        if (fiche.typeJoint !== null) typeJoint.setText(fiche.typeJoint.toString())
+        if (fiche.diametreArbre !== null) diametreArbre.setText(fiche.diametreArbre!!.toString())
+        if (fiche.diametreExtPR !== null) diametreExtPR.setText(fiche.diametreExtPR!!.toString())
+        if (fiche.diametreExtPF !== null) diametreExtPF.setText(fiche.diametreExtPF!!.toString())
+        if (fiche.epaisseurPF !== null) epaisseurPF.setText(fiche.epaisseurPF!!.toString())
+        if (fiche.longueurRotativeNonComprimee !== null) longueurRotativeNonComprimee.setText(fiche.longueurRotativeNonComprimee!!.toString())
+        if (fiche.longueurRotativeComprimee !== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee!!.toString())
+        if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString())
+        if (fiche.typeMotopompe == "1") {
+            if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
+            if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
+            if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
+            if (fiche.isolementPhasePhaseStatorUV !== null) UV.setText(fiche.isolementPhasePhaseStatorUV!!.toString())
+            if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!.toString()) else 0
+            if (fiche.isolementPhasePhaseStatorVW !== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!.toString()) else 0
+            if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
+            if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
+            if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
+        }
+        if (fiche.typeMotopompe == "2") {
+            if (fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
+            if (fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
+            if (fiche.resistanceDemarrage !== null) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
+            if (fiche.valeurCondensateur !== null) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
+            if (fiche.tension !== null) tension.setText(fiche.tension.toString())
+            if (fiche.intensite !== null) intensite.setText(fiche.intensite.toString())
+        }
+        if (fiche.observations !== null) obs.setText(fiche.observations!!)
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        var retour = layout.findViewById<Button>(R.id.retourmp)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrermp)
+        if (fiche.status!! < 3L) {
             fluide.doAfterTextChanged {
                 fiche.fluide = fluide.text.toString()
                 viewModel.selection.value = fiche
@@ -271,6 +298,110 @@ class MotopompeFragment : Fragment() {
                 viewModel.getTime()
                 viewModel.localSave()
             }
+            if (fiche.typeMotopompe == "1") {
+                UM.doAfterTextChanged {
+                    if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
+                        UM.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                VM.doAfterTextChanged {
+                    if (VM.text.isNotEmpty() && VM.hasFocus() && VM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorVM =
+                        VM.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                WM.doAfterTextChanged {
+                    if (WM.text.isNotEmpty() && WM.hasFocus() && WM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorWM =
+                        WM.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                UV.doAfterTextChanged {
+                    if (UV.text.isNotEmpty() && UV.hasFocus() && UV.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUV =
+                        UV.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                UW.doAfterTextChanged {
+                    if (UW.text.isNotEmpty() && UW.hasFocus() && UW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUW =
+                        UW.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                iVW.doAfterTextChanged {
+                    if (iVW.text.isNotEmpty() && iVW.hasFocus() && iVW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorVW =
+                        iVW.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                RU.doAfterTextChanged {
+                    if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU =
+                        RU.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                RV.doAfterTextChanged {
+                    if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV =
+                        RV.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                RW.doAfterTextChanged {
+                    if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW =
+                        RW.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            if (fiche.typeMotopompe == "2") {
+                isolementPhaseMasse.doAfterTextChanged {
+                    if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.hasFocus() && isolementPhaseMasse.text.matches(regexNombres)) fiche.isolementPhaseMasse =
+                        isolementPhaseMasse.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                resistanceTravail.doAfterTextChanged {
+                    if (resistanceTravail.text.isNotEmpty() && resistanceTravail.hasFocus() && resistanceTravail.text.matches(regexNombres) ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                resistanceDemarrage.doAfterTextChanged {
+                    if (resistanceDemarrage.text.isNotEmpty() && resistanceDemarrage.hasFocus() && resistanceDemarrage.text.matches(regexNombres) ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                valeurCondensateur.doAfterTextChanged {
+                    if (valeurCondensateur.text.isNotEmpty() && valeurCondensateur.hasFocus() && valeurCondensateur.text.matches(regexNombres) ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                tension.doAfterTextChanged {
+                    if (tension.text.isNotEmpty() && tension.hasFocus() && tension.text.matches(regexNombres)) fiche.tension = tension.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+                intensite.doAfterTextChanged {
+                    if (intensite.text.isNotEmpty() && intensite.hasFocus() && intensite.text.matches(regexNombres) )fiche.intensite = intensite.text.toString().toFloat()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
             obs.doAfterTextChanged {
                 fiche.observations = obs.text.toString()
                 viewModel.selection.value = fiche
@@ -278,8 +409,6 @@ class MotopompeFragment : Fragment() {
                 viewModel.localSave()
             }
         } else {
-            marque.isEnabled = false
-            numSerie.isEnabled = false
             fluide.isEnabled = false
             sensRotation.isEnabled = false
             typeRessort.isEnabled = false
@@ -292,10 +421,25 @@ class MotopompeFragment : Fragment() {
             longueurRotativeNonComprimee.isEnabled = false
             longueurRotativeComprimee.isEnabled = false
             longueurRotativeTravail.isEnabled = false
+            isolementPhaseMasse.isEnabled = false
+            resistanceTravail.isEnabled = false
+            resistanceDemarrage.isEnabled = false
+            valeurCondensateur.isEnabled = false
+            tension.isEnabled = false
+            intensite.isEnabled = false
+            UM.isEnabled = false
+            VM.isEnabled = false
+            WM.isEnabled = false
+            UV.isEnabled = false
+            UW.isEnabled = false
+            iVW.isEnabled = false
+            RU.isEnabled = false
+            RV.isEnabled = false
+            RW.isEnabled = false
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
-        }*/
+        }
 
 
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
@@ -311,9 +455,10 @@ class MotopompeFragment : Fragment() {
         photos.adapter = sAdapter
         viewModel.photos.observe(viewLifecycleOwner, {
             sAdapter.update(it)
+            fiche.photos = it.toTypedArray()
         })
         if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
-       /* epaisseurPF.setOnFocusChangeListener { view, hasFocus ->
+        epaisseurPF.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_i4)
                 //i4.setTextColor(Color.WHITE)
@@ -410,336 +555,7 @@ class MotopompeFragment : Fragment() {
                     }
                 }
             }
-        }*/
-
-      /*  var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
-        var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
-        var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
-        if (fiche.typeRoulementAvant!!.size > 0) {
-            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant!![0]))
         }
-        if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
-            refRoul.setText(fiche.refRoulementAvant!![0])
-        }
-        var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
-        if (fiche.status == 3L) {
-            refRoul.isEnabled = false
-            specsRoul.isEnabled = false
-            typeRoulement.isEnabled = false
-        }
-        specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
-        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
-            viewModel.selection.value!!.typeRoulementArriere = removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        specsRoul.adapter = adapter
-        viewModel.selection.observe(viewLifecycleOwner,{
-            if (switchRoullements.isChecked) {
-                adapter.update(
-                    viewModel.selection.value!!.typeRoulementArriere!!,
-                    viewModel.selection.value!!.refRoulementArriere!!,
-                )
-            } else {
-                adapter.update(
-                    viewModel.selection.value!!.typeRoulementAvant!!,
-                    viewModel.selection.value!!.refRoulementAvant!!,
-                )
-            }
-        })
-        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null && fiche.refRoulementArriere!!.size > 0){
-            refRoul.setText(fiche.refRoulementArriere!![0])
-        } else if( fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
-            refRoul.setText(fiche.refRoulementAvant!![0])}
-        switchRoullements.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                if (viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size > 0) {
-                    var type =
-                        if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>(
-                            "2Z/ECJ",
-                            "2RS/ECP",
-                            "C3",
-                            "M"
-                        ).indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
-                    typeRoulement.setSelection(type)
-                    refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
-                    specsRoul.adapter = roulementAdapter(
-                        viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
-                        viewModel.selection.value!!.refRoulementArriere!!
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
-                    typeRoulement.setSelection(0)
-                    refRoul.setText("")
-                    specsRoul.adapter = roulementAdapter(
-                        arrayOf(),
-                        arrayOf()
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            } else {
-                if (viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.size > 0) {
-                    var type =
-                        if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>(
-                            "2Z/ECJ",
-                            "2RS/ECP",
-                            "C3",
-                            "M"
-                        ).indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
-                    typeRoulement.setSelection(type)
-                    refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
-                    specsRoul.adapter = roulementAdapter(
-                        viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
-                        viewModel.selection.value!!.refRoulementAvant!!
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                        viewModel.selection.value!!.refRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
-                    typeRoulement.setSelection(0)
-                    refRoul.setText("")
-                    specsRoul.adapter = roulementAdapter(
-                        arrayOf(),
-                        arrayOf()
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
-        }
-        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var selection = typeRoulement.selectedItem.toString()
-                if (position > 0 && selection !== "") {
-                    if (switchRoullements.isChecked) {
-                        if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
-                            var tab =
-                                viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
-                            tab.add(selection)
-                            viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
-                            var tab2 =
-                                viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
-                            tab2.add("")
-                            viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
-                            refRoul.setText("")
-                        } else {
-                            refRoul.setText(
-                                viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(
-                                    selection
-                                )]
-                            )
-                        }
-                        specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
-                            fiche.refRoulementArriere!!
-                        ) { item ->
-                            viewModel.selection.value!!.typeRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                            viewModel.selection.value!!.refRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    } else {
-                        if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1) {
-                            var tab =
-                                viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                            tab.add(selection)
-                            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                            var tab2 =
-                                viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                            tab2.add("")
-                            viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                            refRoul.setText("")
-                        } else {
-                            refRoul.setText(
-                                viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(
-                                    selection
-                                )]
-                            )
-                        }
-                        /* else {
-                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                        tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
-                        tab2.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
-                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                    }*/
-                        specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
-                            fiche.refRoulementAvant!!
-                        ) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                            viewModel.selection.value!!.refRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
-
-        }
-        refRoul.doAfterTextChanged {
-            var index = 0
-            if (switchRoullements.isChecked) {
-                index =   viewModel.selection.value!!.typeRoulementArriere!!.indexOf(typeRoulement.selectedItem)
-            } else {
-                index = viewModel.selection.value!!.typeRoulementAvant!!.indexOf(typeRoulement.selectedItem)
-            }
-            if (index !== -1) {
-                if (switchRoullements.isChecked) {
-                    if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementArriere!![index] =
-                            refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
-                            viewModel.selection.value!!.typeRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementAvant!![index] =
-                            refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                            viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
-        }
-        //joints
-        var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
-        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
-        var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
-        var refJoints = layout.findViewById<EditText>(R.id.refJoints)
-        if (fiche.status == 3L) {
-            refJoints.isEnabled = false
-            typeJoints.isEnabled = false
-        }
-        if (switchJoints.isChecked && fiche.typeJointArriere !== null){
-            if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
-            refJoints.setText(fiche.refJointArriere)
-        }
-        if (fiche.typeJointAvant !== null) {
-            typeJoints.setSelection(1)
-            if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
-            // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
-            // refJoints.setText(fiche.refJointAvant)
-        }
-        switchJoints.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                var type = if (viewModel.selection.value!!.typeJointArriere == null) {
-                    typeJoints.setSelection(0)
-                } else { if (viewModel.selection.value!!.typeJointArriere!!) {
-                    typeJoints.setSelection(2)
-                } else {
-                    typeJoints.setSelection(1)
-                }
-                }
-                refJoints.setText(viewModel.selection.value!!.refJointArriere)
-            } else {
-                var type = 0
-                if (viewModel.selection.value!!.typeJointAvant == null) {
-                    typeJoints.setSelection(0)
-                } else {
-                    if (viewModel.selection.value!!.typeJointAvant!!) {
-                        typeJoints.setSelection(2)
-                    } else {
-                        typeJoints.setSelection(1)
-                    }
-                }
-                Log.i("INFO","position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}")
-                refJoints.setText(viewModel.selection.value!!.refJointAvant)
-            }
-        }
-        if( viewModel.selection.value!!.status!! !== 3L) {
-            typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    var selection = typeJoints.selectedItem.toString()
-                    if (switchJoints.isChecked) {
-                        if (position == 2 ) {
-                            viewModel.selection.value!!.typeJointArriere = true
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        if (position == 1){
-                            viewModel.selection.value!!.typeJointArriere = false
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-
-                    } else {
-                        if (position == 2 ) {viewModel.selection.value!!.typeJointAvant = true }
-                        if (position == 1) { viewModel.selection.value!!.typeJointAvant = false}
-
-                    }
-                }
-            }
-
-            refJoints.doAfterTextChanged {
-                if (switchJoints.isChecked) {
-                    viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
-                    viewModel.getTime()
-                    viewModel.localSave()
-                } else {
-
-                    viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-        }*/
-
-
         retour.setOnClickListener {
             viewModel.retour(layout)
         }

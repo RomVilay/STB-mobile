@@ -717,10 +717,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 repository.getByIdDemoMotopompeLocalDatabase(
                                                                                     resp2.data!!._id
                                                                                 )
-                                                                            Log.i(
-                                                                                "info",
-                                                                                "fiche motored ${demoT == null}"
-                                                                            )
                                                                             if (demoT == null) {
                                                                                 repository.insertDemoMotopompeDatabase(
                                                                                     resp2!!.data!!
@@ -948,6 +944,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val resp = response.body()
                                             if (resp != null) {
                                                 if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 6) {
+                                                    Log.i("info","fiche a update ${resp.data!!.numFiche}")
                                                     val demoTri = repository.getRemontageTriphase(
                                                         token,
                                                         resp.data!!._id,
