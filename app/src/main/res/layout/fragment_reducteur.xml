@@ -83,6 +83,7 @@
                         android:layout_marginStart="20dp"
                         android:background="@drawable/round_textview"
                         android:ems="5"
+                        android:gravity="center"
                         android:inputType="number"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/Trmintitre"
@@ -109,6 +110,7 @@
                         android:layout_marginStart="36dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="text"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/titremodel"
@@ -134,6 +136,7 @@
                         android:layout_marginStart="32dp"
                         android:background="@drawable/round_textview"
                         android:ems="5"
+                        android:gravity="center"
                         android:inputType="number"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/indRedTitre"
@@ -159,6 +162,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/titrehuile"
                         app:layout_constraintStart_toEndOf="@+id/titrehuile"
@@ -182,6 +186,7 @@
                         android:layout_marginStart="16dp"
                         android:background="@drawable/round_textview"
                         android:ems="5"
+                        android:gravity="center"
                         android:inputType="text"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/titrqtHuile"
@@ -207,6 +212,7 @@
                         android:layout_marginStart="19dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
+                        android:gravity="center"
                         android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/titrePaint"
                         app:layout_constraintStart_toEndOf="@+id/titrePaint"
@@ -253,13 +259,13 @@
                                     android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
-                                    android:text="Train"
+                                    android:text="Arbre"
                                     android:textColor="@color/white"
                                     android:textSize="20dp" />
 
                                 <TextView
                                     android:id="@+id/titreroulementav"
-                                    android:layout_width="250dp"
+                                    android:layout_width="225dp"
                                     android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
@@ -269,7 +275,7 @@
 
                                 <TextView
                                     android:id="@+id/titreRlAr"
-                                    android:layout_width="250dp"
+                                    android:layout_width="225dp"
                                     android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
@@ -277,17 +283,27 @@
                                     android:textColor="@color/white"
                                     android:textSize="20dp" />
 
+                                <TextView
+                                    android:id="@+id/esproul3"
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="20dp" />
+
                             </LinearLayout>
 
                             <LinearLayout
-                                android:layout_width="600dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/esproul"
-                                    android:layout_width="100dp"
-                                    android:layout_height="25dp"
+                                    android:id="@+id/esproul4"
+                                    android:layout_width="50dp"
+                                    android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
                                     android:text=""
@@ -327,6 +343,15 @@
                                     android:background="@drawable/cell"
                                     android:gravity="center"
                                     android:text="Ref"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/esproul"
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text=""
                                     android:textSize="20dp" />
                             </LinearLayout>
 
@@ -450,6 +475,7 @@
                             android:layout_marginStart="21dp"
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
+                            android:gravity="center"
                             android:inputType="text"
                             android:textSize="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/titreRefAv"
@@ -463,6 +489,7 @@
                             android:layout_marginStart="20dp"
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
+                            android:gravity="center"
                             android:inputType="text"
                             android:textSize="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/titreRefAr"
@@ -546,7 +573,7 @@
                                     android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
-                                    android:text="Train"
+                                    android:text="Arbre"
                                     android:textColor="@color/white"
                                     android:textSize="20dp" />
 
@@ -579,7 +606,7 @@
 
                                 <TextView
                                     android:id="@+id/esproul2"
-                                    android:layout_width="100dp"
+                                    android:layout_width="50dp"
                                     android:layout_height="25dp"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
@@ -765,6 +792,7 @@
                             android:layout_marginStart="10dp"
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
+                            android:gravity="center"
                             android:inputType="text"
                             android:textSize="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/titreRefjAv"
@@ -778,6 +806,7 @@
                             android:layout_marginStart="8dp"
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
+                            android:gravity="center"
                             android:inputType="text"
                             android:textSize="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/titreRefjar"

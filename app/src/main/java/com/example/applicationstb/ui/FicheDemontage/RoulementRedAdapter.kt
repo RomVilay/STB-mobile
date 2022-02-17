@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
@@ -12,12 +13,13 @@ import com.example.applicationstb.model.Joint
 import com.example.applicationstb.model.Roulement
 import com.example.applicationstb.model.Section
 
-class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (String,String,String,String,Int) -> Unit, var callback2:(Int) ->Unit) :
+class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (String,String,String,String,Int) -> Unit) :
     RecyclerView.Adapter<RoulementRedAdapter.ViewHolder>() {
     var regexNombres = Regex("^\\d*\\.?\\d*\$")
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var titre: TextView
         var typeAv: EditText
         var refAv: EditText
         var typeAr: EditText
@@ -25,6 +27,7 @@ class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (Stri
         var suppr:Button
 
         init {
+            titre = view.findViewById(R.id.titretrain)
             typeAv = view.findViewById(R.id.typeAv)
             refAv = view.findViewById(R.id.refAv)
             typeAr = view.findViewById(R.id.typeAr)
@@ -41,13 +44,13 @@ class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (Stri
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var tab1 = list?.get(position)?.roulementAvant.toString().split(" - ")
         var tab2 = list?.get(position)?.roulementArriere.toString().split(" - ")
+        holder.titre.setText(list?.get(position)!!.title)
         holder.typeAv.setText(tab1[0])
         holder.refAv.setText(tab1[1])
-        holder.typeAr.setText(tab1[0])
+        holder.typeAr.setText(tab2[0])
         holder.refAr.setText(tab2[1])
         holder.typeAv.doAfterTextChanged {
-            if (holder.typeAv.text.toString()
-                    .matches(regexNombres) && holder.typeAv.text.isNotEmpty()
+            if ( holder.typeAv.text.isNotEmpty()
             ) callback(
                 holder.typeAv.text.toString(),
                 holder.refAv.text.toString(),
@@ -57,8 +60,7 @@ class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (Stri
             )
         }
         holder.typeAr.doAfterTextChanged {
-            if (holder.typeAr.text.toString()
-                    .matches(regexNombres) && holder.typeAr.text.isNotEmpty()
+            if ( holder.typeAr.text.isNotEmpty()
             ) callback(
                 holder.typeAv.text.toString(),
                 holder.refAv.text.toString(),
@@ -68,8 +70,7 @@ class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (Stri
             )
         }
         holder.refAr.doAfterTextChanged {
-            if (holder.refAr.text.toString()
-                    .matches(regexNombres) && holder.refAr.text.isNotEmpty()
+            if (holder.refAr.text.isNotEmpty()
             ) callback(
                 holder.typeAv.text.toString(),
                 holder.refAv.text.toString(),
@@ -79,8 +80,7 @@ class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (Stri
             )
         }
         holder.refAv.doAfterTextChanged {
-            if (holder.refAv.text.toString()
-                    .matches(regexNombres) && holder.refAv.text.isNotEmpty()
+            if ( holder.refAv.text.isNotEmpty()
             ) callback(
                 holder.typeAv.text.toString(),
                 holder.refAv.text.toString(),
@@ -95,7 +95,6 @@ class RoulementRedAdapter(var list: MutableList<Roulement>?, var callback: (Stri
             list?.removeAt(position)
             notifyItemRemoved(position)
             notifyDataSetChanged()
-            callback2(position)
         }
 
     }

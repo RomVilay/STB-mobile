@@ -62,7 +62,7 @@ class ReducteurFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -82,8 +82,8 @@ class ReducteurFragment : Fragment() {
         var quantiteHuile = layout.findViewById<EditText>(R.id.qteHuile)
         var typeRoulementAv = layout.findViewById<Spinner>(R.id.typeRav)
         var typeRoulementAr = layout.findViewById<Spinner>(R.id.typeRar)
-        var refRoulementAv = layout.findViewById<EditText>(R.id.refAv)
-        var refRoulementAr = layout.findViewById<EditText>(R.id.refAr)
+        var refRoulementAv = layout.findViewById<EditText>(R.id.refRoulementAv)
+        var refRoulementAr = layout.findViewById<EditText>(R.id.refRoulementAr)
         var typeJointAv = layout.findViewById<Spinner>(R.id.typeJav)
         var refJointAv = layout.findViewById<EditText>(R.id.refJointAv)
         var typeJointAr = layout.findViewById<Spinner>(R.id.typeJar)
@@ -104,8 +104,6 @@ class ReducteurFragment : Fragment() {
         if (fiche.roulements !== null) roulements.value = fiche.roulements else roulements.value = mutableListOf<Roulement>()
         var adapterRoulement = RoulementRedAdapter(mutableListOf<Roulement>(),{typeAv,refAv,typeAr,refAr,position ->
             roulements.value!!.set(position,Roulement("R${position}","${typeAv} - ${refAv}", "${typeAr} - ${refAr}"))
-        },{position ->
-            roulements.value!!.removeAt(position)
         }
         )
         roulements.observe(viewLifecycleOwner, {
@@ -123,8 +121,6 @@ class ReducteurFragment : Fragment() {
             joints.value!!.set(position,
                 Joint("J${position}","${typeAv} - ${refAv}", "${typeAr} - ${refAr}")
             )
-        },{position ->
-            joints.value!!.removeAt(position)
         })
         joints.observe(viewLifecycleOwner, {
             adapterJoint.update(it!!)
@@ -159,7 +155,7 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
             modele.doAfterTextChanged {
-                if(modele.hasFocus() && modele.text.isNotEmpty() && modele.text.matches(regexNombres)) fiche.modele = modele.text.toString()
+                if(modele.hasFocus() && modele.text.isNotEmpty()) fiche.modele = modele.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -184,13 +180,21 @@ class ReducteurFragment : Fragment() {
             }
             btnRoul.setOnClickListener {
                 var liste = roulements.value!!
-                liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv}", "${typeRoulementAr} - ${refRoulementAr}"))
+                liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv.text.toString()}", "${typeRoulementAr.selectedItem} - ${refRoulementAr.text.toString()}"))
                 roulements.value = liste
+                typeRoulementAv.setSelection(0)
+                typeRoulementAr.setSelection(0)
+                refRoulementAv.setText("")
+                refRoulementAr.setText("")
             }
             btnJoint.setOnClickListener {
                 var liste = joints.value!!
-                liste.add(Joint("R${liste.size}","${typeJointAv.selectedItem} - ${refJointAv}", "${typeJointAr} - ${refJointAr}"))
+                liste.add(Joint("R${liste.size}","${typeJointAv.selectedItem} - ${refJointAv.text.toString()}", "${typeJointAr.selectedItem} - ${refJointAr.text.toString()}"))
                 joints.value = liste
+                typeJointAv.setSelection(0)
+                typeJointAr.setSelection(0)
+                refJointAv.setText("")
+                refJointAr.setText("")
             }
             obs.doAfterTextChanged {
                 fiche.observations = obs.text.toString()
@@ -256,15 +260,6 @@ class ReducteurFragment : Fragment() {
 
         typeRoulementAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
         typeRoulementAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
-        typeRoulementAr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-            }
-
-        }
         //joints
         typeJointAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
         typeJointAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
@@ -305,6 +300,7 @@ class ReducteurFragment : Fragment() {
         return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
