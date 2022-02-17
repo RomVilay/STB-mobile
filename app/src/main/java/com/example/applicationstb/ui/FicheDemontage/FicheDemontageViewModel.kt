@@ -222,6 +222,44 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                 }
             }
+            if (selection.value!!.typeFicheDemontage == 8) {
+
+                var fiche = selection.value!! as DemontageReducteur
+                /*if (fiche.sensRotation == null) fiche.sensRotation = false
+                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                if (fiche.accouplement == null) fiche.accouplement = false
+                if (fiche.clavette == null) fiche.clavette = false
+                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                if (fiche.accouplement == null) fiche.accouplement = false
+                if (fiche.clavette == null) fiche.clavette = false*/
+                var f = repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
+                if (f !== null) {
+                    repository.updateDemoReducteurLocalDatabase(fiche.toEntity())
+
+                } else {
+                    repository.insertDemoReducteurDatabase(fiche)
+
+                }
+            }
+            if (selection.value!!.typeFicheDemontage == 9) {
+
+                var fiche = selection.value!! as DemontageMotoreducteur
+                /*if (fiche.sensRotation == null) fiche.sensRotation = false
+                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                if (fiche.accouplement == null) fiche.accouplement = false
+                if (fiche.clavette == null) fiche.clavette = false
+                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
+                if (fiche.accouplement == null) fiche.accouplement = false
+                if (fiche.clavette == null) fiche.clavette = false*/
+                var f = repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
+                if (f !== null) {
+                    repository.updateDemoMotoreducteurLocalDatabase(fiche.toEntity())
+
+                } else {
+                    repository.insertDemoMotoreducteurDatabase(fiche)
+
+                }
+            }
 
         }
     }
@@ -1007,8 +1045,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                     }
                 }
-                //reducteur seul à revoir
-                /*8 -> {
+                8 -> {
                     if (isOnline(context) == true) {
                         var dt = repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
@@ -1063,14 +1100,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         repository.updateDemoReducteurLocalDatabase(dt.toEntity())
                         selection.postValue(dt)
                         photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageTriphase(
+                        val resp = repository.patchDemontageReducteur(
                             token!!,
                             dt._id,
                             dt,
-                            object : Callback<DemontageTriphaseResponse> {
+                            object : Callback<DemontageReducteurResponse> {
                                 override fun onResponse(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    response: Response<DemontageTriphaseResponse>
+                                    call: Call<DemontageReducteurResponse>,
+                                    response: Response<DemontageReducteurResponse>
                                 ) {
                                     if (response.code() == 200) {
                                         val resp = response.body()
@@ -1090,7 +1127,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
 
                                 override fun onFailure(
-                                    call: Call<DemontageTriphaseResponse>,
+                                    call: Call<DemontageReducteurResponse>,
                                     t: Throwable
                                 ) {
                                     Log.e("Error", "${t.stackTraceToString()}")
@@ -1098,23 +1135,23 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 }
                             })
                     } else {
-                        var t = selection.value!! as Triphase
+                        var t = selection.value!! as DemontageReducteur
                         viewModelScope.launch(Dispatchers.IO){
-                            var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                            var tri = repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
                             if (tri !== null ) {
-                                repository.updateDemoTriLocalDatabse(t.toEntity())
+                                repository.updateDemoReducteurLocalDatabase(t.toEntity())
                                 val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else  {
-                                repository.insertDemoTriLocalDatabase(t)
+                                repository.insertDemoReducteurDatabase(t)
                                 val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
                             }
                         }
                     }
-                }*/
+                }
                 9 -> {
                     if (isOnline(context) == true) {
                         var dt = repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)!!

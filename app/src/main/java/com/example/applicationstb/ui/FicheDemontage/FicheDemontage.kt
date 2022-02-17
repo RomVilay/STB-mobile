@@ -84,10 +84,10 @@ class FicheDemontage : Fragment() {
                     replace<MotopompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                /*is DemontageReducteur ->fragmentManager.commit {
-                    replace<AlternateurFragment>(R.id.fragmentContainer)
+                is DemontageReducteur ->fragmentManager.commit {
+                    replace<ReducteurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
-                }*/
+                }
             }
         }
         return layout

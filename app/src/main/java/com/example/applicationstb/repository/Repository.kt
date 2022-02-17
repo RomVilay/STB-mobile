@@ -4935,7 +4935,9 @@ class Repository(var context: Context) {
 
     suspend fun getByIdRemoMotoreducteurLocalDatabase(id: String): RemontageMotoreducteur? {
         try {
-            return remontageMotoreducteurDao!!.getById(id).toRemontageMotoreducteur()
+            if (remontageMotoreducteurDao!!.getById(id) !== null) {
+                return remontageMotoreducteurDao!!.getById(id).toRemontageMotoreducteur()
+            } else return null
         } catch (e: Error) {
             Log.i("e", e.message!!)
             return null
@@ -4960,7 +4962,9 @@ class Repository(var context: Context) {
 
     suspend fun getByIdDemoReducteurLocalDatabase(id: String): DemontageReducteur? {
         try {
-            return demontageReducteurDao!!.getById(id).toReducteur()
+            if (demontageReducteurDao!!.getById(id) !== null) {
+                return demontageReducteurDao!!.getById(id).toReducteur()
+            } else return null
         } catch (e: Error) {
             Log.i("e", e.message!!)
             return null

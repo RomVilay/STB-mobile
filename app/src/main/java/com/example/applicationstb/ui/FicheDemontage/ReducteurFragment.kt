@@ -29,10 +29,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.model.DemontagePompe
 import com.example.applicationstb.model.DemontageReducteur
+import com.example.applicationstb.model.Joint
+import com.example.applicationstb.model.Roulement
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,34 +68,130 @@ class ReducteurFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var layout = inflater.inflate(R.layout.fragment_pompe, container, false)
+        var layout = inflater.inflate(R.layout.fragment_reducteur, container, false)
+        val fmanager = childFragmentManager
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infosLayout)
+            setReorderingAllowed(true)
+        }
         var peinture = layout.findViewById<EditText>(R.id.peintureRed)
         var trMin = layout.findViewById<EditText>(R.id.trMin)
         var modele = layout.findViewById<EditText>(R.id.modele)
         var indiceReduction = layout.findViewById<EditText>(R.id.indRed)
         var typeHuile = layout.findViewById<EditText>(R.id.typeHuile)
         var quantiteHuile = layout.findViewById<EditText>(R.id.qteHuile)
-        var typeRoulementAv = layout.findViewById<EditText>(R.id.typeRoulementAv)
-        var typeRoulementAr = layout.findViewById<EditText>(R.id.typeRoulementAr)
+        var typeRoulementAv = layout.findViewById<Spinner>(R.id.typeRav)
+        var typeRoulementAr = layout.findViewById<Spinner>(R.id.typeRar)
         var refRoulementAv = layout.findViewById<EditText>(R.id.refAv)
         var refRoulementAr = layout.findViewById<EditText>(R.id.refAr)
-        var typeJointAv = layout.findViewById<EditText>(R.id.typeJointAv)
+        var typeJointAv = layout.findViewById<Spinner>(R.id.typeJav)
         var refJointAv = layout.findViewById<EditText>(R.id.refJointAv)
-        var typeJointAr = layout.findViewById<EditText>(R.id.typeJointAr)
+        var typeJointAr = layout.findViewById<Spinner>(R.id.typeJar)
         var refJointAr = layout.findViewById<EditText>(R.id.refJointsAr)
+        var btnRoul = layout.findViewById<Button>(R.id.ajtTrain)
+        var btnJoint = layout.findViewById<Button>(R.id.ajtJoint)
+        var tabRoulements = layout.findViewById<RecyclerView>(R.id.tabRoullementsRed)
+        var tabJoints = layout.findViewById<RecyclerView>(R.id.tabJointsred)
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termP)
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var roulements = MutableLiveData<MutableList<Roulement>?>()
+        var joints = MutableLiveData<MutableList<Joint>?>()
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!! as DemontageReducteur
-
+        //roulements
+        if (fiche.roulements !== null) roulements.value = fiche.roulements else roulements.value = mutableListOf<Roulement>()
+        var adapterRoulement = RoulementRedAdapter(mutableListOf<Roulement>(),{typeAv,refAv,typeAr,refAr,position ->
+            roulements.value!!.set(position,Roulement("R${position}","${typeAv} - ${refAv}", "${typeAr} - ${refAr}"))
+        },{position ->
+            roulements.value!!.removeAt(position)
+        }
+        )
+        roulements.observe(viewLifecycleOwner, {
+            adapterRoulement.update(it!!)
+            fiche.roulements = roulements.value
+            viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.localSave()
+        })
+        tabRoulements.adapter = adapterRoulement
+        tabRoulements.layoutManager = GridLayoutManager(context, 1)
+        //joints
+        if (fiche.joints !== null) joints.value = fiche.joints else joints.value = mutableListOf<Joint>()
+        var adapterJoint = JointAdapter(mutableListOf<Joint>(), {typeAv,refAv,typeAr,refAr,position ->
+            joints.value!!.set(position,
+                Joint("J${position}","${typeAv} - ${refAv}", "${typeAr} - ${refAr}")
+            )
+        },{position ->
+            joints.value!!.removeAt(position)
+        })
+        joints.observe(viewLifecycleOwner, {
+            adapterJoint.update(it!!)
+            fiche.roulements = roulements.value
+            viewModel.selection.value = fiche
+            viewModel.getTime()
+            viewModel.localSave()
+        })
+        tabJoints.adapter = adapterJoint
+        tabJoints.layoutManager = GridLayoutManager(context, 1)
+        if (fiche.peinture !== null) peinture.setText(fiche.peinture!!)
+        if (fiche.trMinute !== null) trMin.setText(fiche.trMinute!!.toString())
+        if (fiche.modele !== null) modele.setText(fiche.modele!!)
+        if (fiche.indiceReduction !== null) indiceReduction.setText(fiche.indiceReduction!!)
+        if (fiche.typeHuile !== null) typeHuile.setText(fiche.typeHuile!!)
+        if (fiche.quantiteHuile !== null) quantiteHuile.setText(fiche.quantiteHuile!!.toString())
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
         viewModel.photos.value = fiche.photos!!.toMutableList()
         var retour = layout.findViewById<Button>(R.id.retourPompe)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerPompe)
         if (fiche.status!! < 3L) {
-
+            peinture.doAfterTextChanged {
+                if(peinture.hasFocus() && peinture.text.isNotEmpty()) fiche.peinture = peinture.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            trMin.doAfterTextChanged {
+                if(trMin.hasFocus() && trMin.text.isNotEmpty() && trMin.text.matches(regexNombres)) fiche.trMinute = trMin.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            modele.doAfterTextChanged {
+                if(modele.hasFocus() && modele.text.isNotEmpty() && modele.text.matches(regexNombres)) fiche.modele = modele.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            indiceReduction.doAfterTextChanged {
+                if(indiceReduction.hasFocus() && indiceReduction.text.isNotEmpty()) fiche.indiceReduction = indiceReduction.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            typeHuile.doAfterTextChanged {
+                if(typeHuile.hasFocus() && typeHuile.text.isNotEmpty() ) fiche.typeHuile = typeHuile.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            quantiteHuile.doAfterTextChanged {
+                if(quantiteHuile.hasFocus() && quantiteHuile.text.isNotEmpty() && quantiteHuile.text.matches(regexNombres)) fiche.quantiteHuile = quantiteHuile.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            btnRoul.setOnClickListener {
+                var liste = roulements.value!!
+                liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv}", "${typeRoulementAr} - ${refRoulementAr}"))
+                roulements.value = liste
+            }
+            btnJoint.setOnClickListener {
+                var liste = joints.value!!
+                liste.add(Joint("R${liste.size}","${typeJointAv.selectedItem} - ${refJointAv}", "${typeJointAr} - ${refJointAr}"))
+                joints.value = liste
+            }
             obs.doAfterTextChanged {
                 fiche.observations = obs.text.toString()
                 viewModel.selection.value = fiche
@@ -103,8 +205,6 @@ class ReducteurFragment : Fragment() {
             enregistrer.visibility = View.GONE
         }
 
-
-        var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
@@ -119,8 +219,6 @@ class ReducteurFragment : Fragment() {
             sAdapter.update(it)
         })
         if (fiche.photos !== null) sAdapter.update(viewModel.photos.value!!)
-
-
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -156,334 +254,20 @@ class ReducteurFragment : Fragment() {
             }
         }
 
-        var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
-        var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
-        var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
-        if (fiche.typeRoulementAvant!!.size > 0) {
-            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M").indexOf(fiche.typeRoulementAvant!![0]))
-        }
-        if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
-            refRoul.setText(fiche.refRoulementAvant!![0])
-        }
-        var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
-        if (fiche.status == 3L) {
-            refRoul.isEnabled = false
-            specsRoul.isEnabled = false
-            typeRoulement.isEnabled = false
-        }
-        specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
-        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
-            viewModel.selection.value!!.typeRoulementArriere = removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        specsRoul.adapter = adapter
-        viewModel.selection.observe(viewLifecycleOwner,{
-            if (switchRoullements.isChecked) {
-                adapter.update(
-                    viewModel.selection.value!!.typeRoulementArriere!!,
-                    viewModel.selection.value!!.refRoulementArriere!!,
-                )
-            } else {
-                adapter.update(
-                    viewModel.selection.value!!.typeRoulementAvant!!,
-                    viewModel.selection.value!!.refRoulementAvant!!,
-                )
-            }
-        })
-        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null && fiche.refRoulementArriere!!.size > 0){
-            refRoul.setText(fiche.refRoulementArriere!![0])
-        } else if( fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
-            refRoul.setText(fiche.refRoulementAvant!![0])}
-        switchRoullements.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                if (viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size > 0) {
-                    var type =
-                        if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>(
-                            "2Z/ECJ",
-                            "2RS/ECP",
-                            "C3",
-                            "M"
-                        ).indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
-                    typeRoulement.setSelection(type)
-                    refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
-                    specsRoul.adapter = roulementAdapter(
-                        viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
-                        viewModel.selection.value!!.refRoulementArriere!!
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
-                    typeRoulement.setSelection(0)
-                    refRoul.setText("")
-                    specsRoul.adapter = roulementAdapter(
-                        arrayOf(),
-                        arrayOf()
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            } else {
-                if (viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.size > 0) {
-                    var type =
-                        if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>(
-                            "2Z/ECJ",
-                            "2RS/ECP",
-                            "C3",
-                            "M"
-                        ).indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
-                    typeRoulement.setSelection(type)
-                    refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
-                    specsRoul.adapter = roulementAdapter(
-                        viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
-                        viewModel.selection.value!!.refRoulementAvant!!
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                        viewModel.selection.value!!.refRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
-                    typeRoulement.setSelection(0)
-                    refRoul.setText("")
-                    specsRoul.adapter = roulementAdapter(
-                        arrayOf(),
-                        arrayOf()
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
-        }
-        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        typeRoulementAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
+        typeRoulementAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
+        typeRoulementAr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var selection = typeRoulement.selectedItem.toString()
-                if (position > 0 && selection !== "") {
-                    if (switchRoullements.isChecked) {
-                        if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
-                            var tab =
-                                viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
-                            tab.add(selection)
-                            viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
-                            var tab2 =
-                                viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
-                            tab2.add("")
-                            viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
-                            refRoul.setText("")
-                        } else {
-                            refRoul.setText(
-                                viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(
-                                    selection
-                                )]
-                            )
-                        }
-                        specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
-                            fiche.refRoulementArriere!!
-                        ) { item ->
-                            viewModel.selection.value!!.typeRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                            viewModel.selection.value!!.refRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    } else {
-                        if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1) {
-                            var tab =
-                                viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                            tab.add(selection)
-                            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                            var tab2 =
-                                viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                            tab2.add("")
-                            viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                            refRoul.setText("")
-                        } else {
-                            refRoul.setText(
-                                viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(
-                                    selection
-                                )]
-                            )
-                        }
-                        /* else {
-                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                        tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
-                        tab2.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
-                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                    }*/
-                        specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
-                            fiche.refRoulementAvant!!
-                        ) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                            viewModel.selection.value!!.refRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
+
             }
 
-        }
-        refRoul.doAfterTextChanged {
-            var index = 0
-            if (switchRoullements.isChecked) {
-                index =   viewModel.selection.value!!.typeRoulementArriere!!.indexOf(typeRoulement.selectedItem)
-            } else {
-                index = viewModel.selection.value!!.typeRoulementAvant!!.indexOf(typeRoulement.selectedItem)
-            }
-            if (index !== -1) {
-                if (switchRoullements.isChecked) {
-                    if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementArriere!![index] =
-                            refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
-                            viewModel.selection.value!!.typeRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementAvant!![index] =
-                            refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                            viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
         }
         //joints
-        var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
-        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
-        var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
-        var refJoints = layout.findViewById<EditText>(R.id.refJoints)
-        if (fiche.status == 3L) {
-            refJoints.isEnabled = false
-            typeJoints.isEnabled = false
-        }
-        if (switchJoints.isChecked && fiche.typeJointArriere !== null){
-            if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
-            refJoints.setText(fiche.refJointArriere)
-        }
-        if (fiche.typeJointAvant !== null) {
-            typeJoints.setSelection(1)
-            if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
-            // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
-            // refJoints.setText(fiche.refJointAvant)
-        }
-        switchJoints.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                var type = if (viewModel.selection.value!!.typeJointArriere == null) {
-                    typeJoints.setSelection(0)
-                } else { if (viewModel.selection.value!!.typeJointArriere!!) {
-                    typeJoints.setSelection(2)
-                } else {
-                    typeJoints.setSelection(1)
-                }
-                }
-                refJoints.setText(viewModel.selection.value!!.refJointArriere)
-            } else {
-                var type = 0
-                if (viewModel.selection.value!!.typeJointAvant == null) {
-                    typeJoints.setSelection(0)
-                } else {
-                    if (viewModel.selection.value!!.typeJointAvant!!) {
-                        typeJoints.setSelection(2)
-                    } else {
-                        typeJoints.setSelection(1)
-                    }
-                }
-                Log.i("INFO","position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}")
-                refJoints.setText(viewModel.selection.value!!.refJointAvant)
-            }
-        }
-        if( viewModel.selection.value!!.status!! !== 3L) {
-            typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    var selection = typeJoints.selectedItem.toString()
-                    if (switchJoints.isChecked) {
-                        if (position == 2 ) {
-                            viewModel.selection.value!!.typeJointArriere = true
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        if (position == 1){
-                            viewModel.selection.value!!.typeJointArriere = false
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-
-                    } else {
-                        if (position == 2 ) {viewModel.selection.value!!.typeJointAvant = true }
-                        if (position == 1) { viewModel.selection.value!!.typeJointAvant = false}
-
-                    }
-                }
-            }
-
-            refJoints.doAfterTextChanged {
-                if (switchJoints.isChecked) {
-                    viewModel.selection.value!!.refJointArriere = refJoints.text.toString()
-                    viewModel.getTime()
-                    viewModel.localSave()
-                } else {
-
-                    viewModel.selection.value!!.refJointAvant = refJoints.text.toString()
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-        }
-
-
+        typeJointAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
+        typeJointAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
         retour.setOnClickListener {
             viewModel.retour(layout)
         }

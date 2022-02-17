@@ -51,7 +51,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1600dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/titreReducteur"
@@ -342,7 +342,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/formTrainRoullements"
                         android:layout_width="594dp"
-                        android:layout_height="173dp"
+                        android:layout_height="250dp"
                         android:layout_marginTop="32dp"
                         android:background="@drawable/round_form_background"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -366,12 +366,12 @@
                             android:id="@+id/titreRoulement"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
                             android:text="Roulement Avant"
                             android:textAlignment="textStart"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titreTrain" />
 
@@ -379,12 +379,12 @@
                             android:id="@+id/titreRoulement2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="50dp"
                             android:text="Roulement Arrière"
                             android:textAlignment="textStart"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titreRoulement" />
 
@@ -392,79 +392,56 @@
                             android:id="@+id/titretypeav"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="52dp"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="Type"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titreRoulement"
-                            app:layout_constraintStart_toEndOf="@+id/titreRoulement"
-                            app:layout_constraintTop_toTopOf="@+id/titreRoulement" />
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreRoulement" />
 
                         <TextView
                             android:id="@+id/titretypear"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="44dp"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="Type"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titreRoulement2"
-                            app:layout_constraintStart_toEndOf="@+id/titreRoulement2"
-                            app:layout_constraintTop_toTopOf="@+id/titreRoulement2"
-                            app:layout_constraintVertical_bias="0.0" />
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreRoulement2" />
 
                         <TextView
                             android:id="@+id/titreRefAv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="Ref"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/typeRoulementAv"
-                            app:layout_constraintStart_toEndOf="@+id/typeRoulementAv"
-                            app:layout_constraintTop_toTopOf="@+id/typeRoulementAv"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeRav"
+                            app:layout_constraintStart_toEndOf="@+id/typeRav"
+                            app:layout_constraintTop_toTopOf="@+id/typeRav"
                             app:layout_constraintVertical_bias="0.0" />
 
                         <TextView
                             android:id="@+id/titreRefAr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="10dp"
                             android:text="Ref"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/typeRoulementAr"
-                            app:layout_constraintStart_toEndOf="@+id/typeRoulementAr"
-                            app:layout_constraintTop_toTopOf="@+id/typeRoulementAr"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <EditText
-                            android:id="@+id/typeRoulementAv"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:background="@drawable/round_textview_full_white"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titretypeav"
-                            app:layout_constraintStart_toEndOf="@+id/titretypeav"
-                            app:layout_constraintTop_toTopOf="@+id/titretypeav" />
-
-                        <EditText
-                            android:id="@+id/typeRoulementAr"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:background="@drawable/round_textview_full_white"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titretypear"
-                            app:layout_constraintStart_toEndOf="@+id/titretypear"
-                            app:layout_constraintTop_toTopOf="@+id/titretypear"
-                            app:layout_constraintVertical_bias="0.0" />
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeRar"
+                            app:layout_constraintStart_toEndOf="@+id/typeRar"
+                            app:layout_constraintTop_toTopOf="@+id/typeRar" />
 
                         <EditText
                             android:id="@+id/refRoulementAv"
@@ -474,7 +451,7 @@
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
                             android:inputType="text"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/titreRefAv"
                             app:layout_constraintStart_toEndOf="@+id/titreRefAv"
                             app:layout_constraintTop_toTopOf="@+id/titreRefAv" />
@@ -487,7 +464,7 @@
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
                             android:inputType="text"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
                             app:layout_constraintBottom_toBottomOf="@+id/titreRefAr"
                             app:layout_constraintStart_toEndOf="@+id/titreRefAr"
                             app:layout_constraintTop_toTopOf="@+id/titreRefAr"
@@ -498,11 +475,34 @@
                             style="@style/Widget.AppCompat.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="88dp"
+                            android:layout_marginEnd="44dp"
+                            android:layout_marginBottom="10dp"
                             android:text="ajouter"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/refRoulementAr" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/typeRav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="50dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titretypeav"
+                            app:layout_constraintStart_toEndOf="@+id/titretypeav"
+                            app:layout_constraintTop_toTopOf="@+id/titretypeav" />
+
+                        <Spinner
+                            android:id="@+id/typeRar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="50dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titretypear"
+                            app:layout_constraintStart_toEndOf="@+id/titretypear"
+                            app:layout_constraintTop_toTopOf="@+id/titretypear"
+                            app:layout_constraintVertical_bias="1.0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.cardview.widget.CardView
@@ -642,11 +642,22 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tabRoulred">
 
+                        <Spinner
+                            android:id="@+id/typeJar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titretypejar"
+                            app:layout_constraintStart_toEndOf="@+id/titretypejar"
+                            app:layout_constraintTop_toTopOf="@+id/titretypejar" />
+
                         <TextView
                             android:id="@+id/titreJoint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="12dp"
                             android:text="Nouveaux Joints"
                             android:textColor="@color/bleu_stb"
@@ -658,132 +669,128 @@
                             android:id="@+id/titreJointAv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="37dp"
+                            android:layout_marginTop="20dp"
                             android:text="Joint Avant"
                             android:textAlignment="textStart"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titrejtypeav"
-                            app:layout_constraintTop_toTopOf="@+id/titrejtypeav"
-                            tools:layout_editor_absoluteX="40dp" />
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreJoint" />
 
                         <TextView
                             android:id="@+id/titreJointAr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="25dp"
                             android:text="Joint Arrière"
                             android:textAlignment="textStart"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titretypejar"
+                            android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/titretypejar" />
+                            app:layout_constraintTop_toBottomOf="@+id/titreJointAv" />
 
                         <TextView
                             android:id="@+id/titrejtypeav"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="52dp"
+                            android:layout_marginStart="10dp"
                             android:text="Type"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/typeJointAv"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreJointAv"
                             app:layout_constraintStart_toEndOf="@+id/titreJointAv"
-                            app:layout_constraintTop_toTopOf="@+id/typeJointAv" />
+                            app:layout_constraintTop_toTopOf="@+id/titreJointAv" />
+
+                        <Spinner
+                            android:id="@+id/typeJav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titrejtypeav"
+                            app:layout_constraintStart_toEndOf="@+id/titrejtypeav"
+                            app:layout_constraintTop_toTopOf="@+id/titrejtypeav" />
 
                         <TextView
                             android:id="@+id/titretypejar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="44dp"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="Type"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/typeJointAr"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreJointAr"
                             app:layout_constraintStart_toEndOf="@+id/titreJointAr"
-                            app:layout_constraintTop_toTopOf="@+id/typeJointAr"
-                            app:layout_constraintVertical_bias="0.0" />
+                            app:layout_constraintTop_toTopOf="@+id/titreJointAr" />
 
                         <TextView
                             android:id="@+id/titreRefjAv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="Ref"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/refJointAv"
-                            app:layout_constraintTop_toTopOf="@+id/refJointAv"
-                            tools:layout_editor_absoluteX="350dp" />
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeJav"
+                            app:layout_constraintStart_toEndOf="@+id/typeJav"
+                            app:layout_constraintTop_toTopOf="@+id/typeJav"
+                            app:layout_constraintVertical_bias="1.0" />
 
                         <TextView
                             android:id="@+id/titreRefjar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+
                             android:text="Ref"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-
-                            app:layout_constraintBottom_toBottomOf="@+id/refJointsAr"
-                            app:layout_constraintTop_toTopOf="@+id/refJointsAr"
-                            tools:layout_editor_absoluteX="350dp" />
-
-                        <EditText
-                            android:id="@+id/typeJointAv"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/round_textview_full_white"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titreRefjAv"
-                            app:layout_constraintTop_toTopOf="@+id/titreRefjAv"
-                            tools:layout_editor_absoluteX="234dp" />
-
-                        <EditText
-                            android:id="@+id/typeJointAr"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:background="@drawable/round_textview_full_white"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:textSize="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/titreRefjar"
-                            app:layout_constraintStart_toEndOf="@+id/titretypejar"
-                            app:layout_constraintTop_toTopOf="@+id/titreRefjar"
-                            app:layout_constraintVertical_bias="0.0" />
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeJar"
+                            app:layout_constraintStart_toEndOf="@+id/typeJar"
+                            app:layout_constraintTop_toTopOf="@+id/typeJar" />
 
                         <EditText
                             android:id="@+id/refJointAv"
                             android:layout_width="130dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
                             android:inputType="text"
-                            android:textSize="16dp"
-                            tools:layout_editor_absoluteX="386dp"
-                            tools:layout_editor_absoluteY="49dp" />
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreRefjAv"
+                            app:layout_constraintStart_toEndOf="@+id/titreRefjAv"
+                            app:layout_constraintTop_toTopOf="@+id/titreRefjAv" />
 
                         <EditText
                             android:id="@+id/refJointsAr"
                             android:layout_width="130dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:background="@drawable/round_textview_full_white"
                             android:ems="10"
                             android:inputType="text"
-                            android:textSize="16dp"
-                            tools:layout_editor_absoluteX="386dp"
-                            tools:layout_editor_absoluteY="93dp" />
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreRefjar"
+                            app:layout_constraintStart_toEndOf="@+id/titreRefjar"
+                            app:layout_constraintTop_toTopOf="@+id/titreRefjar" />
 
                         <Button
                             android:id="@+id/ajtJoint"
                             style="@style/Widget.AppCompat.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="28dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="50dp"
                             android:text="ajouter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />

@@ -759,7 +759,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         })
                                                 }
                                                 //fiche demontage reducteur
-                                                /*if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 8) {
+                                                if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 8) {
                                                     val demoReducteur = repository.getDemontageReducteur(
                                                         token,
                                                         resp.data!!._id,
@@ -834,7 +834,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 )
                                                             }
                                                         })
-                                                } */
+                                                }
                                                 //fiche demontage motoreducteur
                                                 if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 9) {
                                                     val demoMotored =
@@ -2420,6 +2420,285 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             })
                     }
                 }
+                var listDMP: List<DemontageMotopompeEntity> =
+                    repository.getAllDemontageMotopompeLocalDatabase()
+                if (listDMP.size > 0) {
+                    for (fiche in listDMP) {
+                        var dmp = fiche.toMotoPompe()
+                        var photos = dmp.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+                                runBlocking {
+                                    if (name.contains(dmp.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
+                                        var job =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI()
+                                            }
+                                        job.join()
+                                        var job2 =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                try {
+                                                    val dir =
+                                                        Environment.getExternalStoragePublicDirectory(
+                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                        )
+                                                    val from = File(
+                                                        dir,
+                                                        name
+                                                    )
+                                                    val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
+                                                    if (from.exists()) from.renameTo(to)
+                                                    sendPhoto(to)
+                                                    iter.set(imageName.value!!.name!!)
+                                                } catch (e: java.lang.Exception) {
+                                                    Log.e("EXCEPTION", e.message!!)
+                                                }
+                                            }
+                                        job2.join()
+                                    }
+                                }
+                            }
+                            if (name == "") {
+                                iter.remove()
+                            }
+                        }
+
+                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
+                        dmp.photos = photos?.toTypedArray()
+                        val resp = repository.patchDemontageMotopompe(
+                            token!!,
+                            dmp._id,
+                            dmp,
+                            object : Callback<DemontageMotopompeResponse> {
+                                override fun onResponse(
+                                    call: Call<DemontageMotopompeResponse>,
+                                    response: Response<DemontageMotopompeResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteDemontageMotoPompeLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<DemontageMotopompeResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMP.size}")
+                var listDR: List<DemontageReducteurEntity> =
+                    repository.getAllDemontageReducteurLocalDatabase()
+                if (listDR.size > 0) {
+                    for (fiche in listDR) {
+                        var dr = fiche.toReducteur()
+                        var photos = dr.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+                                runBlocking {
+                                    if (name.contains(dr.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
+                                        var job =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI()
+                                            }
+                                        job.join()
+                                        var job2 =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                try {
+                                                    val dir =
+                                                        Environment.getExternalStoragePublicDirectory(
+                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                        )
+                                                    val from = File(
+                                                        dir,
+                                                        name
+                                                    )
+                                                    val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
+                                                    if (from.exists()) from.renameTo(to)
+                                                    sendPhoto(to)
+                                                    iter.set(imageName.value!!.name!!)
+                                                } catch (e: java.lang.Exception) {
+                                                    Log.e("EXCEPTION", e.message!!)
+                                                }
+                                            }
+                                        job2.join()
+                                    }
+                                }
+                            }
+                            if (name == "") {
+                                iter.remove()
+                            }
+                        }
+
+                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
+                        dr.photos = photos?.toTypedArray()
+                        val resp = repository.patchDemontageReducteur(
+                            token!!,
+                            dr._id,
+                            dr,
+                            object : Callback<DemontageReducteurResponse> {
+                                override fun onResponse(
+                                    call: Call<DemontageReducteurResponse>,
+                                    response: Response<DemontageReducteurResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteDemontageReducteurLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<DemontageReducteurResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                Log.i("INFO", "nb de fiches Demontage Reducteur: ${listDR.size}")
+                var listDMR: List<DemontageMotoreducteurEntity> =
+                    repository.getAllDemontageMotoreducteurLocalDatabase()
+                if (listDMP.size > 0) {
+                    for (fiche in listDMR) {
+                        var dmr = fiche.toDemontageMotoreducteur()
+                        var photos = dmr.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+                                runBlocking {
+                                    if (name.contains(dmr.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
+                                        var job =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI()
+                                            }
+                                        job.join()
+                                        var job2 =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                try {
+                                                    val dir =
+                                                        Environment.getExternalStoragePublicDirectory(
+                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                        )
+                                                    val from = File(
+                                                        dir,
+                                                        name
+                                                    )
+                                                    val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
+                                                    if (from.exists()) from.renameTo(to)
+                                                    sendPhoto(to)
+                                                    iter.set(imageName.value!!.name!!)
+                                                } catch (e: java.lang.Exception) {
+                                                    Log.e("EXCEPTION", e.message!!)
+                                                }
+                                            }
+                                        job2.join()
+                                    }
+                                }
+                            }
+                            if (name == "") {
+                                iter.remove()
+                            }
+                        }
+
+                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
+                        dmr.photos = photos?.toTypedArray()
+                        val resp = repository.patchDemontageMotoreducteur(
+                            token!!,
+                            dmr._id,
+                            dmr,
+                            object : Callback<DemontageMotoreducteurResponse> {
+                                override fun onResponse(
+                                    call: Call<DemontageMotoreducteurResponse>,
+                                    response: Response<DemontageMotoreducteurResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteDemontageMotoreducteurLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<DemontageMotoreducteurResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
             }
         } else {
             Log.i("INFO", "connexion offline")
