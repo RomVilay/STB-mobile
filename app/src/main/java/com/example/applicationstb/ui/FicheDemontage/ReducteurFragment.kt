@@ -203,7 +203,14 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
         } else {
-
+            peinture.isEnabled = false
+            trMin.isEnabled = false
+            modele.isEnabled = false
+            indiceReduction.isEnabled = false
+            typeHuile.isEnabled = false
+            quantiteHuile.isEnabled = false
+            btnRoul.visibility = View.INVISIBLE
+            btnJoint.visibility = View.INVISIBLE
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
