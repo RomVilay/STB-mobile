@@ -119,7 +119,7 @@ class ReducteurFragment : Fragment() {
         if (fiche.joints !== null) joints.value = fiche.joints else joints.value = mutableListOf<Joint>()
         var adapterJoint = JointAdapter(mutableListOf<Joint>(), {typeAv,refAv,typeAr,refAr,position ->
             joints.value!!.set(position,
-                Joint("J${position}","${typeAv} - ${refAv}", "${typeAr} - ${refAr}")
+                Joint("R${position}","${typeAv} - ${refAv}", "${typeAr} - ${refAr}")
             )
         })
         joints.observe(viewLifecycleOwner, {
