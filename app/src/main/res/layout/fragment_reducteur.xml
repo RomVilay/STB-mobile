@@ -84,7 +84,7 @@
                         android:background="@drawable/round_textview"
                         android:ems="5"
                         android:gravity="center"
-                        android:inputType="number"
+                        android:inputType="number|text"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/Trmintitre"
                         app:layout_constraintStart_toEndOf="@+id/Trmintitre"
@@ -187,7 +187,7 @@
                         android:background="@drawable/round_textview"
                         android:ems="5"
                         android:gravity="center"
-                        android:inputType="text"
+                        android:inputType="number|text"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/titrqtHuile"
                         app:layout_constraintStart_toEndOf="@+id/titrqtHuile"
@@ -544,6 +544,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="20dp"
                             android:orientation="vertical">
 
                             <LinearLayout

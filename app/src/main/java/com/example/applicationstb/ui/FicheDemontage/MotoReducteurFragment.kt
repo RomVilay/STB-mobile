@@ -67,7 +67,6 @@ class MotoReducteurFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_motoreducteur, container, false)
-        var peinture = layout.findViewById<EditText>(R.id.peintureRed)
         var trMin = layout.findViewById<EditText>(R.id.trMin)
         var modele = layout.findViewById<EditText>(R.id.modele)
         var indiceReduction = layout.findViewById<EditText>(R.id.indRed)
@@ -198,14 +197,12 @@ class MotoReducteurFragment : Fragment() {
             }
         }
         if (fiche.typeMotoreducteur !== null) typemotoreducteur.setSelection(fiche.typeMotoreducteur!!.toInt())
-        if (fiche.peinture !== null) peinture.setText(fiche.peinture!!)
         if (fiche.trMinute !== null) trMin.setText(fiche.trMinute!!.toString())
         if (fiche.modele !== null) modele.setText(fiche.modele!!)
         if (fiche.indiceReduction !== null) indiceReduction.setText(fiche.indiceReduction!!)
         if (fiche.typeHuile !== null) typeHuile.setText(fiche.typeHuile!!)
         if (fiche.quantiteHuile !== null) quantiteHuile.setText(fiche.quantiteHuile!!.toString())
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
-        if (fiche.typeMotoreducteur == "1") {
             if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
             if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
             if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
@@ -215,26 +212,17 @@ class MotoReducteurFragment : Fragment() {
             if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
             if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
             if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
-        }
-        if (fiche.typeMotoreducteur == "2") {
             if (fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
             if (fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
             if (fiche.resistanceDemarrage !== null) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
             if (fiche.valeurCondensateur !== null) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
             if (fiche.tension !== null) tension.setText(fiche.tension.toString())
             if (fiche.intensite !== null) intensite.setText(fiche.intensite.toString())
-        }
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
         viewModel.photos.value = fiche.photos!!.toMutableList()
         var retour = layout.findViewById<Button>(R.id.retourmp)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrermp)
         if (fiche.status!! < 3L) {
-            peinture.doAfterTextChanged {
-                if(peinture.hasFocus() && peinture.text.isNotEmpty()) fiche.peinture = peinture.text.toString()
-                viewModel.selection.value = fiche
-                viewModel.getTime()
-                viewModel.localSave()
-            }
             trMin.doAfterTextChanged {
                 if(trMin.hasFocus() && trMin.text.isNotEmpty() && trMin.text.matches(regexNombres)) fiche.trMinute = trMin.text.toString().toFloat()
                 viewModel.selection.value = fiche
@@ -283,7 +271,7 @@ class MotoReducteurFragment : Fragment() {
                 refJointAv.setText("")
                 refJointAr.setText("")
             }
-            if (fiche.typeMotoreducteur == "1") {
+            if (fiche.typeMotoreducteur == "1" || typemotoreducteur.selectedItem == "Triphasé") {
                 UM.doAfterTextChanged {
                     if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
                         UM.text.toString().toFloat()
@@ -348,9 +336,10 @@ class MotoReducteurFragment : Fragment() {
                     viewModel.localSave()
                 }
             }
-            if (fiche.typeMotoreducteur == "2") {
+            //if (fiche.typeMotoreducteur == "2" || typemotoreducteur.selectedItem == "Monophasé") {
+               // Log.i("info","is mono")
                 isolementPhaseMasse.doAfterTextChanged {
-                    if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.hasFocus() && isolementPhaseMasse.text.matches(
+                    if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.text.matches(
                             regexNombres
                         )
                     ) fiche.isolementPhaseMasse =
@@ -404,7 +393,7 @@ class MotoReducteurFragment : Fragment() {
                     viewModel.getTime()
                     viewModel.localSave()
                 }
-            }
+            //}
             obs.doAfterTextChanged {
                 fiche.observations = obs.text.toString()
                 viewModel.selection.value = fiche
@@ -412,7 +401,6 @@ class MotoReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
         } else {
-            peinture.isEnabled = false
             trMin.isEnabled = false
             modele.isEnabled = false
             indiceReduction.isEnabled = false

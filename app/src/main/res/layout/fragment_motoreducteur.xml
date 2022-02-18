@@ -88,7 +88,7 @@
                         android:background="@drawable/round_textview"
                         android:ems="5"
                         android:gravity="center"
-                        android:inputType="number"
+                        android:inputType="number|text"
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/Trmintitre"
                         app:layout_constraintStart_toEndOf="@+id/Trmintitre"
@@ -162,12 +162,13 @@
 
                     <EditText
                         android:id="@+id/typeHuile"
-                        android:layout_width="wrap_content"
+                        android:layout_width="161dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/round_textview"
                         android:ems="10"
                         android:gravity="center"
                         android:inputType="text"
+                        android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/titrehuile"
                         app:layout_constraintStart_toEndOf="@+id/titrehuile"
                         app:layout_constraintTop_toTopOf="@+id/titrehuile" />
@@ -196,31 +197,6 @@
                         app:layout_constraintBottom_toBottomOf="@+id/titrqtHuile"
                         app:layout_constraintStart_toEndOf="@+id/titrqtHuile"
                         app:layout_constraintTop_toTopOf="@+id/titrqtHuile" />
-
-                    <TextView
-                        android:id="@+id/titrePaint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="48dp"
-                        android:text="Peinture"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/qteHuile"
-                        app:layout_constraintStart_toEndOf="@+id/qteHuile"
-                        app:layout_constraintTop_toTopOf="@+id/qteHuile"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <EditText
-                        android:id="@+id/peintureRed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="19dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:inputType="text"
-                        app:layout_constraintBottom_toBottomOf="@+id/titrePaint"
-                        app:layout_constraintStart_toEndOf="@+id/titrePaint"
-                        app:layout_constraintTop_toTopOf="@+id/titrePaint" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/tabRoulred"
@@ -372,12 +348,12 @@
                         android:id="@+id/formTrainRoullements"
                         android:layout_width="594dp"
                         android:layout_height="250dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/round_form_background"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.49"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titrePaint">
+                        app:layout_constraintTop_toBottomOf="@+id/qteHuile">
 
                         <TextView
                             android:id="@+id/titreTrain"
@@ -548,6 +524,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="20dp"
                             android:orientation="vertical">
 
                             <LinearLayout
