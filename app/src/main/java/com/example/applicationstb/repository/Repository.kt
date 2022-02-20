@@ -4883,7 +4883,9 @@ class Repository(var context: Context) {
 
     suspend fun getByIdRemoMotopompeLocalDatabase(id: String): RemontageMotopompe? {
         try {
-            return remontageMotopompeDao!!.getById(id).toRemontageMotopompe()
+            if (remontageMotopompeDao!!.getById(id) !== null) {
+                return remontageMotopompeDao!!.getById(id).toRemontageMotopompe()
+            }  else return null
         } catch (e: Error) {
             Log.i("e", e.message!!)
             return null

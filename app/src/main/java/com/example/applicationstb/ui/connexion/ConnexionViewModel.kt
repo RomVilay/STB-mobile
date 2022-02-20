@@ -1391,7 +1391,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+
                                 runBlocking {
                                     if (name.contains(dr.numFiche!!)) {
                                         Log.i("INFO", "fichier à upload : ${name}")
@@ -1466,6 +1466,170 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                                 override fun onFailure(
                                     call: Call<DemontageReducteurResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                var listRMP: List<RemontageMotopompeEntity> =
+                    repository.getAllRemontageMotopompeLocalDatabase()
+                Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
+                if (listRMP.size > 0) {
+                    for (fiche in listRMP) {
+                        var rmp = fiche.toRemontageMotopompe()
+                        var photos = rmp.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name.contains(rmp.numFiche!!)) {
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i(
+                                                "INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rmp.photos = photos?.toTypedArray()
+                        repository.updateRemoMotoPompeLocalDatabase(rmp.toEntity())
+                        val resp = repository.patchRemontageMotopompe(
+                            user!!.token!!,
+                            rmp._id,
+                            rmp,
+                            object : Callback<RemontageMotopompeResponse> {
+                                override fun onResponse(
+                                    call: Call<RemontageMotopompeResponse>,
+                                    response: Response<RemontageMotopompeResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteRemontageMotoPompeLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<RemontageMotopompeResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                var listRMR: List<RemontageMotoreducteurEntity> =
+                    repository.getAllRemontageMotoreducteurLocalDatabase()
+                Log.i("INFO", "nb de fiches remontage: ${listRMR.size}")
+                if (listRMR.size > 0) {
+                    for (fiche in listRMR) {
+                        var rmp = fiche.toRemontageMotoreducteur()
+                        var photos = rmp.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name.contains(rmp.numFiche!!)) {
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i(
+                                                "INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rmp.photos = photos?.toTypedArray()
+                        repository.updateRemoMotoreducteurLocalDatabase(rmp.toEntity())
+                        val resp = repository.patchRemontageMotoreducteur(
+                            user!!.token!!,
+                            rmp._id,
+                            rmp,
+                            object : Callback<RemontageMotoreducteurResponse> {
+                                override fun onResponse(
+                                    call: Call<RemontageMotoreducteurResponse>,
+                                    response: Response<RemontageMotoreducteurResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteRemontageMotoreducteurLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<RemontageMotoreducteurResponse>,
                                     t: Throwable
                                 ) {
                                     Log.e("Error", "${t.stackTraceToString()}")

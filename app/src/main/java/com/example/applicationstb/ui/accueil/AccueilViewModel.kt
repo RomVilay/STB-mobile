@@ -80,9 +80,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun listeFiches(token: String, userid: String) {
-        demontages.forEach {
-            Log.i("info", "liste fiche :  ${it.numFiche} -  ${it.typeFicheDemontage}")
-        }
         viewModelScope.launch(Dispatchers.IO) {
             for (i in chantiers) {
                 repository.deleteChantierLocalDatabse(i.toEntity())
@@ -134,7 +131,25 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
             demontages.clear()
             for (i in remontages) {
-                repository.deleteRemontageLocalDatabse(i.toRemoEntity())
+                if (i.typeFicheRemontage == 9){
+                    var fiche = i as RemontageMotoreducteur
+                    repository.deleteRemontageMotoreducteurLocalDatabse(fiche.toEntity())
+                }
+                if (i.typeFicheRemontage == 7){
+                    var fiche = i as RemontageMotopompe
+                    repository.deleteRemontageMotoPompeLocalDatabse(fiche.toEntity())
+                }
+                if (i.typeFicheRemontage == 5){
+                    var fiche = i as RemontageCourantC
+                    repository.deleteRemontageCCLocalDatabse(fiche.toEntity())
+                }
+                if (i.typeFicheRemontage == 6){
+                    var fiche = i as RemontageTriphase
+                    repository.deleteRemontageTriphaseLocalDatabse(fiche.toEntity())
+                }
+                else {
+                    repository.deleteRemontageLocalDatabse(i.toRemoEntity())
+                }
             }
             remontages.clear()
         }
@@ -943,6 +958,161 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         if (response.code() == 200) {
                                             val resp = response.body()
                                             if (resp != null) {
+                                                if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 9) {
+                                                    val demoTri = repository.getRemontageMotoreducteur(
+                                                        token,
+                                                        resp.data!!._id,
+                                                        object :
+                                                            Callback<RemontageMotoreducteurResponse> {
+                                                            override fun onResponse(
+                                                                call: Call<RemontageMotoreducteurResponse>,
+                                                                response: Response<RemontageMotoreducteurResponse>
+                                                            ) {
+                                                                if (response.code() == 200) {
+
+                                                                    val resp2 = response.body()
+                                                                    if (resp2 != null) {
+                                                                        //Log.i("INFO","fiche RemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                        //demontages!!.add(resp.fiche!!)
+                                                                        viewModelScope.launch(
+                                                                            Dispatchers.IO
+                                                                        ) {
+                                                                            var photos =
+                                                                                resp.data?.photos?.toMutableList()
+                                                                            var iter =
+                                                                                photos?.listIterator()
+                                                                            while (iter?.hasNext() == true) {
+                                                                                getPhotoFile(
+                                                                                    iter.next()
+                                                                                        .toString()
+                                                                                )
+                                                                            }
+                                                                            resp.data?.photos =
+                                                                                photos?.toTypedArray()
+                                                                            var demoT =
+                                                                                repository.getByIdRemoMotoreducteurLocalDatabase(
+                                                                                    resp2.data!!._id
+                                                                                )
+                                                                            Log.i("info",demoT.toString())
+                                                                            if (demoT == null) {
+                                                                                repository.insertRemoMotoreducteurDatabase(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                if (!remontages.contains(
+                                                                                        resp2!!.data!!
+                                                                                    )
+                                                                                ) remontages!!.add(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "ajout remo motored en bdd locale"
+                                                                                )
+                                                                            } else {
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "fiche déjà en bdd"
+                                                                                )
+                                                                                // if (!remontages.contains(demoT)) remontages!!.add(demoT as Remontage)
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            override fun onFailure(
+                                                                call: Call<RemontageMotoreducteurResponse>,
+                                                                t: Throwable
+                                                            ) {
+                                                                Log.e(
+                                                                    "Error",
+                                                                    "erreur ${t.message}"
+                                                                )
+                                                            }
+                                                        })
+                                                }
+                                                if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 7) {
+                                                    val demoTri = repository.getRemontageMotopompe(
+                                                        token,
+                                                        resp.data!!._id,
+                                                        object :
+                                                            Callback<RemontageMotopompeResponse> {
+                                                            override fun onResponse(
+                                                                call: Call<RemontageMotopompeResponse>,
+                                                                response: Response<RemontageMotopompeResponse>
+                                                            ) {
+                                                                if (response.code() == 200) {
+
+                                                                    val resp2 = response.body()
+                                                                    if (resp2 != null) {
+                                                                        //Log.i("INFO","fiche RemontageTriphase :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
+                                                                        //demontages!!.add(resp.fiche!!)
+                                                                        viewModelScope.launch(
+                                                                            Dispatchers.IO
+                                                                        ) {
+                                                                            var photos =
+                                                                                resp.data?.photos?.toMutableList()
+                                                                            var iter =
+                                                                                photos?.listIterator()
+                                                                            while (iter?.hasNext() == true) {
+                                                                                getPhotoFile(
+                                                                                    iter.next()
+                                                                                        .toString()
+                                                                                )
+                                                                            }
+                                                                            resp.data?.photos =
+                                                                                photos?.toTypedArray()
+                                                                            var demoT =
+                                                                                repository.getByIdRemoMotopompeLocalDatabase(
+                                                                                    resp2.data!!._id
+                                                                                )
+                                                                            if (demoT == null) {
+                                                                                repository.insertRemoMotopompeDatabase(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                if (!remontages.contains(
+                                                                                        resp2!!.data!!
+                                                                                    )
+                                                                                ) remontages!!.add(
+                                                                                    resp2!!.data!!
+                                                                                )
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "ajout remo tri en bdd locale"
+                                                                                )
+                                                                            } else {
+                                                                                Log.i(
+                                                                                    "INFO",
+                                                                                    "fiche déjà en bdd"
+                                                                                )
+                                                                                // if (!remontages.contains(demoT)) remontages!!.add(demoT as Remontage)
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        Log.i(
+                                                                            "INFO",
+                                                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            override fun onFailure(
+                                                                call: Call<RemontageMotopompeResponse>,
+                                                                t: Throwable
+                                                            ) {
+                                                                Log.e(
+                                                                    "Error",
+                                                                    "erreur ${t.message}"
+                                                                )
+                                                            }
+                                                        })
+                                                }
                                                 if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 6) {
                                                     Log.i("info","fiche a update ${resp.data!!.numFiche}")
                                                     val demoTri = repository.getRemontageTriphase(
@@ -1096,7 +1266,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             }
                                                         })
                                                 }
-                                                if (resp.data!!.typeFicheRemontage !== null && (resp.data!!.typeFicheRemontage == 3 || resp.data!!.typeFicheRemontage == 4 || resp.data!!.typeFicheRemontage == 1 || resp.data!!.typeFicheRemontage == 2)) {
+                                                if (resp.data!!.typeFicheRemontage !== null && (resp.data!!.typeFicheRemontage == 3 || resp.data!!.typeFicheRemontage == 4 || resp.data!!.typeFicheRemontage == 1 || resp.data!!.typeFicheRemontage == 2 ||resp.data!!.typeFicheRemontage == 8)) {
                                                     val remo = repository.getRemontage(
                                                         token,
                                                         resp.data!!._id,
@@ -1108,8 +1278,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 if (response.code() == 200) {
                                                                     val resp2 = response.body()
                                                                     if (resp2 != null) {
-                                                                        //Log.i("INFO","fiche RemontageCC :${resp.fiche!!._id} - isoPPSUV : ${resp.fiche!!.isolementPhasePhaseStatorUV}")
-                                                                        //demontages!!.add(resp.fiche!!)
                                                                         viewModelScope.launch(
                                                                             Dispatchers.IO
                                                                         ) {
@@ -1290,6 +1458,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             for (rcc in listRCC) {
                 remontages.add(rcc.toRCourantC())
             }
+            var listRMP = repository.getAllRemontageMotopompeLocalDatabase()
+            for (dt in listRMP) {
+                remontages.add(dt.toRemontageMotopompe())
+            }
+            var listRMR = repository.getAllRemontageMotoreducteurLocalDatabase()
+            for (dt in listRMR) {
+                remontages.add(dt.toRemontageMotoreducteur())
+            }
         }
     }
 
@@ -1356,7 +1532,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             viewModelScope.launch(Dispatchers.IO) {
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
@@ -1515,7 +1690,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listb: List<BobinageEntity> =
                     repository.getAllBobinageLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches bobinage: ${listb.size}")
                 if (listb.size > 0) {
                     for (fiche in listb) {
@@ -1607,7 +1781,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listDT: List<DemontageTriphaseEntity> =
                     repository.getAllDemontageTriLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches DemontageTriphase: ${listDT.size}")
                 if (listDT.size > 0) {
                     for (fiche in listDT) {
@@ -1701,7 +1874,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listCC: List<DemontageCCEntity> =
                     repository.getAllDemontageCCLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches DemontageCourantContinu: ${listCC.size}")
                 if (listCC.size > 0) {
                     for (fiche in listCC) {
@@ -1793,7 +1965,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listRT: List<RemontageTriphaseEntity> =
                     repository.getAllRemontageTriLocalDatabase()
-                //Log.i("INFO", "token : ${.token}")
                 Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
                 if (listRT.size > 0) {
                     for (fiche in listRT) {
@@ -1882,7 +2053,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listRCC: List<RemontageCCEntity> =
                     repository.getAllRemontageCCLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
                 if (listRCC.size > 0) {
                     for (fiche in listRCC) {
@@ -1967,7 +2137,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listRm: List<RemontageEntity> =
                     repository.getAllRemontageLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
                 if (listRm.size > 0) {
                     for (fiche in listRm) {
@@ -2052,7 +2221,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listDP: List<DemoPompeEntity> =
                     repository.getAllDemontagePompeLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
                 if (listDP.size > 0) {
                     for (fiche in listDP) {
@@ -2144,7 +2312,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listDM: List<DemontageMonophaseEntity> =
                     repository.getAllDemontageMonoLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage monophase: ${listDM.size}")
                 if (listDM.size > 0) {
                     for (fiche in listDM) {
@@ -2236,7 +2403,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listDA: List<DemontageAlternateurEntity> =
                     repository.getAllDemontageAlterLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage Alternateur: ${listDA.size}")
                 if (listDA.size > 0) {
                     for (fiche in listDA) {
@@ -2328,7 +2494,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 }
                 var listDRB: List<DemontageRotorBEntity> =
                     repository.getAllDemontageRBLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage Rotor Bobine: ${listDRB.size}")
                 if (listDRB.size > 0) {
                     for (fiche in listDRB) {
@@ -2699,6 +2864,168 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
                 Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
+                var listRMP: List<RemontageMotopompeEntity> =
+                    repository.getAllRemontageMotopompeLocalDatabase()
+                Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
+                if (listRMP.size > 0) {
+                    for (fiche in listRMP) {
+                        var rmp = fiche.toRemontageMotopompe()
+                        var photos = rmp.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name.contains(rmp.numFiche!!)) {
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i(
+                                                "INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rmp.photos = photos?.toTypedArray()
+                        val resp = repository.patchRemontageMotopompe(
+                            token!!,
+                            rmp._id,
+                            rmp,
+                            object : Callback<RemontageMotopompeResponse> {
+                                override fun onResponse(
+                                    call: Call<RemontageMotopompeResponse>,
+                                    response: Response<RemontageMotopompeResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteRemontageMotoPompeLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<RemontageMotopompeResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                var listRMR: List<RemontageMotoreducteurEntity> =
+                    repository.getAllRemontageMotoreducteurLocalDatabase()
+                Log.i("INFO", "nb de fiches remontage: ${listRMR.size}")
+                if (listRMR.size > 0) {
+                    for (fiche in listRMR) {
+                        var rmp = fiche.toRemontageMotoreducteur()
+                        var photos = rmp.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name.contains(rmp.numFiche!!)) {
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
+                                    }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            iter.set(imageName.value!!.name!!)
+                                            sendPhoto(from)
+                                            Log.i(
+                                                "INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
+                                    }
+                                job2.join()
+                            }
+                        }
+                        rmp.photos = photos?.toTypedArray()
+                        val resp = repository.patchRemontageMotoreducteur(
+                            token!!,
+                            rmp._id,
+                            rmp,
+                            object : Callback<RemontageMotoreducteurResponse> {
+                                override fun onResponse(
+                                    call: Call<RemontageMotoreducteurResponse>,
+                                    response: Response<RemontageMotoreducteurResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteRemontageMotoreducteurLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<RemontageMotoreducteurResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
             }
         } else {
             Log.i("INFO", "connexion offline")
