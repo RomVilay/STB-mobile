@@ -2091,7 +2091,7 @@ class BodyRemontageTriphase(
     var observations: String?,
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
-    var collageRoulementPorteeFlasque: Int?,
+    var collageRoulementFlasque: Int?,
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
@@ -2241,7 +2241,7 @@ class BodyRemontageTriphase(
         parcel.writeString(observations!!)
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
-        parcel.writeInt(collageRoulementPorteeFlasque!!)
+        parcel.writeInt(collageRoulementFlasque!!)
         parcel.writeBoolean(verificationFixationCouronne!!)
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
         parcel.writeFloat(isolementPorteBalaisV!!)
