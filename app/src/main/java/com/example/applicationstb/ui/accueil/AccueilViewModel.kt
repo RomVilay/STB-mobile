@@ -131,19 +131,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
             demontages.clear()
             for (i in remontages) {
-                if (i.typeFicheRemontage == 9){
-                    var fiche = i as RemontageMotoreducteur
-                    repository.deleteRemontageMotoreducteurLocalDatabse(fiche.toEntity())
-                }
-                if (i.typeFicheRemontage == 7){
-                    var fiche = i as RemontageMotopompe
-                    repository.deleteRemontageMotoPompeLocalDatabse(fiche.toEntity())
-                }
                 if (i.typeFicheRemontage == 5){
                     var fiche = i as RemontageCourantC
                     repository.deleteRemontageCCLocalDatabse(fiche.toEntity())
                 }
-                if (i.typeFicheRemontage == 6){
+                if (i!!.typeFicheRemontage == 6 || i!!.typeFicheRemontage == 7 || i!!.typeFicheRemontage == 9){
                     var fiche = i as RemontageTriphase
                     repository.deleteRemontageTriphaseLocalDatabse(fiche.toEntity())
                 }
@@ -958,7 +950,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         if (response.code() == 200) {
                                             val resp = response.body()
                                             if (resp != null) {
-                                                if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 9) {
+                                               /* if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 9) {
                                                     val demoTri = repository.getRemontageMotoreducteur(
                                                         token,
                                                         resp.data!!._id,
@@ -1112,8 +1104,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 )
                                                             }
                                                         })
-                                                }
-                                                if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 6) {
+                                                }*/
+                                                if (resp.data!!.typeFicheRemontage !== null && ( resp.data!!.typeFicheRemontage!! == 6 || resp.data!!.typeFicheRemontage!! == 7 || resp.data!!.typeFicheRemontage!! == 9)) {
                                                     Log.i("info","fiche a update ${resp.data!!.numFiche}")
                                                     val demoTri = repository.getRemontageTriphase(
                                                         token,

@@ -76,7 +76,7 @@
                         android:layout_height="66dp"
                         android:background="#164081"
                         android:gravity="center"
-                        android:text="Infos Moteur"
+                        android:text="Infos Remontage"
                         android:textColor="#FAF9F9"
                         android:textSize="30sp" />
 

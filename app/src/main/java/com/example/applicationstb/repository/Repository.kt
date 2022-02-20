@@ -2153,7 +2153,9 @@ class BodyRemontageTriphase(
     var isolementPhaseRotorUV: Float?,
     var isolementPhaseRotorVW: Float?,
     var isolementPhaseRotorUW: Float?,
-    var photos: Array<String>?
+    var photos: Array<String>?,
+    var typeMotopompe: String?,
+    var typeMotoreducteur: String?
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -2226,7 +2228,9 @@ class BodyRemontageTriphase(
         parcel.readFloat(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
-        }
+        },
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
@@ -2302,6 +2306,8 @@ class BodyRemontageTriphase(
         arrayOf<String>().apply {
             parcel.writeArray(photos)
         }
+        parcel.writeString("1")
+        parcel.writeString("1")
     }
 
     override fun describeContents(): Int {
@@ -3911,7 +3917,9 @@ class Repository(var context: Context) {
             fiche.isolementPhaseRotorUV,
             fiche.isolementPhaseRotorVW,
             fiche.isolementPhaseRotorUW,
-            fiche.photos
+            fiche.photos,
+            "1",
+            "1"
         )
         var call = service.patchRemontageTriphase(token, ficheId, body)
         var fiche: RemontageTriphase? = null
