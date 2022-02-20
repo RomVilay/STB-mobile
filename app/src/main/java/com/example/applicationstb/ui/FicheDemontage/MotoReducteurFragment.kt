@@ -178,6 +178,15 @@ class MotoReducteurFragment : Fragment() {
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
+                    if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
+                    if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
+                    if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
+                    if (fiche.isolementPhasePhaseStatorUV !== null) UV.setText(fiche.isolementPhasePhaseStatorUV!!.toString())
+                    if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!.toString()) else 0
+                    if (fiche.isolementPhasePhaseStatorVW !== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!.toString()) else 0
+                    if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
+                    if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
+                    if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
                 }
                 if (typemotoreducteur.selectedItem.toString() == "Monophasé") {
                     partMeca.visibility = View.VISIBLE
@@ -192,6 +201,12 @@ class MotoReducteurFragment : Fragment() {
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
+                    if (fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
+                    if (fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
+                    if (fiche.resistanceDemarrage !== null) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
+                    if (fiche.valeurCondensateur !== null) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
+                    if (fiche.tension !== null) tension.setText(fiche.tension.toString())
+                    if (fiche.intensite !== null) intensite.setText(fiche.intensite.toString())
                 }
 
             }
@@ -203,21 +218,8 @@ class MotoReducteurFragment : Fragment() {
         if (fiche.typeHuile !== null) typeHuile.setText(fiche.typeHuile!!)
         if (fiche.quantiteHuile !== null) quantiteHuile.setText(fiche.quantiteHuile!!.toString())
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
-            if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
-            if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
-            if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!.toString()) else 0
-            if (fiche.isolementPhasePhaseStatorUV !== null) UV.setText(fiche.isolementPhasePhaseStatorUV!!.toString())
-            if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!.toString()) else 0
-            if (fiche.isolementPhasePhaseStatorVW !== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!.toString()) else 0
-            if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
-            if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
-            if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
-            if (fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
-            if (fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
-            if (fiche.resistanceDemarrage !== null) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
-            if (fiche.valeurCondensateur !== null) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
-            if (fiche.tension !== null) tension.setText(fiche.tension.toString())
-            if (fiche.intensite !== null) intensite.setText(fiche.intensite.toString())
+
+
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
         viewModel.photos.value = fiche.photos!!.toMutableList()
         var retour = layout.findViewById<Button>(R.id.retourmp)
@@ -271,7 +273,6 @@ class MotoReducteurFragment : Fragment() {
                 refJointAv.setText("")
                 refJointAr.setText("")
             }
-            if (fiche.typeMotoreducteur == "1" || typemotoreducteur.selectedItem == "Triphasé") {
                 UM.doAfterTextChanged {
                     if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
                         UM.text.toString().toFloat()
@@ -335,7 +336,6 @@ class MotoReducteurFragment : Fragment() {
                     viewModel.getTime()
                     viewModel.localSave()
                 }
-            }
             //if (fiche.typeMotoreducteur == "2" || typemotoreducteur.selectedItem == "Monophasé") {
                // Log.i("info","is mono")
                 isolementPhaseMasse.doAfterTextChanged {
