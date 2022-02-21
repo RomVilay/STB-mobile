@@ -172,18 +172,13 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun quickSave(){
-        Log.i("INFO","quick save")
         getTime()
-        var size = chantier.value?.photos?.size?.minus(1)
         viewModelScope.launch(Dispatchers.IO){
             var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
-            //Log.i("INFO","${ch}")
             if (ch !== null) {
                 repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
-                //Log.i("INFO","patch ${chantier.value!!._id}")
             } else {
                 repository.insertChantierLocalDatabase(chantier.value!!)
-                //Log.i("INFO","insert ${chantier.value!!._id}")
             }
         }
     }

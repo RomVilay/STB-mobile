@@ -141,12 +141,8 @@ class FicheChantier : Fragment() {
                 viewModel.photos.postValue(listPhotos)
             }
             sAdapter.update(viewModel.photos.value!!)
-            /*val iter = listPhotos!!.iterator()
-             while (iter.hasNext()){
-                 var i = iter.next()
-                   i = "/storage/emulated/0/Pictures/test_pictures/"+i
-                 Log.i("INFO", i)
-            }*/
+            viewModel.chantier.value?.status = 2
+            viewModel.quickSave()
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
@@ -286,31 +282,18 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-            var chantier = viewModel.chantier!!.value!!
-            chantier.materiel = materiel.text.toString()
-            chantier.objet = objet.text.toString()
-            chantier.observations = observation.text.toString()
-            chantier.photos = viewModel.photos?.value?.toTypedArray()
-            chantier.status = 2L
-            viewModel.chantier.value = chantier
-            viewModel.getTime()
             for (i in viewModel.chantier.value?.photos!!) {
                 // Log.i("INFO","photo: ${i}")
             }
+            viewModel.quickSave()
             viewModel.save(
                 requireContext(),
                 layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
             )
         }
         term.setOnClickListener {
-            var chantier = viewModel.chantier!!.value!!
-            chantier.materiel = materiel.text.toString()
-            chantier.objet = objet.text.toString()
-            chantier.observations = observation.text.toString()
-            chantier.photos = viewModel.photos?.value?.toTypedArray()
-            chantier.status = 3L
-            viewModel.chantier.value = chantier
-            viewModel.getTime()
+            viewModel.chantier.value?.status = 3
+            viewModel.quickSave()
             viewModel.save(
                 requireContext(),
                 layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
