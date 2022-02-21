@@ -206,6 +206,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
             viewModelScope.launch(Dispatchers.IO) {
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
+                Log.i("info","status base ${ch?.status} - status vm ${chantier.value?.status} ")
                 var photos = chantier.value?.photos?.toMutableList()
                 var iter = photos?.listIterator()
                 while (iter?.hasNext() == true) {

@@ -23,6 +23,7 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,11 +31,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -282,9 +280,6 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-            for (i in viewModel.chantier.value?.photos!!) {
-                // Log.i("INFO","photo: ${i}")
-            }
             viewModel.quickSave()
             viewModel.save(
                 requireContext(),
@@ -293,11 +288,16 @@ class FicheChantier : Fragment() {
         }
         term.setOnClickListener {
             viewModel.chantier.value?.status = 3
-            viewModel.quickSave()
-            viewModel.save(
-                requireContext(),
-                layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
-            )
+            runBlocking {
+                viewModel.quickSave()
+                delay(10)
+                viewModel.save(
+                    requireContext(),
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
+                )
+            }
+
+
         }
         return layout
     }
