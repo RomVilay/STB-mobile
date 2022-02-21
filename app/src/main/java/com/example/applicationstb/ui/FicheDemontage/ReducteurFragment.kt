@@ -277,6 +277,7 @@ class ReducteurFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.localSave()
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getNameURI()
             }
@@ -292,6 +293,7 @@ class ReducteurFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
+                            viewModel.localSave()
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }

@@ -558,6 +558,7 @@ class MotopompeFragment : Fragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getNameURI()
             }
+            viewModel.localSave()
             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         termP.setOnClickListener {
@@ -573,6 +574,7 @@ class MotopompeFragment : Fragment() {
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }
+                            viewModel.localSave()
                             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()

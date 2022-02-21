@@ -260,8 +260,8 @@ class TriphaseFragment : Fragment() {
         enr.setOnClickListener {
                 viewModel.getTime()
                 fiche.status = 2L
-                viewModel.localSave()
                 viewModel.selection.value = fiche
+                viewModel.localSave()
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.getNameURI()
                     }
@@ -269,14 +269,24 @@ class TriphaseFragment : Fragment() {
             //viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
-            viewModel.getTime()
-            fiche.status = 3L
-            viewModel.localSave()
-            /*viewModel.selection.value = fiche
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.getNameURI()
-            }*/
-            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            viewModel.localSave()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
         }
         retour.setOnClickListener {
                 viewModel.retour(layout)

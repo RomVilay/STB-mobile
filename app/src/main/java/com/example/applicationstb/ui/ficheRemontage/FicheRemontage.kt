@@ -875,6 +875,7 @@ class FicheRemontage : Fragment() {
             }
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.quickSave()
             viewModel.enregistrer(layout)
         }
         term.setOnClickListener {
@@ -893,6 +894,7 @@ class FicheRemontage : Fragment() {
                             }
                             fiche.status = 3L
                             viewModel.selection.value = fiche
+                            viewModel.quickSave()
                             viewModel.enregistrer(layout)
                         })
                 builder.create()

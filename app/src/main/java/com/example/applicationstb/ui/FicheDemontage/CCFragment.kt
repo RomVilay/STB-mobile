@@ -246,6 +246,7 @@ class CCFragment : Fragment() {
         enr.setOnClickListener {
             viewModel.getTime()
             viewModel.selection.value!!.status = 2L
+            viewModel.localSave()
             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
@@ -257,6 +258,7 @@ class CCFragment : Fragment() {
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()
                             viewModel.selection.value!!.status = 3L
+                            viewModel.localSave()
                             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()

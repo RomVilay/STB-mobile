@@ -498,6 +498,7 @@ class MotoReducteurFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.localSave()
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getNameURI()
             }
@@ -516,6 +517,7 @@ class MotoReducteurFragment : Fragment() {
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }
+                            viewModel.localSave()
                             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
