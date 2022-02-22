@@ -3,7 +3,6 @@ package com.example.applicationstb.ui.FicheDemontage
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,11 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Spinner
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.fragment.app.*
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FicheDemontage : Fragment() {
 
@@ -23,46 +22,70 @@ class FicheDemontage : Fragment() {
         fun newInstance() = FicheDemontage()
     }
 
-    private lateinit var viewModel: FicheDemontageViewModel
+    private val viewModel: FicheDemontageViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(FicheDemontageViewModel::class.java)
+        var list = arguments?.get("listDemontages") as Array<DemontageMoteur>
+        viewModel.token = arguments?.get("token") as String
+        viewModel.listeDemontages = list.toCollection(ArrayList())
+        viewModel.listeDemontages = viewModel.listeDemontages.filter { it.status!! < 3 }.toCollection(ArrayList())
+        viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
-        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.javaClass.name.substring(33)  })
+        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.numFiche  })
         spinner.adapter = adapterDemontages
         var btnDemontage = layout.findViewById<Button>(R.id.selectDemontage)
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
         val fragmentManager = childFragmentManager
         btnDemontage.setOnClickListener {
-            //Log.i("INFO","moteur ${viewModel.listeDemontages[spinner.selectedItemPosition].telContact}")
-            viewModel.select(spinner.selectedItemPosition)
+            viewModel.start.value = Date()
+            var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
+            viewModel.selection.value = demo
+            viewModel.selection.value!!.status = 2L
+            /*var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
+            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
+            var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
+            viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()*/
+
             when (viewModel.selection.value){
-                is Monophase -> fragmentManager.commit {
-                    replace<MonophaseFragment>(R.id.fragmentContainer)
+                is CourantContinu -> fragmentManager.commit {
+                    replace<CCFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
                 is Triphase -> fragmentManager.commit {
                     replace<TriphaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is RotorBobine -> fragmentManager.commit {
+                is DemontagePompe -> fragmentManager.commit {
+                    replace<PompeFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                is DemontageMonophase -> fragmentManager.commit {
+                    replace<MonophaseFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+               is DemontageRotorBobine -> fragmentManager.commit {
                     replace<RotorBobineFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is CourantContinu -> fragmentManager.commit {
-                    replace<CCFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-                is Alternateur ->fragmentManager.commit {
+
+                is DemontageAlternateur ->fragmentManager.commit {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontagePompe -> fragmentManager.commit {
-                    replace<PompeFragment>(R.id.fragmentContainer)
+                is DemontageMotoreducteur ->fragmentManager.commit {
+                    replace<MotoReducteurFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                is DemontageMotopompe ->fragmentManager.commit {
+                    replace<MotopompeFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                is DemontageReducteur ->fragmentManager.commit {
+                    replace<ReducteurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
             }
@@ -72,7 +95,6 @@ class FicheDemontage : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FicheDemontageViewModel::class.java)
         // TODO: Use the ViewModel
     }
    /* private fun chargerFiche(){

@@ -1,19 +1,45 @@
 package com.example.applicationstb.ui.FicheDemontage
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.SystemClock
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.DemontageMonophase
+import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MonophaseFragment : Fragment() {
@@ -22,104 +48,237 @@ class MonophaseFragment : Fragment() {
         fun newInstance() = MonophaseFragment()
     }
     private val viewModel: FicheDemontageViewModel by activityViewModels()
+    private lateinit var photos:RecyclerView
+    private  val PHOTO_RESULT = 1888
+    lateinit var currentPhotoPath: String
+    val REQUEST_IMAGE_CAPTURE = 1
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_monophase, container, false)
-        var titre1 = layout.findViewById<TextView>(R.id.titreMono)
-        var titre2 = layout.findViewById<TextView>(R.id.titre2)
-        var titre3 = layout.findViewById<TextView>(R.id.titre3)
-        var marque = layout.findViewById<EditText>(R.id.marc)
-        var numSerie = layout.findViewById<EditText>(R.id.numSerie)
-        var puissance = layout.findViewById<EditText>(R.id.pmoteur)
-        var bride = layout.findViewById<EditText>(R.id.bride)
-        var vitesse = layout.findViewById<EditText>(R.id.vitesseM)
-        var arbre = layout.findViewById<Switch>(R.id.etatArbre)
-        var clavette = layout.findViewById<Switch>(R.id.pclav)
-        var cote = layout.findViewById<EditText>(R.id.cacc)
-        var aspect = layout.findViewById<RecyclerView>(R.id.enumaspect)
-        var boite = layout.findViewById<RecyclerView>(R.id.enumboite)
-        var infos = layout.findViewById<CardView>(R.id.infoMoteur)
-        var essais = layout.findViewById<CardView>(R.id.essais)
-        var meca = layout.findViewById<CardView>(R.id.meca)
-        var retour = layout.findViewById<Button>(R.id.retourMono)
-        var aspectExt = layout.findViewById<Spinner>(R.id.extSpinner)
-        var aspectBte = layout.findViewById<Spinner>(R.id.spinnerBo)
-        var optionsAsp = arrayOf<String>("propre","sale","très sale")
-        var adaptExt = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
+        var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmU)
+        var resistanceTravail = layout.findViewById<EditText>(R.id.isopmV)
+        var resistanceDemarrage	= layout.findViewById<EditText>(R.id.rdem)
+        var valeurCondensateur	= layout.findViewById<EditText>(R.id.condens)
+        var tension	= layout.findViewById<EditText>(R.id.vV)
+        var intensite	= layout.findViewById<EditText>(R.id.vW)
+        var observations = layout.findViewById<EditText>(R.id.obs2)
+        var retour = layout.findViewById<Button>(R.id.retourTri)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
+        var terminer = layout.findViewById<Button>(R.id.termMo)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo2)
+        var regexNombres = Regex("^\\d*\\.?\\d*\$")
+        var regexInt = Regex("^\\d+")
+        var fiche = viewModel.selection.value as DemontageMonophase
+        if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
+        if( fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
+        if( fiche.resistanceDemarrage !== null ) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
+        if( fiche.valeurCondensateur !== null ) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
+        if( fiche.tension !== null ) tension.setText(fiche.tension.toString())
+        if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
+        if (fiche.status!! < 3) {
+            isolementPhaseMasse.doAfterTextChanged {
+                if (isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse =
+                    isolementPhaseMasse.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceTravail.doAfterTextChanged {
+                if (resistanceTravail.text.isNotEmpty() && (resistanceTravail.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceDemarrage.doAfterTextChanged {
+                if (resistanceDemarrage.text.isNotEmpty() && (resistanceDemarrage.text.matches(regexNombres) || resistanceDemarrage.text.matches(regexInt)) ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            valeurCondensateur.doAfterTextChanged {
+                if (valeurCondensateur.text.isNotEmpty() && (valeurCondensateur.text.matches(regexNombres) || valeurCondensateur.text.matches(regexInt)) ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tension.doAfterTextChanged {
+                if (tension.text.isNotEmpty() && (tension.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt) )) fiche.tension = tension.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensite.doAfterTextChanged {
+                if (intensite.text.isNotEmpty() && (intensite.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) )fiche.intensite = intensite.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            observations.doAfterTextChanged {
+                fiche.observations = observations.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+        }  else {
+            isolementPhaseMasse.isEnabled = false
+            resistanceTravail.isEnabled = false
+            resistanceDemarrage.isEnabled = false
+            valeurCondensateur.isEnabled = false
+            tension.isEnabled = false
+            intensite.isEnabled = false
+            observations.isEnabled = false
+            enregistrer.visibility = View.GONE
+            terminer.visibility = View.GONE
+            btnPhoto.visibility = View.INVISIBLE
+        }
+
+
+        //
+
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
-        couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Y","Δ","Autre"))
-        var etatFlasqueAvant = layout.findViewById<Spinner>(R.id.spiFA)
-        etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
-        var etatFlasqueArrière = layout.findViewById<Spinner>(R.id.spiFAr)
-        etatFlasqueArrière.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
-        var roulementAvant = layout.findViewById<Spinner>(R.id.spiRAv)
-        roulementAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
-        var roulementArriere = layout.findViewById<Spinner>(R.id.spiRAr)
-        roulementArriere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("OK","A contrôler","A rebaguer"))
-        aspectBte.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item,optionsAsp)
-        aspectExt.adapter = adaptExt
-        var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M"))
-        var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
-        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("simple lèvre","double lèvre"))
-        var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
-        cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
-        vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Absent"))
-        var socle = layout.findViewById<Spinner>(R.id.spiSocle)
-        socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        var capot = layout.findViewById<Spinner>(R.id.spiCap)
-        capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","Cassé","Absent"))
-        var plaque = layout.findViewById<Spinner>(R.id.spiPla)
-        plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Bon état","A changer","Sortie par câbles"))
+
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
+        var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto2)
+        photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+            viewModel.setSchema(item)
+            viewModel.fullScreen(
+                layout,
+                "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+            )
+        })
+        photos.adapter = sAdapter
+        viewModel.photos.observe(viewLifecycleOwner, {
+            sAdapter.update(it)
+        })
+        viewModel.photos.value = fiche.photos!!.toMutableList()
+        sAdapter.update(fiche.photos!!.toMutableList())
+        btnPhoto.setOnClickListener {
+            var test = ActivityCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Log.i("INFO",test.toString())
+            if (test == false) {
+                requestPermissions(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            }
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Log.i("INFO","error while creating file")
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.applicationstb.fileprovider",
+                            it
+                        )
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        //viewModel.addSchema(photoURI)
+                    }
+                }
+            }
+        }
+        retour.setOnClickListener {
+            viewModel.retour(layout)
+        }
+        enregistrer.setOnClickListener {
+            viewModel.getTime()
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            viewModel.localSave()
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+        }
+        terminer.setOnClickListener {
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            fiche.status = 3L
+                            viewModel.selection.value = fiche
+                            viewModel.localSave()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
+        }
+
         val fmanager = childFragmentManager
         fmanager.commit {
             replace<MecaFragment>(R.id.PartMeca)
             setReorderingAllowed(true)
         }
-        titre1.setOnClickListener {
-            var layout = infos.layoutParams
-            if (layout.height == 100){
-                layout.height = WRAP_CONTENT
-                Log.i("INFO","out")
-            } else{
-                layout.height = 100
-                Log.i("INFO","in")
-            }
-            infos.layoutParams = layout
-        }
-        titre2.setOnClickListener {
-            var layout = essais.layoutParams
-            if (layout.height == 130){
-                layout.height = WRAP_CONTENT
-                Log.i("INFO","out")
-            } else{
-                layout.height = 130
-                Log.i("INFO","in")
-            }
-            essais.layoutParams = layout
-        }
-        titre3.setOnClickListener {
-            var layout = meca.layoutParams
-            if (layout.height == 100){
-                layout.height = WRAP_CONTENT
-                Log.i("INFO","out")
-            } else{
-                layout.height = 100
-                Log.i("INFO","in")
-            }
-            meca.layoutParams = layout
-        }
-        retour.setOnClickListener {
-            viewModel.retour(layout)
+        fmanager.commit {
+            replace<InfoMoteurFragment>(R.id.infosLayout)
+            setReorderingAllowed(true)
         }
 
         return layout
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            viewModel.addPhoto(currentPhotoPath)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        }
+    }
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
     }
 
 

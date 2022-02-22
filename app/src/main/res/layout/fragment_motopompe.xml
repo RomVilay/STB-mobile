@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context=".ui.FicheDemontage.TriphaseFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/info"
+                android:layout_width="649dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titremot"
+                    android:layout_width="647dp"
+                    android:layout_height="66dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#164081"
+                    android:gravity="center"
+                    android:text="Infos Moteur"
+                    android:textColor="#FAF9F9"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <FrameLayout
+                    android:id="@+id/infosLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="80dp">
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/partie_pompe"
+                android:layout_width="649dp"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1100dp">
+
+                    <TextView
+                        android:id="@+id/titrePomp"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:layout_marginTop="4dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Pompe"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/typeFluide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtV"
+                        app:layout_constraintStart_toEndOf="@+id/txtV"
+                        app:layout_constraintTop_toTopOf="@+id/txtV" />
+
+                    <TextView
+                        android:id="@+id/txtV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="67dp"
+                        android:text="Fluide : "
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titrePomp" />
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="40dp"
+                        android:text="Sens de Rotation :"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtV" />
+
+                    <Switch
+                        android:id="@+id/sensRotation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Gauche"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                        app:layout_constraintStart_toEndOf="@+id/textView8"
+                        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+                    <TextView
+                        android:id="@+id/textView47"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Droite"
+                        app:layout_constraintBottom_toBottomOf="@+id/sensRotation"
+                        app:layout_constraintStart_toEndOf="@+id/sensRotation"
+                        app:layout_constraintTop_toTopOf="@+id/sensRotation" />
+
+                    <TextView
+                        android:id="@+id/textView48"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:text="Type:"
+                        app:layout_constraintBottom_toBottomOf="@+id/typePompe"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/typePompe"
+                        app:layout_constraintVertical_bias="0.523" />
+
+                    <Spinner
+                        android:id="@+id/typePompe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView50"
+                        app:layout_constraintStart_toEndOf="@+id/textView48"
+                        app:layout_constraintTop_toTopOf="@+id/textView50" />
+
+                    <TextView
+                        android:id="@+id/textView49"
+                        android:layout_width="87dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginTop="71dp"
+                        android:text="Type de Joint"
+                        app:layout_constraintStart_toEndOf="@+id/typeFluide"
+                        app:layout_constraintTop_toBottomOf="@+id/titrePomp" />
+
+                    <EditText
+                        android:id="@+id/tjoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView49"
+                        app:layout_constraintStart_toEndOf="@+id/textView49"
+                        app:layout_constraintTop_toTopOf="@+id/textView49" />
+
+                    <TextView
+                        android:id="@+id/textView50"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:text="Matière Joint"
+                        app:layout_constraintBottom_toBottomOf="@+id/matJoint"
+                        app:layout_constraintStart_toEndOf="@+id/typePompe"
+                        app:layout_constraintTop_toTopOf="@+id/matJoint"
+                        app:layout_constraintVertical_bias="0.476" />
+
+                    <Spinner
+                        android:id="@+id/matJoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintStart_toEndOf="@+id/textView50"
+                        app:layout_constraintTop_toBottomOf="@+id/sensRotation" />
+
+                    <TextView
+                        android:id="@+id/DAd1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Diamètre Arbre(d1)"
+                        app:layout_constraintStart_toStartOf="@+id/textView53"
+                        app:layout_constraintTop_toBottomOf="@+id/textView53" />
+
+                    <EditText
+                        android:id="@+id/dArbre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/DAd1"
+                        app:layout_constraintStart_toEndOf="@+id/DAd1"
+                        app:layout_constraintTop_toTopOf="@+id/DAd1" />
+
+                    <EditText
+                        android:id="@+id/LC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView54"
+                        app:layout_constraintStart_toEndOf="@+id/textView54"
+                        app:layout_constraintTop_toTopOf="@+id/textView54"
+                        app:layout_constraintVertical_bias="0.481" />
+
+                    <EditText
+                        android:id="@+id/dEPR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView52"
+                        app:layout_constraintStart_toEndOf="@+id/textView52"
+                        app:layout_constraintTop_toTopOf="@+id/textView52"
+                        app:layout_constraintVertical_bias="0.529" />
+
+                    <EditText
+                        android:id="@+id/LNC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView53"
+                        app:layout_constraintStart_toEndOf="@+id/textView53"
+                        app:layout_constraintTop_toTopOf="@+id/textView53" />
+
+                    <TextView
+                        android:id="@+id/textView52"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="40dp"
+                        android:text="Diamètre Extérieur Partie Rotative(d3)"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
+
+                    <TextView
+                        android:id="@+id/textView53"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Longueur Partie Rotative Non Comprimée"
+                        app:layout_constraintStart_toStartOf="@+id/PRTi3"
+                        app:layout_constraintTop_toBottomOf="@+id/PRTi3" />
+
+                    <TextView
+                        android:id="@+id/textView54"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Longueur Partie Rotative Comprimée"
+                        app:layout_constraintStart_toStartOf="@+id/textView52"
+                        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+
+                    <TextView
+                        android:id="@+id/PRTi3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="Longueur Partie Rotative en Travail(I3)"
+                        app:layout_constraintStart_toStartOf="@+id/textView57"
+                        app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+                    <EditText
+                        android:id="@+id/LPRT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/PRTi3"
+                        app:layout_constraintStart_toEndOf="@+id/PRTi3"
+                        app:layout_constraintTop_toTopOf="@+id/PRTi3"
+                        app:layout_constraintVertical_bias="0.529" />
+
+                    <TextView
+                        android:id="@+id/DEd7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Diamètre Extérieur(d7)"
+                        app:layout_constraintStart_toStartOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="@+id/textView54" />
+
+                    <EditText
+                        android:id="@+id/dExt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/DEd7"
+                        app:layout_constraintStart_toEndOf="@+id/DEd7"
+                        app:layout_constraintTop_toTopOf="@+id/DEd7"
+                        app:layout_constraintVertical_bias="0.529" />
+
+                    <TextView
+                        android:id="@+id/textView57"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Epaisseur Partie Fixe(I4)"
+                        app:layout_constraintStart_toStartOf="@+id/DEd7"
+                        app:layout_constraintTop_toBottomOf="@+id/DEd7" />
+
+                    <EditText
+                        android:id="@+id/ePF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
+                        app:layout_constraintStart_toEndOf="@+id/textView57"
+                        app:layout_constraintTop_toTopOf="@+id/textView57" />
+
+                    <ImageView
+                        android:id="@+id/schemaPompe"
+                        android:layout_width="480dp"
+                        android:layout_height="319dp"
+                        android:layout_marginStart="76dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/detourage_pompe"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dArbre" />
+
+                    <TextView
+                        android:id="@+id/d7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="482dp"
+                        android:layout_marginLeft="482dp"
+                        android:layout_marginTop="204dp"
+                        android:background="@color/white"
+                        android:text="D7"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView53" />
+
+                    <TextView
+                        android:id="@+id/d3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="156dp"
+                        android:layout_marginLeft="156dp"
+                        android:layout_marginTop="180dp"
+                        android:background="@color/white"
+                        android:text="D3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/schemaPompe" />
+
+                    <TextView
+                        android:id="@+id/i3"
+                        android:layout_width="12dp"
+                        android:layout_height="17dp"
+                        android:layout_marginStart="192dp"
+                        android:layout_marginLeft="192dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/white"
+                        android:text="I3"
+                        app:layout_constraintStart_toStartOf="@+id/schemaPompe"
+                        app:layout_constraintTop_toTopOf="@+id/schemaPompe" />
+
+                    <TextView
+                        android:id="@+id/i4"
+                        android:layout_width="13dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="252dp"
+                        android:layout_marginLeft="252dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/white"
+                        android:text="I4"
+                        app:layout_constraintStart_toStartOf="@+id/schemaPompe"
+                        app:layout_constraintTop_toTopOf="@+id/schemaPompe" />
+
+                    <TextView
+                        android:id="@+id/titreD1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="49dp"
+                        android:layout_marginRight="49dp"
+                        android:background="@color/white"
+                        android:text="D1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/d7"
+                        app:layout_constraintEnd_toStartOf="@+id/d7"
+                        app:layout_constraintTop_toTopOf="@+id/d7" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="649dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/typemotopompe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/moteur_mono"
+                android:layout_width="649dp"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/essais"
+                    android:layout_width="649dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/titreMono"
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:background="#164081"
+                            android:gravity="center"
+                            android:text="Moteur Monophasé"
+                            android:textColor="#FAF9F9"
+                            android:textSize="30sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/titreessaimono"
+                            android:layout_width="647dp"
+                            android:layout_height="66dp"
+                            android:background="#164081"
+                            android:gravity="center"
+                            android:text="Essais avant démontage"
+                            android:textColor="#FAF9F9"
+                            android:textSize="30sp"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreMono" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout3"
+                            android:layout_width="516dp"
+                            android:layout_height="33dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayoutessai">
+
+                            <TextView
+                                android:id="@+id/ligne2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="25dp"
+                                android:layout_marginRight="25dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="resistance démarrage" />
+
+                            <EditText
+                                android:id="@+id/rdem"
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+
+                            <TextView
+                                android:id="@+id/textView11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:text="- valeur condenseur :" />
+
+                            <EditText
+                                android:id="@+id/condens"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/essaistatiquesmono"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Essais Statiques"
+                            android:textSize="24sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreessaimono" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayoutessai"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:layout_marginTop="250dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/essaistatiquesmono">
+
+                            <TextView
+                                android:id="@+id/isopme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="isolement phase/masse" />
+
+                            <EditText
+                                android:id="@+id/isopmUe"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+
+                            <TextView
+                                android:id="@+id/reste"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:text="- résistance travail :" />
+
+                            <EditText
+                                android:id="@+id/isopmVe"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/titreDyna"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Essais Dynamiques"
+                            android:textSize="24sp"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                            tools:layout_editor_absoluteX="4dp" />
+
+                        <LinearLayout
+                            android:id="@+id/tensions"
+                            android:layout_width="518dp"
+                            android:layout_height="33dp"
+                            android:layout_margin="16dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreDyna">
+
+                            <TextView
+                                android:id="@+id/VT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Intensité:" />
+
+                            <EditText
+                                android:id="@+id/vVe"
+                                android:layout_width="20dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:hint="I"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+
+                            <TextView
+                                android:id="@+id/WT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Tension:" />
+
+                            <EditText
+                                android:id="@+id/vWe"
+                                android:layout_width="20dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:hint="U"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/moteur_triphase"
+                android:layout_width="649dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/titreTripha"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Moteur Triphasé"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/titre2"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Essais avant démontage"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/titreResistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="292dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="273dp"
+                        android:text="resistance"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearPP" />
+
+                    <TextView
+                        android:id="@+id/essaistatiques"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Essais Statiques"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titre2" />
+
+                    <LinearLayout
+                        android:id="@+id/linearRes"
+                        android:layout_width="446dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="16dp"
+                        android:layout_marginStart="101dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="187dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreResistance">
+
+                        <TextView
+                            android:id="@+id/U"
+                            android:layout_width="37dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="U:" />
+
+                        <EditText
+                            android:id="@+id/rU"
+                            android:layout_width="85dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/V"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="V:" />
+
+                        <EditText
+                            android:id="@+id/rV"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/W"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="W:" />
+
+                        <EditText
+                            android:id="@+id/rW"
+                            android:layout_width="81dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearPP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_marginStart="98dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="180dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/phasephase">
+
+                        <TextView
+                            android:id="@+id/UV"
+                            android:layout_width="37dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="U/V :" />
+
+                        <EditText
+                            android:id="@+id/isoppU"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/UW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="U/W :" />
+
+                        <EditText
+                            android:id="@+id/isoppV"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/VW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="V/W:" />
+
+                        <EditText
+                            android:id="@+id/isoppW"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/phasephase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="248dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="211dp"
+                        android:text="isolement phase/phase"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_marginStart="97dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="178dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/isopm">
+
+                        <TextView
+                            android:id="@+id/ttreInd"
+                            android:layout_width="37dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="U/M :" />
+
+                        <EditText
+                            android:id="@+id/isopmU"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/rest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="V/M :" />
+
+                        <EditText
+                            android:id="@+id/isopmV"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/WM"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="W/M:" />
+
+                        <EditText
+                            android:id="@+id/isopmW"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/isopm"
+                        android:layout_width="359dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="144dp"
+                        android:layout_marginEnd="146dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="isolement phase/masse"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/essaistatiques" />
+
+                    <TextView
+                        android:id="@+id/titreDynaTri"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="Essais Dynamiques"
+                        android:textSize="24sp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/linearRes"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <LinearLayout
+                        android:id="@+id/tensionsTri"
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreDynaTri">
+
+                        <TextView
+                            android:id="@+id/UT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="U" />
+
+                        <EditText
+                            android:id="@+id/vU"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/VTtri"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="V:" />
+
+                        <EditText
+                            android:id="@+id/vVtri"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/WTtri"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="W:" />
+
+                        <EditText
+                            android:id="@+id/vWtri"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/intensité"
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tensionsTri">
+
+                        <TextView
+                            android:id="@+id/UI"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="U" />
+
+                        <EditText
+                            android:id="@+id/vUI"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/VI"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="V:" />
+
+                        <EditText
+                            android:id="@+id/vVI"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/WI"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="W:" />
+
+                        <EditText
+                            android:id="@+id/vWI"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="val"
+                            android:inputType="numberSigned|number|text"
+                            android:padding="5dp" />
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mecamp"
+                android:layout_width="649dp"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:id="@+id/partMeca"
+                    android:layout_width="649dp"
+                    android:layout_height="wrap_content">
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="649dp"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/titre4"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Observations"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/obs2"
+                        android:layout_width="648dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titre4" />
+
+                    <Button
+                        android:id="@+id/photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="224dp"
+                        android:layout_marginLeft="224dp"
+                        android:layout_marginTop="12dp"
+                        android:text="ajouter une photo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/enregistrermp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginTop="204dp"
+                        android:text="Enregistrer"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintStart_toEndOf="@+id/retourmp"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/termmp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="260dp"
+                        android:layout_marginLeft="260dp"
+                        android:layout_marginTop="204dp"
+                        android:text="Terminer"
+                        app:backgroundTint="#164081"
+                        app:layout_constraintStart_toEndOf="@+id/retourmp"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/retourmp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="120dp"
+                        android:layout_marginLeft="120dp"
+                        android:layout_marginTop="204dp"
+                        android:text="Retour"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerPhoto"
+                        android:layout_width="600dp"
+                        android:layout_height="116dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_textview"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photo" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

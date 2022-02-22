@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable-v24/round_form_background.xml" value="0.14892578125" />
+        <entry key="app/src/main/res/drawable/dropdown_background.xml" value="0.248046875" />
+        <entry key="app/src/main/res/drawable/round_textview_full_grey.xml" value="0.14892578125" />
+        <entry key="app/src/main/res/layout/accueil_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/connexion_dialog.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fiche_bobinage_fragment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fiche_chantier_fragment.xml" value="0.30583058305830585" />
+        <entry key="app/src/main/res/layout/fiche_demontage_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fiche_remontage_fragment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_alternateur.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_c_c.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_essais_stat_c_c.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_essais_stat_tri.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_info_moteur.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_meca.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_motopompe.xml" value="0.2073019801980198" />
+        <entry key="app/src/main/res/layout/fragment_motoreducteur.xml" value="0.297008547008547" />
+        <entry key="app/src/main/res/layout/fragment_pompe.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_reducteur.xml" value="0.3213429256594724" />
+        <entry key="app/src/main/res/layout/fragment_rotor_bobine.xml" value="0.16769743101807802" />
+        <entry key="app/src/main/res/layout/fragment_triphase.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/infos_roulement.xml" value="0.1528846153846154" />
+        <entry key="app/src/main/res/layout/row.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/rowreducteur.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/schema_fragment.xml" value="0.14775641025641026" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2081736909323116" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.26679586563307495" />
+      </ProjectState>
+    </option>
   </component>
 </project>

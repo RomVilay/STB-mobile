@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/AccueilLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.applicationstb.ui.accueil.Accueil">
@@ -15,13 +16,14 @@
             android:id="@+id/imageView"
             android:layout_width="293dp"
             android:layout_height="128dp"
-            android:layout_marginTop="112dp"
             android:contentDescription="logoSTB"
             android:src="@drawable/logo_grand_format"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintHorizontal_bias="0.507"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.102" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -110,13 +112,68 @@
             android:id="@+id/btnDeco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="46dp"
+            android:layout_marginTop="132dp"
             android:text="Déconnexion"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.339"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
 
+        <Button
+            android:id="@+id/reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="recharger les fiches"
+            app:backgroundTint="@color/gray_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginLeft="21dp"
+            android:text="envoyer les fiches"
+            app:backgroundTint="@color/gray_400"
+            app:layout_constraintBottom_toBottomOf="@+id/reload"
+            app:layout_constraintStart_toEndOf="@+id/reload"
+            app:layout_constraintTop_toTopOf="@+id/reload" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/loadingHome"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="true" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Quitter l'application"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDeco"
+            app:layout_constraintStart_toEndOf="@+id/btnDeco"
+            app:layout_constraintTop_toTopOf="@+id/btnDeco"
+            app:layout_constraintVertical_bias="0.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

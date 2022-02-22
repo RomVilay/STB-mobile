@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 
-class schemaAdapter(var schemas: List<Uri>, var callback: (Uri)->Unit) :
+class schemaAdapter(var schemas: List<String>, var callback: (String)->Unit) :
     RecyclerView.Adapter<schemaAdapter.ViewHolder>() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             var schema: ImageView
@@ -20,9 +20,16 @@ class schemaAdapter(var schemas: List<Uri>, var callback: (Uri)->Unit) :
             init {
                 schema = view.findViewById(R.id.schema)
             }
-            fun bind(photo:Uri){
-                uri = photo
-                schema.setImageURI(uri)
+            fun bind(photo:String){
+                if (photo !== "") {
+                uri = Uri.parse("/storage/emulated/0/Pictures/test_pictures/"+photo)
+                    try {
+                        schema.setImageURI(Uri.parse("/storage/emulated/0/Pictures/test_pictures/" + photo))
+                    } catch (e: Exception) {
+                        schema.visibility = View.GONE
+                        Log.e("exception", e.message!!)
+                    }
+                    }
             }
         }
 
@@ -37,9 +44,8 @@ class schemaAdapter(var schemas: List<Uri>, var callback: (Uri)->Unit) :
         holder.bind(schema)
         holder.itemView.setOnClickListener{callback(schema)}
     }
-    fun update (list: MutableList<Uri>){
-        this.schemas = list ///erreur du type sur l'objet transmis
-        Log.i("INFO",schemas.toString())
+    fun update (list: MutableList<String>){
+        this.schemas = list
         notifyDataSetChanged()
     }
 

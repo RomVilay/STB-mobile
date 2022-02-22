@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.FicheDemontage.PompeFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/info"
+                android:layout_width="649dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titremot"
+                    android:layout_width="647dp"
+                    android:layout_height="66dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#164081"
+                    android:gravity="center"
+                    android:text="Infos Reducteur"
+                    android:textColor="#FAF9F9"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <FrameLayout
+                    android:id="@+id/infosLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="80dp">
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/infosReducteur"
+                android:layout_width="649dp"
+                android:layout_height="wrap_content">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/titreReducteur"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Reducteur"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/Trmintitre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="40dp"
+                        android:text="Tr/min :"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titreReducteur" />
+
+                    <EditText
+                        android:id="@+id/trMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="5"
+                        android:gravity="center"
+                        android:inputType="number|text"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/Trmintitre"
+                        app:layout_constraintStart_toEndOf="@+id/Trmintitre"
+                        app:layout_constraintTop_toTopOf="@+id/Trmintitre"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/titremodel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="36dp"
+                        android:text="Modele"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/trMin"
+                        app:layout_constraintStart_toEndOf="@+id/trMin"
+                        app:layout_constraintTop_toTopOf="@+id/trMin"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <EditText
+                        android:id="@+id/modele"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="36dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="text"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/titremodel"
+                        app:layout_constraintStart_toEndOf="@+id/titremodel"
+                        app:layout_constraintTop_toTopOf="@+id/titremodel"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/indRedTitre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:text="indice de réduction :"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Trmintitre" />
+
+                    <EditText
+                        android:id="@+id/indRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="5"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/indRedTitre"
+                        app:layout_constraintStart_toEndOf="@+id/indRedTitre"
+                        app:layout_constraintTop_toTopOf="@+id/indRedTitre"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/titrehuile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Type huile :"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/indRed"
+                        app:layout_constraintStart_toEndOf="@+id/indRed"
+                        app:layout_constraintTop_toTopOf="@+id/indRed"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <EditText
+                        android:id="@+id/typeHuile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/titrehuile"
+                        app:layout_constraintStart_toEndOf="@+id/titrehuile"
+                        app:layout_constraintTop_toTopOf="@+id/titrehuile" />
+
+                    <TextView
+                        android:id="@+id/titrqtHuile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Quantité huile :"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/indRedTitre" />
+
+                    <EditText
+                        android:id="@+id/qteHuile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="5"
+                        android:gravity="center"
+                        android:inputType="number|text"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/titrqtHuile"
+                        app:layout_constraintStart_toEndOf="@+id/titrqtHuile"
+                        app:layout_constraintTop_toTopOf="@+id/titrqtHuile" />
+
+                    <TextView
+                        android:id="@+id/titrePaint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:text="Peinture"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/qteHuile"
+                        app:layout_constraintStart_toEndOf="@+id/qteHuile"
+                        app:layout_constraintTop_toTopOf="@+id/qteHuile"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <EditText
+                        android:id="@+id/peintureRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="19dp"
+                        android:background="@drawable/round_textview"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/titrePaint"
+                        app:layout_constraintStart_toEndOf="@+id/titrePaint"
+                        app:layout_constraintTop_toTopOf="@+id/titrePaint" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/tabRoulred"
+                        android:layout_width="600dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/formTrainRoullements">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/gray_600"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView93"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Roullements"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/titreTra"
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text="Arbre"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titreroulementav"
+                                    android:layout_width="225dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text="Roullement avant"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titreRlAr"
+                                    android:layout_width="225dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text="Roullement arrière"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/esproul3"
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="20dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/esproul4"
+                                    android:layout_width="50dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titretypetab"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Type"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titrereftab"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Ref"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titretypetab2"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Type"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titrereftab2"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Ref"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/esproul"
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="20dp" />
+                            </LinearLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/tabRoullementsRed"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/formTrainRoullements"
+                        android:layout_width="594dp"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/round_form_background"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.49"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titrePaint">
+
+                        <TextView
+                            android:id="@+id/titreTrain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="12dp"
+                            android:text="Nouveau Train de roulements"
+                            android:textColor="@color/bleu_stb"
+                            android:textSize="22dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/titreRoulement"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:text="Roulement Avant"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreTrain" />
+
+                        <TextView
+                            android:id="@+id/titreRoulement2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="50dp"
+                            android:text="Roulement Arrière"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreRoulement" />
+
+                        <TextView
+                            android:id="@+id/titretypeav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Type"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreRoulement" />
+
+                        <TextView
+                            android:id="@+id/titretypear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Type"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreRoulement2" />
+
+                        <TextView
+                            android:id="@+id/titreRefAv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Ref"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeRav"
+                            app:layout_constraintStart_toEndOf="@+id/typeRav"
+                            app:layout_constraintTop_toTopOf="@+id/typeRav"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <TextView
+                            android:id="@+id/titreRefAr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Ref"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeRar"
+                            app:layout_constraintStart_toEndOf="@+id/typeRar"
+                            app:layout_constraintTop_toTopOf="@+id/typeRar" />
+
+                        <EditText
+                            android:id="@+id/refRoulementAv"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21dp"
+                            android:background="@drawable/round_textview_full_white"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="text"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreRefAv"
+                            app:layout_constraintStart_toEndOf="@+id/titreRefAv"
+                            app:layout_constraintTop_toTopOf="@+id/titreRefAv" />
+
+                        <EditText
+                            android:id="@+id/refRoulementAr"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/round_textview_full_white"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="text"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreRefAr"
+                            app:layout_constraintStart_toEndOf="@+id/titreRefAr"
+                            app:layout_constraintTop_toTopOf="@+id/titreRefAr"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <Button
+                            android:id="@+id/ajtTrain"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="44dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="ajouter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/typeRav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="50dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titretypeav"
+                            app:layout_constraintStart_toEndOf="@+id/titretypeav"
+                            app:layout_constraintTop_toTopOf="@+id/titretypeav" />
+
+                        <Spinner
+                            android:id="@+id/typeRar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="50dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titretypear"
+                            app:layout_constraintStart_toEndOf="@+id/titretypear"
+                            app:layout_constraintTop_toTopOf="@+id/titretypear"
+                            app:layout_constraintVertical_bias="1.0" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/tabJred"
+                        android:layout_width="600dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/formJoints">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/gray_600"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/titretabjred"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Joints"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/titrejoi"
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text="Arbre"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titrejointav"
+                                    android:layout_width="250dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text="Joint Avant"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titrejoiAr"
+                                    android:layout_width="250dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text="Joint arrière"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="600dp"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/esproul2"
+                                    android:layout_width="50dp"
+                                    android:layout_height="25dp"
+                                    android:background="@color/gray_400"
+                                    android:gravity="center"
+                                    android:text=""
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titretypetab3"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Type"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titrereftab3"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Ref"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titretypetab4"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Type"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/titrereftab4"
+                                    android:layout_width="125dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/cell"
+                                    android:gravity="center"
+                                    android:text="Ref"
+                                    android:textSize="20dp" />
+                            </LinearLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/tabJointsred"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/formJoints"
+                        android:layout_width="594dp"
+                        android:layout_height="173dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/round_form_background"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tabRoulred">
+
+                        <Spinner
+                            android:id="@+id/typeJar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titretypejar"
+                            app:layout_constraintStart_toEndOf="@+id/titretypejar"
+                            app:layout_constraintTop_toTopOf="@+id/titretypejar" />
+
+                        <TextView
+                            android:id="@+id/titreJoint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="12dp"
+                            android:text="Nouveaux Joints"
+                            android:textColor="@color/bleu_stb"
+                            android:textSize="22dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/titreJointAv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="37dp"
+                            android:layout_marginTop="20dp"
+                            android:text="Joint Avant"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreJoint" />
+
+                        <TextView
+                            android:id="@+id/titreJointAr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="25dp"
+                            android:text="Joint Arrière"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titreJointAv" />
+
+                        <TextView
+                            android:id="@+id/titrejtypeav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Type"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreJointAv"
+                            app:layout_constraintStart_toEndOf="@+id/titreJointAv"
+                            app:layout_constraintTop_toTopOf="@+id/titreJointAv" />
+
+                        <Spinner
+                            android:id="@+id/typeJav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/dropdown_background"
+                            android:paddingRight="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titrejtypeav"
+                            app:layout_constraintStart_toEndOf="@+id/titrejtypeav"
+                            app:layout_constraintTop_toTopOf="@+id/titrejtypeav" />
+
+                        <TextView
+                            android:id="@+id/titretypejar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Type"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreJointAr"
+                            app:layout_constraintStart_toEndOf="@+id/titreJointAr"
+                            app:layout_constraintTop_toTopOf="@+id/titreJointAr" />
+
+                        <TextView
+                            android:id="@+id/titreRefjAv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Ref"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeJav"
+                            app:layout_constraintStart_toEndOf="@+id/typeJav"
+                            app:layout_constraintTop_toTopOf="@+id/typeJav"
+                            app:layout_constraintVertical_bias="1.0" />
+
+                        <TextView
+                            android:id="@+id/titreRefjar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+
+                            android:text="Ref"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/typeJar"
+                            app:layout_constraintStart_toEndOf="@+id/typeJar"
+                            app:layout_constraintTop_toTopOf="@+id/typeJar" />
+
+                        <EditText
+                            android:id="@+id/refJointAv"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/round_textview_full_white"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="text"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreRefjAv"
+                            app:layout_constraintStart_toEndOf="@+id/titreRefjAv"
+                            app:layout_constraintTop_toTopOf="@+id/titreRefjAv" />
+
+                        <EditText
+                            android:id="@+id/refJointsAr"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/round_textview_full_white"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="text"
+                            android:textSize="20dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/titreRefjar"
+                            app:layout_constraintStart_toEndOf="@+id/titreRefjar"
+                            app:layout_constraintTop_toTopOf="@+id/titreRefjar" />
+
+                        <Button
+                            android:id="@+id/ajtJoint"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="50dp"
+                            android:text="ajouter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/obsBtn"
+                android:layout_width="649dp"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/photo5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="224dp"
+                        android:layout_marginLeft="224dp"
+                        android:layout_marginTop="12dp"
+                        android:text="ajouter une photo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerPhoto"
+                        android:layout_width="600dp"
+                        android:layout_height="116dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_textview"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photo5" />
+
+                    <TextView
+                        android:id="@+id/titre4"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Observations"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/obs2"
+                        android:layout_width="648dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titre4" />
+
+                    <Button
+                        android:id="@+id/enregistrerPompe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginLeft="56dp"
+                        android:text="Enregistrer"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintBottom_toBottomOf="@+id/retourPompe"
+                        app:layout_constraintStart_toEndOf="@+id/retourPompe"
+                        app:layout_constraintTop_toTopOf="@+id/retourPompe"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <Button
+                        android:id="@+id/termP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="270dp"
+                        android:layout_marginLeft="270dp"
+                        android:text="terminer"
+                        app:backgroundTint="#164081"
+                        app:layout_constraintBottom_toBottomOf="@+id/enregistrerPompe"
+                        app:layout_constraintStart_toEndOf="@+id/retourPompe"
+                        app:layout_constraintTop_toTopOf="@+id/enregistrerPompe" />
+
+                    <Button
+                        android:id="@+id/retourPompe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="108dp"
+                        android:layout_marginLeft="108dp"
+                        android:layout_marginTop="190dp"
+                        android:text="Retour"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>

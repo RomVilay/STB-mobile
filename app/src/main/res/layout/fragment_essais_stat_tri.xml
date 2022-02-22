@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constLayout1"
+    android:layout_width="549dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="60dp"
+    tools:context=".ui.ficheRemontage.essaisStatTriFragment">
+
+    <TextView
+        android:id="@+id/textView74"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/bleu_stb"
+        android:gravity="center"
+        android:text="Essais Statiques Après Remontage"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="116dp"
+            android:layout_marginLeft="116dp"
+            android:layout_marginTop="36dp"
+            android:text="Isolement entre phase et masses"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView74" />
+
+    <Spinner
+        android:id="@+id/spinnerIsoPMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView75"
+        app:layout_constraintStart_toEndOf="@+id/textView75"
+        app:layout_constraintTop_toTopOf="@+id/textView75" />
+
+    <TableLayout
+            android:id="@+id/Tisopm
+"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/cell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView75">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titreStator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_600"
+                    android:gravity="center"
+                    android:text="Stator"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/isoPMSU"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="U"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/isoPMSV"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="V"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/isoPMSW"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="W"
+                    android:inputType="numberSigned|number|text" />
+            </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/titreRotor"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_600"
+                android:gravity="center"
+                android:text="Rotor"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/isoPMRU"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="U"
+                android:inputType="numberSigned|number|text" />
+
+            <EditText
+                android:id="@+id/isoPMRV"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="V"
+                android:inputType="numberSigned|number|text" />
+
+            <EditText
+                android:id="@+id/isoPMRW"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="W"
+                android:inputType="numberSigned|number|text" />
+        </TableRow>
+
+        </TableLayout>
+
+    <Spinner
+        android:id="@+id/spinnerIsoP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginLeft="88dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView76"
+        app:layout_constraintStart_toEndOf="@+id/textView76"
+        app:layout_constraintTop_toTopOf="@+id/textView76" />
+
+        <TextView
+            android:id="@+id/textView76"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="116dp"
+            android:layout_marginLeft="116dp"
+            android:layout_marginTop="20dp"
+            android:text="Isolement entre phases"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Tisopm
+" />
+
+        <TableLayout
+            android:id="@+id/Tisop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/cell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView76">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titreStator2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_600"
+                    android:gravity="center"
+                    android:text="Stator"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/isoPSUV"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="UV"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/isoPSVW"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="VW"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/isoPSUW"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="UW"
+                    android:inputType="numberSigned|number|text" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/titreRotor2"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_600"
+                    android:gravity="center"
+                    android:text="Rotor"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/isoPRUV"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="UV"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/isoPRVW"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="VW"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/isoPRUW"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="UW"
+                    android:inputType="numberSigned|number|text" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/textView77"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginLeft="108dp"
+            android:layout_marginTop="20dp"
+            android:text="Résistance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Tisop" />
+
+        <TableLayout
+            android:id="@+id/Tres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/cell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView77">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titreStator3"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_600"
+                    android:gravity="center"
+                    android:text="Stator"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/ResU"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="U"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/ResV"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="V"
+                    android:inputType="numberSigned|number|text" />
+
+                <EditText
+                    android:id="@+id/ResW"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="W"
+                    android:inputType="numberSigned|number|text" />
+            </TableRow>
+
+        </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

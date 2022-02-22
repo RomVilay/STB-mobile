@@ -3,39 +3,58 @@ package com.example.applicationstb.model
 import android.media.Image
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.applicationstb.localdatabase.BobinageEntity
+import com.example.applicationstb.localdatabase.ChantierEntity
 import java.time.LocalDateTime
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class Chantier(
-    numDevis: String,
-    numChantier: String,
-    client: Client,
-    contact: String,
-    telContact: Long,
-    techniciens: Array<User>,
-    resp: User,
-    var vehicule: Vehicule,
-    var adresse:String,
-    val objet:String,
-    val materiel:String,
-    val observations:String
+    idFiche:String,
+    numDevis: String?,
+    numFiche: String?,
+    type:Long?,
+    statut: Long?,
+    client: Client?,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale:Long?,
+    observations: String?,
+    photos:Array<String>?,
+    var vehicule: String?,
+    var adresseChantier:String?,
+    var objet:String?,
+    var materiel:String?,
+    var diagnostic:String?,
+    var signatureTech:String?,
+    var signatureClient:String?
 
-) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp) {
-    lateinit var DateDebut: LocalDateTime;
-    lateinit var DateFin: LocalDateTime;
-    lateinit var SignatureClient:String;
-    lateinit var SignatureTech:String;
-    init {
-        DateDebut = LocalDateTime.now()
-        DateFin = LocalDateTime.now()
-        SignatureClient = "./source"
-        SignatureTech = "./source"
-    }
-    fun setSC(s:String){
-        this.SignatureClient = s
-    }
-    fun setST(s:String){
-        this.SignatureTech = s
+) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observations, photos ) {
+    fun toEntity() : ChantierEntity {
+        return ChantierEntity(
+            _id,
+            numDevis,
+            numFiche,
+            status!!,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale!!,
+            observations,
+            photos,
+            vehicule,
+            adresseChantier,
+            objet,
+            materiel,
+            diagnostic,
+            signatureTech,
+            signatureClient
+        )
     }
 }

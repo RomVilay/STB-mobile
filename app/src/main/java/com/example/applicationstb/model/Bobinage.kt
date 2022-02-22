@@ -3,49 +3,116 @@ package com.example.applicationstb.model
 import android.media.Image
 import android.net.Uri
 import android.os.Build
+import android.os.Parcelable
 import androidx.annotation.RequiresApi
+import com.example.applicationstb.localdatabase.BobinageEntity
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
-
-class Section (var brins:Int, var longueur: Double){
+import java.util.*
+@Parcelize
+@Serializable
+class Section (var nbBrins:Long, var diametre: Double): Parcelable{
+    override fun toString(): String {
+        return "{\"nbBrins\":${nbBrins},\"diametre\":${diametre}}"
+    }
 }
 
-class Bobinage( numDevis: String,
-                numChantier: String,
-                client: Client,
-                contact: String,
-                telContact: Long,
-                techniciens: Array<User>,
-                resp: User,
-                var marque:String,
-                val type:String,
-                val puissance:Long,
-                var vitesse: Long,
-                var tension: Long,
-                var phases:String,
-                var frequence:String,
-                var courant:String,
-                val callage:Boolean) : Fiche(numDevis, numChantier, client, contact, telContact, techniciens, resp){
-                    var sectionsFils : MutableList<Section> = mutableListOf();
-                    var nbSpires = 0;
-                    var Resistance = mutableMapOf<String,Long>()
-                    var Isolement1 = mutableMapOf<String,Long>()
-                    var Isolement2 = mutableMapOf<String,Long>()
+class Bobinage(idFiche:String,
+               numDevis: String?,
+               numFiche: String?,
+               type:Long?,
+               statut: Long?,
+               client: Client?,
+               contact: String?,
+               telContact: String?,
+               techniciens: Array<User>?,
+               resp: User?,
+               dateDebut: Date?,
+               dureeTotale:Long?,
+               observation: String?,
+               photos:Array<String>?,
+               var marqueMoteur:String?,
+               var typeBobinage:String?,
+               var puissance:Float?,
+               var vitesse: Float?,
+               var phases:Long?,
+               var frequences:Float?,
+               var courant:Float?,
+               var calageEncoches:Boolean?,
+               var sectionsFils : MutableList<Section>?,
+               var nbSpires : Long?,
+               var resistanceU : Float?,
+               var resistanceV : Float?,
+               var resistanceW : Float?,
+               var isolementUT : Float?,
+               var isolementVT : Float?,
+               var isolementWT : Float?,
+               var isolementUV : Float?,
+               var isolementUW : Float?,
+               var isolementVW : Float?,
+               var schemas : MutableList<String>?,
+               var poids : Float?,
+               var tension: String?,
+               var presenceSondes: Boolean?,
+               var typeSondes:String?,
+               var pasPolaire:String?,
+               var branchement:String?,
+               var nbEncoches:Long?
+                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photos ){
+
                     @RequiresApi(Build.VERSION_CODES.O)
-                    var date = LocalDateTime.now() ;
-                    var Observation = ""
-                    var schemas : MutableList<Uri> = mutableListOf();
-                fun addSection(brins: Int, longueur: Double){
-                    sectionsFils.add(Section(brins,longueur))
+                fun addSection(nbBrins: Long, diametre: Double){
+                    sectionsFils!!.add(Section(nbBrins,diametre))
                 }
                 fun addSchema (uri: Uri){
-                    schemas.add(uri)
+                    schemas!!.add(uri.toString())
                 }
                 fun getSectionFils(): List<Section> {
-                    return sectionsFils
+                    return sectionsFils!!.toList()
                 }
-                fun getSection(index: Int): String {
-                    return "nb brins:"+sectionsFils[index].brins+" - longueur: "+sectionsFils[index].longueur
-                }
+    fun toEntity() : BobinageEntity {
+        return BobinageEntity(_id,
+            numDevis,
+            numFiche,
+            status!!,
+            client!!._id,
+            contact,
+            telContact,
+            dateDebut,
+            dureeTotale!!,
+            observations,
+            photos,
+            marqueMoteur,
+            typeBobinage,
+            vitesse,
+            puissance,
+            phases,
+            frequences,
+            courant,
+            calageEncoches,
+            sectionsFils!!,
+            nbSpires,
+            resistanceU,
+            resistanceV,
+            resistanceW,
+            isolementUT,
+            isolementVT,
+            isolementWT,
+            isolementUV,
+            isolementUW,
+            isolementVW,
+            poids,
+            tension,
+            presenceSondes,
+            typeSondes,
+            pasPolaire,
+            branchement,
+            nbEncoches)
+    }
+              /*  fun getSection(index: Int): String {
+                    return "nb brins:"+sectionsFils[index].nbBrins+" - diamètre: "+sectionsFils[index].diametre
+                }*/
 
 
 

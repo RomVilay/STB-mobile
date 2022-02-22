@@ -25,270 +25,31 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/infoMoteur"
-                android:layout_width="649dp"
-                android:layout_height="325dp">
+                android:layout_width="643dp"
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/titreMono"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="66dp"
+                    android:background="#164081"
+                    android:gravity="center"
+                    android:text="Moteur Monophasé"
+                    android:textColor="#FAF9F9"
+                    android:textSize="30sp" />
 
-                    <EditText
-                        android:id="@+id/vitesseM"
-                        android:layout_width="51dp"
-                        android:layout_height="38dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="4dp"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintStart_toEndOf="@+id/textView10"
-                        app:layout_constraintTop_toBottomOf="@+id/numSerie" />
+                <FrameLayout
+                    android:id="@+id/infosLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="70dp">
 
-                    <TextView
-                        android:id="@+id/titreMono"
-                        android:layout_width="647dp"
-                        android:layout_height="66dp"
-                        android:background="#164081"
-                        android:gravity="center"
-                        android:text="Moteur Monophasé"
-                        android:textColor="#FAF9F9"
-                        android:textSize="30sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/marc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="Marque"
-                        android:inputType="textPersonName"
-                        app:layout_constraintBottom_toBottomOf="@+id/nums"
-                        app:layout_constraintStart_toEndOf="@+id/mark"
-                        app:layout_constraintTop_toTopOf="@+id/nums"
-                        app:layout_constraintVertical_bias="0.6" />
-
-                    <EditText
-                        android:id="@+id/numSerie"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="72dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:hint="numéro de série"
-                        android:inputType="textLongMessage"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/mark"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:text="Marque : "
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="@+id/marc"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/marc"
-                        app:layout_constraintVertical_bias="0.481" />
-
-                    <TextView
-                        android:id="@+id/nums"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:text="N° serie:"
-                        app:layout_constraintBottom_toBottomOf="@+id/numSerie"
-                        app:layout_constraintStart_toEndOf="@+id/marc"
-                        app:layout_constraintTop_toTopOf="@+id/numSerie"
-                        app:layout_constraintVertical_bias="0.518" />
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:text="Puissance :"
-                        app:layout_constraintBottom_toBottomOf="@+id/pmoteur"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/pmoteur" />
-
-                    <EditText
-                        android:id="@+id/pmoteur"
-                        android:layout_width="49dp"
-                        android:layout_height="27dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-                        app:layout_constraintStart_toEndOf="@+id/textView8"
-                        app:layout_constraintTop_toTopOf="@+id/textView9" />
-
-                    <EditText
-                        android:id="@+id/bride"
-                        android:layout_width="56dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:ems="10"
-                        android:inputType="number"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-                        app:layout_constraintStart_toEndOf="@+id/textView9"
-                        app:layout_constraintTop_toTopOf="@+id/textView10"
-                        app:layout_constraintVertical_bias="0.625" />
-
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="64dp"
-                        android:layout_marginLeft="64dp"
-                        android:text="Bride"
-                        app:layout_constraintBottom_toBottomOf="@+id/bride"
-                        app:layout_constraintStart_toEndOf="@+id/pmoteur"
-                        app:layout_constraintTop_toTopOf="@+id/bride"
-                        app:layout_constraintVertical_bias="0.75" />
-
-                    <TextView
-                        android:id="@+id/textView10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginLeft="36dp"
-                        android:text="Vitesse"
-                        app:layout_constraintBottom_toBottomOf="@+id/vitesseM"
-                        app:layout_constraintStart_toEndOf="@+id/bride"
-                        app:layout_constraintTop_toTopOf="@+id/vitesseM"
-                        app:layout_constraintVertical_bias="0.526" />
-
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:text="Arbre sortant"
-                        app:layout_constraintBottom_toBottomOf="@+id/etatArbre"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/etatArbre" />
-
-                    <Switch
-                        android:id="@+id/pclav"
-                        android:layout_width="136dp"
-                        android:layout_height="47dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Présence d'une clavette"
-                        app:layout_constraintStart_toEndOf="@+id/textView15"
-                        app:layout_constraintTop_toBottomOf="@+id/pmoteur" />
-
-                    <Switch
-                        android:id="@+id/etatArbre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView15"
-                        app:layout_constraintStart_toEndOf="@+id/textView13"
-                        app:layout_constraintTop_toTopOf="@+id/textView15"
-                        app:layout_constraintVertical_bias="1.0" />
-
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:text="Arbre rentrant"
-                        app:layout_constraintBottom_toBottomOf="@+id/pclav"
-                        app:layout_constraintStart_toEndOf="@+id/etatArbre"
-                        app:layout_constraintTop_toTopOf="@+id/pclav" />
-
-                    <TextView
-                        android:id="@+id/textView19"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="45dp"
-                        android:layout_marginLeft="45dp"
-                        android:text="Aspect boite à bornes"
-                        app:layout_constraintBottom_toBottomOf="@+id/spinnerBo"
-                        app:layout_constraintStart_toEndOf="@+id/extSpinner"
-                        app:layout_constraintTop_toTopOf="@+id/spinnerBo" />
-
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginTop="30dp"
-                        android:text="Aspect extérieur"
-                        app:layout_constraintBottom_toBottomOf="@+id/extSpinner"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-                    <EditText
-                        android:id="@+id/cacc"
-                        android:layout_width="99dp"
-                        android:layout_height="64dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:ems="10"
-                        android:hint="côte accouplement"
-                        android:inputType="number"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vitesseM" />
-
-                    <Switch
-                        android:id="@+id/pacc"
-                        android:layout_width="132dp"
-                        android:layout_height="46dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="56dp"
-                        android:text="Présence d'un accouplement"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/pclav"
-                        app:layout_constraintTop_toBottomOf="@+id/numSerie" />
-
-                    <Spinner
-                        android:id="@+id/extSpinner"
-                        android:layout_width="113dp"
-                        android:layout_height="38dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView19"
-                        app:layout_constraintStart_toEndOf="@+id/textView18"
-                        app:layout_constraintTop_toTopOf="@+id/textView19" />
-
-                    <Spinner
-                        android:id="@+id/spinnerBo"
-                        android:layout_width="170dp"
-                        android:layout_height="37dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView19"
-                        app:layout_constraintTop_toBottomOf="@+id/cacc" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </FrameLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/essais"
+                android:id="@+id/moteur_mono"
                 android:layout_width="649dp"
                 android:layout_height="wrap_content">
 
@@ -328,8 +89,7 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:gravity="center"
-                            android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -352,9 +112,9 @@
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:gravity="center"
-                            android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -379,15 +139,14 @@
                             android:text="resistance démarrage" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName"
+                            android:id="@+id/rdem"
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
                             android:gravity="center"
-                            android:hint="Ω"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -401,15 +160,14 @@
                             android:text="- valeur condenseur :" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName3"
+                            android:id="@+id/condens"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@drawable/round_textview"
                             android:ems="10"
-                            android:hint="val"
                             android:gravity="center"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                     </LinearLayout>
@@ -437,7 +195,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/titre2" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/titreDyna"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -455,7 +213,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4">
+                        app:layout_constraintTop_toBottomOf="@+id/titreDyna">
 
                         <TextView
                             android:id="@+id/VT"
@@ -476,7 +234,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="I"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -500,27 +258,25 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="U"
-                            android:inputType="number"
+                            android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
                     </LinearLayout>
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_begin="228dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <FrameLayout
-                android:id="@+id/PartMeca"
+            <androidx.cardview.widget.CardView
                 android:layout_width="649dp"
                 android:layout_height="wrap_content">
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/PartMeca"
+                    android:layout_width="649dp"
+                    android:layout_height="wrap_content">
+
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/meca"
@@ -693,7 +449,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/switchBA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
@@ -712,8 +468,8 @@
                         android:layout_marginTop="20dp"
                         android:text="mauvais état"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="@+id/switch1"
-                        app:layout_constraintStart_toEndOf="@+id/switch1"
+                        app:layout_constraintBottom_toBottomOf="@+id/switchBA"
+                        app:layout_constraintStart_toEndOf="@+id/switchBA"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
                     <TextView
@@ -728,7 +484,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
                     <Switch
-                        android:id="@+id/switch4"
+                        android:id="@+id/switchPRE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -772,7 +528,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Switch
-                            android:id="@+id/switch5"
+                            android:id="@+id/switchRoullements"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="240dp"
@@ -782,7 +538,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName5"
+                            android:id="@+id/refRoullement"
                             android:layout_width="183dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="4dp"
@@ -801,7 +557,7 @@
                             android:layout_marginTop="12dp"
                             android:text="ref :"
                             app:layout_constraintStart_toEndOf="@+id/spiRoul"
-                            app:layout_constraintTop_toBottomOf="@+id/switch5" />
+                            app:layout_constraintTop_toBottomOf="@+id/switchRoullements" />
 
                         <TextView
                             android:id="@+id/textView28"
@@ -811,9 +567,9 @@
                             android:layout_marginLeft="1dp"
                             android:text="Arrière"
                             android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="@+id/switch5"
-                            app:layout_constraintStart_toEndOf="@+id/switch5"
-                            app:layout_constraintTop_toTopOf="@+id/switch5" />
+                            app:layout_constraintBottom_toBottomOf="@+id/switchRoullements"
+                            app:layout_constraintStart_toEndOf="@+id/switchRoullements"
+                            app:layout_constraintTop_toTopOf="@+id/switchRoullements" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -849,7 +605,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <Switch
-                            android:id="@+id/switch6"
+                            android:id="@+id/switchJoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="192dp"
@@ -859,7 +615,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName9"
+                            android:id="@+id/refJoints"
                             android:layout_width="183dp"
                             android:layout_height="30dp"
                             android:layout_marginStart="12dp"
@@ -880,7 +636,7 @@
                             android:layout_marginTop="12dp"
                             android:text="ref :"
                             app:layout_constraintStart_toEndOf="@+id/spiJoints"
-                            app:layout_constraintTop_toBottomOf="@+id/switch6" />
+                            app:layout_constraintTop_toBottomOf="@+id/switchJoints" />
 
                         <TextView
                             android:id="@+id/textView31"
@@ -891,7 +647,7 @@
                             android:layout_marginTop="4dp"
                             android:text="Arrière"
                             android:textColor="@color/black"
-                            app:layout_constraintStart_toEndOf="@+id/switch6"
+                            app:layout_constraintStart_toEndOf="@+id/switchJoints"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -941,7 +697,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
-                            android:id="@+id/editTextTextPersonName4"
+                            android:id="@+id/autreCpl"
                             android:layout_width="115dp"
                             android:layout_height="43dp"
                             android:layout_marginStart="20dp"
@@ -1097,7 +853,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
                     <Switch
-                        android:id="@+id/switch7"
+                        android:id="@+id/switchSondes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -1107,7 +863,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView38" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName6"
+                        android:id="@+id/typeSonde"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="348dp"
@@ -1117,7 +873,7 @@
                         android:hint=" type sonde"
                         android:inputType="textPersonName"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/switch7" />
+                        app:layout_constraintTop_toBottomOf="@+id/switchSondes" />
 
                     <TextView
                         android:id="@+id/textView39"
@@ -1126,9 +882,9 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:text="Equilibrage"
-                        app:layout_constraintBottom_toBottomOf="@+id/switch9"
+                        app:layout_constraintBottom_toBottomOf="@+id/swEqui"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/switch9" />
+                        app:layout_constraintTop_toTopOf="@+id/swEqui" />
 
                     <TextView
                         android:id="@+id/textView40"
@@ -1137,22 +893,22 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
                         android:text="Peinture"
-                        app:layout_constraintBottom_toBottomOf="@+id/switch8"
-                        app:layout_constraintStart_toEndOf="@+id/switch9"
-                        app:layout_constraintTop_toTopOf="@+id/switch8" />
+                        app:layout_constraintBottom_toBottomOf="@+id/swPeinture"
+                        app:layout_constraintStart_toEndOf="@+id/swEqui"
+                        app:layout_constraintTop_toTopOf="@+id/swPeinture" />
 
                     <Switch
-                        android:id="@+id/switch8"
+                        android:id="@+id/swPeinture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName7"
+                        app:layout_constraintBottom_toBottomOf="@+id/ral"
                         app:layout_constraintStart_toEndOf="@+id/textView40"
-                        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName7" />
+                        app:layout_constraintTop_toTopOf="@+id/ral" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName7"
+                        android:id="@+id/ral"
                         android:layout_width="83dp"
                         android:layout_height="36dp"
                         android:layout_marginStart="20dp"
@@ -1160,12 +916,12 @@
                         android:ems="10"
                         android:hint="ral"
                         android:inputType="textPersonName"
-                        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName10"
-                        app:layout_constraintStart_toEndOf="@+id/switch8"
-                        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName10" />
+                        app:layout_constraintBottom_toBottomOf="@+id/coul"
+                        app:layout_constraintStart_toEndOf="@+id/swPeinture"
+                        app:layout_constraintTop_toTopOf="@+id/coul" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName10"
+                        android:id="@+id/coul"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -1173,10 +929,10 @@
                         android:hint="couleur"
                         android:inputType="textPersonName"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
+                        app:layout_constraintTop_toBottomOf="@+id/typeSonde" />
 
                     <Switch
-                        android:id="@+id/switch9"
+                        android:id="@+id/swEqui"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
@@ -1192,11 +948,34 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/obs"
                 android:layout_width="649dp"
-                android:layout_height="wrap_content">
+                android:layout_height="400dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/photo2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="224dp"
+                        android:layout_marginLeft="224dp"
+                        android:layout_marginTop="12dp"
+                        android:text="ajouter une photo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerPhoto2"
+                        android:layout_width="600dp"
+                        android:layout_height="116dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_textview"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.489"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photo2" />
 
                     <TextView
                         android:id="@+id/titre4"
@@ -1211,36 +990,50 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/editTextTextMultiLine"
+                        android:id="@+id/obs2"
                         android:layout_width="648dp"
-                        android:layout_height="92dp"
+                        android:layout_height="wrap_content"
                         android:ems="10"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
+                        android:minLines="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titre4" />
 
                     <Button
-                        android:id="@+id/enregistrerMono"
+                        android:id="@+id/enregistrerTRi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="92dp"
-                        android:layout_marginLeft="92dp"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginLeft="56dp"
+                        android:layout_marginTop="188dp"
                         android:text="Enregistrer"
-                        app:backgroundTint="#164081"
-                        app:layout_constraintStart_toEndOf="@+id/retourMono"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintStart_toEndOf="@+id/retourTri"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
 
                     <Button
-                        android:id="@+id/retourMono"
+                        android:id="@+id/retourTri"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="172dp"
-                        android:layout_marginLeft="172dp"
+                        android:layout_marginStart="84dp"
+                        android:layout_marginLeft="84dp"
+                        android:layout_marginTop="188dp"
                         android:text="Retour"
-                        app:backgroundTint="#164081"
+                        app:backgroundTint="@color/gray_400"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <Button
+                        android:id="@+id/termMo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginLeft="56dp"
+                        android:text="Terminer"
+                        app:layout_constraintBottom_toBottomOf="@+id/enregistrerTRi"
+                        app:layout_constraintStart_toEndOf="@+id/enregistrerTRi"
+                        app:layout_constraintTop_toTopOf="@+id/enregistrerTRi" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>

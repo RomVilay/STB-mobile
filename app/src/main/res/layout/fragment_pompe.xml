@@ -23,7 +23,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="1600dp">
 
                     <TextView
                         android:id="@+id/titreMono"
@@ -80,19 +80,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
                         android:text="N° serie:"
                         app:layout_constraintBottom_toBottomOf="@+id/numSerie"
                         app:layout_constraintStart_toEndOf="@+id/marc"
                         app:layout_constraintTop_toTopOf="@+id/numSerie"
                         app:layout_constraintVertical_bias="0.518" />
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/typeFluide"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="32dp"
+                        android:ems="10"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/txtV"
                         app:layout_constraintStart_toEndOf="@+id/txtV"
                         app:layout_constraintTop_toTopOf="@+id/txtV" />
@@ -113,18 +113,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="40dp"
                         android:text="Sens de Rotation :"
-                        app:layout_constraintBottom_toBottomOf="@+id/typeFluide"
-                        app:layout_constraintStart_toEndOf="@+id/typeFluide"
-                        app:layout_constraintTop_toTopOf="@+id/typeFluide" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtV" />
 
                     <Switch
                         android:id="@+id/sensRotation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
                         android:text="Gauche"
                         app:layout_constraintBottom_toBottomOf="@+id/textView8"
                         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -143,116 +141,105 @@
                         android:id="@+id/textView48"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="44dp"
-                        android:layout_marginLeft="44dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
                         android:text="Type:"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView47"
-                        app:layout_constraintStart_toEndOf="@+id/textView47"
-                        app:layout_constraintTop_toTopOf="@+id/textView47"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintBottom_toBottomOf="@+id/typePompe"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/typePompe"
+                        app:layout_constraintVertical_bias="0.523" />
 
                     <Spinner
                         android:id="@+id/typePompe"
-                        android:layout_width="159dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView48"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView50"
                         app:layout_constraintStart_toEndOf="@+id/textView48"
-                        app:layout_constraintTop_toTopOf="@+id/textView48"
-                        app:layout_constraintVertical_bias="0.4" />
+                        app:layout_constraintTop_toTopOf="@+id/textView50" />
 
                     <TextView
                         android:id="@+id/textView49"
                         android:layout_width="87dp"
-                        android:layout_height="26dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
                         android:text="Type de Joint"
-                        app:layout_constraintBottom_toBottomOf="@+id/tjoint"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tjoint"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintEnd_toEndOf="@+id/nums"
+                        app:layout_constraintStart_toStartOf="@+id/nums"
+                        app:layout_constraintTop_toBottomOf="@+id/nums" />
 
                     <EditText
                         android:id="@+id/tjoint"
-                        android:layout_width="94dp"
-                        android:layout_height="33dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView50"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView49"
                         app:layout_constraintStart_toEndOf="@+id/textView49"
-                        app:layout_constraintTop_toTopOf="@+id/textView50" />
+                        app:layout_constraintTop_toTopOf="@+id/textView49" />
 
                     <TextView
                         android:id="@+id/textView50"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
                         android:text="Matière Joint"
                         app:layout_constraintBottom_toBottomOf="@+id/matJoint"
-                        app:layout_constraintStart_toEndOf="@+id/tjoint"
-                        app:layout_constraintTop_toTopOf="@+id/matJoint" />
+                        app:layout_constraintStart_toEndOf="@+id/typePompe"
+                        app:layout_constraintTop_toTopOf="@+id/matJoint"
+                        app:layout_constraintVertical_bias="0.476" />
 
                     <Spinner
                         android:id="@+id/matJoint"
-                        android:layout_width="151dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/DAd1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintStart_toEndOf="@+id/textView50"
-                        app:layout_constraintTop_toTopOf="@+id/DAd1"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintTop_toBottomOf="@+id/sensRotation" />
 
                     <TextView
                         android:id="@+id/DAd1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginLeft="7dp"
+                        android:layout_marginTop="50dp"
                         android:text="Diamètre Arbre(d1)"
-                        app:layout_constraintBottom_toBottomOf="@+id/dArbre"
-                        app:layout_constraintStart_toEndOf="@+id/matJoint"
-                        app:layout_constraintTop_toTopOf="@+id/dArbre" />
+                        app:layout_constraintStart_toStartOf="@+id/textView53"
+                        app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
                     <EditText
                         android:id="@+id/dArbre"
-                        android:layout_width="65dp"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="7dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/DAd1"
                         app:layout_constraintStart_toEndOf="@+id/DAd1"
-                        app:layout_constraintTop_toBottomOf="@+id/typePompe" />
+                        app:layout_constraintTop_toTopOf="@+id/DAd1" />
 
                     <EditText
                         android:id="@+id/LC"
-                        android:layout_width="66dp"
-                        android:layout_height="24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView54"
                         app:layout_constraintStart_toEndOf="@+id/textView54"
                         app:layout_constraintTop_toTopOf="@+id/textView54"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.481" />
 
                     <EditText
                         android:id="@+id/dEPR"
-                        android:layout_width="65dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView52"
                         app:layout_constraintStart_toEndOf="@+id/textView52"
                         app:layout_constraintTop_toTopOf="@+id/textView52"
@@ -260,68 +247,59 @@
 
                     <EditText
                         android:id="@+id/LNC"
-                        android:layout_width="65dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView53"
                         app:layout_constraintStart_toEndOf="@+id/textView53"
-                        app:layout_constraintTop_toTopOf="@+id/textView57" />
+                        app:layout_constraintTop_toTopOf="@+id/textView53" />
 
                     <TextView
                         android:id="@+id/textView52"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="40dp"
                         android:text="Diamètre Extérieur Partie Rotative(d3)"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView49" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
                     <TextView
                         android:id="@+id/textView53"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="50dp"
                         android:text="Longueur Partie Rotative Non Comprimée"
-                        app:layout_constraintBottom_toBottomOf="@+id/LNC"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/LNC" />
+                        app:layout_constraintStart_toStartOf="@+id/PRTi3"
+                        app:layout_constraintTop_toBottomOf="@+id/PRTi3" />
 
                     <TextView
                         android:id="@+id/textView54"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginLeft="7dp"
+                        android:layout_marginTop="50dp"
                         android:text="Longueur Partie Rotative Comprimée"
-                        app:layout_constraintBottom_toBottomOf="@+id/dEPR"
-                        app:layout_constraintStart_toEndOf="@+id/dEPR"
-                        app:layout_constraintTop_toTopOf="@+id/dEPR" />
+                        app:layout_constraintStart_toStartOf="@+id/textView52"
+                        app:layout_constraintTop_toBottomOf="@+id/textView52" />
 
                     <TextView
                         android:id="@+id/PRTi3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="30dp"
                         android:text="Longueur Partie Rotative en Travail(I3)"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+                        app:layout_constraintStart_toStartOf="@+id/textView57"
+                        app:layout_constraintTop_toBottomOf="@+id/textView57" />
 
                     <EditText
                         android:id="@+id/LPRT"
-                        android:layout_width="67dp"
-                        android:layout_height="28dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/PRTi3"
                         app:layout_constraintStart_toEndOf="@+id/PRTi3"
                         app:layout_constraintTop_toTopOf="@+id/PRTi3"
@@ -331,22 +309,18 @@
                         android:id="@+id/DEd7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="50dp"
                         android:text="Diamètre Extérieur(d7)"
-                        app:layout_constraintBottom_toBottomOf="@+id/LPRT"
-                        app:layout_constraintStart_toEndOf="@+id/LPRT"
-                        app:layout_constraintTop_toTopOf="@+id/LPRT"
-                        app:layout_constraintVertical_bias="0.529" />
+                        app:layout_constraintStart_toStartOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="@+id/textView54" />
 
                     <EditText
                         android:id="@+id/dExt"
-                        android:layout_width="65dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/DEd7"
                         app:layout_constraintStart_toEndOf="@+id/DEd7"
                         app:layout_constraintTop_toTopOf="@+id/DEd7"
@@ -356,36 +330,31 @@
                         android:id="@+id/textView57"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="50dp"
                         android:text="Epaisseur Partie Fixe(I4)"
-                        app:layout_constraintBottom_toBottomOf="@+id/ePF"
-                        app:layout_constraintStart_toEndOf="@+id/LNC"
-                        app:layout_constraintTop_toTopOf="@+id/ePF"
-                        app:layout_constraintVertical_bias="0.555" />
+                        app:layout_constraintStart_toStartOf="@+id/DEd7"
+                        app:layout_constraintTop_toBottomOf="@+id/DEd7" />
 
                     <EditText
                         android:id="@+id/ePF"
-                        android:layout_width="67dp"
-                        android:layout_height="28dp"
-                        android:layout_marginStart="28dp"
-                        android:layout_marginLeft="28dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView57"
                         app:layout_constraintStart_toEndOf="@+id/textView57"
-                        app:layout_constraintTop_toBottomOf="@+id/dExt" />
+                        app:layout_constraintTop_toTopOf="@+id/textView57" />
 
                     <ImageView
                         android:id="@+id/schemaPompe"
                         android:layout_width="480dp"
                         android:layout_height="319dp"
-                        android:layout_marginStart="64dp"
-                        android:layout_marginLeft="64dp"
-                        android:layout_marginTop="276dp"
+                        android:layout_marginStart="76dp"
+                        android:layout_marginTop="20dp"
                         android:src="@drawable/detourage_pompe"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreMono" />
+                        app:layout_constraintTop_toBottomOf="@+id/dArbre" />
 
                     <TextView
                         android:id="@+id/d7"
@@ -448,7 +417,279 @@
                         app:layout_constraintEnd_toStartOf="@+id/d7"
                         app:layout_constraintTop_toTopOf="@+id/d7" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/typeroulements"
+                        android:layout_width="599dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="48dp"
+                        android:background="@drawable/round_textview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/schemaPompe">
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Roulements"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/spiRoul"
+                            android:layout_width="190dp"
+                            android:layout_height="31dp"
+                            android:layout_marginStart="56dp"
+                            android:layout_marginLeft="56dp"
+                            android:layout_marginTop="48dp"
+                            android:background="@drawable/dropdown_background"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Switch
+                            android:id="@+id/switchRoullements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="240dp"
+                            android:layout_marginLeft="240dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Avant"
+                            app:layout_constraintStart_toEndOf="@+id/textView23"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:id="@+id/refRoullement"
+                            android:layout_width="183dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="référence roulement "
+                            android:inputType="text"
+                            android:padding="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView27"
+                            app:layout_constraintStart_toEndOf="@+id/textView27"
+                            app:layout_constraintTop_toTopOf="@+id/textView27"
+                            app:layout_constraintVertical_bias="0.555" />
+
+                        <TextView
+                            android:id="@+id/textView27"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="28dp"
+                            android:layout_marginLeft="28dp"
+                            android:text="ref :"
+                            app:layout_constraintBottom_toBottomOf="@+id/spiRoul"
+                            app:layout_constraintStart_toEndOf="@+id/spiRoul"
+                            app:layout_constraintTop_toTopOf="@+id/spiRoul"
+                            app:layout_constraintVertical_bias="0.666" />
+
+                        <TextView
+                            android:id="@+id/textView28"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:text="Arrière"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="@+id/switchRoullements"
+                            app:layout_constraintStart_toEndOf="@+id/switchRoullements"
+                            app:layout_constraintTop_toTopOf="@+id/switchRoullements" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/specsRoul"
+                            android:layout_width="547dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:padding="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/refRoullement" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/typejoints"
+                        android:layout_width="598dp"
+                        android:layout_height="96dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/round_textview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/typeroulements">
+
+                        <TextView
+                            android:id="@+id/textView29"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:text="Types de Joints"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/spiJoints"
+                            android:layout_width="181dp"
+                            android:layout_height="31dp"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginLeft="48dp"
+                            android:layout_marginTop="44dp"
+                            android:background="@drawable/dropdown_background"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Switch
+                            android:id="@+id/switchJoints"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="192dp"
+                            android:layout_marginLeft="192dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Avant"
+                            app:layout_constraintStart_toEndOf="@+id/textView29"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:id="@+id/refJoints"
+                            android:layout_width="183dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:background="@drawable/round_textview"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="référence joints"
+                            android:inputType="text"
+                            android:padding="5dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/spiJoints"
+                            app:layout_constraintStart_toEndOf="@+id/textView30"
+                            app:layout_constraintTop_toTopOf="@+id/spiJoints" />
+
+                        <TextView
+                            android:id="@+id/textView30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="104dp"
+                            android:layout_marginLeft="104dp"
+                            android:text="ref :"
+                            app:layout_constraintBottom_toBottomOf="@+id/refJoints"
+                            app:layout_constraintStart_toEndOf="@+id/spiJoints"
+                            app:layout_constraintTop_toTopOf="@+id/refJoints" />
+
+                        <TextView
+                            android:id="@+id/textView31"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:text="Arrière"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="@+id/switchJoints"
+                            app:layout_constraintStart_toEndOf="@+id/switchJoints"
+                            app:layout_constraintTop_toTopOf="@+id/switchJoints" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="649dp"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/photo5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="224dp"
+                        android:layout_marginLeft="224dp"
+                        android:layout_marginTop="12dp"
+                        android:text="ajouter une photo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerPhoto"
+                        android:layout_width="600dp"
+                        android:layout_height="116dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_textview"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photo5" />
+
+                    <TextView
+                        android:id="@+id/titre4"
+                        android:layout_width="647dp"
+                        android:layout_height="66dp"
+                        android:background="#164081"
+                        android:gravity="center"
+                        android:text="Observations"
+                        android:textColor="#FAF9F9"
+                        android:textSize="30sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/obs2"
+                        android:layout_width="648dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titre4" />
+
+                    <Button
+                        android:id="@+id/enregistrerPompe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginLeft="56dp"
+                        android:text="Enregistrer"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintBottom_toBottomOf="@+id/retourPompe"
+                        app:layout_constraintStart_toEndOf="@+id/retourPompe"
+                        app:layout_constraintTop_toTopOf="@+id/retourPompe"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <Button
+                        android:id="@+id/termP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="270dp"
+                        android:layout_marginLeft="270dp"
+                        android:text="terminer"
+                        app:backgroundTint="#164081"
+                        app:layout_constraintBottom_toBottomOf="@+id/enregistrerPompe"
+                        app:layout_constraintStart_toEndOf="@+id/retourPompe"
+                        app:layout_constraintTop_toTopOf="@+id/enregistrerPompe" />
+
+                    <Button
+                        android:id="@+id/retourPompe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="108dp"
+                        android:layout_marginLeft="108dp"
+                        android:layout_marginTop="190dp"
+                        android:text="Retour"
+                        app:backgroundTint="@color/gray_400"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/obs2" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 

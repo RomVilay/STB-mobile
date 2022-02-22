@@ -1,26 +1,29 @@
 package com.example.applicationstb.ui.ficheBobinage
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
+import android.widget.Button
+import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Section
 
-class FillAdapter (var list: List<Section>) :
+class FillAdapter(var list: MutableList<Section>, var callback: (Double, Long, Int) -> Unit, var callback2:(Int) ->Unit) :
     RecyclerView.Adapter<FillAdapter.ViewHolder>() {
+    var regexNombres = Regex("^\\d*\\.?\\d*\$")
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var longueur: TextView
-        var brins: TextView
+        var diametre: EditText
+        var nbBrins: EditText
+        var suppr:Button
+
         init {
-            longueur = view.findViewById(R.id.lg)
-            brins = view.findViewById(R.id.br)
+            diametre = view.findViewById(R.id.typeAv)
+            nbBrins = view.findViewById(R.id.refAv)
+            suppr = view.findViewById(R.id.supprsection)
         }
     }
 
@@ -30,14 +33,41 @@ class FillAdapter (var list: List<Section>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.longueur.text = list[position].longueur.toString()
-        holder.brins.text = list[position].brins.toString()
+        holder.diametre.setText(list[position].diametre.toString())
+        holder.nbBrins.setText(list[position].nbBrins.toString())
+        /*holder.diametre.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {*/
+                holder.diametre.doAfterTextChanged {
+                    if (holder.diametre.text.toString().matches(regexNombres) && holder.diametre.text.isNotEmpty()) callback(
+                        holder.diametre.text.toString().toDouble(),
+                        list[position].nbBrins,
+                        position
+                    )
+                /*}
+            }*/
+        }
+                holder.nbBrins.doAfterTextChanged {
+                    if (holder.nbBrins.text.toString().matches(regexNombres) && holder.nbBrins.text.isNotEmpty()) callback(
+                        list[position].diametre,
+                        holder.nbBrins.text.toString().toLong(),
+                        position
+                    )
+                }
+        holder.suppr.setOnClickListener {
+            list.removeAt(position)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
+            callback2(position)
+        }
+
     }
 
-    fun update (sections: MutableList<Section>){
+
+    fun update(sections: MutableList<Section>) {
         this.list = sections
         notifyDataSetChanged()
     }
+
     override fun getItemCount(): Int {
         return list.size
     }
