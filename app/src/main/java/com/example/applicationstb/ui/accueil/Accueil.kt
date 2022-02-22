@@ -63,6 +63,7 @@ class Accueil : Fragment() {
                 var job2 = launch{
                     viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
                 }
+                delay(200)
                 job2.join()
                 val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Liste des fiches mise à jour.", 3600)
                 mySnackbar.show()

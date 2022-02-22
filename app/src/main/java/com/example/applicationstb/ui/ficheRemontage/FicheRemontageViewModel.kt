@@ -67,8 +67,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun retour(view: View) {
-        var action = FicheRemontageDirections.deRemontageverAccueil(token!!, username!!)
-        Navigation.findNavController(view).navigate(action)
+        Navigation.findNavController(view).popBackStack()
     }
 
     fun fullScreen(view: View, uri: String) {
