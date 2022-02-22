@@ -23,6 +23,7 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,11 +31,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -141,12 +139,8 @@ class FicheChantier : Fragment() {
                 viewModel.photos.postValue(listPhotos)
             }
             sAdapter.update(viewModel.photos.value!!)
-            /*val iter = listPhotos!!.iterator()
-             while (iter.hasNext()){
-                 var i = iter.next()
-                   i = "/storage/emulated/0/Pictures/test_pictures/"+i
-                 Log.i("INFO", i)
-            }*/
+            viewModel.chantier.value?.status = 2
+            viewModel.quickSave()
         }
         val btnTech = layout.findViewById<Button>(R.id.signTech)
         val btnClient = layout.findViewById<Button>(R.id.signClient)
@@ -286,35 +280,24 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-            var chantier = viewModel.chantier!!.value!!
-            chantier.materiel = materiel.text.toString()
-            chantier.objet = objet.text.toString()
-            chantier.observations = observation.text.toString()
-            chantier.photos = viewModel.photos?.value?.toTypedArray()
-            chantier.status = 2L
-            viewModel.chantier.value = chantier
-            viewModel.getTime()
-            for (i in viewModel.chantier.value?.photos!!) {
-                // Log.i("INFO","photo: ${i}")
-            }
+            viewModel.quickSave()
             viewModel.save(
                 requireContext(),
                 layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
             )
         }
         term.setOnClickListener {
-            var chantier = viewModel.chantier!!.value!!
-            chantier.materiel = materiel.text.toString()
-            chantier.objet = objet.text.toString()
-            chantier.observations = observation.text.toString()
-            chantier.photos = viewModel.photos?.value?.toTypedArray()
-            chantier.status = 3L
-            viewModel.chantier.value = chantier
-            viewModel.getTime()
-            viewModel.save(
-                requireContext(),
-                layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
-            )
+            viewModel.chantier.value?.status = 3
+            runBlocking {
+                viewModel.quickSave()
+                delay(10)
+                viewModel.save(
+                    requireContext(),
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
+                )
+            }
+
+
         }
         return layout
     }

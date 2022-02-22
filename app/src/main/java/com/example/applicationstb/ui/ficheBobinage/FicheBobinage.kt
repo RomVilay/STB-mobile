@@ -1,8 +1,10 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -35,6 +37,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Section
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -639,20 +642,33 @@ class FicheBobinage : Fragment() {
             viewModel.bobinage.value!!.status = 2L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
-
+            viewModel.quickSave()
             viewModel.save(
                 requireContext(),
                 layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
             )
         }
         term.setOnClickListener {
-            viewModel.bobinage.value!!.status = 3L
-            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
-            viewModel.getTime()
-            viewModel.save(
-                requireContext(),
-                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
-            )
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setTitle("Terminer une fiche")
+                    .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
+                    .setPositiveButton("Terminer",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            viewModel.getTime()
+                            viewModel.bobinage.value?.status = 3L
+                            viewModel.quickSave()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.getNameURI()
+                            }
+                            viewModel.save(
+                                requireContext(),
+                                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
+                            )
+                        })
+                builder.create()
+            }
+            alertDialog?.show()
         }
         return layout
     }

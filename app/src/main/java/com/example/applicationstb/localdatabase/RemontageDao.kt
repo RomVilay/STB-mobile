@@ -1,6 +1,8 @@
 package com.example.applicationstb.localdatabase
 
 import androidx.room.*
+import com.example.applicationstb.model.RemontageMotopompe
+import com.example.applicationstb.model.RemontageMotoreducteur
 
 @Dao
 interface RemontageTriphaseDao {
@@ -53,4 +55,39 @@ interface RemontageDao {
 
     @Update
     fun update(vararg fiches:RemontageEntity)
+}
+@Dao
+interface RemontageMotopompeDao {
+    @Insert
+    fun insertAll(vararg fiches:RemontageMotopompeEntity)
+
+    @Delete
+    fun delete(fiche: RemontageMotopompeEntity)
+
+    @Query("SELECT * FROM remontage_motopompe")
+    fun getAll(): List<RemontageMotopompeEntity>
+
+    @Query("SELECT * FROM remontage_motopompe WHERE _id LIKE :id")
+    fun getById(id: String) : RemontageMotopompeEntity
+
+    @Update
+    fun update(vararg fiches:RemontageMotopompeEntity)
+}
+
+@Dao
+interface RemontageMotoreducteurDao {
+    @Insert
+    fun insertAll(vararg fiches:RemontageMotoreducteurEntity)
+
+    @Delete
+    fun delete(fiche: RemontageMotoreducteurEntity)
+
+    @Query("SELECT * FROM remontage_motoreducteur")
+    fun getAll(): List<RemontageMotoreducteurEntity>
+
+    @Query("SELECT * FROM remontage_motoreducteur WHERE _id LIKE :id")
+    fun getById(id: String) : RemontageMotoreducteurEntity
+
+    @Update
+    fun update(vararg fiches:RemontageMotoreducteurEntity)
 }

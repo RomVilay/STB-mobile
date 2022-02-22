@@ -391,6 +391,7 @@ class RotorBobineFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.getTime()
+            viewModel.localSave()
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getNameURI()
             }
@@ -406,6 +407,7 @@ class RotorBobineFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.getTime()
+                            viewModel.localSave()
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }

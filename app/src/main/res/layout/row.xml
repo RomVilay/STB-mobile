@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/dia"
+        android:id="@+id/typeAv"
         android:layout_width="214dp"
         android:layout_height="45dp"
         android:background="@drawable/cell"
@@ -15,7 +15,7 @@
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/br"
+        android:id="@+id/refAv"
         android:layout_width="214dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

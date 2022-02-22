@@ -34,6 +34,7 @@ import com.example.applicationstb.model.DemontageMonophase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -200,6 +201,7 @@ class MonophaseFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.localSave()
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getNameURI()
             }
@@ -215,6 +217,7 @@ class MonophaseFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
+                            viewModel.localSave()
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }

@@ -21,6 +21,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import androidx.navigation.findNavController
 import com.example.applicationstb.R
+import com.example.applicationstb.localdatabase.DemontageMotopompeEntity
+import com.example.applicationstb.model.DemontageMotopompe
 import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -58,8 +60,15 @@ class Accueil : Fragment() {
                         )
                     }
                 }
-                 viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+                var job2 = launch{
+                    viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+                }
+                delay(200)
+                job2.join()
+                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Liste des fiches mise à jour.", 3600)
+                mySnackbar.show()
             }
+
         } else {
             val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),"Vous n'êtes pas connecté au réseau Internet.", 3600)
             mySnackbar.show()

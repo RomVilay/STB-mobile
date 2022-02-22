@@ -5,10 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import com.example.applicationstb.model.Chantier
-import com.example.applicationstb.model.Client
-import com.example.applicationstb.model.Section
-import com.example.applicationstb.model.Vehicule
+import com.example.applicationstb.model.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
@@ -89,7 +86,17 @@ class Converters {
     @TypeConverter
     fun toSectionList (value: String) = Json.decodeFromString<MutableList<Section>>(value)
 
+    @TypeConverter
+    fun fromRoulementList ( value: MutableList<Roulement>) = Json.encodeToString(value)
 
+    @TypeConverter
+    fun toRoulementList (value: String) = Json.decodeFromString<MutableList<Roulement>>(value)
+
+    @TypeConverter
+    fun fromJointList ( value: MutableList<Joint>) = Json.encodeToString(value)
+
+    @TypeConverter
+    fun toJointList (value: String) = Json.decodeFromString<MutableList<Joint>>(value)
 
 
 }
