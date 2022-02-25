@@ -30,8 +30,9 @@ import com.example.applicationstb.model.*
         DemontageMonophaseEntity::class,
         ClientEntity::class,
         VehiculeEntity::class,
-        RemontageEntity::class
-    ), version = 27
+        RemontageEntity::class,
+        PointageEntity::class
+    ), version = 29
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
@@ -53,6 +54,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun remontageDao(): RemontageDao
     abstract fun vehiculesDao(): VehiculeDao
     abstract fun clientDao(): ClientsDao
+    abstract fun pointageDao(): PointageDao
 
     @Volatile
     private var INSTANCE: LocalDatabase? = null

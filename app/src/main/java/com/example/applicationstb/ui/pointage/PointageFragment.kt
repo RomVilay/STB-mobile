@@ -1,12 +1,23 @@
 package com.example.applicationstb.ui.pointage
 
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListAdapter
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
+import com.example.applicationstb.model.Pointage
+import com.example.applicationstb.ui.FicheDemontage.FicheDemontageViewModel
+import com.example.applicationstb.ui.accueil.AccueilViewModel
+import java.time.Duration
 
 class PointageFragment : Fragment() {
 
@@ -20,13 +31,25 @@ class PointageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.pointage_fragment, container, false)
+        var layout = inflater.inflate(R.layout.pointage_fragment, container, false)
+        viewModel = ViewModelProvider(this).get(PointageViewModel::class.java)
+
+        var tabPointage = layout.findViewById<RecyclerView>(R.id.tabPointage)
+        viewModel.pointages.observe(viewLifecycleOwner, {
+            tabPointage.adapter = pointerAdapter(viewModel.pointages.value!!)
+        })
+        tabPointage.layoutManager = GridLayoutManager(context, 1)
+        var totalHeures = layout.findViewById<TextView>(R.id.totalHeure)
+        var retour = layout.findViewById<TextView>(R.id.exit)
+        retour.setOnClickListener {
+            viewModel.toAccueil(layout)
+        }
+        return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PointageViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel.getListePointages()
     }
-
 }

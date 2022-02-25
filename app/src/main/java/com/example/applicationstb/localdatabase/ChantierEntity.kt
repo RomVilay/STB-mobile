@@ -10,6 +10,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.encodeToJsonElement
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity (tableName="chantiers")
@@ -69,6 +70,15 @@ class Converters {
     @TypeConverter
     fun dateToTimestamp(date: Date?) : Long? {
         return date?.time?.toLong()
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    @TypeConverter
+    fun fromLocalDateTime(value:String?) : LocalDateTime? {
+        return value?.let { LocalDateTime.parse(it) }
+    }
+    @TypeConverter
+    fun LocalDateTimeToString(date: LocalDateTime?) : String? {
+        return date?.toString()
     }
 
     @TypeConverter

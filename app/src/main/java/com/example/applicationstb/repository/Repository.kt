@@ -3165,6 +3165,7 @@ class Repository(var context: Context) {
     var vehiculeDao: VehiculeDao? = null;
     var clientDao: ClientsDao? = null;
     var remontageDao: RemontageDao? = null;
+    var pointageDao: PointageDao? = null;
 
     fun logUser(username: String, psw: String, callback: Callback<LoginResponse>) {
         var body = BodyLogin(username, psw)
@@ -4507,6 +4508,7 @@ class Repository(var context: Context) {
         demontageReducteurDao = db!!.demontageReducteurDao()
         remontageMotopompeDao = db!!.remontageMotopompeDao()
         remontageMotoreducteurDao = db!!.remontageMotoreducteurDao()
+        pointageDao = db!!.pointageDao()
         Log.i("INFO", "db créée")
     }
 
@@ -4987,6 +4989,32 @@ class Repository(var context: Context) {
 
     suspend fun deleteDemontageReducteurLocalDatabse(demo: DemontageReducteurEntity) {
         demontageReducteurDao!!.delete(demo)
+    }
+    suspend fun insertPointageDatabase(pointage: Pointage) {
+       pointageDao!!.insertAll(pointage.toEntity())
+    }
+
+    suspend fun getAllPointageLocalDatabase(): List<PointageEntity> {
+        return pointageDao!!.getAll()
+    }
+
+    suspend fun getByIdPointageDatabase(id: String): Pointage? {
+        try {
+            if (pointageDao!!.getById(id) !== null) {
+                return pointageDao!!.getById(id).toPointage()
+            } else return null
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+
+    suspend fun updatePointageLocalDatabase(pointage: PointageEntity) {
+       pointageDao!!.update(pointage)
+    }
+
+    suspend fun deletePointageLocalDatabse(pointage: PointageEntity) {
+       pointageDao!!.delete(pointage)
     }
 
 }

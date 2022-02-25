@@ -6,22 +6,33 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/dbtPnt"
-        android:layout_width="260dp"
+        android:id="@+id/dateP"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/dbtPnt"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/fnPtn"
-        android:layout_width="260dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/supprPointage"
-        android:layout_width="129dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="X"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 </LinearLayout>

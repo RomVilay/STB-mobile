@@ -90,7 +90,20 @@ class Accueil : Fragment() {
         var login = sharedPref?.getString("login","")
         var pwd = sharedPref?.getString("password","")
         val exit = layout.findViewById<TextView>(R.id.exit)
+        val btnPtn = layout.findViewById<ToggleButton>(R.id.btnPointage)
+        val listePointage = layout.findViewById<TextView>(R.id.listePtn)
+        btnPtn.setOnClickListener{
+                if (btnPtn.isChecked) {
+                    viewModel.startPointage()
+                } else {
+                    viewModel.endPointage()
 
+                }
+
+        }
+        listePointage.setOnClickListener {
+            viewModel.toPointages(layout)
+        }
         deco.setOnClickListener{
             val alertDialogBuilder: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
@@ -267,7 +280,6 @@ class Accueil : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        // TODO: Use the ViewModel
     }
 
 }

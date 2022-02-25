@@ -51,11 +51,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             repository.createDb()
         }
     }
-
-    fun select(id: String) {
-
-    }
-
     fun back(view: View) {
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)

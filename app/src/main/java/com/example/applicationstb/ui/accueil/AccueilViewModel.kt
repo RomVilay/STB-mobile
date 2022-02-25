@@ -10,6 +10,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -37,6 +38,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.time.LocalDateTime
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
@@ -57,6 +59,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var remontages: MutableList<Remontage> = mutableListOf();
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
+    var pointage = MutableLiveData<Pointage>()
 
     fun connection(username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
@@ -1459,6 +1462,25 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 remontages.add(dt.toRemontageMotoreducteur())
             }
         }
+    }
+
+    fun startPointage() {
+        var ptn = Pointage(SystemClock.uptimeMillis().toString(),username!!, LocalDateTime.now(), null)
+        pointage.value = ptn
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertPointageDatabase(ptn)
+        }
+    }
+    fun endPointage() {
+        var ptn = pointage.value
+        ptn!!.dateFin = LocalDateTime.now()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updatePointageLocalDatabase(ptn.toEntity())
+        }
+        pointage.value = null
+    }
+    fun toPointages(view: View) {
+        Navigation.findNavController(view).navigate(AccueilDirections.actionAccueilToPointageFragment())
     }
 
     fun toChantier(view: View) {

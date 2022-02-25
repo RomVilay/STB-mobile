@@ -29,7 +29,7 @@
             android:id="@+id/cardView"
             android:layout_width="287dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="70px"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
             android:id="@+id/btnChantier"
             android:layout_width="287dp"
             android:layout_height="122dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="50dp"
             android:text="Chantiers"
             android:textSize="25sp"
             app:backgroundTint="@color/bleu_stb"
@@ -99,7 +99,7 @@
             android:id="@+id/btnRebobinage"
             android:layout_width="287dp"
             android:layout_height="104dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="20dp"
             android:text="Rebobinage"
             android:textSize="25sp"
             app:backgroundTint="@color/bleu_stb"
@@ -112,25 +112,25 @@
             android:id="@+id/btnDeco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="132dp"
+            android:layout_marginTop="60dp"
             android:text="Déconnexion"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.339"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
+            app:layout_constraintTop_toBottomOf="@+id/reload" />
 
         <Button
             android:id="@+id/reload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:text="recharger les fiches"
             app:backgroundTint="@color/gray_400"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.33"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
+            app:layout_constraintTop_toBottomOf="@+id/btnPointage" />
 
         <Button
             android:id="@+id/send"
@@ -173,6 +173,32 @@
             app:layout_constraintStart_toEndOf="@+id/btnDeco"
             app:layout_constraintTop_toTopOf="@+id/btnDeco"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/btnPointage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="ToggleButton"
+            android:textOff="Démarrer Pointage"
+            android:textOn="Terminer Pointage"
+            app:layout_constraintEnd_toStartOf="@+id/listePtn"
+            app:layout_constraintHorizontal_bias="0.805"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRebobinage" />
+
+        <TextView
+            android:id="@+id/listePtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="176dp"
+            android:text="Voir les Pointages"
+            android:textColor="@color/bleu_stb"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnPointage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnPointage"
+            app:layout_constraintVertical_bias="0.62" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
