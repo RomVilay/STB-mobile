@@ -125,54 +125,51 @@
                         android:id="@+id/textView48"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="20dp"
                         android:text="Type:"
                         app:layout_constraintBottom_toBottomOf="@+id/typePompe"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/typePompe"
-                        app:layout_constraintVertical_bias="0.523" />
+                        app:layout_constraintStart_toEndOf="@+id/typeFluide"
+                        app:layout_constraintTop_toTopOf="@+id/typePompe" />
 
                     <Spinner
                         android:id="@+id/typePompe"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView50"
+                        android:layout_marginStart="52dp"
+                        android:layout_marginTop="67dp"
                         app:layout_constraintStart_toEndOf="@+id/textView48"
-                        app:layout_constraintTop_toTopOf="@+id/textView50" />
+                        app:layout_constraintTop_toBottomOf="@+id/titrePomp" />
 
                     <TextView
                         android:id="@+id/textView49"
                         android:layout_width="87dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginTop="71dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
                         android:text="Type de Joint"
-                        app:layout_constraintStart_toEndOf="@+id/typeFluide"
-                        app:layout_constraintTop_toBottomOf="@+id/titrePomp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/tjoint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="24dp"
                         android:ems="10"
                         android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView49"
                         app:layout_constraintStart_toEndOf="@+id/textView49"
-                        app:layout_constraintTop_toTopOf="@+id/textView49" />
+                        app:layout_constraintTop_toTopOf="@+id/textView49"
+                        app:layout_constraintVertical_bias="0.407" />
 
                     <TextView
                         android:id="@+id/textView50"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="40dp"
                         android:text="Matière Joint"
                         app:layout_constraintBottom_toBottomOf="@+id/matJoint"
-                        app:layout_constraintStart_toEndOf="@+id/typePompe"
+                        app:layout_constraintStart_toEndOf="@+id/tjoint"
                         app:layout_constraintTop_toTopOf="@+id/matJoint"
                         app:layout_constraintVertical_bias="0.476" />
 
@@ -245,10 +242,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="30dp"
                         android:text="Diamètre Extérieur Partie Rotative(d3)"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
                     <TextView
                         android:id="@+id/textView53"
@@ -400,6 +397,18 @@
                         app:layout_constraintBottom_toBottomOf="@+id/d7"
                         app:layout_constraintEnd_toStartOf="@+id/d7"
                         app:layout_constraintTop_toTopOf="@+id/d7" />
+
+                    <ToggleButton
+                        android:id="@+id/switchGarniture2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="50dp"
+                        android:textOff="garniture 1"
+                        android:textOn="garniture 2"
+                        app:layout_constraintBottom_toTopOf="@+id/tjoint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView47"
+                        app:layout_constraintVertical_bias="0.833" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

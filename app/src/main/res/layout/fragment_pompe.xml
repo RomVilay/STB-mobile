@@ -141,43 +141,41 @@
                         android:id="@+id/textView48"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:text="Type mobile :"
                         app:layout_constraintBottom_toBottomOf="@+id/typePompe"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/typePompe"
-                        app:layout_constraintVertical_bias="0.523" />
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:layout_editor_absoluteX="328dp" />
 
                     <Spinner
                         android:id="@+id/typePompe"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView50"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginTop="20dp"
                         app:layout_constraintStart_toEndOf="@+id/textView48"
-                        app:layout_constraintTop_toTopOf="@+id/textView50" />
+                        app:layout_constraintTop_toBottomOf="@+id/numSerie" />
 
                     <TextView
                         android:id="@+id/textView49"
                         android:layout_width="87dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="36dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
                         android:text="Type de Joint"
-                        app:layout_constraintEnd_toEndOf="@+id/nums"
-                        app:layout_constraintStart_toStartOf="@+id/nums"
-                        app:layout_constraintTop_toBottomOf="@+id/nums" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
                     <TextView
                         android:id="@+id/textView50"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="17dp"
                         android:text="Matière Garniture"
                         app:layout_constraintBottom_toBottomOf="@+id/matJoint"
-                        app:layout_constraintStart_toEndOf="@+id/typePompe"
+                        app:layout_constraintStart_toEndOf="@+id/typeJoint"
                         app:layout_constraintTop_toTopOf="@+id/matJoint"
-                        app:layout_constraintVertical_bias="0.476" />
+                        app:layout_constraintVertical_bias="1.0" />
 
                     <Spinner
                         android:id="@+id/matJoint"
@@ -247,11 +245,11 @@
                         android:id="@+id/textView52"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="48dp"
                         android:text="Diamètre Extérieur Partie Rotative(d3)"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
                     <TextView
                         android:id="@+id/textView53"
@@ -584,23 +582,24 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/typeJoint"
-                        android:layout_width="250dp"
+                        android:layout_width="210dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="26dp"
+                        android:layout_marginStart="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/textView49"
                         app:layout_constraintStart_toEndOf="@+id/textView49"
-                        app:layout_constraintTop_toTopOf="@+id/textView49" />
+                        app:layout_constraintTop_toTopOf="@+id/textView49"
+                        app:layout_constraintVertical_bias="0.0" />
 
                     <ToggleButton
                         android:id="@+id/switchGarniture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="216dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="10dp"
                         android:textOff="Garniture 1"
                         android:textOn="Garniture 2"
                         app:layout_constraintStart_toEndOf="@+id/textView47"
-                        app:layout_constraintTop_toBottomOf="@+id/typeJoint" />
+                        app:layout_constraintTop_toBottomOf="@+id/typePompe" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
