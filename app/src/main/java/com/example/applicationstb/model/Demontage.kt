@@ -143,7 +143,16 @@ class DemontagePompe(
     var epaisseurPF: String?,
     var longueurRotativeNonComprimee: String?,
     var longueurRotativeComprimee: String?,
-    var longueurRotativeTravail: String?
+    var longueurRotativeTravail: String?,
+    var typeJoint2: String?,
+    var matiere2: Int?,
+    var diametreArbre2:String?,
+    var diametreExtPR2:String?,
+    var diametreExtPF2:String?,
+    var epaisseurPF2:String?,
+    var longueurRotativeNonComprimee2:String?,
+    var longueurRotativeComprimee2:String?,
+    var longueurRotativeTravail2:String?
 ) : DemontageMoteur(
     idFiche,
     numDevis,
@@ -233,7 +242,16 @@ class DemontagePompe(
             refJointAvant,
             refJointArriere,
             typeJointAvant,
-            typeJointArriere
+            typeJointArriere,
+            typeJoint2,
+            matiere2,
+            diametreArbre2,
+            diametreExtPR2,
+            diametreExtPF2,
+            epaisseurPF2,
+            longueurRotativeNonComprimee2,
+            longueurRotativeComprimee2,
+            longueurRotativeTravail2,
         )
     }
 }

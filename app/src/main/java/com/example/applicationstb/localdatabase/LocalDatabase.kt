@@ -31,7 +31,7 @@ import com.example.applicationstb.model.*
         ClientEntity::class,
         VehiculeEntity::class,
         RemontageEntity::class
-    ), version = 24
+    ), version = 26
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
