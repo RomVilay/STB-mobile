@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/dateP"
-        android:layout_width="200dp"
+        android:layout_width="216dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/dbtPnt"
-        android:layout_width="200dp"
+        android:layout_width="216dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
@@ -23,9 +23,10 @@
 
     <TextView
         android:id="@+id/fnPtn"
-        android:layout_width="200dp"
+        android:layout_width="216dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:gravity="center"
         android:textSize="20sp" />
 
     <Button

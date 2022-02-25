@@ -17,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PointageViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
@@ -31,14 +33,17 @@ class PointageViewModel(application: Application) : AndroidViewModel(application
     var total = MutableLiveData<Long>(0)
     @RequiresApi(Build.VERSION_CODES.O)
     fun getListePointages() =  viewModelScope.launch(Dispatchers.IO){
-        var list = repository.getAllPointageLocalDatabase()
+        var list = repository.getAllPointageLocalDatabase(LocalDateTime.now().format(
+            DateTimeFormatter.ofPattern("yyyy-MM"))+"%")
+        Log.i("info","année mois : ${LocalDateTime.now().format(
+            DateTimeFormatter.ofPattern("yyyy-MM"))}")
         var list2 = mutableListOf<Pointage>()
         var t = 0L
         list.forEach {
             list2.add(it.toPointage())
-            //t = t + Duration.between(it.dateDebut,it.dateFin).toHours()
+            t = t + Duration.between(it.dateDebut,it.dateFin).toHours()
         }
-        //total.postValue(t)
+        total.postValue(t)
         pointages.postValue(list2)
     }
     fun toAccueil(view: View) {

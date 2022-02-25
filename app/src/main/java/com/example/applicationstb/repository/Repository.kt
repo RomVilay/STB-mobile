@@ -4994,8 +4994,8 @@ class Repository(var context: Context) {
        pointageDao!!.insertAll(pointage.toEntity())
     }
 
-    suspend fun getAllPointageLocalDatabase(): List<PointageEntity> {
-        return pointageDao!!.getAll()
+    suspend fun getAllPointageLocalDatabase(date:String): List<PointageEntity> {
+        return pointageDao!!.getAll(date)
     }
 
     suspend fun getByIdPointageDatabase(id: String): Pointage? {

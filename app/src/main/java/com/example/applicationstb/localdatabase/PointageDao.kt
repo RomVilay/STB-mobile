@@ -10,8 +10,8 @@ interface PointageDao {
     @Delete
     fun delete(fiche: PointageEntity)
 
-    @Query("SELECT * FROM pointages")
-    fun getAll(): List<PointageEntity>
+    @Query("SELECT * FROM pointages WHERE dateDebut LIKE :date")
+    fun getAll(date:String): List<PointageEntity>
 
     @Query("SELECT * FROM pointages WHERE _id LIKE :id")
     fun getById(id: String) : PointageEntity

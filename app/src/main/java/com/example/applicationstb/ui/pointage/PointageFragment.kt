@@ -40,6 +40,9 @@ class PointageFragment : Fragment() {
         })
         tabPointage.layoutManager = GridLayoutManager(context, 1)
         var totalHeures = layout.findViewById<TextView>(R.id.totalHeure)
+        viewModel.total.observe(viewLifecycleOwner, {
+            totalHeures.setText(viewModel.total.value.toString())
+        })
         var retour = layout.findViewById<TextView>(R.id.exit)
         retour.setOnClickListener {
             viewModel.toAccueil(layout)
