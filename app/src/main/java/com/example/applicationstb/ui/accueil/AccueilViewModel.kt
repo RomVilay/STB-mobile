@@ -96,39 +96,57 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 when (i.typeFicheDemontage) {
                     1 -> {
                         var fiche = repository.getByIdDemoPompeLocalDatabse(i._id)
-                        repository.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
+}
                     }
                     2 -> {
                         var fiche = repository.getByIdDemoMonoLocalDatabse(i._id)
-                        repository.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     3 -> {
-                        var fiche = repository.getByIdDemoAlterLocalDatabse(i._id)
-                        repository.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
+                            var fiche = repository.getByIdDemoAlterLocalDatabse(i._id)
+                        if (fiche !== null) {
+                            repository.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     4 -> {
                         var fiche = repository.getByIdDemoRBLocalDatabse(i._id)
-                        repository.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     5 -> {
                         var fiche = repository.getByIdDemoCCLocalDatabse(i._id)
-                        repository.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     6 -> {
                         var fiche = repository.getByIdDemoTriLocalDatabse(i._id)
-                        repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     7 -> {
                         var fiche = repository.getByIdDemoMotopompeLocalDatabase(i._id)
-                        repository.deleteDemontageMotoPompeLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageMotoPompeLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     8 -> {
                         var fiche = repository.getByIdDemoReducteurLocalDatabase(i._id)
-                        repository.deleteDemontageReducteurLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageReducteurLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                     9 -> {
                         var fiche = repository.getByIdDemoMotoreducteurLocalDatabase(i._id)
-                        repository.deleteDemontageMotoreducteurLocalDatabse(fiche!!.toEntity())
+                        if (fiche !== null) {
+                            repository.deleteDemontageMotoreducteurLocalDatabse(fiche!!.toEntity())
+                        }
                     }
                 }
             }
