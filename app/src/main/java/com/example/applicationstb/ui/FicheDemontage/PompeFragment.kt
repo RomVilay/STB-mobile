@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -281,7 +282,11 @@ class PompeFragment : Fragment() {
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
         }
-
+        var gal = layout.findViewById<Button>(R.id.g6)
+        gal.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 6)
+        }
 
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
@@ -770,6 +775,10 @@ class PompeFragment : Fragment() {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
             viewModel.addPhoto(currentPhotoPath)
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+            var file = viewModel.getRealPathFromURI(data?.data!!)
+            viewModel.addPhoto(file!!)
         }
     }
 

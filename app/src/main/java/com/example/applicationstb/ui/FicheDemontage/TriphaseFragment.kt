@@ -371,7 +371,6 @@ class TriphaseFragment : Fragment() {
         }
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
-            Log.i("info", "photo gallerie :" + file)
            viewModel.addPhoto(file!!)
         }
 

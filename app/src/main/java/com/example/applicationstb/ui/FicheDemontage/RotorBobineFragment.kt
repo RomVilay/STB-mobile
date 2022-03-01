@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -130,6 +131,11 @@ class RotorBobineFragment : Fragment() {
         var term = layout.findViewById<Button>(R.id.termRB)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         viewModel.photos.value = fiche.photos!!.toMutableList()
+        var gal = layout.findViewById<Button>(R.id.g8)
+        gal.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 6)
+        }
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -438,6 +444,10 @@ class RotorBobineFragment : Fragment() {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
             viewModel.addPhoto(currentPhotoPath)
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+            var file = viewModel.getRealPathFromURI(data?.data!!)
+            viewModel.addPhoto(file!!)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -283,6 +284,12 @@ class ReducteurFragment : Fragment() {
             }
             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
+        var gal = layout.findViewById<Button>(R.id.g7)
+        gal.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 6)
+        }
+
         termP.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
@@ -316,6 +323,10 @@ class ReducteurFragment : Fragment() {
             //val photo: Bitmap = data?.extras?.get("data") as Bitmap
             //imageView.setImageBitmap(photo)
             viewModel.addPhoto(currentPhotoPath)
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+            var file = viewModel.getRealPathFromURI(data?.data!!)
+            viewModel.addPhoto(file!!)
         }
     }
 

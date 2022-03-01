@@ -642,7 +642,6 @@ class MotopompeFragment : Fragment() {
         }
         if (resultCode == Activity.RESULT_OK && requestCode == 6) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
-            Log.i("info", "photo gallerie :" + file)
             viewModel.addPhoto(file!!)
         }
     }
