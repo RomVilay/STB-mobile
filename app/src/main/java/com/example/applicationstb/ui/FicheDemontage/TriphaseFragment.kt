@@ -1,10 +1,11 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -28,6 +29,7 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.model.MediaStoreFileLoader
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Triphase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
@@ -50,6 +52,7 @@ import java.util.*
  */
 class TriphaseFragment : Fragment() {
 
+    val REQUEST_CODE = 100
     private val viewModel: FicheDemontageViewModel by activityViewModels()
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
@@ -57,7 +60,6 @@ class TriphaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -169,61 +171,73 @@ class TriphaseFragment : Fragment() {
                 viewModel.localSave()
             }
             RU.doAfterTextChanged {
-                if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU = RU.text.toString().toFloat()
+                if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU =
+                    RU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RV.doAfterTextChanged {
-                if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV = RV.text.toString().toFloat()
+                if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV =
+                    RV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RW.doAfterTextChanged {
-                if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW = RW.text.toString().toFloat()
+                if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW =
+                    RW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VU.doAfterTextChanged {
-                if (VU.text.isNotEmpty() && VU.hasFocus() && VU.text.matches(regexNombres)) fiche.tensionU = VU.text.toString().toFloat()
+                if (VU.text.isNotEmpty() && VU.hasFocus() && VU.text.matches(regexNombres)) fiche.tensionU =
+                    VU.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VV.doAfterTextChanged {
-                if (VV.text.isNotEmpty() && VV.hasFocus() && VV.text.matches(regexNombres)) fiche.tensionV = VV.text.toString().toFloat()
+                if (VV.text.isNotEmpty() && VV.hasFocus() && VV.text.matches(regexNombres)) fiche.tensionV =
+                    VV.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VW.doAfterTextChanged {
-                if (VW.text.isNotEmpty() && VW.hasFocus() && VW.text.matches(regexNombres)) fiche.tensionW = VW.text.toString().toFloat()
+                if (VW.text.isNotEmpty() && VW.hasFocus() && VW.text.matches(regexNombres)) fiche.tensionW =
+                    VW.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VUI.doAfterTextChanged {
-                if (VUI.text.isNotEmpty() && VUI.hasFocus() && VUI.text.matches(regexNombres)) fiche.intensiteU = VUI.text.toString().toFloat()
+                if (VUI.text.isNotEmpty() && VUI.hasFocus() && VUI.text.matches(regexNombres)) fiche.intensiteU =
+                    VUI.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VVI.doAfterTextChanged {
-                if (VVI.text.isNotEmpty() && VVI.hasFocus() && VVI.text.matches(regexNombres)) fiche.intensiteV = VVI.text.toString().toFloat()
+                if (VVI.text.isNotEmpty() && VVI.hasFocus() && VVI.text.matches(regexNombres)) fiche.intensiteV =
+                    VVI.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VWI.doAfterTextChanged {
-                if (VWI.text.isNotEmpty() && VWI.hasFocus() && VWI.text.matches(regexNombres)) fiche.intensiteW = VWI.text.toString().toFloat()
+                if (VWI.text.isNotEmpty() && VWI.hasFocus() && VWI.text.matches(regexNombres)) fiche.intensiteW =
+                    VWI.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             dessai.doAfterTextChanged {
-                if (dessai.text.isNotEmpty() && dessai.hasFocus() && dessai.text.matches(regexNombres)) fiche.dureeEssai = dessai.text.toString().toFloat()
+                if (dessai.text.isNotEmpty() && dessai.hasFocus() && dessai.text.matches(
+                        regexNombres
+                    )
+                ) fiche.dureeEssai = dessai.text.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -258,14 +272,14 @@ class TriphaseFragment : Fragment() {
         }
 
         enr.setOnClickListener {
-                viewModel.getTime()
-                fiche.status = 2L
-                viewModel.selection.value = fiche
-                viewModel.localSave()
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.getNameURI()
-                    }
-                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            viewModel.getTime()
+            fiche.status = 2L
+            viewModel.selection.value = fiche
+            viewModel.localSave()
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getNameURI()
+            }
+            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             //viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
@@ -289,7 +303,11 @@ class TriphaseFragment : Fragment() {
             alertDialog?.show()
         }
         retour.setOnClickListener {
-                viewModel.retour(layout)
+            viewModel.retour(layout)
+        }
+        var gal = layout.findViewById<Button>(R.id.gallerie)
+        gal.setOnClickListener {
+            openGalleryForImage()
         }
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(
@@ -344,12 +362,24 @@ class TriphaseFragment : Fragment() {
         return layout
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            Log.i("info", "photo camera: ${currentPhotoPath}")
             viewModel.addPhoto(currentPhotoPath)
         }
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            var file = getRealPathFromURI(data?.data!!)
+            Log.i("info", "photo gallerie :" + file)
+           viewModel.addPhoto(file!!)
+        }
+
+    }
+
+    private fun openGalleryForImage() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_CODE)
     }
 
     @Throws(IOException::class)
@@ -384,6 +414,17 @@ class TriphaseFragment : Fragment() {
         val storageDir: File =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         storageDir.mkdir()
+    }
+
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(context, contentUri, proj, null, null, null)
+        val cursor: Cursor = loader.loadInBackground()
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val result = cursor.getString(column_index)
+        cursor.close()
+        return result
     }
 
 
