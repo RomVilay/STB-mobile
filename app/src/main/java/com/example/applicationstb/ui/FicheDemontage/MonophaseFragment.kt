@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -228,6 +229,12 @@ class MonophaseFragment : Fragment() {
             alertDialog?.show()
         }
 
+        var gal = layout.findViewById<Button>(R.id.g3)
+        gal.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 6)
+        }
+
         val fmanager = childFragmentManager
         fmanager.commit {
             replace<MecaFragment>(R.id.PartMeca)
@@ -246,6 +253,11 @@ class MonophaseFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             viewModel.addPhoto(currentPhotoPath)
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+            var file = viewModel.getRealPathFromURI(data?.data!!)
+            Log.i("info", "photo gallerie :" + file)
+            viewModel.addPhoto(file!!)
         }
     }
 

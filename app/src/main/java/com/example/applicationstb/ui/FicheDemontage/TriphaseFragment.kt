@@ -370,7 +370,7 @@ class TriphaseFragment : Fragment() {
             viewModel.addPhoto(currentPhotoPath)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-            var file = getRealPathFromURI(data?.data!!)
+            var file = viewModel.getRealPathFromURI(data?.data!!)
             Log.i("info", "photo gallerie :" + file)
            viewModel.addPhoto(file!!)
         }
@@ -416,16 +416,6 @@ class TriphaseFragment : Fragment() {
         storageDir.mkdir()
     }
 
-    fun getRealPathFromURI(contentUri: Uri?): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val loader = CursorLoader(context, contentUri, proj, null, null, null)
-        val cursor: Cursor = loader.loadInBackground()
-        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor.moveToFirst()
-        val result = cursor.getString(column_index)
-        cursor.close()
-        return result
-    }
 
 
 }

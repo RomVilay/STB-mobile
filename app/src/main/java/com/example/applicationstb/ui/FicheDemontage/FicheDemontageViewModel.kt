@@ -2,12 +2,15 @@ package com.example.applicationstb.ui.FicheDemontage
 
 import android.app.Application
 import android.content.Context
+import android.content.CursorLoader
 import android.content.Intent
+import android.database.Cursor
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -84,6 +87,18 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         photos.value = list!!
         galleryAddPic(photo)
         localSave()
+    }
+
+
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(context, contentUri, proj, null, null, null)
+        val cursor: Cursor = loader.loadInBackground()
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val result = cursor.getString(column_index)
+        cursor.close()
+        return result
     }
 
     fun setSchema(sch: String) {

@@ -958,8 +958,7 @@
                         android:id="@+id/photo2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="224dp"
-                        android:layout_marginLeft="224dp"
+                        android:layout_marginStart="80dp"
                         android:layout_marginTop="12dp"
                         android:text="ajouter une photo"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1034,6 +1033,16 @@
                         app:layout_constraintBottom_toBottomOf="@+id/enregistrerTRi"
                         app:layout_constraintStart_toEndOf="@+id/enregistrerTRi"
                         app:layout_constraintTop_toTopOf="@+id/enregistrerTRi" />
+
+                    <Button
+                        android:id="@+id/g3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:text="Importer depuis Gallery"
+                        app:layout_constraintBottom_toBottomOf="@+id/photo2"
+                        app:layout_constraintStart_toEndOf="@+id/photo2"
+                        app:layout_constraintTop_toTopOf="@+id/photo2" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
