@@ -1345,6 +1345,15 @@ class BodyDemoPompe(
     var refJointArriere: String?,
     var typeJointAvant: Boolean?,
     var typeJointArriere: Boolean?,
+    var typeJoint2: String?,
+    var matiere2: Int?,
+    var diametreArbre2: String?,
+    var diametreExtPR2: String?,
+    var diametreExtPF2: String?,
+    var epaisseurPF2: String?,
+    var longueurRotativeNonComprimee2: String?,
+    var longueurRotativeComprimee2: String?,
+    var longueurRotativeTravail2: String?,
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1385,6 +1394,15 @@ class BodyDemoPompe(
         parcel.readString(),
         parcel.readBoolean(),
         parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
     ) {
     }
 
@@ -1424,6 +1442,15 @@ class BodyDemoPompe(
         parcel.writeString(refJointArriere!!)
         parcel.writeBoolean(typeJointAvant!!)
         parcel.writeBoolean(typeJointArriere!!)
+        parcel.writeString(typeJoint2!!)
+        parcel.writeInt(matiere2!!)
+        parcel.writeString(diametreArbre2!!)
+        parcel.writeString(diametreExtPR2!!)
+        parcel.writeString(diametreExtPF2!!)
+        parcel.writeString(epaisseurPF2!!)
+        parcel.writeString(longueurRotativeNonComprimee2!!)
+        parcel.writeString(longueurRotativeComprimee2!!)
+        parcel.writeString(longueurRotativeTravail2!!)
     }
 
     override fun describeContents(): Int {
@@ -1517,7 +1544,16 @@ class BodyDemoMotoPompe(
     var resistanceDemarrage: Float?,
     var valeurCondensateur: Float?,
     var tension: Float?,
-    var intensite: Float?
+    var intensite: Float?,
+    var typeJoint2: String?,
+    var matiere2: Int?,
+    var diametreArbre2: String?,
+    var diametreExtPR2: String?,
+    var diametreExtPF2: String?,
+    var epaisseurPF2: String?,
+    var longueurRotativeNonComprimee2: String?,
+    var longueurRotativeComprimee2: String?,
+    var longueurRotativeTravail2: String?
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -1605,7 +1641,16 @@ class BodyDemoMotoPompe(
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
-        parcel.readFloat()
+        parcel.readFloat(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
     ) {
     }
 
@@ -1696,6 +1741,15 @@ class BodyDemoMotoPompe(
         parcel.writeFloat(valeurCondensateur!!)
         parcel.writeFloat(tension!!)
         parcel.writeFloat(intensite!!)
+        parcel.writeString(typeJoint2!!)
+        parcel.writeInt(matiere2!!)
+        parcel.writeString(diametreArbre2!!)
+        parcel.writeString(diametreExtPR2!!)
+        parcel.writeString(diametreExtPF2!!)
+        parcel.writeString(epaisseurPF2!!)
+        parcel.writeString(longueurRotativeNonComprimee2!!)
+        parcel.writeString(longueurRotativeComprimee2!!)
+        parcel.writeString(longueurRotativeTravail2!!)
     }
 
     override fun describeContents(): Int {
@@ -3459,7 +3513,16 @@ class Repository(var context: Context) {
             motopompe.resistanceDemarrage,
             motopompe.valeurCondensateur,
             motopompe.tension,
-            motopompe.intensite
+            motopompe.intensite,
+            motopompe.typeJoint2,
+            motopompe.matiere2,
+            motopompe.diametreArbre2,
+            motopompe.diametreExtPR2,
+            motopompe.diametreExtPF2,
+            motopompe.epaisseurPF2,
+            motopompe.longueurRotativeNonComprimee2,
+            motopompe.longueurRotativeComprimee2,
+            motopompe.longueurRotativeTravail2,
         )
         var call = service.patchDemontageMotopompe(token, ficheId, body)
         call.enqueue(callback)
@@ -4099,7 +4162,16 @@ class Repository(var context: Context) {
             fiche.refJointAvant,
             fiche.refJointArriere,
             fiche.typeJointAvant,
-            fiche.typeJointArriere
+            fiche.typeJointArriere,
+            fiche.typeJoint2,
+            fiche.matiere2,
+            fiche.diametreArbre2,
+            fiche.diametreExtPR2,
+            fiche.diametreExtPF2,
+            fiche.epaisseurPF2,
+            fiche.longueurRotativeNonComprimee2,
+            fiche.longueurRotativeComprimee2,
+            fiche.longueurRotativeTravail2,
         )
         var call = service.patchDemontagePompe(token, ficheId, body)
         var fiche: DemontagePompe? = null

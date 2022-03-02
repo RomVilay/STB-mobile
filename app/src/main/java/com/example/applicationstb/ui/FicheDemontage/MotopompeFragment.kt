@@ -1,4 +1,3 @@
-
 package com.example.applicationstb.ui.FicheDemontage
 
 import android.Manifest
@@ -45,6 +44,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,7 +52,7 @@ import java.util.*
 class MotopompeFragment : Fragment() {
     private val viewModel: FicheDemontageViewModel by activityViewModels()
     private lateinit var photos: RecyclerView
-    private  val PHOTO_RESULT = 1888
+    private val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
     val REQUEST_IMAGE_CAPTURE = 1
 
@@ -72,10 +72,28 @@ class MotopompeFragment : Fragment() {
         var sensRotation = layout.findViewById<Switch>(R.id.sensRotation)
         var typeRessort = layout.findViewById<Spinner>(R.id.typePompe)
         var typeJoint = layout.findViewById<AutoCompleteTextView>(R.id.tjoint)
-        ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("joint torique","joint enveloppant", "passage anti-rotation","autres")).also { adapter -> typeJoint.setAdapter(adapter) }
-        typeRessort.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","entraînement par vis","ressort coaxial conique","ressort coaxial cylindrique","soufflet"))
+        ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("joint torique", "joint enveloppant", "passage anti-rotation")
+        ).also { adapter -> typeJoint.setAdapter(adapter) }
+        typeRessort.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(
+                " ",
+                "entraînement par vis",
+                "ressort coaxial conique",
+                "ressort coaxial cylindrique",
+                "soufflet"
+            )
+        )
         var matiere = layout.findViewById<Spinner>(R.id.matJoint)
-        matiere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","ceramique","carbone scilicium","carbone","tungstène"))
+        matiere.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(" ", "ceramique", "carbone scilicium", "carbone", "tungstène")
+        )
         var i4 = layout.findViewById<TextView>(R.id.i4)
         var d7 = layout.findViewById<TextView>(R.id.d7)
         var d3 = layout.findViewById<TextView>(R.id.d3)
@@ -98,7 +116,11 @@ class MotopompeFragment : Fragment() {
             setReorderingAllowed(true)
         }
         var typemotopompe = layout.findViewById<Spinner>(R.id.typemotopompe)
-        typemotopompe.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","Triphasé","Monophasé"))
+        typemotopompe.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(" ", "Triphasé", "Monophasé")
+        )
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termmp)
         var btnPhoto = layout.findViewById<Button>(R.id.photo)
@@ -119,32 +141,68 @@ class MotopompeFragment : Fragment() {
         //mono
         var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmUe)
         var resistanceTravail = layout.findViewById<EditText>(R.id.isopmVe)
-        var resistanceDemarrage	= layout.findViewById<EditText>(R.id.rdem)
-        var valeurCondensateur	= layout.findViewById<EditText>(R.id.condens)
-        var tension	= layout.findViewById<EditText>(R.id.vVe)
-        var intensite	= layout.findViewById<EditText>(R.id.vWe)
+        var resistanceDemarrage = layout.findViewById<EditText>(R.id.rdem)
+        var valeurCondensateur = layout.findViewById<EditText>(R.id.condens)
+        var tension = layout.findViewById<EditText>(R.id.vVe)
+        var intensite = layout.findViewById<EditText>(R.id.vWe)
         var fiche = viewModel.selection.value!! as DemontageMotopompe
-        switchGarniture.setOnCheckedChangeListener{ _, isChecked ->
+        switchGarniture.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                if (fiche.matiere2 !== null) matiere.setSelection(fiche.matiere2!!) else matiere.setSelection(0)
-                if (fiche.typeJoint2 !== null) typeJoint.setText(fiche.typeJoint2.toString()) else typeJoint.setText("")
-                if (fiche.diametreArbre2 !== null) diametreArbre.setText(fiche.diametreArbre2!!.toString()) else diametreArbre.setText("")
-                if (fiche.diametreExtPR2 !== null) diametreExtPR.setText(fiche.diametreExtPR2!!.toString()) else diametreExtPR.setText("")
-                if (fiche.diametreExtPF2 !== null) diametreExtPF.setText(fiche.diametreExtPF2!!.toString()) else diametreExtPF.setText("")
-                if (fiche.epaisseurPF2 !== null) epaisseurPF.setText(fiche.epaisseurPF2!!.toString()) else epaisseurPF.setText("")
-                if (fiche.longueurRotativeNonComprimee2 !== null) longueurRotativeNonComprimee.setText(fiche.longueurRotativeNonComprimee2!!.toString()) else longueurRotativeNonComprimee.setText("")
-                if (fiche.longueurRotativeComprimee2!== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee2!!.toString()) else longueurRotativeComprimee.setText("")
-                if (fiche.longueurRotativeTravail2 !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail2!!.toString()) else longueurRotativeTravail.setText("")
+                if (fiche.matiere2 !== null) matiere.setSelection(fiche.matiere2!!) else matiere.setSelection(
+                    0
+                )
+                if (fiche.typeJoint2 !== null) typeJoint.setText(fiche.typeJoint2.toString()) else typeJoint.setText(
+                    ""
+                )
+                if (fiche.diametreArbre2 !== null) diametreArbre.setText(fiche.diametreArbre2!!.toString()) else diametreArbre.setText(
+                    ""
+                )
+                if (fiche.diametreExtPR2 !== null) diametreExtPR.setText(fiche.diametreExtPR2!!.toString()) else diametreExtPR.setText(
+                    ""
+                )
+                if (fiche.diametreExtPF2 !== null) diametreExtPF.setText(fiche.diametreExtPF2!!.toString()) else diametreExtPF.setText(
+                    ""
+                )
+                if (fiche.epaisseurPF2 !== null) epaisseurPF.setText(fiche.epaisseurPF2!!.toString()) else epaisseurPF.setText(
+                    ""
+                )
+                if (fiche.longueurRotativeNonComprimee2 !== null) longueurRotativeNonComprimee.setText(
+                    fiche.longueurRotativeNonComprimee2!!.toString()
+                ) else longueurRotativeNonComprimee.setText("")
+                if (fiche.longueurRotativeComprimee2 !== null) longueurRotativeComprimee.setText(
+                    fiche.longueurRotativeComprimee2!!.toString()
+                ) else longueurRotativeComprimee.setText("")
+                if (fiche.longueurRotativeTravail2 !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail2!!.toString()) else longueurRotativeTravail.setText(
+                    ""
+                )
             } else {
-                if (fiche.matiere !== null) matiere.setSelection(fiche.matiere!!) else matiere.setSelection(0)
-                if (fiche.typeJoint !== null) typeJoint.setText(fiche.typeJoint.toString()) else typeJoint.setText("")
-                if (fiche.diametreArbre !== null) diametreArbre.setText(fiche.diametreArbre!!.toString()) else diametreArbre.setText("")
-                if (fiche.diametreExtPR !== null) diametreExtPR.setText(fiche.diametreExtPR!!.toString()) else diametreExtPR.setText("")
-                if (fiche.diametreExtPF !== null) diametreExtPF.setText(fiche.diametreExtPF!!.toString()) else diametreExtPF.setText("")
-                if (fiche.epaisseurPF !== null) epaisseurPF.setText(fiche.epaisseurPF!!.toString()) else epaisseurPF.setText("")
-                if (fiche.longueurRotativeNonComprimee !== null) longueurRotativeNonComprimee.setText(fiche.longueurRotativeNonComprimee!!.toString()) else longueurRotativeNonComprimee.setText("")
-                if (fiche.longueurRotativeComprimee!== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee!!.toString()) else longueurRotativeComprimee.setText("")
-                if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString()) else longueurRotativeTravail.setText("")
+                if (fiche.matiere !== null) matiere.setSelection(fiche.matiere!!) else matiere.setSelection(
+                    0
+                )
+                if (fiche.typeJoint !== null) typeJoint.setText(fiche.typeJoint.toString()) else typeJoint.setText(
+                    ""
+                )
+                if (fiche.diametreArbre !== null) diametreArbre.setText(fiche.diametreArbre!!.toString()) else diametreArbre.setText(
+                    ""
+                )
+                if (fiche.diametreExtPR !== null) diametreExtPR.setText(fiche.diametreExtPR!!.toString()) else diametreExtPR.setText(
+                    ""
+                )
+                if (fiche.diametreExtPF !== null) diametreExtPF.setText(fiche.diametreExtPF!!.toString()) else diametreExtPF.setText(
+                    ""
+                )
+                if (fiche.epaisseurPF !== null) epaisseurPF.setText(fiche.epaisseurPF!!.toString()) else epaisseurPF.setText(
+                    ""
+                )
+                if (fiche.longueurRotativeNonComprimee !== null) longueurRotativeNonComprimee.setText(
+                    fiche.longueurRotativeNonComprimee!!.toString()
+                ) else longueurRotativeNonComprimee.setText("")
+                if (fiche.longueurRotativeComprimee !== null) longueurRotativeComprimee.setText(
+                    fiche.longueurRotativeComprimee!!.toString()
+                ) else longueurRotativeComprimee.setText("")
+                if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString()) else longueurRotativeTravail.setText(
+                    ""
+                )
             }
         }
         typemotopompe.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -205,7 +263,7 @@ class MotopompeFragment : Fragment() {
         }
         if (fiche.typeMotopompe !== null) typemotopompe.setSelection(fiche.typeMotopompe!!.toInt())
         if (fiche.fluide !== null) fluide.setText(fiche.fluide!!.toString())
-        if (fiche.sensRotation !== null ) sensRotation.setChecked(!fiche.sensRotation!!)
+        if (fiche.sensRotation !== null) sensRotation.setChecked(!fiche.sensRotation!!)
         if (fiche.typeRessort !== null) typeRessort.setSelection(fiche.typeRessort!!)
         if (fiche.matiere !== null) matiere.setSelection(fiche.matiere!!)
         if (fiche.typeJoint !== null) typeJoint.setText(fiche.typeJoint.toString())
@@ -260,7 +318,8 @@ class MotopompeFragment : Fragment() {
                     id: Long
                 ) {
                     if (matiere.selectedItem.toString() !== " ") {
-                        if (switchGarniture.isChecked) fiche.matiere2 = position else fiche.matiere = position
+                        if (switchGarniture.isChecked) fiche.matiere2 =
+                            position else fiche.matiere = position
                     }
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -270,168 +329,208 @@ class MotopompeFragment : Fragment() {
             }
             typeJoint.doAfterTextChanged {
                 if (typeJoint.text.isNotEmpty()) {
-                    if (switchGarniture.isChecked) fiche.typeJoint2 = typeJoint.text.toString() else fiche.typeJoint = typeJoint.text.toString()
+                    if (switchGarniture.isChecked) {
+                        fiche.typeJoint2 = Normalizer
+                            .normalize(typeJoint.text.toString(), Normalizer.Form.NFD)
+                            .replace("[^\\p{ASCII}]", "")
+                    } else {
+                        fiche.typeJoint = Normalizer
+                            .normalize(typeJoint.text.toString(), Normalizer.Form.NFD)
+                            .replace("[^\\p{ASCII}]", "")
+                    }
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             diametreArbre.doAfterTextChanged {
-                if (diametreArbre.text.isNotEmpty()  && diametreArbre.hasFocus()) {
-                    if (switchGarniture.isChecked) fiche.diametreArbre2 = diametreArbre.text.toString() else fiche.diametreArbre = diametreArbre.text.toString()
+                if (diametreArbre.text.isNotEmpty() && diametreArbre.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.diametreArbre2 =
+                        diametreArbre.text.toString() else fiche.diametreArbre =
+                        diametreArbre.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             diametreExtPF.doAfterTextChanged {
-                if (diametreExtPF.text.isNotEmpty()  && diametreExtPF.hasFocus()) {
-                    if (switchGarniture.isChecked) fiche.diametreExtPF2 = diametreExtPF.text.toString() else fiche.diametreExtPF = diametreExtPF.text.toString()
+                if (diametreExtPF.text.isNotEmpty() && diametreExtPF.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.diametreExtPF2 =
+                        diametreExtPF.text.toString() else fiche.diametreExtPF =
+                        diametreExtPF.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             diametreExtPR.doAfterTextChanged {
-                if (diametreExtPR.text.isNotEmpty()  && diametreExtPR.hasFocus()) {
-                    if (switchGarniture.isChecked)  fiche.diametreExtPR2 = diametreExtPR.text.toString() else fiche.diametreExtPR = diametreExtPR.text.toString()
+                if (diametreExtPR.text.isNotEmpty() && diametreExtPR.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.diametreExtPR2 =
+                        diametreExtPR.text.toString() else fiche.diametreExtPR =
+                        diametreExtPR.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             epaisseurPF.doAfterTextChanged {
-                if (epaisseurPF.text.isNotEmpty()  && epaisseurPF.hasFocus()){
-                    if (switchGarniture.isChecked)   fiche.epaisseurPF2 = epaisseurPF.text.toString() else fiche.epaisseurPF = epaisseurPF.text.toString()
+                if (epaisseurPF.text.isNotEmpty() && epaisseurPF.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.epaisseurPF2 =
+                        epaisseurPF.text.toString() else fiche.epaisseurPF =
+                        epaisseurPF.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             longueurRotativeNonComprimee.doAfterTextChanged {
-                if (longueurRotativeNonComprimee.text.isNotEmpty() && longueurRotativeNonComprimee.hasFocus()){
-                    if (switchGarniture.isChecked) fiche.longueurRotativeNonComprimee2 = longueurRotativeNonComprimee.text.toString() else fiche.longueurRotativeNonComprimee = longueurRotativeNonComprimee.text.toString()
+                if (longueurRotativeNonComprimee.text.isNotEmpty() && longueurRotativeNonComprimee.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.longueurRotativeNonComprimee2 =
+                        longueurRotativeNonComprimee.text.toString() else fiche.longueurRotativeNonComprimee =
+                        longueurRotativeNonComprimee.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             longueurRotativeComprimee.doAfterTextChanged {
-                if (longueurRotativeComprimee.text.isNotEmpty() && longueurRotativeComprimee.hasFocus()){
-                    if (switchGarniture.isChecked) fiche.longueurRotativeComprimee2 = longueurRotativeComprimee.text.toString() else fiche.longueurRotativeComprimee = longueurRotativeComprimee.text.toString()
+                if (longueurRotativeComprimee.text.isNotEmpty() && longueurRotativeComprimee.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.longueurRotativeComprimee2 =
+                        longueurRotativeComprimee.text.toString() else fiche.longueurRotativeComprimee =
+                        longueurRotativeComprimee.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             longueurRotativeTravail.doAfterTextChanged {
-                if (longueurRotativeTravail.text.isNotEmpty()  && longueurRotativeTravail.hasFocus()) {
-                    if (switchGarniture.isChecked) fiche.longueurRotativeTravail2 = longueurRotativeTravail.text.toString() else fiche.longueurRotativeTravail = longueurRotativeTravail.text.toString()
+                if (longueurRotativeTravail.text.isNotEmpty() && longueurRotativeTravail.hasFocus()) {
+                    if (switchGarniture.isChecked) fiche.longueurRotativeTravail2 =
+                        longueurRotativeTravail.text.toString() else fiche.longueurRotativeTravail =
+                        longueurRotativeTravail.text.toString()
                 }
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-                UM.doAfterTextChanged {
-                    if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
-                        UM.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                VM.doAfterTextChanged {
-                    if (VM.text.isNotEmpty() && VM.hasFocus() && VM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorVM =
-                        VM.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                WM.doAfterTextChanged {
-                    if (WM.text.isNotEmpty() && WM.hasFocus() && WM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorWM =
-                        WM.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                UV.doAfterTextChanged {
-                    if (UV.text.isNotEmpty() && UV.hasFocus() && UV.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUV =
-                        UV.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                UW.doAfterTextChanged {
-                    if (UW.text.isNotEmpty() && UW.hasFocus() && UW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUW =
-                        UW.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                iVW.doAfterTextChanged {
-                    if (iVW.text.isNotEmpty() && iVW.hasFocus() && iVW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorVW =
-                        iVW.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                RU.doAfterTextChanged {
-                    if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU =
-                        RU.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                RV.doAfterTextChanged {
-                    if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV =
-                        RV.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                RW.doAfterTextChanged {
-                    if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW =
-                        RW.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                isolementPhaseMasse.doAfterTextChanged {
-                    if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.hasFocus() && isolementPhaseMasse.text.matches(regexNombres)) fiche.isolementPhaseMasse =
-                        isolementPhaseMasse.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                resistanceTravail.doAfterTextChanged {
-                    if (resistanceTravail.text.isNotEmpty() && resistanceTravail.hasFocus() && resistanceTravail.text.matches(regexNombres) ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                resistanceDemarrage.doAfterTextChanged {
-                    if (resistanceDemarrage.text.isNotEmpty() && resistanceDemarrage.hasFocus() && resistanceDemarrage.text.matches(regexNombres) ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                valeurCondensateur.doAfterTextChanged {
-                    if (valeurCondensateur.text.isNotEmpty() && valeurCondensateur.hasFocus() && valeurCondensateur.text.matches(regexNombres) ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                tension.doAfterTextChanged {
-                    if (tension.text.isNotEmpty() && tension.hasFocus() && tension.text.matches(regexNombres)) fiche.tension = tension.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-                intensite.doAfterTextChanged {
-                    if (intensite.text.isNotEmpty() && intensite.hasFocus() && intensite.text.matches(regexNombres) )fiche.intensite = intensite.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
+            UM.doAfterTextChanged {
+                if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
+                    UM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            VM.doAfterTextChanged {
+                if (VM.text.isNotEmpty() && VM.hasFocus() && VM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorVM =
+                    VM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            WM.doAfterTextChanged {
+                if (WM.text.isNotEmpty() && WM.hasFocus() && WM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorWM =
+                    WM.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            UV.doAfterTextChanged {
+                if (UV.text.isNotEmpty() && UV.hasFocus() && UV.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUV =
+                    UV.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            UW.doAfterTextChanged {
+                if (UW.text.isNotEmpty() && UW.hasFocus() && UW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUW =
+                    UW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            iVW.doAfterTextChanged {
+                if (iVW.text.isNotEmpty() && iVW.hasFocus() && iVW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorVW =
+                    iVW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            RU.doAfterTextChanged {
+                if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU =
+                    RU.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            RV.doAfterTextChanged {
+                if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV =
+                    RV.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            RW.doAfterTextChanged {
+                if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW =
+                    RW.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhaseMasse.doAfterTextChanged {
+                if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.hasFocus() && isolementPhaseMasse.text.matches(
+                        regexNombres
+                    )
+                ) fiche.isolementPhaseMasse =
+                    isolementPhaseMasse.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceTravail.doAfterTextChanged {
+                if (resistanceTravail.text.isNotEmpty() && resistanceTravail.hasFocus() && resistanceTravail.text.matches(
+                        regexNombres
+                    )
+                ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            resistanceDemarrage.doAfterTextChanged {
+                if (resistanceDemarrage.text.isNotEmpty() && resistanceDemarrage.hasFocus() && resistanceDemarrage.text.matches(
+                        regexNombres
+                    )
+                ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            valeurCondensateur.doAfterTextChanged {
+                if (valeurCondensateur.text.isNotEmpty() && valeurCondensateur.hasFocus() && valeurCondensateur.text.matches(
+                        regexNombres
+                    )
+                ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tension.doAfterTextChanged {
+                if (tension.text.isNotEmpty() && tension.hasFocus() && tension.text.matches(
+                        regexNombres
+                    )
+                ) fiche.tension = tension.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            intensite.doAfterTextChanged {
+                if (intensite.text.isNotEmpty() && intensite.hasFocus() && intensite.text.matches(
+                        regexNombres
+                    )
+                ) fiche.intensite = intensite.text.toString().toFloat()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
             obs.doAfterTextChanged {
                 fiche.observations = obs.text.toString()
                 viewModel.selection.value = fiche
@@ -475,7 +574,7 @@ class MotopompeFragment : Fragment() {
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+        val sAdapter = schemaAdapter(viewModel.photos.value!!.toList(), { item ->
             viewModel.setSchema(item)
             viewModel.fullScreen(
                 layout,
@@ -498,17 +597,27 @@ class MotopompeFragment : Fragment() {
         }
         i4.setOnClickListener {
             epaisseurPF.requestFocus()
-            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
+            val inputMethodManager =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.toggleSoftInputFromWindow(
+                activity?.currentFocus!!.windowToken,
+                InputMethodManager.SHOW_FORCED,
+                0
+            )
         }
         d7.setOnClickListener {
             diametreExtPF.requestFocus()
-            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
+            val inputMethodManager =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.toggleSoftInputFromWindow(
+                activity?.currentFocus!!.windowToken,
+                InputMethodManager.SHOW_FORCED,
+                0
+            )
         }
 
         diametreArbre.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_d1)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
@@ -516,7 +625,7 @@ class MotopompeFragment : Fragment() {
         }
 
         diametreExtPR.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_d3select)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
@@ -524,11 +633,16 @@ class MotopompeFragment : Fragment() {
         }
         d3.setOnClickListener {
             diametreExtPR.requestFocus()
-            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
+            val inputMethodManager =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.toggleSoftInputFromWindow(
+                activity?.currentFocus!!.windowToken,
+                InputMethodManager.SHOW_FORCED,
+                0
+            )
         }
         longueurRotativeTravail.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_i3_select)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
@@ -536,11 +650,16 @@ class MotopompeFragment : Fragment() {
         }
         i3.setOnClickListener {
             longueurRotativeTravail.requestFocus()
-            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
+            val inputMethodManager =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.toggleSoftInputFromWindow(
+                activity?.currentFocus!!.windowToken,
+                InputMethodManager.SHOW_FORCED,
+                0
+            )
         }
         diametreExtPF.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus){
+            if (hasFocus) {
                 schema.setImageResource(R.drawable.detourage_pompe_d7)
             } else {
                 schema.setImageResource(R.drawable.detourage_pompe)
@@ -548,17 +667,27 @@ class MotopompeFragment : Fragment() {
         }
         d1.setOnClickListener {
             diametreArbre.requestFocus()
-            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
+            val inputMethodManager =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.toggleSoftInputFromWindow(
+                activity?.currentFocus!!.windowToken,
+                InputMethodManager.SHOW_FORCED,
+                0
+            )
         }
 
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            var test = ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
             if (test == false) {
-                requestPermissions(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), 1
+                )
             }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
@@ -569,7 +698,7 @@ class MotopompeFragment : Fragment() {
                         createImageFile()
                     } catch (ex: IOException) {
                         // Error occurred while creating the File
-                        Log.i("INFO","error while creating file")
+                        Log.i("INFO", "error while creating file")
                         null
                     }
                     // Continue only if the File was successfully created
@@ -631,7 +760,6 @@ class MotopompeFragment : Fragment() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -673,11 +801,14 @@ class MotopompeFragment : Fragment() {
             }
         }
     }
-    fun makeFolder(){
-        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+
+    fun makeFolder() {
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         storageDir.mkdir()
     }
-    fun removeRef(i:Int, list:Array<String>):Array<String>{
+
+    fun removeRef(i: Int, list: Array<String>): Array<String> {
         var tab = list.toMutableList()
         tab.removeAt(i)
         return tab.toTypedArray()

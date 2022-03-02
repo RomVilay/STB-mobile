@@ -69,7 +69,7 @@ class PompeFragment : Fragment() {
         var sensRotation = layout.findViewById<Switch>(R.id.sensRotation)
         var typeRessort = layout.findViewById<Spinner>(R.id.typePompe)
         var typeJoint = layout.findViewById<AutoCompleteTextView>(R.id.typeJoint)
-        ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("joint torique","joint enveloppant", "passage anti-rotation","autres")).also { adapter -> typeJoint.setAdapter(adapter) }
+        ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("joint torique","joint enveloppant", "passage anti-rotation")).also { adapter -> typeJoint.setAdapter(adapter) }
         typeRessort.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","entraînement par vis","ressort coaxial conique","ressort coaxial cylindrique","soufflet"))
         var matiere = layout.findViewById<Spinner>(R.id.matJoint)
         matiere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","ceramique","carbone scilicium","carbone","tungstène"))

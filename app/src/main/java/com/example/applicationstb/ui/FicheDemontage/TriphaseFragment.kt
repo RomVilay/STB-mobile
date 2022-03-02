@@ -280,7 +280,6 @@ class TriphaseFragment : Fragment() {
                 viewModel.getNameURI()
             }
             viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
-            //viewModel.enregistrer(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -371,7 +370,8 @@ class TriphaseFragment : Fragment() {
         }
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
-           viewModel.addPhoto(file!!)
+            //viewModel.sendExternalPicture(File(file!!))
+            viewModel.addPhoto(file!!)
         }
 
     }

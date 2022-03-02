@@ -155,6 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
+                        android:completionThreshold="0"
                         android:ems="10"
                         android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView49"
@@ -430,7 +431,7 @@
                 android:id="@+id/moteur_mono"
                 android:layout_width="649dp"
                 android:layout_height="match_parent"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/essais"

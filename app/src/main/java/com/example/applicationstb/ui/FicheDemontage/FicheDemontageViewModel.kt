@@ -274,6 +274,35 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun sendExternalPicture(file:File) {
+        viewModelScope.launch(Dispatchers.IO) {
+                //var test = getPhotoFile(name)
+                var job =
+                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                        getNameURI()
+                    }
+                job.join()
+                var job2 =
+                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                        try {
+                            val to = File(file.parent, imageName.value!!.name!!)
+                            val dir =
+                                Environment.getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                )
+                            file.copyTo(dir)
+                            if (file.exists()) file.renameTo(to)
+                            sendPhoto(to)
+                            addPhoto(imageName.value!!.name!!)
+                        } catch (e: java.lang.Exception) {
+                            Log.e("EXCEPTION", e.message!!)
+                        }
+                    }
+                job2.join()
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFiche(view: View) {
