@@ -139,5 +139,9 @@ interface APIstb  {
     @GET("/fiches/{ficheId}")
     fun getRemontageReducteur(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageReducteurResponse>
 
+    @POST("/pointages")
+    suspend fun postPointages(@Header("auth-token") token:String, @Body body: BodyPointage) : Response<PointageResponse>
 
+    @GET("/pointages")
+    fun getPointages(@Header("auth-token")token:String, @Query("limit") limit: String, @Query("offset") offset: Int, @Query("user") user: String, @Query("minDate") minDate : String, @Query("maxDate") maxDate : String ) : Call <PointagesResponse>
 }

@@ -22,10 +22,7 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.*
-import com.example.applicationstb.model.DemontageMotopompe
-import com.example.applicationstb.model.DemontageMotoreducteur
-import com.example.applicationstb.model.DemontageReducteur
-import com.example.applicationstb.model.User
+import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -35,16 +32,22 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 class ConnexionViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
-    var user:User? = null
+    var user: User? = null
     var context = getApplication<Application>().applicationContext
+    val sharedPref =
+        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var repository = Repository(getApplication<Application>().applicationContext);
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
-    init{
-        viewModelScope.launch(Dispatchers.IO){
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
         }
     }
@@ -56,7 +59,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun login(username: String, psw: String, view: View, loading: CardView) = runBlocking{
+    fun login(username: String, psw: String, view: View, loading: CardView) = runBlocking {
         if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
         if (isOnline(context) == true) {
             val resp = repository.logUser(username, psw, object : Callback<LoginResponse> {
@@ -70,6 +73,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         if (resp != null) {
                             user = resp.user
                             user?.token = resp.token
+                            var editor = sharedPref.edit()
+                            editor.putString("userId", resp.user!!._id)
+                            editor.apply()
                             // Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
                             //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
                             val action = user?.let { it1 ->
@@ -82,11 +88,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 Dispatchers.IO
                             ) {
                                 getNameURI()
-                                var job = launch {
-                                    sendFiche()
-                                }
-                                job.join()
-
+                                sendFiche()
+                                sendPointage(resp.token!!, resp.user!!._id!!)
                             }
                             if (action != null) {
                                 if (loading.visibility == View.VISIBLE) loading.visibility =
@@ -98,29 +101,38 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                     if (response.code() == 401 || response.code() == 404) {
                         if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
-                        val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Vérifier votre identifiant et votre mot de passe", 3600)
+                        val mySnackbar = Snackbar.make(
+                            view.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),
+                            "Veuillez Vérifier votre identifiant et votre mot de passe",
+                            3600
+                        )
                         mySnackbar.show()
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
-                    val mySnackbar = Snackbar.make(view.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Une erreur réseau est survenue.", 3600)
+                    val mySnackbar = Snackbar.make(
+                        view.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),
+                        "Une erreur réseau est survenue.",
+                        3600
+                    )
                     mySnackbar.show()
                     Log.e("Error", "erreur ${t.message}")
                 }
             })
         } else {
-            Log.i("INFO","connexion offline")
+            Log.i("INFO", "connexion offline")
             if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
             var action = ConnexionDirections.versAccueil("", username)
             Navigation.findNavController(view).navigate(action)
         }
     }
-    fun localGet(){
-        viewModelScope.launch(Dispatchers.IO){
+
+    fun localGet() {
+        viewModelScope.launch(Dispatchers.IO) {
             var list = repository.getAllChantierLocalDatabase()
-            for (fiche in list){
+            for (fiche in list) {
                 Log.i("INFO", "id:${fiche._id}")
             }
         }
@@ -183,7 +195,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         }
                                     }
                                 }
-                                if (name == ""){
+                                if (name == "") {
                                     iter.remove()
                                 }
                             }
@@ -207,7 +219,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
                                             Log.i(
-                                                "INFO","signature client"+
+                                                "INFO", "signature client" +
                                                         from.exists()
                                                             .toString() + " - path ${from.absolutePath}"
                                             )
@@ -240,7 +252,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to = File(dir, imageName.value!!.name!!)
                                             Log.i(
-                                                "INFO","signature tech"+
+                                                "INFO", "signature tech" +
                                                         from.exists()
                                                             .toString() + " - path ${from.absolutePath}"
                                             )
@@ -333,7 +345,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -425,7 +437,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -520,7 +532,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -574,7 +586,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
-                            Log.i("INFO", name.contains(dt.numFiche!!).toString()+" fichier ${name} - numfiche ${dt.numFiche!!}")
+                            Log.i(
+                                "INFO",
+                                name.contains(dt.numFiche!!)
+                                    .toString() + " fichier ${name} - numfiche ${dt.numFiche!!}"
+                            )
                             if (name.contains(dt.numFiche!!)) {
                                 Log.i("INFO", "fichier à upload : ${name}")
                                 //var test = getPhotoFile(name)
@@ -597,7 +613,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             val to = File(dir, imageName.value!!.name!!)
                                             iter.set(imageName.value!!.name!!)
                                             sendPhoto(from)
-                                            Log.i("INFO",
+                                            Log.i(
+                                                "INFO",
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
@@ -682,7 +699,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             val to = File(dir, imageName.value!!.name!!)
                                             iter.set(imageName.value!!.name!!)
                                             sendPhoto(from)
-                                            Log.i("INFO",
+                                            Log.i(
+                                                "INFO",
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
@@ -767,7 +785,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             val to = File(dir, imageName.value!!.name!!)
                                             iter.set(imageName.value!!.name!!)
                                             sendPhoto(from)
-                                            Log.i("INFO",
+                                            Log.i(
+                                                "INFO",
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath}"
                                             )
@@ -868,7 +887,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -961,7 +980,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1054,7 +1073,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1147,7 +1166,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1241,7 +1260,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1335,7 +1354,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1429,7 +1448,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            if (name == ""){
+                            if (name == "") {
                                 iter.remove()
                             }
                         }
@@ -1644,10 +1663,45 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    suspend fun sendPointage(token: String, userId: String) {
+        var date = ZonedDateTime.of(
+            LocalDateTime.now().withDayOfMonth(1),
+            ZoneOffset.of("+01:00")
+        )
+        repository.getPointages(token, userId, object : Callback<PointagesResponse> {
+            override fun onResponse(
+                call: Call<PointagesResponse>,
+                response: Response<PointagesResponse>
+            ) {
+                if (response.code() == 200) {
+                    var list = mutableListOf<Pointage>()
+                    response.body()!!.data!!.forEach { list.add(it.toPointage()) }
+                    viewModelScope.launch(Dispatchers.IO) {
+                        var list2 = repository.getAllPointageLocalDatabase().toMutableList()
+                        list2.forEach { p2 ->
+                            var index = list.indexOfFirst{ p1 -> p1._id == p2._id}
+                            if (index < 0 ) {
+                                var ptn = repository.postPointages(token, p2.user, p2.timestamp)
+                                repository.deletePointageLocalDatabse(p2)
+                                repository.insertPointageDatabase(ptn.body()!!.data)
+                                if (p2.timestamp.isBefore(date)) repository.deletePointageLocalDatabse(p2)
+                            }
+                        }
+                        if (list2.size == 0) list.forEach{ repository.insertPointageDatabase(it)}
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<PointagesResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
-            context.getSystemService( Context.CONNECTIVITY_SERVICE ) as ConnectivityManager
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (connectivityManager != null) {
             val capabilities =
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
@@ -1666,6 +1720,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
         return false
     }
+
     suspend fun getNameURI() = runBlocking {
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val resp1 = repository.getURLToUploadPhoto(user?.token!!)
@@ -1686,7 +1741,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
-        Log.i("INFO","nom fichier:"+photo.name)
+        Log.i("INFO", "nom fichier:" + photo.name)
         repository.uploadPhoto(
             user?.token!!,
             imageName.value!!.name!!,
@@ -1706,9 +1761,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
             })
     }
+
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }
+
     private fun saveImage(image: Bitmap, name: String): String? {
         Log.i("INFO", "start")
         var savedImagePath: String? = null
