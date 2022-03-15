@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -210,6 +211,12 @@ class FicheChantier : Fragment() {
                 }
             }
         }
+
+        var gal = layout.findViewById<Button>(R.id.extPic)
+        gal.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 6)
+        }
         showDetails.setOnClickListener {
             if (visibility == View.GONE) {
                 visibility = View.VISIBLE
@@ -275,6 +282,8 @@ class FicheChantier : Fragment() {
                 viewModel.quickSave()
             }
         }
+
+
         quit.setOnClickListener {
             lin.visibility = View.INVISIBLE
             viewModel.back(layout)
@@ -353,8 +362,23 @@ class FicheChantier : Fragment() {
                 }
                 //viewModel.sendPhoto(data?.extras?.get("data") as File)
             }
+            if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
+                    var nfile = viewModel.sendExternalPicture(file!!)
+                    if (nfile !== null) {
+                        var list = viewModel.chantier.value?.photos?.toMutableList()
+                        if (list != null) {
+                            list.add(nfile)
+                        }
+                        viewModel.chantier.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                    }
+                }
+
+            }
         }
-        Log.i("INFO", "photos ${viewModel.photos.value?.size}")
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

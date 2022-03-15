@@ -20,6 +20,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -46,6 +50,33 @@ class BodyLogin(var username: String?, var password: String?) : Parcelable {
         }
 
         override fun newArray(size: Int): Array<BodyLogin?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+class BodyPointage(var user: String?, var timestamp: String?) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(user)
+        parcel.writeString(timestamp)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BodyPointage> {
+        override fun createFromParcel(parcel: Parcel): BodyPointage {
+            return BodyPointage(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BodyPointage?> {
             return arrayOfNulls(size)
         }
     }
@@ -3044,6 +3075,36 @@ class LoginResponse(
     var error: String?
 )
 
+class userPointage(
+    var _id: String,
+    var username: String?,
+    var nom: String?,
+    var prenom: String?
+)
+
+class Pointage2(
+    var _id: String,
+    var user: userPointage,
+    var timestamp: String
+) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun toPointage(): Pointage {
+        return Pointage(
+            _id,
+            user._id,
+            ZonedDateTime.parse(timestamp).withZoneSameLocal(ZoneId.of("+01:00"))
+        )
+    }
+}
+
+class PointageResponse(
+    var data: Pointage
+)
+
+class PointagesResponse(
+    var data: Array<Pointage2>?
+)
+
 class FichesResponse(
     var data: Array<Fiche>?
 )
@@ -3162,6 +3223,30 @@ class CustomDateAdapter : JsonAdapter<Date>() {
     }
 }
 
+class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @FromJson
+    override fun fromJson(reader: JsonReader): ZonedDateTime? {
+        return try {
+            val dateAsString = reader.nextString()
+            ZonedDateTime.parse(dateAsString).withZoneSameLocal(ZoneId.of("+01:00"))
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @ToJson
+    override fun toJson(writer: JsonWriter, value: ZonedDateTime?) {
+        if (value != null) {
+            writer.value(value.toString())
+        }
+    }
+
+    companion object {}
+}
+
 class URLPhotoResponse(
     var url: String?
 )
@@ -3176,7 +3261,7 @@ class PhotoResponse(
 )
 
 class Repository(var context: Context) {
-    private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter())
+    private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter()).add(CustomDateAdapter2())
     val url = "http://195.154.107.195:4000"
     var okHttpClient = OkHttpClient.Builder()
         .callTimeout(1, TimeUnit.MINUTES)
@@ -4524,6 +4609,18 @@ class Repository(var context: Context) {
         call.enqueue(param)
     }
 
+    fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
+        var dateMin =
+            ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1), ZoneOffset.of("+01:00"))
+        var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of("+01:00"))
+        var call =
+            service.getPointages(token, "0", 0, userid, dateMin.toString(), dateMax.toString())
+        call.enqueue(callback)
+    }
+
+    suspend fun postPointages(token: String, userid: String, dateTime: ZonedDateTime) =
+        service.postPointages(token, BodyPointage(userid, dateTime.toString()))
+
     suspend fun getURLPhoto(token: String, photoName: String) =
         service.getURLPhoto(token, photoName)
 
@@ -4967,7 +5064,7 @@ class Repository(var context: Context) {
         try {
             if (remontageMotopompeDao!!.getById(id) !== null) {
                 return remontageMotopompeDao!!.getById(id).toRemontageMotopompe()
-            }  else return null
+            } else return null
         } catch (e: Error) {
             Log.i("e", e.message!!)
             return null
@@ -5062,12 +5159,13 @@ class Repository(var context: Context) {
     suspend fun deleteDemontageReducteurLocalDatabse(demo: DemontageReducteurEntity) {
         demontageReducteurDao!!.delete(demo)
     }
+
     suspend fun insertPointageDatabase(pointage: Pointage) {
-       pointageDao!!.insertAll(pointage.toEntity())
+        pointageDao!!.insertAll(pointage.toEntity())
     }
 
-    suspend fun getAllPointageLocalDatabase(date:String): List<PointageEntity> {
-        return pointageDao!!.getAll(date)
+    suspend fun getAllPointageLocalDatabase(): List<PointageEntity> {
+        return pointageDao!!.getAll()
     }
 
     suspend fun getByIdPointageDatabase(id: String): Pointage? {
@@ -5082,11 +5180,12 @@ class Repository(var context: Context) {
     }
 
     suspend fun updatePointageLocalDatabase(pointage: PointageEntity) {
-       pointageDao!!.update(pointage)
+        pointageDao!!.update(pointage)
     }
 
     suspend fun deletePointageLocalDatabse(pointage: PointageEntity) {
-       pointageDao!!.delete(pointage)
+        pointageDao!!.delete(pointage)
     }
+
 
 }

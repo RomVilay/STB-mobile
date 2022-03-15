@@ -26,12 +26,10 @@ class pointerAdapter(var list: List<Pointage>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var date: TextView
         var debut: TextView
-        var fin:TextView
 
         init {
             date = view.findViewById(R.id.dateP)
             debut = view.findViewById(R.id.dbtPnt)
-            fin = view.findViewById(R.id.fnPtn)
 
         }
     }
@@ -43,9 +41,8 @@ class pointerAdapter(var list: List<Pointage>) :
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.date.setText(list[position].dateDebut?.format(dateFomater).toString())
-        holder.debut.setText(list[position].dateDebut?.format(timeFomater).toString())
-        holder.fin.setText(list[position].dateFin?.format(timeFomater).toString())
+        holder.date.setText(list[position].timestamp?.format(dateFomater).toString())
+        holder.debut.setText(list[position].timestamp?.format(timeFomater).toString())
     }
 
 

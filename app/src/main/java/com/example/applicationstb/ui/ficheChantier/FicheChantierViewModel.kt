@@ -1,10 +1,8 @@
 package com.example.applicationstb.ui.ficheChantier
 
 import android.app.Application
-import android.content.BroadcastReceiver
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
@@ -14,6 +12,7 @@ import androidx.navigation.Navigation
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
@@ -24,6 +23,7 @@ import com.example.applicationstb.MainActivity
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
+import id.zelory.compressor.Compressor
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -384,23 +384,64 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
       job.join()
     }
-    fun sendPhoto(photo:File){
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    suspend fun sendExternalPicture(path: String?): String? {
+        if (isOnline(context)) {
+            getNameURI()
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                val file = File(dir, imageName.value!!.name!!)
+                File(path).copyTo(file)
+                delay(100)
+                sendPhoto(file)
+                return imageName.value!!.name!!
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return null
+            }
+        } else {
+            val dir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+            val file = File(dir, chantier.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
+            File(path).copyTo(file)
+            return file.name
+        }
+
+    }
+    fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab.forEach {
             Log.i("INFO",it)
         }
         tab[1] = tab[1].replace("%2F","/")
-        repository.uploadPhoto(token!!,imageName.value!!.name!!,tab.toList(), photo, object: Callback<URLPhotoResponse> {
-            override fun onResponse(call: Call<URLPhotoResponse>, response: Response<URLPhotoResponse>) {
-                    Log.i("INFO", response.code().toString()+" - "+response.message())
-                    Log.i("INFO","envoyé ${call.request().url()}")
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            lateinit var  compressedPicture :File
+            var job = launch { compressedPicture = Compressor.compress(context, photo) }
+            job.join()
+            //compressedPicture.renameTo(photo)
+            Log.i("info","taille ${compressedPicture.totalSpace}")
+            repository.uploadPhoto(
+                token!!,
+                imageName.value!!.name!!,
+                tab.toList(),
+                compressedPicture,
+                object : Callback<URLPhotoResponse> {
+                    override fun onResponse(
+                        call: Call<URLPhotoResponse>,
+                        response: Response<URLPhotoResponse>
+                    ) {
+                        // Log.i("INFO", response.code().toString() + " - " + response.message())
+                        // Log.i("INFO", "envoyé ${call.request().url()}")
+                    }
 
-            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
-                Log.i("INFO",t.message!!)
-            }
-        })
+                    override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                        Log.i("INFO", t.message!!)
+                    }
+                })
+        }
     }
     suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
         var file: String? = null
@@ -487,6 +528,16 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             mediaScanIntent.data = contentUri
             context.sendBroadcast(mediaScanIntent)
         }
+    }
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(context, contentUri, proj, null, null, null)
+        val cursor: Cursor = loader.loadInBackground()
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val result = cursor.getString(column_index)
+        cursor.close()
+        return result
     }
     fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String):String{
         if (body==null)

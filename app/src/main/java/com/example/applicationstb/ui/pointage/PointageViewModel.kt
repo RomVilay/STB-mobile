@@ -28,24 +28,33 @@ class PointageViewModel(application: Application) : AndroidViewModel(application
             repository.createDb()
         }
     }
+
     var token: String? = null;
     var pointages = MutableLiveData<MutableList<Pointage>>()
     var total = MutableLiveData<Long>(0)
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getListePointages() =  viewModelScope.launch(Dispatchers.IO){
-        var list = repository.getAllPointageLocalDatabase(LocalDateTime.now().format(
-            DateTimeFormatter.ofPattern("yyyy-MM"))+"%")
-        Log.i("info","année mois : ${LocalDateTime.now().format(
-            DateTimeFormatter.ofPattern("yyyy-MM"))}")
+    fun getListePointages() = viewModelScope.launch(Dispatchers.IO) {
+        var list = repository.getAllPointageLocalDatabase()
         var list2 = mutableListOf<Pointage>()
         var t = 0L
         list.forEach {
             list2.add(it.toPointage())
-            t = t + Duration.between(it.dateDebut,it.dateFin).toHours()
+        }
+        var l = list.size % 2
+        if (l == 0) {
+            for (i in 0..list.size-1 step 2) {
+               t = t + Duration.between(list[i].timestamp, list[i + 1].timestamp).toHours()
+            }
+        } else {
+            for (i in 0..list.size-2 step 2) {
+                t = t + Duration.between(list[i].timestamp, list[i + 1].timestamp).toHours()
+            }
         }
         total.postValue(t)
         pointages.postValue(list2)
     }
+
     fun toAccueil(view: View) {
         Navigation.findNavController(view).popBackStack()
     }

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.CursorLoader
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -13,28 +15,25 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
-import com.example.applicationstb.R
 import com.example.applicationstb.model.*
-import org.json.JSONArray
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.repository.*
-import com.example.applicationstb.ui.ficheBobinage.FicheBobinageDirections
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 import java.util.*
+import android.graphics.Bitmap.CompressFormat
+import android.os.SystemClock
+import id.zelory.compressor.Compressor
+import java.io.*
+
 
 class FicheDemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
@@ -54,6 +53,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             repository.createDb()
         }
     }
+
     fun back(view: View) {
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)
@@ -275,38 +275,35 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun sendExternalPicture(file:File) {
-        viewModelScope.launch(Dispatchers.IO) {
-                //var test = getPhotoFile(name)
-                var job =
-                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                        getNameURI()
-                    }
-                job.join()
-                var job2 =
-                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                        try {
-                            val to = File(file.parent, imageName.value!!.name!!)
-                            val dir =
-                                Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                )
-                            file.copyTo(dir)
-                            if (file.exists()) file.renameTo(to)
-                            sendPhoto(to)
-                            addPhoto(imageName.value!!.name!!)
-                        } catch (e: java.lang.Exception) {
-                            Log.e("EXCEPTION", e.message!!)
-                        }
-                    }
-                job2.join()
+    suspend fun sendExternalPicture(path: String?): String? {
+        if (isOnline(context)) {
+            getNameURI()
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                val file = File(dir, imageName.value!!.name!!)
+                File(path).copyTo(file)
+                delay(100)
+                sendPhoto(file)
+                return imageName.value!!.name!!
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return null
+            }
+        } else {
+            val dir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+            val file = File(dir, selection.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
+            File(path).copyTo(file)
+            return file.name
         }
+
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFiche(view: View) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             getNameURI()
             when (selection.value!!.typeFicheDemontage) {
                 1 -> {
@@ -927,6 +924,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = listPhotos?.toTypedArray()
+                        Log.i(
+                            "info",
+                            "list photo selection size 2 ${selection.value?.photos?.size} - liste photos ${photos.value?.size}"
+                        )
                         repository.updateDemoTriLocalDatabse(dt.toEntity())
                         selection.postValue(dt)
                         photos.postValue(listPhotos!!)
@@ -1321,8 +1322,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
@@ -1345,7 +1344,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         return false
     }
-
     fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
@@ -1355,9 +1353,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             context.sendBroadcast(mediaScanIntent)
         }
     }
-
-    suspend fun getNameURI() = runBlocking {
-        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+    suspend fun getNameURI()  {
             val resp1 = repository.getURLToUploadPhoto(token!!)
             withContext(Dispatchers.Main) {
                 if (resp1.isSuccessful) {
@@ -1367,37 +1363,40 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     exceptionHandler
                 }
             }
-        }
-        job.join()
     }
 
-    fun sendPhoto(photo: File) {
-        var s =
-            imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+    fun sendPhoto(photo: File) = runBlocking {
+        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
-        tab.forEach {
-            Log.i("INFO", it)
-        }
         tab[1] = tab[1].replace("%2F", "/")
-        repository.uploadPhoto(
-            token!!,
-            imageName.value!!.name!!,
-            tab.toList(),
-            photo,
-            object : Callback<URLPhotoResponse> {
-                override fun onResponse(
-                    call: Call<URLPhotoResponse>,
-                    response: Response<URLPhotoResponse>
-                ) {
-                    Log.i("INFO", response.code().toString() + " - " + response.message())
-                    Log.i("INFO", "envoyé ${call.request().url()}")
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+          /* lateinit var  compressedPicture :File
+            var job = launch { compressedPicture = Compressor.compress(context, photo) }
+            job.join()*/
+            //compressedPicture.renameTo(photo)
+            repository.uploadPhoto(
+                token!!,
+                imageName.value!!.name!!,
+                tab.toList(),
+                photo, //compressedPicture,
+                object : Callback<URLPhotoResponse> {
+                    override fun onResponse(
+                        call: Call<URLPhotoResponse>,
+                        response: Response<URLPhotoResponse>
+                    ) {
+                        // Log.i("INFO", response.code().toString() + " - " + response.message())
+                        // Log.i("INFO", "envoyé ${call.request().url()}")
+                    }
 
-                override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
-                    Log.i("INFO", t.message!!)
-                }
-            })
+                    override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                        Log.i("INFO", t.message!!)
+                    }
+                })
+        }
+
+
     }
+
 
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")

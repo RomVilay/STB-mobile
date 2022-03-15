@@ -1,6 +1,7 @@
 package com.example.applicationstb.ui.ficheBobinage
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
@@ -331,6 +332,12 @@ class FicheBobinage : Fragment() {
                 )
                 mySnackbar.show()
             }
+        }
+
+        var gal = layout.findViewById<Button>(R.id.extpct)
+        gal.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 6)
         }
         addschema.setOnClickListener {
             runBlocking {
@@ -783,6 +790,22 @@ class FicheBobinage : Fragment() {
                     }
                 }
                 //viewModel.sendPhoto(data?.extras?.get("data") as File)
+            }
+            if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
+                    var nfile = viewModel.sendExternalPicture(file!!)
+                    if (nfile !== null) {
+                        var list = viewModel.bobinage.value?.photos?.toMutableList()
+                        if (list != null) {
+                            list.add(nfile)
+                        }
+                        viewModel.bobinage.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                    }
+                }
+
             }
         }
     }

@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.encodeToJsonElement
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 @Entity (tableName="chantiers")
@@ -73,11 +74,11 @@ class Converters {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
-    fun fromLocalDateTime(value:String?) : LocalDateTime? {
-        return value?.let { LocalDateTime.parse(it) }
+    fun fromZonedDateTime(value:String?) : ZonedDateTime? {
+        return value?.let { ZonedDateTime.parse(it) }
     }
     @TypeConverter
-    fun LocalDateTimeToString(date: LocalDateTime?) : String? {
+    fun ZonedDateTimeToString(date: ZonedDateTime?) : String? {
         return date?.toString()
     }
 

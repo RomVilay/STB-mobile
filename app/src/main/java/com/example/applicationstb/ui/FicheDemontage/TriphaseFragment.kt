@@ -33,10 +33,8 @@ import com.bumptech.glide.load.model.MediaStoreFileLoader
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Triphase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -276,10 +274,16 @@ class TriphaseFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.localSave()
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.getNameURI()
+            if (viewModel.isOnline(requireContext())) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.getNameURI()
+                }
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            } else {
+                val mySnackbar =
+                    Snackbar.make(layout, "fiche enregistrée localement", 3600)
+                mySnackbar.show()
             }
-            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         ter.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -292,10 +296,16 @@ class TriphaseFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.localSave()
-                            CoroutineScope(Dispatchers.IO).launch {
-                                viewModel.getNameURI()
+                            if (viewModel.isOnline(requireContext())) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    viewModel.getNameURI()
+                                }
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            } else {
+                                val mySnackbar =
+                                    Snackbar.make(layout, "fiche enregistrée localement", 3600)
+                                mySnackbar.show()
                             }
-                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
@@ -365,13 +375,24 @@ class TriphaseFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            Log.i("info", "photo camera: ${currentPhotoPath}")
+            //Log.i("info", "photo camera: ${currentPhotoPath}")
             viewModel.addPhoto(currentPhotoPath)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
-            //viewModel.sendExternalPicture(File(file!!))
-            viewModel.addPhoto(file!!)
+            CoroutineScope(Dispatchers.IO).launch {
+                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
+                var nfile = viewModel.sendExternalPicture(file!!)
+                if (nfile !== null) {
+                    var list = viewModel.selection.value?.photos?.toMutableList()
+                    if (list != null) {
+                        list.add(nfile)
+                    }
+                    viewModel.selection.value?.photos = list?.toTypedArray()
+                    viewModel.photos.postValue(list!!)
+                }
+            }
+
         }
 
     }

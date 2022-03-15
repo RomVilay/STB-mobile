@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.model.DemontagePompe
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -738,10 +739,16 @@ class PompeFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.localSave()
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.getNameURI()
+            if (viewModel.isOnline(requireContext())) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.getNameURI()
+                }
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+            } else {
+                val mySnackbar =
+                    Snackbar.make(layout, "fiche enregistrée localement", 3600)
+                mySnackbar.show()
             }
-            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
         }
         termP.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -754,10 +761,16 @@ class PompeFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.localSave()
-                            CoroutineScope(Dispatchers.IO).launch {
-                                viewModel.getNameURI()
+                            if (viewModel.isOnline(requireContext())) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    viewModel.getNameURI()
+                                }
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                            } else {
+                                val mySnackbar =
+                                    Snackbar.make(layout, "fiche enregistrée localement", 3600)
+                                mySnackbar.show()
                             }
-                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }
@@ -778,7 +791,19 @@ class PompeFragment : Fragment() {
         }
         if (resultCode == Activity.RESULT_OK && requestCode == 6) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
-            viewModel.addPhoto(file!!)
+            CoroutineScope(Dispatchers.IO).launch {
+                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
+                var nfile = viewModel.sendExternalPicture(file!!)
+                if (nfile !== null) {
+                    var list = viewModel.selection.value?.photos?.toMutableList()
+                    if (list != null) {
+                        list.add(nfile)
+                    }
+                    viewModel.selection.value?.photos = list?.toTypedArray()
+                    viewModel.photos.postValue(list!!)
+                }
+            }
+
         }
     }
 
