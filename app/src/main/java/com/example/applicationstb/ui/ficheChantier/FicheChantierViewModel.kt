@@ -129,29 +129,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             var v = repository.getByIdVehiculesLocalDatabse(id)
             textView.setText(v!!.nom)
         }
-        //Log.i("INFO","vehicule ${nom}")
-        /*val resp = repository.getVehiculeById(token!!, id, object: Callback<VehiculesResponse> {
-            override fun onResponse(call: Call<VehiculesResponse>, response: Response<VehiculesResponse>){
-                if ( response.code() == 200 ) {
-                    val resp = response.body()
-                    if (resp != null) {
-                        nom = resp!!.vehicule!!.nom.toString()
-                        Log.i("INFO","vehicule ${nom}")
-                    }
-                } else {
-                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
-                }
-            }
-            override fun onFailure(call: Call<VehiculesResponse>, t: Throwable) {
-                Log.e("Error","erreur ${t.message}")
-            }
-        })
-        Log.i("INFO","vehicule ${nom}")*/
         return nom
     }
-    /*fun setSignature(sign:Bitmap){
-        signature.value = sign
-    }*/
     fun localGet(){
         viewModelScope.launch(Dispatchers.IO){
             var list = repository.getAllChantierLocalDatabase()
@@ -222,7 +201,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context, view: View){
+    fun save(context: Context, view: View) = runBlocking{
         if (isOnline(context)) {
             CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
