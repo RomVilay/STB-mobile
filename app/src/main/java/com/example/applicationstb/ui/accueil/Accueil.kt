@@ -52,7 +52,13 @@ class Accueil : Fragment() {
         viewModel.username = arguments?.get("Username") as? String
         val reload = layout.findViewById<Button>(R.id.reload)
         val send = layout.findViewById<Button>(R.id.send)
-        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
+        val loading = layout.findViewById<CardView>(R.id.loadingHome)
+        val sharedPref = activity?.getSharedPreferences(
+            "identifiants", Context.MODE_PRIVATE
+        )
+        var login = sharedPref?.getString("login", "")
+        var pwd = sharedPref?.getString("password", "")
+       if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context) && sharedPref!!.getBoolean("connected",true)) {
             runBlocking {
                 var job = launch {
                     var test = ActivityCompat.checkSelfPermission(
@@ -69,6 +75,7 @@ class Accueil : Fragment() {
                     }
                 }
                 var job2 = launch {
+                    viewModel.sendFiche(loading)
                     viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
                 }
                 delay(200)
@@ -80,7 +87,6 @@ class Accueil : Fragment() {
                 )
                 mySnackbar.show()
             }
-
         } else {
             val mySnackbar = Snackbar.make(
                 layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
@@ -88,8 +94,6 @@ class Accueil : Fragment() {
                 3600
             )
             mySnackbar.show()
-            send.visibility = View.INVISIBLE
-            reload.visibility = View.INVISIBLE
             if (viewModel.fiches?.size == 0 || (viewModel.fiches == null && !(viewModel.isOnline(viewModel.context))))
                 viewModel.listeFicheLocal()
         }
@@ -101,13 +105,6 @@ class Accueil : Fragment() {
         val rm = layout.findViewById<TextView>(R.id.btnRemo)
         val rb = layout.findViewById<Button>(R.id.btnRebobinage)
         val token = arguments?.let { AccueilArgs.fromBundle(it).token }
-
-        val loading = layout.findViewById<CardView>(R.id.loadingHome)
-        val sharedPref = activity?.getSharedPreferences(
-            "identifiants", Context.MODE_PRIVATE
-        )
-        var login = sharedPref?.getString("login", "")
-        var pwd = sharedPref?.getString("password", "")
         val exit = layout.findViewById<TextView>(R.id.exit)
         val btnPtn = layout.findViewById<ToggleButton>(R.id.btnPointage)
         val listePointage = layout.findViewById<TextView>(R.id.listePtn)
@@ -145,81 +142,82 @@ class Accueil : Fragment() {
             alertDialogBuilder!!.show()
         }
         reload.setOnClickListener {
-            if (viewModel.isOnline(viewModel.context)) {
-                if (viewModel.token == "" && viewModel.isOnline(viewModel.context)) {
-                    if (login == "" && pwd == "") {
-                        val dialogBuilder = AlertDialog.Builder(context)
-                        val inflater = requireActivity().layoutInflater
-                        val view = inflater.inflate(R.layout.connexion_dialog, null)
-                        val log = view.findViewById<EditText>(R.id.login)
-                        val pass = view.findViewById<EditText>(R.id.pass)
-                        dialogBuilder
-                            .setCancelable(true)
-                            .setView(view)
-                            .setPositiveButton(
-                                "Connexion",
-                                DialogInterface.OnClickListener { dialog, id ->
-                                    if (log.text.isEmpty()) {
-                                        val mySnackbar = Snackbar.make(
-                                            layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                                            "Veuillez Saisir votre pseudo utilisateur",
-                                            3600
-                                        )
-                                        mySnackbar.show()
-                                    }
-                                    if (pass.text.isEmpty()) {
-                                        val mySnackbar = Snackbar.make(
-                                            layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                                            "Veuillez Saisir votre mot de passe",
-                                            3600
-                                        )
-                                        mySnackbar.show()
-                                    }
-                                    if (pass.text.length < 5) {
-                                        val mySnackbar = Snackbar.make(
-                                            layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                                            "Veuillez vérifier votre mot de passe ( 5 caractères minimum)",
-                                            3600
-                                        )
-                                        mySnackbar.show()
-                                    } else {
-                                        if (sharedPref != null) {
-                                            sharedPref.edit {
-                                                putString("login", log.text.toString())
-                                                putString("password", pass.text.toString())
-                                            }
+            runBlocking {
+                if (viewModel.isOnline(requireContext())) {
+                    if (viewModel.token == "" && !sharedPref!!.getBoolean("connected",false) ) {
+                        if (login == "" && pwd == "") {
+                            val dialogBuilder = AlertDialog.Builder(context)
+                            val inflater = requireActivity().layoutInflater
+                            val view = inflater.inflate(R.layout.connexion_dialog, null)
+                            val log = view.findViewById<EditText>(R.id.login)
+                            val pass = view.findViewById<EditText>(R.id.pass)
+                            dialogBuilder
+                                .setCancelable(true)
+                                .setView(view)
+                                .setPositiveButton(
+                                    "Connexion",
+                                    DialogInterface.OnClickListener { dialog, id ->
+                                        if (log.text.isEmpty()) {
+                                            val mySnackbar = Snackbar.make(
+                                                layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                                                "Veuillez Saisir votre pseudo utilisateur",
+                                                3600
+                                            )
+                                            mySnackbar.show()
                                         }
-                                        viewModel.connection(
-                                            log.text.toString(),
-                                            pass.text.toString()
-                                        )
-                                    }
-                                    dialog.dismiss()
-                                })
-                        val alert = dialogBuilder.create()
-                        alert.show()
-                    } else {
-                        if (login != null && pwd != null) {
-                            viewModel.connection(login, pwd)
-                            Log.i("INFO", viewModel.token.toString())
+                                        if (pass.text.isEmpty()) {
+                                            val mySnackbar = Snackbar.make(
+                                                layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                                                "Veuillez Saisir votre mot de passe",
+                                                3600
+                                            )
+                                            mySnackbar.show()
+                                        }
+                                        if (pass.text.length < 5) {
+                                            val mySnackbar = Snackbar.make(
+                                                layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                                                "Veuillez vérifier votre mot de passe ( 5 caractères minimum)",
+                                                3600
+                                            )
+                                            mySnackbar.show()
+                                        } else {
+                                            if (sharedPref != null) {
+                                                sharedPref.edit {
+                                                    putString("login", log.text.toString())
+                                                    putString("password", pass.text.toString())
+                                                }
+                                            }
+                                            viewModel.connection(
+                                                log.text.toString(),
+                                                pass.text.toString()
+                                            )
+                                        }
+                                        dialog.dismiss()
+                                    })
+                            val alert = dialogBuilder.create()
+                            alert.show()
+                        } else {
+                            viewModel.connection(login!!, pwd!!)
+                            viewModel.listeFiches(viewModel.token.toString(), login!!)
+                            Log.i("INFO", "nouveau token:"+viewModel.token.toString())
                         }
                     }
-                }
-                if (viewModel.token !== "") {
-                    viewModel.listeFiches(viewModel.token.toString(), login!!)
-                } else {
-                    val mySnackbar = Snackbar.make(
-                        layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                        "Vous ne pouvez pas recharger les fiches , veuillez vous reconnecter à portée du wifi",
-                        3600
-                    )
-                    mySnackbar.show()
+                    if (viewModel.token !== "" ) {
+                        viewModel.listeFiches(viewModel.token.toString(), login!!)
+                    } else {
+                        val mySnackbar = Snackbar.make(
+                            layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                            "Vous ne pouvez pas recharger les fiches , veuillez vous reconnecter à portée du wifi",
+                            3600
+                        )
+                        mySnackbar.show()
+                    }
                 }
             }
         }
         send.setOnClickListener {
             if (viewModel.isOnline(viewModel.context)) {
-                if (viewModel.token == null && viewModel.isOnline(viewModel.context)) {
+                if (viewModel.token == null && viewModel.isOnline(viewModel.context) && !sharedPref!!.getBoolean("connected",false) ) {
                     if (login == "" && pwd == "") {
                         val dialogBuilder = AlertDialog.Builder(context)
                         val inflater = requireActivity().layoutInflater
@@ -273,6 +271,7 @@ class Accueil : Fragment() {
                         alert.show()
                     } else {
                         if (login != null && pwd != null) {
+                            Log.i("info","conncetion")
                             viewModel.connection(login, pwd)
                         }
                     }
