@@ -162,6 +162,16 @@ class FicheChantier : Fragment() {
                 observation.text.toString()
             viewModel.quickSave()
         }
+        adresse.setOnClickListener {
+            if (viewModel.chantier.value !== null && viewModel.chantier.value!!.adresseChantier !== null) {
+                val gmmIntentUri = Uri.parse("geo:0,0?q=${viewModel.chantier.value!!.adresseChantier!!}")
+                //val gmmIntentUri = Uri.parse("google.navigation:q=${viewModel.chantier.value!!.adresseChantier!!}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+
+        }
 
         btnPhoto.setOnClickListener {
             runBlocking {

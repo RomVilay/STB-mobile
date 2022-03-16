@@ -130,6 +130,7 @@ class Accueil : Fragment() {
                             sharedPref?.edit {
                                 putString("login", "")
                                 putString("password", "")
+                                putBoolean("connected",false)
                             }
                             viewModel.toDeconnexion(layout)
                         })
@@ -342,6 +343,11 @@ class Accueil : Fragment() {
             }
         }
         exit.setOnClickListener {
+            if (sharedPref != null) {
+                sharedPref.edit {
+                  putBoolean("connected",false)
+                }
+            }
             activity?.finish()
         }
 

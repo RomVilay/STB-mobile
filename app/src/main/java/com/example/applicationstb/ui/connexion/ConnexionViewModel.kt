@@ -75,6 +75,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             user?.token = resp.token
                             var editor = sharedPref.edit()
                             editor.putString("userId", resp.user!!._id)
+                            editor.putBoolean("connected", true)
                             editor.apply()
                             // Log.i("INFO","connecté - token ${user?.token} - user  ${user?.username} - resp: ${resp}")
                             //val action = ConnexionDirections.versAccueil(user!!.token!!,user!!.username)
@@ -123,6 +124,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             })
         } else {
             Log.i("INFO", "connexion offline")
+            var editor2 = sharedPref.edit()
+            editor2.putBoolean("connected", false)
+            editor2.apply()
             if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
             var action = ConnexionDirections.versAccueil("", username)
             Navigation.findNavController(view).navigate(action)
@@ -140,7 +144,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFiche() {
-        if (isOnline(context) == true) {
+        if (isOnline(context) == true && sharedPref.getBoolean("connected",false)) {
             viewModelScope.launch(Dispatchers.IO) {
                 var job = CoroutineScope(Dispatchers.IO).launch {
                     getNameURI()
@@ -1410,7 +1414,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
-
                                 runBlocking {
                                     if (name.contains(dr.numFiche!!)) {
                                         Log.i("INFO", "fichier à upload : ${name}")
