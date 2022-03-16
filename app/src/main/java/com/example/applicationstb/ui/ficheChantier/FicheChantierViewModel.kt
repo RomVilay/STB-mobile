@@ -36,6 +36,8 @@ import java.io.OutputStream
 import java.util.*
 
 class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
+    val sharedPref =
+        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var context = getApplication<Application>().applicationContext
     var token: String? = null;
     var username: String? = null;
@@ -198,11 +200,35 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view: View){
         if (isOnline(context)) {
             CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
+            }
+            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
             }
             viewModelScope.launch(Dispatchers.IO) {
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
