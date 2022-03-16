@@ -47,6 +47,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     var start = MutableLiveData<Date>()
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
+    val sharedPref =
+        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
