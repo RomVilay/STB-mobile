@@ -209,6 +209,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
                 connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
             }
+            delay(20)
             viewModelScope.launch(Dispatchers.IO) {
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
                 Log.i("info","status base ${ch?.status} - status vm ${chantier.value?.status} ")

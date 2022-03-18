@@ -109,7 +109,7 @@ class FicheBobinage : Fragment() {
             som.setText(s.toString())
             Log.i("info", "nbBrins " + nb)
             viewModel.quickSave()
-        }, {position ->
+        }, { position ->
             viewModel.quickSave()
         })
         val sAdapter = schemaAdapter(viewModel.photos.value!!, { item ->
@@ -174,7 +174,7 @@ class FicheBobinage : Fragment() {
         recycler.adapter = adapter
         viewModel.sections.observe(viewLifecycleOwner, {
             adapter.update(it)
-            Log.i("Info","liste section ${viewModel.sections.value!!.size}")
+            Log.i("Info", "liste section ${viewModel.sections.value!!.size}")
         })
 
         schemas = layout.findViewById(R.id.schemas)
@@ -590,11 +590,11 @@ class FicheBobinage : Fragment() {
         }
         paspolaire.doAfterTextChanged {
             if (paspolaire.hasFocus() && paspolaire.text.isNotEmpty())
-            viewModel.bobinage.value!!.pasPolaire = paspolaire.text.toString()
+                viewModel.bobinage.value!!.pasPolaire = paspolaire.text.toString()
             viewModel.quickSave()
         }
         checksonde.setOnCheckedChangeListener { _, ischeked ->
-            if (ischeked){
+            if (ischeked) {
                 viewModel.bobinage.value!!.presenceSondes = true
                 typesonde.visibility = View.VISIBLE
                 viewModel.quickSave()
@@ -621,35 +621,39 @@ class FicheBobinage : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                    if (viewModel.bobinage.value !== null) {
-                        Log.i("info", "branchement: " + branchement.selectedItem.toString())
-                        viewModel.bobinage.value!!.branchement = branchement.selectedItem.toString()
-                        viewModel.quickSave()
-                        if (branchement.selectedItem.toString() == "autre")
-                            typeBranchement.visibility = View.VISIBLE
-                        else
-                            typeBranchement.visibility = View.INVISIBLE
-                    }
+                if (viewModel.bobinage.value !== null) {
+                    Log.i("info", "branchement: " + branchement.selectedItem.toString())
+                    viewModel.bobinage.value!!.branchement = branchement.selectedItem.toString()
+                    viewModel.quickSave()
+                    if (branchement.selectedItem.toString() == "autre")
+                        typeBranchement.visibility = View.VISIBLE
+                    else
+                        typeBranchement.visibility = View.INVISIBLE
+                }
             }
         }
         typeBranchement.doAfterTextChanged {
             if (typeBranchement.hasFocus() && typeBranchement.isVisible && typeBranchement.text.isNotEmpty()) {
-                viewModel.bobinage.value!!.branchement  = typeBranchement.text.toString()
+                viewModel.bobinage.value!!.branchement = typeBranchement.text.toString()
                 viewModel.quickSave()
             }
         }
         nbEncoches.doAfterTextChanged {
-            if (nbEncoches.hasFocus() && nbEncoches.text.isNotEmpty() && nbEncoches.text.matches(regexInt)) {
+            if (nbEncoches.hasFocus() && nbEncoches.text.isNotEmpty() && nbEncoches.text.matches(
+                    regexInt
+                )
+            ) {
                 viewModel.bobinage.value!!.nbEncoches = nbEncoches.text.toString().toLong()
                 viewModel.quickSave()
             }
         }
 
         enrg.setOnClickListener {
-            viewModel.bobinage.value!!.status = 2L
+            viewModel.bobinage.value!!.status = 3L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
             viewModel.quickSave()
+            Log.i("info", "status ${viewModel.bobinage.value?.status}")
             viewModel.save(
                 requireContext(),
                 layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
@@ -660,10 +664,13 @@ class FicheBobinage : Fragment() {
                 val builder = AlertDialog.Builder(it)
                 builder.setTitle("Terminer une fiche")
                     .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
-                    .setPositiveButton("Terminer",
-                        DialogInterface.OnClickListener { dialog, id ->
+                    .setPositiveButton("Terminer") { dialog, id ->
+                        runBlocking {
+                            var copy = viewModel.bobinage.value!!
+                            copy.status = 3L
+                            copy.sectionsFils = viewModel.sections.value
+                            viewModel.bobinage.value = copy
                             viewModel.getTime()
-                            viewModel.bobinage.value?.status = 3L
                             viewModel.quickSave()
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
@@ -672,7 +679,8 @@ class FicheBobinage : Fragment() {
                                 requireContext(),
                                 layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
                             )
-                        })
+                        }
+                    }
                 builder.create()
             }
             alertDialog?.show()
