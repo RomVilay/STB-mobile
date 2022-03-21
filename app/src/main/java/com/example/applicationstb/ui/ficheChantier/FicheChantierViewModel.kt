@@ -251,6 +251,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                         }
                                     }
                                 job2.join()
+                                delay(200)
                             }
                         }
                     }
