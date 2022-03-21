@@ -1738,7 +1738,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
         job.join()
     }
-
     fun sendPhoto(photo: File) {
         var s =
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
@@ -1764,11 +1763,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
             })
     }
-
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }
-
     private fun saveImage(image: Bitmap, name: String): String? {
         Log.i("INFO", "start")
         var savedImagePath: String? = null
@@ -1797,7 +1794,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
         return savedImagePath
     }
-
     private fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)

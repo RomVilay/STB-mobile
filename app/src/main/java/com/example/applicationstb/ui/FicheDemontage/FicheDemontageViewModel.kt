@@ -302,11 +302,39 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
     }
 
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                        Log.i("info","new token ${resp.token}")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche(view: View) {
+    fun sendFiche(view: View) = runBlocking{
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            getNameURI()
+            if (isOnline(context) == true) {
+                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+                }
+                delay(200)
+                getNameURI()
+            }
             when (selection.value!!.typeFicheDemontage) {
                 1 -> {
                     var fiche =

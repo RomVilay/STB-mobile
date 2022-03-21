@@ -1548,8 +1548,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
-
-
     fun Pointage() {
         viewModelScope.launch(Dispatchers.IO) {
             var date = ZonedDateTime.of(
@@ -1590,7 +1588,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
               repository.insertPointageDatabase(ptn)
           }*/
     }
-
     fun toPointages(view: View) {
         Navigation.findNavController(view)
             .navigate(AccueilDirections.actionAccueilToPointageFragment())

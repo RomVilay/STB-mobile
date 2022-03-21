@@ -43,6 +43,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     val selection = MutableLiveData<Remontage>()
     var start = MutableLiveData<Date>()
     var listeDemo = MutableLiveData<Array<DemontageMoteur>?>(arrayOf())
+    val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var ficheDemo = MutableLiveData<DemontageMoteur>()
     fun getListeDemo() : Array<DemontageMoteur> { return listeDemo.value!! }
 
@@ -131,7 +132,13 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun enregistrer(view: View) {
+    fun enregistrer(view: View) = runBlocking {
+        if (isOnline(getApplication<Application>().baseContext)) {
+            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            }
+            delay(200)
+        }
         if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
             var t = selection.value!! as RemontageTriphase
             if (isOnline(context)) {
@@ -765,7 +772,26 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             context.sendBroadcast(mediaScanIntent)
         }
     }
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =

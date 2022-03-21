@@ -190,6 +190,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     val resp = response.body()
                     if (resp != null) {
                         token = resp.token
+                        Log.i("info","new token ${resp.token}")
                     }
                 }
             }
@@ -203,16 +204,14 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view: View) = runBlocking{
         if (isOnline(context)) {
-            CoroutineScope(Dispatchers.IO).launch {
-                getNameURI()
-            }
-            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
-            }
-            delay(20)
             viewModelScope.launch(Dispatchers.IO) {
+                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+                }
+                delay(200)
+                getNameURI()
+                Log.i("info","new token 2 ${token}")
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
-                Log.i("info","status base ${ch?.status} - status vm ${chantier.value?.status} ")
                 var photos = chantier.value?.photos?.toMutableList()
                 var iter = photos?.listIterator()
                 while (iter?.hasNext() == true) {
@@ -326,56 +325,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
         return false
     }
-  /*  fun getImage(name: String?){
-        var request =   repository.getURLPhoto(token!!,name!!,object: Callback<URLPhotoResponse> {
-            var i : File? = null
-            override fun onResponse(
-                call: Call<URLPhotoResponse>,
-                response: Response<URLPhotoResponse>
-            ) {
-                if (response.code() == 200) {
-                    var resp = response.body()
-                    repository.getPhoto(token!!,resp?.url!!, object: Callback<PhotoResponse> {
-                        override fun onResponse(
-                            call: Call<PhotoResponse>,
-                            response: Response<PhotoResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                image.value = response.body()!!.photo
-                            }
-                        }
 
-                        override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
-                            Log.e("Error","erreur ${t.message}")
-                        }
-
-                    })
-                }
-            }
-
-            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
-                Log.e("Error","erreur ${t.message}")
-            }
-        })
-    }*/
-  /* suspend fun getImageName() = withContext(Dispatchers.IO){
-       repository.getURLToUploadPhoto(token!!, object: Callback<URLPhotoResponse2>{
-            override fun onResponse(
-                call: Call<URLPhotoResponse2>,
-                response: Response<URLPhotoResponse2>
-            ) {
-                if (response.code() == 200) {
-                    imageName.value = response.body()!!.name
-                    Log.i("INFO", "nom renvoyé "+response.body()!!.name!!)
-                }
-            }
-
-            override fun onFailure(call: Call<URLPhotoResponse2>, t: Throwable) {
-                Log.e("Error","erreur ${t.message}")
-            }
-
-        })
-    }*/
     suspend fun getNameURI() = runBlocking {
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val resp1 = repository.getURLToUploadPhoto(token!!)

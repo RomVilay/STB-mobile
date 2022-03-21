@@ -47,6 +47,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var start = MutableLiveData<Date>()
     var image =MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
+    val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
 
     init {
         viewModelScope.launch(Dispatchers.IO){
@@ -144,10 +145,36 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                        Log.i("info","new token ${resp.token}")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context, view:View) {
+    fun save(context: Context, view:View)= runBlocking {
         if (isOnline(context)) {
             CoroutineScope(Dispatchers.IO).launch {
+                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+                }
+                delay(200)
                 getNameURI()
             }
             viewModelScope.launch(Dispatchers.IO) {
