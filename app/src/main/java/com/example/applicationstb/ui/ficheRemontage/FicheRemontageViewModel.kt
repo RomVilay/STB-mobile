@@ -305,9 +305,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getListeDemontage(): Array<DemontageMoteur> {
+    fun getListeDemontage(): Array<DemontageMoteur> = runBlocking{
         var liste = mutableListOf<DemontageMoteur>()
-            if (isOnline(context)) {
+            if (isOnline(context) && sharedPref.getBoolean("connected",false)) {
                 var job = viewModelScope.async {
                     repository.getFichesForRemontage(
                         token!!,
@@ -331,9 +331,10 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                         })
                 }
                 Log.i("INFO", "fiches ${liste.size}")
-               return liste.toTypedArray()
+               return@runBlocking liste.toTypedArray()
             } else {
-                if (selection.value!!.typeFicheRemontage == 1) {
+                Log.i("info","fiche sélectionnée de type ${selection.value?.typeFicheRemontage}")
+                /*if (selection.value!!.typeFicheRemontage == 1) {
                     viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontagePompeLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
@@ -408,9 +409,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                         listeDemo?.value?.get(0)?.numFiche?.let { Log.i("INFO", it) }
                     }
                 }
-                else{}
+                else{}*/
             }
-        return liste.toTypedArray()
+        return@runBlocking liste.toTypedArray()
     }
 
     fun getFichesDemontage(id: String) : DemontageMoteur? {
