@@ -279,6 +279,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     @RequiresApi(Build.VERSION_CODES.M)
     suspend fun sendExternalPicture(path: String?): String? {
         if (isOnline(context)) {
+            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            }
+            delay(200)
             getNameURI()
             try {
                 val dir =

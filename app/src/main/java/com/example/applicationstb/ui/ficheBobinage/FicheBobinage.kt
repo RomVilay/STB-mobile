@@ -649,7 +649,7 @@ class FicheBobinage : Fragment() {
         }
 
         enrg.setOnClickListener {
-            viewModel.bobinage.value!!.status = 3L
+            viewModel.bobinage.value!!.status = 2L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
             viewModel.quickSave()
