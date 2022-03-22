@@ -3206,16 +3206,15 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
         viewModelScope.launch(Dispatchers.IO) {
-            lateinit var  compressedPicture :File
+           /* lateinit var  compressedPicture :File
             var job = launch { compressedPicture = Compressor.compress(context, photo) }
-            job.join()
+            job.join()*/
             //compressedPicture.renameTo(photo)
-            Log.i("info","taille ${compressedPicture.totalSpace}")
             repository.uploadPhoto(
                 token!!,
                 imageName.value!!.name!!,
                 tab.toList(),
-                compressedPicture,
+                photo,//compressedPicture,
                 object : Callback<URLPhotoResponse> {
                     override fun onResponse(
                         call: Call<URLPhotoResponse>,

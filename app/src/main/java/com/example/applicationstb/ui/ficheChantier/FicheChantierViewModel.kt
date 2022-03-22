@@ -425,22 +425,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         job.join()
-        /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            var resp2 = repository.getPhoto(file!!)
-            withContext(Dispatchers.Main){
-                if( resp2.isSuccessful) {
-                    saveImage(Glide.with(this@withContext)
-                        .asBitmap()
-                        .load(resp2.))
-                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
-                   // photos?.value!!.add(p)
-                   // Log.i("INFO", "chemin:"+p)
-                } else{
-                    exceptionHandler
-                }
-            }
-        }
-        job2.join()*/
         return@runBlocking file
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
