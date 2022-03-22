@@ -144,7 +144,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFiche() {
-        if (isOnline(context) == true && sharedPref.getBoolean("connected",false)) {
+        if (isOnline(context) == true && sharedPref.getBoolean("connected", false)) {
             viewModelScope.launch(Dispatchers.IO) {
                 var job = CoroutineScope(Dispatchers.IO).launch {
                     getNameURI()
@@ -158,6 +158,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         runBlocking {
                             var photos = ch.photos?.toMutableList()
                             var iter = photos?.listIterator()
+                            Log.i("info", "taille ${ch.photos?.size}")
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
@@ -185,9 +186,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                             from.exists()
                                                                 .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
                                                         )
-                                                        if (from.exists()) from.renameTo(to)
-                                                        sendPhoto(to)
-                                                        iter.set(imageName.value!!.name!!)
+                                                        if (from.exists()) {
+                                                            from.renameTo(to)
+                                                            sendPhoto(to)
+                                                            iter.set(imageName.value!!.name!!)
+                                                        }
                                                     } catch (e: java.lang.Exception) {
                                                         Log.e("EXCEPTION", e.message!!)
                                                     }
@@ -1678,15 +1681,17 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     viewModelScope.launch(Dispatchers.IO) {
                         var list2 = repository.getAllPointageLocalDatabase().toMutableList()
                         list2.forEach { p2 ->
-                            var index = list.indexOfFirst{ p1 -> p1._id == p2._id}
-                            if (index < 0 ) {
+                            var index = list.indexOfFirst { p1 -> p1._id == p2._id }
+                            if (index < 0) {
                                 var ptn = repository.postPointages(token, p2.user, p2.timestamp)
                                 repository.deletePointageLocalDatabse(p2)
                                 repository.insertPointageDatabase(ptn.body()!!.data)
-                                if (p2.timestamp.isBefore(date)) repository.deletePointageLocalDatabse(p2)
+                                if (p2.timestamp.isBefore(date)) repository.deletePointageLocalDatabse(
+                                    p2
+                                )
                             }
                         }
-                        if (list2.size == 0) list.forEach{ repository.insertPointageDatabase(it)}
+                        if (list2.size == 0) list.forEach { repository.insertPointageDatabase(it) }
                     }
                 }
             }
@@ -1734,6 +1739,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
         job.join()
     }
+
     fun sendPhoto(photo: File) {
         var s =
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
@@ -1759,9 +1765,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
             })
     }
+
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }
+
     private fun saveImage(image: Bitmap, name: String): String? {
         Log.i("INFO", "start")
         var savedImagePath: String? = null
@@ -1790,6 +1798,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
         return savedImagePath
     }
+
     private fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
