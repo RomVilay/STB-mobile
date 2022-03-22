@@ -161,11 +161,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
-                                    //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(ch.numFiche!!)) {
-                                            Log.i("INFO", "fichier à upload : ${name}")
-                                            //var test = getPhotoFile(name)
                                             var job =
                                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                     getNameURI()
@@ -204,7 +201,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             }
                             ch.photos = photos?.toTypedArray()
-                            //Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

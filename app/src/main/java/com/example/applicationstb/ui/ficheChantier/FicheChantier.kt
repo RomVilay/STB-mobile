@@ -331,8 +331,6 @@ class FicheChantier : Fragment() {
                 val photo: Bitmap = data?.extras?.get("data") as Bitmap
                 val uri = context?.let { photo.saveImage(it.applicationContext) }
                 if (uri != null) {
-                    Log.i("INFO", "uri:" + uri)
-                    viewModel.addPhoto(uri)
                     viewModel.galleryAddPic(uri.path)
                     /*var picture = File(uri.path)
                     try {
@@ -341,7 +339,6 @@ class FicheChantier : Fragment() {
                         Log.e("EXCEPTION",e.message!!)
                     }*/
                 }
-                Log.i("INFO", uri.toString())
             }
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 //val photo: Bitmap = data?.extras?.get("data") as Bitmap
