@@ -88,7 +88,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             viewModelScope.launch(
                                 Dispatchers.IO
                             ) {
-                                getNameURI()
                                 sendFiche()
                                 sendPointage(resp.token!!, resp.user!!._id!!)
                             }
@@ -143,8 +142,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche() {
-        if (isOnline(context) == true && sharedPref.getBoolean("connected", false)) {
+    fun sendFiche() = runBlocking {
+        if (isOnline(context) == true) {
             viewModelScope.launch(Dispatchers.IO) {
                 var job = CoroutineScope(Dispatchers.IO).launch {
                     getNameURI()
@@ -152,18 +151,21 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 job.join()
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
+                Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
                         var ch = fiche.toChantier()
                         runBlocking {
                             var photos = ch.photos?.toMutableList()
                             var iter = photos?.listIterator()
-                            Log.i("info", "taille ${ch.photos?.size}")
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
+                                    //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(ch.numFiche!!)) {
+                                            Log.i("INFO", "fichier à upload : ${name}")
+                                            //var test = getPhotoFile(name)
                                             var job =
                                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                     getNameURI()
@@ -186,11 +188,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                             from.exists()
                                                                 .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
                                                         )
-                                                        if (from.exists()) {
-                                                            from.renameTo(to)
-                                                            sendPhoto(to)
-                                                            iter.set(imageName.value!!.name!!)
-                                                        }
+                                                        if (from.exists()) from.renameTo(to)
+                                                        sendPhoto(to)
+                                                        iter.set(imageName.value!!.name!!)
                                                     } catch (e: java.lang.Exception) {
                                                         Log.e("EXCEPTION", e.message!!)
                                                     }
@@ -204,6 +204,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             }
                             ch.photos = photos?.toTypedArray()
+                            //Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                 var job3 =
                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -308,7 +309,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listb: List<BobinageEntity> =
                     repository.getAllBobinageLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches bobinage: ${listb.size}")
                 if (listb.size > 0) {
                     for (fiche in listb) {
@@ -318,8 +318,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(ch.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
                                         var job =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                 getNameURI()
@@ -337,6 +340,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                         name
                                                     )
                                                     val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
                                                     if (from.exists()) from.renameTo(to)
                                                     sendPhoto(to)
                                                     iter.set(imageName.value!!.name!!)
@@ -353,7 +361,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         ch.photos = photos?.toTypedArray()
-                        repository.updateBobinageLocalDatabse(ch.toEntity())
                         val resp = repository.patchBobinage(
                             user!!.token!!,
                             ch._id,
@@ -393,7 +400,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listDT: List<DemontageTriphaseEntity> =
                     repository.getAllDemontageTriLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches DemontageTriphase: ${listDT.size}")
                 if (listDT.size > 0) {
                     for (fiche in listDT) {
@@ -403,10 +409,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(dt.numFiche!!)) {
                                         Log.i("INFO", "fichier à upload : ${name}")
-
+                                        //var test = getPhotoFile(name)
                                         var job =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                                                 getNameURI()
@@ -447,7 +454,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = photos?.toTypedArray()
-                        repository.updateDemoTriLocalDatabse(dt.toEntity())
                         val resp = repository.patchDemontageTriphase(
                             user!!.token!!,
                             dt._id,
@@ -487,7 +493,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listCC: List<DemontageCCEntity> =
                     repository.getAllDemontageCCLocalDatabase()
-                //Log.i("INFO", "token : ${user!!.token}")
                 Log.i("INFO", "nb de fiches DemontageCourantContinu: ${listCC.size}")
                 if (listCC.size > 0) {
                     for (fiche in listCC) {
@@ -540,7 +545,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         dcc.photos = photos?.toTypedArray()
-                        repository.updateDemoCCLocalDatabse(dcc.toEntity())
                         val resp = repository.patchDemontageCC(
                             user!!.token!!,
                             dcc._id,
@@ -580,7 +584,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listRT: List<RemontageTriphaseEntity> =
                     repository.getAllRemontageTriLocalDatabase()
-                //Log.i("INFO", "token : ${.token}")
                 Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
                 if (listRT.size > 0) {
                     for (fiche in listRT) {
@@ -630,7 +633,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         dt.photos = photos?.toTypedArray()
-                        repository.updateRemoTriLocalDatabse(dt.toEntity())
                         val resp = repository.patchRemontageTriphase(
                             user!!.token!!,
                             dt._id,
@@ -670,7 +672,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listRCC: List<RemontageCCEntity> =
                     repository.getAllRemontageCCLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
                 if (listRCC.size > 0) {
                     for (fiche in listRCC) {
@@ -716,7 +717,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        repository.updateRemoCCLocalDatabse(rc.toEntity())
                         val resp = repository.patchRemontageCC(
                             user!!.token!!,
                             rc._id,
@@ -756,7 +756,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listRm: List<RemontageEntity> =
                     repository.getAllRemontageLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
                 if (listRm.size > 0) {
                     for (fiche in listRm) {
@@ -802,7 +801,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        repository.updateRemoLocalDatabse(rc.toRemoEntity())
                         val resp = repository.patchRemontage(
                             user!!.token!!,
                             rc._id,
@@ -842,7 +840,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listDP: List<DemoPompeEntity> =
                     repository.getAllDemontagePompeLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
                 if (listDP.size > 0) {
                     for (fiche in listDP) {
@@ -895,7 +892,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        repository.updateDemoPompeLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontagePompe(
                             user!!.token!!,
                             rc._id,
@@ -935,7 +931,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listDM: List<DemontageMonophaseEntity> =
                     repository.getAllDemontageMonoLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage monophase: ${listDM.size}")
                 if (listDM.size > 0) {
                     for (fiche in listDM) {
@@ -988,7 +983,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        repository.updateDemoMonoLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageMono(
                             user!!.token!!,
                             rc._id,
@@ -1028,7 +1022,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listDA: List<DemontageAlternateurEntity> =
                     repository.getAllDemontageAlterLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage Alternateur: ${listDA.size}")
                 if (listDA.size > 0) {
                     for (fiche in listDA) {
@@ -1081,7 +1074,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        repository.updateDemoAlterLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageAlter(
                             user!!.token!!,
                             rc._id,
@@ -1121,7 +1113,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listDRB: List<DemontageRotorBEntity> =
                     repository.getAllDemontageRBLocalDatabase()
-                //Log.i("INFO", "token : ${token}")
                 Log.i("INFO", "nb de fiches Demontage Rotor Bobine: ${listDRB.size}")
                 if (listDRB.size > 0) {
                     for (fiche in listDRB) {
@@ -1176,7 +1167,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         rc.photos = photos?.toTypedArray()
-                        repository.updateDemoRBLocalDatabse(rc.toEntity())
                         val resp = repository.patchDemontageRotor(
                             user!!.token!!,
                             rc._id,
@@ -1216,18 +1206,17 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 var listDMP: List<DemontageMotopompeEntity> =
                     repository.getAllDemontageMotopompeLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMP.size}")
                 if (listDMP.size > 0) {
                     for (fiche in listDMP) {
-                        var mp = fiche.toMotoPompe()
-                        var photos = mp.photos?.toMutableList()
+                        var dmp = fiche.toMotoPompe()
+                        var photos = dmp.photos?.toMutableList()
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
                                 //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
-                                    if (name.contains(mp.numFiche!!)) {
+                                    if (name.contains(dmp.numFiche!!)) {
                                         Log.i("INFO", "fichier à upload : ${name}")
                                         //var test = getPhotoFile(name)
                                         var job =
@@ -1269,12 +1258,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        mp.photos = photos?.toTypedArray()
-                        repository.updateDemoMotoPompeLocalDatabase(mp.toEntity())
+                        dmp.photos = photos?.toTypedArray()
                         val resp = repository.patchDemontageMotopompe(
-                            user!!.token!!,
-                            mp._id,
-                            mp,
+                            user?.token!!,
+                            dmp._id,
+                            dmp,
                             object : Callback<DemontageMotopompeResponse> {
                                 override fun onResponse(
                                     call: Call<DemontageMotopompeResponse>,
@@ -1308,103 +1296,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
-                var listDMR: List<DemontageMotoreducteurEntity> =
-                    repository.getAllDemontageMotoreducteurLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMR.size}")
-                if (listDMR.size > 0) {
-                    for (fiche in listDMR) {
-                        var mr = fiche.toDemontageMotoreducteur()
-                        var photos = mr.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(mr.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        mr.photos = photos?.toTypedArray()
-                        repository.updateDemoMotoreducteurLocalDatabase(mr.toEntity())
-                        val resp = repository.patchDemontageMotoreducteur(
-                            user!!.token!!,
-                            mr._id,
-                            mr,
-                            object : Callback<DemontageMotoreducteurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMotoreducteurResponse>,
-                                    response: Response<DemontageMotoreducteurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageMotoreducteurLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMotoreducteurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
+                Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMP.size}")
                 var listDR: List<DemontageReducteurEntity> =
                     repository.getAllDemontageReducteurLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDR.size}")
                 if (listDR.size > 0) {
                     for (fiche in listDR) {
                         var dr = fiche.toReducteur()
@@ -1413,6 +1307,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(dr.numFiche!!)) {
                                         Log.i("INFO", "fichier à upload : ${name}")
@@ -1457,9 +1352,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dr.photos = photos?.toTypedArray()
-                        repository.updateDemoReducteurLocalDatabase(dr.toEntity())
                         val resp = repository.patchDemontageReducteur(
-                            user!!.token!!,
+                            user?.token!!,
                             dr._id,
                             dr,
                             object : Callback<DemontageReducteurResponse> {
@@ -1495,6 +1389,100 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
+                Log.i("INFO", "nb de fiches Demontage Reducteur: ${listDR.size}")
+                var listDMR: List<DemontageMotoreducteurEntity> =
+                    repository.getAllDemontageMotoreducteurLocalDatabase()
+                if (listDMP.size > 0) {
+                    for (fiche in listDMR) {
+                        var dmr = fiche.toDemontageMotoreducteur()
+                        var photos = dmr.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name !== "") {
+                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
+                                runBlocking {
+                                    if (name.contains(dmr.numFiche!!)) {
+                                        Log.i("INFO", "fichier à upload : ${name}")
+                                        //var test = getPhotoFile(name)
+                                        var job =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI()
+                                            }
+                                        job.join()
+                                        var job2 =
+                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                try {
+                                                    val dir =
+                                                        Environment.getExternalStoragePublicDirectory(
+                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                        )
+                                                    val from = File(
+                                                        dir,
+                                                        name
+                                                    )
+                                                    val to = File(dir, imageName.value!!.name!!)
+                                                    Log.i(
+                                                        "INFO",
+                                                        from.exists()
+                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                    )
+                                                    if (from.exists()) from.renameTo(to)
+                                                    sendPhoto(to)
+                                                    iter.set(imageName.value!!.name!!)
+                                                } catch (e: java.lang.Exception) {
+                                                    Log.e("EXCEPTION", e.message!!)
+                                                }
+                                            }
+                                        job2.join()
+                                    }
+                                }
+                            }
+                            if (name == "") {
+                                iter.remove()
+                            }
+                        }
+
+                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
+                        dmr.photos = photos?.toTypedArray()
+                        val resp = repository.patchDemontageMotoreducteur(
+                            user?.token!!,
+                            dmr._id,
+                            dmr,
+                            object : Callback<DemontageMotoreducteurResponse> {
+                                override fun onResponse(
+                                    call: Call<DemontageMotoreducteurResponse>,
+                                    response: Response<DemontageMotoreducteurResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
+                                        }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteDemontageMotoreducteurLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<DemontageMotoreducteurResponse>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("Error", "${t.stackTraceToString()}")
+                                    Log.e("Error", "erreur ${t.message}")
+                                }
+                            })
+                    }
+                }
+                Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
                 var listRMP: List<RemontageMotopompeEntity> =
                     repository.getAllRemontageMotopompeLocalDatabase()
                 Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
@@ -1539,9 +1527,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rmp.photos = photos?.toTypedArray()
-                        repository.updateRemoMotoPompeLocalDatabase(rmp.toEntity())
                         val resp = repository.patchRemontageMotopompe(
-                            user!!.token!!,
+                            user?.token!!,
                             rmp._id,
                             rmp,
                             object : Callback<RemontageMotopompeResponse> {
@@ -1621,7 +1608,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rmp.photos = photos?.toTypedArray()
-                        repository.updateRemoMotoreducteurLocalDatabase(rmp.toEntity())
                         val resp = repository.patchRemontageMotoreducteur(
                             user!!.token!!,
                             rmp._id,
@@ -1726,18 +1712,28 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     suspend fun getNameURI() = runBlocking {
-        var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val resp1 = repository.getURLToUploadPhoto(user?.token!!)
             withContext(Dispatchers.Main) {
                 if (resp1.isSuccessful) {
                     imageName.postValue(resp1.body())
-                    Log.i("INFO", resp1.body()?.name!!)
                 } else {
                     exceptionHandler
                 }
             }
         }
-        job.join()
+    }
+
+    suspend fun getNameURI2(callback: (URLPhotoResponse2?) -> Unit) {
+        val resp1 = repository.getURLToUploadPhoto(user?.token!!)
+        withContext(Dispatchers.Main) {
+            if (resp1.isSuccessful) {
+                callback(resp1.body())
+            } else {
+                exceptionHandler
+            }
+        }
+
     }
 
     fun sendPhoto(photo: File) {
@@ -1745,7 +1741,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
-        Log.i("INFO", "nom fichier:" + photo.name)
         repository.uploadPhoto(
             user?.token!!,
             imageName.value!!.name!!,
@@ -1756,8 +1751,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     call: Call<URLPhotoResponse>,
                     response: Response<URLPhotoResponse>
                 ) {
-                    Log.i("INFO", response.code().toString() + " - " + response.message())
-                    Log.i("INFO", "envoyé ${call.request().url()}")
+                    //Log.i("INFO", "envoyé ${call.request().url()}")
                 }
 
                 override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
