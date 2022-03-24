@@ -48,6 +48,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var start = MutableLiveData<Date>()
     var image =MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
+    val sharedPref =
+        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     init {
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -200,13 +202,12 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view: View){
-        if (isOnline(context)) {
+        if (isOnline(context) && token !== "") {
             CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
             }
             viewModelScope.launch(Dispatchers.IO) {
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
-                Log.i("info","status base ${ch?.status} - status vm ${chantier.value?.status} ")
                 var photos = chantier.value?.photos?.toMutableList()
                 var iter = photos?.listIterator()
                 while (iter?.hasNext() == true) {

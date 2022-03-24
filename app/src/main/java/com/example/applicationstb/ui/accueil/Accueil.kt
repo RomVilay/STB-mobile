@@ -52,7 +52,7 @@ class Accueil : Fragment() {
         viewModel.username = arguments?.get("Username") as? String
         val reload = layout.findViewById<Button>(R.id.reload)
         val send = layout.findViewById<Button>(R.id.send)
-        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context)) {
+        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context) && viewModel.fiches == null) {
             runBlocking {
                 var job = launch {
                     var test = ActivityCompat.checkSelfPermission(

@@ -299,6 +299,7 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
+            Log.i("info","token ${viewModel.token == ""}")
             viewModel.quickSave()
             viewModel.save(
                 requireContext(),
