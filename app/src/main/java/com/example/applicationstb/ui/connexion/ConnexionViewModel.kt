@@ -88,7 +88,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             viewModelScope.launch(
                                 Dispatchers.IO
                             ) {
-                                sendFiche()
+                                getNameURI()
+                                var job = launch {
+                                    sendFiche()
+                                }
+                               job.join()
                                 sendPointage(resp.token!!, resp.user!!._id!!)
                             }
                             if (action != null) {
@@ -153,115 +157,106 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         runBlocking {
                             var photos = ch.photos?.toMutableList()
                             var iter = photos?.listIterator()
-                            Log.i("info", "taille ${ch.photos?.size}")
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
-                                if (name !== "") {
-                                    runBlocking {
-                                        if (name.contains(ch.numFiche!!)) {
-                                            var job =
-                                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                    getNameURI()
-                                                }
-                                            job.join()
-                                            var job2 =
-                                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                    try {
-                                                        val dir =
-                                                            Environment.getExternalStoragePublicDirectory(
-                                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                            )
-                                                        val from = File(
-                                                            dir,
-                                                            name
-                                                        )
-                                                        val to = File(dir, imageName.value!!.name!!)
-                                                        Log.i(
-                                                            "INFO",
-                                                            from.exists()
-                                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                        )
-                                                        if (from.exists()) {
-                                                            from.renameTo(to)
-                                                            sendPhoto(to)
-                                                            iter.set(imageName.value!!.name!!)
-                                                        }
-                                                    } catch (e: java.lang.Exception) {
-                                                        Log.e("EXCEPTION", e.message!!)
-                                                    }
-                                                }
-                                            job2.join()
-                                        }
-                                    }
-                                }
                                 if (name == "") {
                                     iter.remove()
-                                }
-                            }
-                            ch.photos = photos?.toTypedArray()
-                            if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
-                                var job3 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        getNameURI()
-                                    }
-                                job3.join()
-                                var job4 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        try {
-                                            val dir = Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                            )
-                                            val from = File(
-                                                dir,
-                                                ch.signatureClient!!
-                                            )
-                                            val to = File(dir, imageName.value!!.name!!)
-                                            Log.i(
-                                                "INFO", "signature client" +
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath}"
-                                            )
-                                            if (from.exists()) from.renameTo(to)
-                                            ch.signatureClient = imageName.value!!.name
-                                            sendPhoto(to)
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!!)
-                                        }
-                                    }
-                                job4.join()
+                                } else {
+                                    Log.i("info","image a upload ${name.contains(ch.numFiche!!)}")
+                                    if (name.contains(ch.numFiche!!)) {
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                            Log.i("info","image name ${imageName.value!!.name}")
+                                            try {
+                                                val dir =
+                                                    Environment.getExternalStoragePublicDirectory(
+                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                    )
+                                                val from = File(
+                                                    dir,
+                                                    name
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                Log.i(
+                                                    "INFO",
+                                                    from.exists()
+                                                        .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                                sendPhoto(to)
+                                                iter.set(imageName.value?.name!!)
 
-                            }
-                            //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
-                            if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
-                                var job3 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        getNameURI()
-                                    }
-                                job3.join()
-                                var job4 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        try {
-                                            val dir = Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                            )
-                                            val from = File(
-                                                dir,
-                                                ch.signatureTech!!
-                                            )
-                                            val to = File(dir, imageName.value!!.name!!)
-                                            Log.i(
-                                                "INFO", "signature tech" +
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath}"
-                                            )
-                                            if (from.exists()) from.renameTo(to)
-                                            ch.signatureTech = imageName.value!!.name
-                                            sendPhoto(to)
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!!)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
                                         }
                                     }
-                                job4.join()
+                                }
+                                ch.photos = photos?.toTypedArray()
+                                if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
+                                    var job3 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                        }
+                                    job3.join()
+                                    var job4 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            try {
+                                                val dir = Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                                )
+                                                val from = File(
+                                                    dir,
+                                                    ch.signatureClient!!
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                Log.i(
+                                                    "INFO", "signature client" +
+                                                            from.exists()
+                                                                .toString() + " - path ${from.absolutePath}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                                ch.signatureClient = imageName.value!!.name
+                                                sendPhoto(to)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
+                                        }
+                                    job4.join()
+
+                                }
+                                //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
+                                if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                                    var job3 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                        }
+                                    job3.join()
+                                    var job4 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            try {
+                                                val dir = Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                                )
+                                                val from = File(
+                                                    dir,
+                                                    ch.signatureTech!!
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                Log.i(
+                                                    "INFO", "signature tech" +
+                                                            from.exists()
+                                                                .toString() + " - path ${from.absolutePath}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                                ch.signatureTech = imageName.value!!.name
+                                                sendPhoto(to)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
+                                        }
+                                    job4.join()
+                                }
                             }
                         }
                         val resp = repository.patchChantier(
@@ -480,7 +475,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                 runBlocking {
                                     if (name.contains(dcc.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
                                         //var test = getPhotoFile(name)
                                         var job =
                                             CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

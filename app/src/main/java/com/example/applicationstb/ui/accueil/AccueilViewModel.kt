@@ -3236,7 +3236,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 .toString() + "/test_pictures/" + photoName
         )
-        Log.i("INFO", "fichier ${file.absolutePath} exist: ${file.exists().toString()}")
+        //Log.i("INFO", "fichier ${file.absolutePath} exist: ${file.exists().toString()}")
         var path: String? = null
         if (!file.exists()) {
             var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
