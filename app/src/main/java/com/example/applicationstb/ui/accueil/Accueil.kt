@@ -75,7 +75,7 @@ class Accueil : Fragment() {
                     }
                 }
                 var job2 = launch {
-                    viewModel.sendFiche(loading)
+                //    viewModel.sendFiche(loading)
                     viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
                 }
                 delay(200)
