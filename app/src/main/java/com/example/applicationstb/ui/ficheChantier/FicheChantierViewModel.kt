@@ -199,9 +199,34 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
+   suspend fun connection() {
+        if (isOnline(context) && (sharedPref.getString("login","") !== "") && (sharedPref.getString("password","") !== "") ) {
+        val resp = repository.logUser(sharedPref.getString("login","")!!, sharedPref.getString("password","")!!, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+            }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context, view: View){
+    fun save(context: Context, view: View)= runBlocking{
+        if (isOnline(context) && token == ""){
+            connection()
+        }
         if (isOnline(context) && token !== "") {
             CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
