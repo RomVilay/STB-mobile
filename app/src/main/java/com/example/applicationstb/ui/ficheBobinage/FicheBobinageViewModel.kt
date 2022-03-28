@@ -146,7 +146,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view:View) {
-        if (isOnline(context)) {
+        if (isOnline(context) && token !== "") {
             CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
             }

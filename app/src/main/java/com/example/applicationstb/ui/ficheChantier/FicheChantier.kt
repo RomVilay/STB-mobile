@@ -60,7 +60,7 @@ class FicheChantier : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var list = arguments?.get("listChantiers") as Array<Chantier>
-        viewModel.token = arguments?.get("Token") as String
+        viewModel.token.postValue(arguments?.get("Token") as String)
         viewModel.username = arguments?.get("username") as String
         viewModel.listeChantiers = list.toCollection(ArrayList())
         val layout = inflater.inflate(R.layout.fiche_chantier_fragment, container, false)
@@ -164,7 +164,8 @@ class FicheChantier : Fragment() {
         }
         adresse.setOnClickListener {
             if (viewModel.chantier.value !== null && viewModel.chantier.value!!.adresseChantier !== null) {
-                val gmmIntentUri = Uri.parse("geo:0,0?q=${viewModel.chantier.value!!.adresseChantier!!}")
+                val gmmIntentUri =
+                    Uri.parse("geo:0,0?q=${viewModel.chantier.value!!.adresseChantier!!}")
                 //val gmmIntentUri = Uri.parse("google.navigation:q=${viewModel.chantier.value!!.adresseChantier!!}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
@@ -299,11 +300,18 @@ class FicheChantier : Fragment() {
             viewModel.back(layout)
         }
         enregistrer.setOnClickListener {
-                viewModel.quickSave()
-                    viewModel.save(
-                        requireContext(),
-                        layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
-                    )
+            viewModel.quickSave()
+            if (viewModel.token.value == "") {
+                viewModel.saveWconnection(
+                    requireContext(),
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
+            } else {
+                viewModel.save(
+                    requireContext(),
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                    viewModel.token.value!!
+                )
+            }
         }
         term.setOnClickListener {
             viewModel.chantier.value?.status = 3
@@ -312,7 +320,8 @@ class FicheChantier : Fragment() {
                 delay(10)
                 viewModel.save(
                     requireContext(),
-                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout)
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                    viewModel.token.value!!
                 )
             }
 

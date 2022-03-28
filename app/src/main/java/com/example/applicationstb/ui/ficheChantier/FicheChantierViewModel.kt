@@ -37,7 +37,7 @@ import java.util.*
 
 class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
-    var token: String? = null;
+    var token= MutableLiveData<String>();
     var username: String? = null;
     var repository = Repository(context );
     var listeChantiers = arrayListOf<Chantier>()
@@ -199,9 +199,9 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
-   suspend fun connection() {
+   fun saveWconnection(context: Context, view: View)= runBlocking{
         if (isOnline(context) && (sharedPref.getString("login","") !== "") && (sharedPref.getString("password","") !== "") ) {
-        val resp = repository.logUser(sharedPref.getString("login","")!!, sharedPref.getString("password","")!!, object : Callback<LoginResponse> {
+        val resp = launch { repository.logUser(sharedPref.getString("login","")!!, sharedPref.getString("password","")!!, object : Callback<LoginResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
                 call: Call<LoginResponse>,
@@ -210,24 +210,22 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp != null) {
-                        token = resp.token
+                        token.postValue(resp.token!!)
+                        save(context,view,resp.token!!)
+                        Log.i("info","chantier - connecté")
                     }
                 }
             }
-
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("Error", "erreur ${t.message}")
             }
-        })
+        }) }
+            resp.join()
             }
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context, view: View)= runBlocking{
-        if (isOnline(context) && token == ""){
-            connection()
-        }
-        if (isOnline(context) && token !== "") {
+    fun save(context: Context, view: View, t:String)= runBlocking{
+        if (isOnline(context)) {
             CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
             }
@@ -283,7 +281,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
                 chantier.postValue(ch!!)
                 val resp = repository.patchChantier(
-                    token!!,
+                    t,
                     chantier.value!!._id,
                     ch!!,
                     object : Callback<ChantierResponse> {
@@ -296,7 +294,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    // Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
+                                    //Log.i("INFO","fiche chantier enregistrée")
                                 }
                             } else {
                                 val mySnackbar =
@@ -398,7 +396,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }*/
     suspend fun getNameURI() = runBlocking {
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val resp1 = repository.getURLToUploadPhoto(token!!)
+            val resp1 = repository.getURLToUploadPhoto(token.value!!)
             withContext(Dispatchers.Main){
                 if (resp1.isSuccessful) {
                     imageName.postValue(resp1.body())
@@ -450,7 +448,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             //compressedPicture.renameTo(photo)
             Log.i("info","taille ${compressedPicture.totalSpace}")
             repository.uploadPhoto(
-                token!!,
+                token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),
                 compressedPicture,
@@ -472,7 +470,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
         var file: String? = null
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val resp1 = repository.getURLPhoto(token!!,photoName)
+            val resp1 = repository.getURLPhoto(token.value!!,photoName)
             withContext(Dispatchers.Main){
                 if (resp1.isSuccessful) {
                     if (resp1.code() == 200) {
