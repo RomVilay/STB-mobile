@@ -315,17 +315,18 @@ class FicheChantier : Fragment() {
         }
         term.setOnClickListener {
             viewModel.chantier.value?.status = 3
-            runBlocking {
-                viewModel.quickSave()
-                delay(10)
-                viewModel.save(
-                    requireContext(),
-                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
-                    viewModel.token.value!!
-                )
-            }
-
-
+            viewModel.quickSave()
+            if (viewModel.token.value == "") {
+                    viewModel.saveWconnection(
+                        requireContext(),
+                        layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
+                } else {
+                    viewModel.save(
+                        requireContext(),
+                        layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                        viewModel.token.value!!
+                    )
+                }
         }
         return layout
     }
