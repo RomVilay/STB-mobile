@@ -650,17 +650,11 @@ class FicheBobinage : Fragment() {
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
             viewModel.quickSave()
-            if (viewModel.token.value == "") {
-                viewModel.saveWconnection(
-                    requireContext(),
-                    layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout))
-            } else {
                 viewModel.save(
                     requireContext(),
                     layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
                     viewModel.token.value!!
                 )
-            }
         }
         term.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -675,17 +669,11 @@ class FicheBobinage : Fragment() {
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }
-                            if (viewModel.token.value == "") {
-                                viewModel.saveWconnection(
-                                    requireContext(),
-                                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
-                            } else {
                                 viewModel.save(
                                     requireContext(),
                                     layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
                                     viewModel.token.value!!
                                 )
-                            }
                         })
                 builder.create()
             }

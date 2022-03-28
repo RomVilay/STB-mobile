@@ -301,32 +301,26 @@ class FicheChantier : Fragment() {
         }
         enregistrer.setOnClickListener {
             viewModel.quickSave()
-            if (viewModel.token.value == "") {
-                viewModel.saveWconnection(
+            //if (viewModel.token.value == "") {
+                viewModel.save(
                     requireContext(),
-                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
-            } else {
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout), viewModel.token.value!!)
+           /* } else {
                 viewModel.save(
                     requireContext(),
                     layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
                     viewModel.token.value!!
                 )
-            }
+            }*/
         }
         term.setOnClickListener {
             viewModel.chantier.value?.status = 3
             viewModel.quickSave()
-            if (viewModel.token.value == "") {
-                    viewModel.saveWconnection(
-                        requireContext(),
-                        layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout))
-                } else {
                     viewModel.save(
                         requireContext(),
                         layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
                         viewModel.token.value!!
                     )
-                }
         }
         return layout
     }
