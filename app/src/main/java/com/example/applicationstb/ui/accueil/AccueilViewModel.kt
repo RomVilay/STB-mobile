@@ -1548,8 +1548,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
-
-
     fun Pointage() {
         viewModelScope.launch(Dispatchers.IO) {
             var date = ZonedDateTime.of(
@@ -1590,39 +1588,32 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
               repository.insertPointageDatabase(ptn)
           }*/
     }
-
     fun toPointages(view: View) {
         Navigation.findNavController(view)
             .navigate(AccueilDirections.actionAccueilToPointageFragment())
     }
-
     fun toChantier(view: View) {
         var action =
             AccueilDirections.versFicheChantier(chantiers!!.toTypedArray(), token, username)
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toFicheD(view: View) {
         var action = AccueilDirections.versFicheD(token!!, username!!, demontages!!.toTypedArray())
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toFicheR(view: View) {
         var action =
             AccueilDirections.versFicheRemontage(token!!, username!!, remontages!!.toTypedArray())
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toBobinage(view: View) {
         var action =
             AccueilDirections.versFicheBobinage(bobinages!!.toTypedArray(), token, username)
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toDeconnexion(view: View) {
         Navigation.findNavController(view).navigate(R.id.versConnexion)
     }
-
     fun getVehicule(id: String) {
         var vehicule =
             repository.getVehiculeById(token!!, id, object : Callback<VehiculesResponse> {

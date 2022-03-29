@@ -52,7 +52,7 @@ class Accueil : Fragment() {
         viewModel.username = arguments?.get("Username") as? String
         val reload = layout.findViewById<Button>(R.id.reload)
         val send = layout.findViewById<Button>(R.id.send)
-        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context) && viewModel.fiches == null) {
+        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context) && viewModel.token !== "" && viewModel.fiches == null) {
             runBlocking {
                 var job = launch {
                     var test = ActivityCompat.checkSelfPermission(
@@ -88,9 +88,10 @@ class Accueil : Fragment() {
                 3600
             )
             mySnackbar.show()
-            send.visibility = View.INVISIBLE
-            reload.visibility = View.INVISIBLE
-            if (viewModel.fiches?.size == 0 || (viewModel.fiches == null && !(viewModel.isOnline(viewModel.context))))
+            if (viewModel.fiches?.size == 0 || (viewModel.fiches == null && !(viewModel.isOnline(
+                    viewModel.context
+                )))
+            )
                 viewModel.listeFicheLocal()
         }
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
@@ -130,7 +131,7 @@ class Accueil : Fragment() {
                             sharedPref?.edit {
                                 putString("login", "")
                                 putString("password", "")
-                                putBoolean("connected",false)
+                                putBoolean("connected", false)
                             }
                             viewModel.toDeconnexion(layout)
                         })
@@ -218,8 +219,9 @@ class Accueil : Fragment() {
             }
         }
         send.setOnClickListener {
+            Log.i("info","token ${viewModel.token}")
             if (viewModel.isOnline(viewModel.context)) {
-                if (viewModel.token == null && viewModel.isOnline(viewModel.context)) {
+                if ((viewModel.token == null || viewModel.token == "") && viewModel.isOnline(viewModel.context)) {
                     if (login == "" && pwd == "") {
                         val dialogBuilder = AlertDialog.Builder(context)
                         val inflater = requireActivity().layoutInflater
@@ -272,7 +274,7 @@ class Accueil : Fragment() {
                         val alert = dialogBuilder.create()
                         alert.show()
                     } else {
-                        if (login != null && pwd != null) {
+                        if (login !== null && pwd !== null) {
                             viewModel.connection(login, pwd)
                         }
                     }
@@ -345,7 +347,7 @@ class Accueil : Fragment() {
         exit.setOnClickListener {
             if (sharedPref != null) {
                 sharedPref.edit {
-                  putBoolean("connected",false)
+                    putBoolean("connected", false)
                 }
             }
             activity?.finish()
