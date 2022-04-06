@@ -1747,6 +1747,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         }
                                                     }
                                                 job2.join()
+                                                delay(200)
                                             }
                                         }
                                     }
@@ -1755,7 +1756,40 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                                 ch.photos = photos?.toTypedArray()
-                                //Log.i("INFO", "signature client déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
+                                if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                                    var job3 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                        }
+                                    job3.join()
+                                    var job4 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            try {
+                                                val dir =
+                                                    Environment.getExternalStoragePublicDirectory(
+                                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                                    )
+                                                val from = File(
+                                                    dir,
+                                                    ch.signatureTech!!
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                Log.i(
+                                                    "INFO", "signature tech" +
+                                                            from.exists()
+                                                                .toString() + " - path ${from.absolutePath}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                                ch.signatureTech = imageName.value!!.name
+                                                sendPhoto(to)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
+                                        }
+                                    job4.join()
+                                    delay(200)
+                                }
+
                                 if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                     var job3 =
                                         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -1790,38 +1824,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                                 }
                                 //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
-                                if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
-                                    var job3 =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            getNameURI()
-                                        }
-                                    job3.join()
-                                    var job4 =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    ch.signatureTech!!
-                                                )
-                                                val to = File(dir, imageName.value!!.name!!)
-                                                Log.i(
-                                                    "INFO", "signature tech" +
-                                                            from.exists()
-                                                                .toString() + " - path ${from.absolutePath}"
-                                                )
-                                                if (from.exists()) from.renameTo(to)
-                                                ch.signatureTech = imageName.value!!.name
-                                                sendPhoto(to)
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                    job4.join()
-                                }
                             }
                             val resp = repository.patchChantier(
                                 token,
@@ -3259,8 +3261,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         tab[1] = tab[1].replace("%2F", "/")
         viewModelScope.launch(Dispatchers.IO) {
             lateinit var  compressedPicture :File
-            var job = launch { compressedPicture = Compressor.compress(context, photo) }
-            job.join()
+            try {
+                var job = launch { compressedPicture = Compressor.compress(context, photo) }
+                job.join()
+            } catch (e:Throwable) {
+                Log.e("error",e.message!!)
+            }
             //compressedPicture.renameTo(photo)
             Log.i("info","taille ${compressedPicture.totalSpace}")
             repository.uploadPhoto(

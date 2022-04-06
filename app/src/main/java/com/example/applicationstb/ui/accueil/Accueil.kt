@@ -147,6 +147,7 @@ class Accueil : Fragment() {
             alertDialogBuilder!!.show()
         }
         reload.setOnClickListener {
+            if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
             if (viewModel.isOnline(viewModel.context)) {
                 if (viewModel.token.value == "" ) {
                     if (login == "" && pwd == "") {
@@ -203,6 +204,12 @@ class Accueil : Fragment() {
                     } else {
                         if (login != null && pwd != null) {
                             viewModel.reloadWconnection()
+                            val mySnackbar = Snackbar.make(
+                                layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                                "Liste des fiches mise à jour.",
+                                3600
+                            )
+                            mySnackbar.show()
                         }
                     }
                 }
@@ -217,6 +224,7 @@ class Accueil : Fragment() {
                     mySnackbar.show()
                 }
             }
+            loading.visibility = View.GONE
         }
         send.setOnClickListener {
             if (viewModel.isOnline(viewModel.context)) {
