@@ -1908,6 +1908,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -1999,6 +2000,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2092,6 +2094,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2353,6 +2356,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                         }
                                     job2.join()
+                                    delay(200)
                                 }
                             }
                             rc.photos = photos?.toTypedArray()
@@ -2439,6 +2443,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2530,6 +2535,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2621,6 +2627,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2712,6 +2719,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2804,6 +2812,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2897,6 +2906,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -2990,6 +3000,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                 }
                                             job2.join()
+                                            delay(200)
                                         }
                                     }
                                 }
@@ -3079,6 +3090,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                         }
                                     job2.join()
+                                    delay(200)
                                 }
                             }
                             rmp.photos = photos?.toTypedArray()
@@ -3160,6 +3172,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                         }
                                     job2.join()
+                                    delay(200)
                                 }
                             }
                             rmp.photos = photos?.toTypedArray()
