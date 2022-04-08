@@ -27,6 +27,7 @@ import java.time.ZonedDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+var baseUrl = "http://195.154.107.195"
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -3262,7 +3263,7 @@ class PhotoResponse(
 
 class Repository(var context: Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter()).add(CustomDateAdapter2())
-    val url = "http://195.154.107.195:4000"
+    val url = baseUrl+":4000"
     var okHttpClient = OkHttpClient.Builder()
         .callTimeout(1, TimeUnit.MINUTES)
         .connectTimeout(1, TimeUnit.MINUTES)
@@ -3278,7 +3279,7 @@ class Repository(var context: Context) {
     val service: APIstb by lazy { retrofit.create(APIstb::class.java) }
     fun servicePhoto(): APIstb {
         return Retrofit.Builder()
-            .baseUrl("http://195.154.107.195:9000")
+            .baseUrl(baseUrl+":9000")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
             .build()
