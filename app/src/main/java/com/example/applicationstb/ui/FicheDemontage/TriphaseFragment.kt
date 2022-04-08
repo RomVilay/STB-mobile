@@ -274,7 +274,7 @@ class TriphaseFragment : Fragment() {
             fiche.status = 2L
             viewModel.selection.value = fiche
             viewModel.localSave()
-            if (viewModel.isOnline(requireContext())) {
+            if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }

@@ -141,7 +141,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
             var t = selection.value!! as RemontageTriphase
-            if (isOnline(context)) {
+            if (isOnline(context) && token !== "") {
                 val resp = repository.patchRemontageTriphase(
                     token!!,
                     selection.value!!._id,
@@ -204,7 +204,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         if (selection.value!!.typeFicheRemontage == 5) {
             var c = selection.value!! as RemontageCourantC
-            if (isOnline(context)) {
+            if (isOnline(context) && token !== "") {
                 val resp = repository.patchRemontageCC(
                     token!!,
                     selection.value!!._id,
@@ -254,7 +254,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
             var c = selection.value!!
-            if (isOnline(context)) {
+            if (isOnline(context) && token !== "") {
                 val resp = repository.patchRemontage(
                     token!!,
                     selection.value!!._id,

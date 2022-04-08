@@ -36,10 +36,8 @@ import java.io.OutputStream
 import java.util.*
 
 class FicheChantierViewModel(application: Application) : AndroidViewModel(application) {
-    val sharedPref =
-        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var context = getApplication<Application>().applicationContext
-    var token: String? = null;
+    var token= MutableLiveData<String>();
     var username: String? = null;
     var repository = Repository(context );
     var listeChantiers = arrayListOf<Chantier>()
@@ -50,6 +48,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var start = MutableLiveData<Date>()
     var image =MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
+    val sharedPref =
+        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     init {
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
@@ -129,8 +129,29 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             var v = repository.getByIdVehiculesLocalDatabse(id)
             textView.setText(v!!.nom)
         }
+        //Log.i("INFO","vehicule ${nom}")
+        /*val resp = repository.getVehiculeById(token!!, id, object: Callback<VehiculesResponse> {
+            override fun onResponse(call: Call<VehiculesResponse>, response: Response<VehiculesResponse>){
+                if ( response.code() == 200 ) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        nom = resp!!.vehicule!!.nom.toString()
+                        Log.i("INFO","vehicule ${nom}")
+                    }
+                } else {
+                    Log.i("INFO","code : ${response.code()} - erreur : ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<VehiculesResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+        Log.i("INFO","vehicule ${nom}")*/
         return nom
     }
+    /*fun setSignature(sign:Bitmap){
+        signature.value = sign
+    }*/
     fun localGet(){
         viewModelScope.launch(Dispatchers.IO){
             var list = repository.getAllChantierLocalDatabase()
@@ -178,9 +199,9 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
-
-    fun connection(username: String, password: String) {
-        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+   fun saveWconnection(context: Context, view: View)= runBlocking{
+        if (isOnline(context) && (sharedPref.getString("login","") !== "") && (sharedPref.getString("password","") !== "") ) {
+        val resp = launch { repository.logUser(sharedPref.getString("login","")!!, sharedPref.getString("password","")!!, object : Callback<LoginResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
                 call: Call<LoginResponse>,
@@ -189,28 +210,26 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp != null) {
-                        token = resp.token
-                        Log.i("info","new token ${resp.token}")
+                        token.postValue(resp.token!!)
+                        save(context,view,resp.token!!)
+                        Log.i("info","chantier - connecté")
                     }
                 }
             }
-
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("Error", "erreur ${t.message}")
             }
-        })
+        }) }
+            resp.join()
+            }
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context, view: View) = runBlocking{
-        if (isOnline(context)) {
-            viewModelScope.launch(Dispatchers.IO) {
-                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
-                }
-                delay(200)
+    fun save(context: Context, view: View, t:String)= runBlocking{
+        if (isOnline(context) && token.value !== "") {
+            CoroutineScope(Dispatchers.IO).launch {
                 getNameURI()
-                Log.i("info","new token 2 ${token}")
+            }
+            viewModelScope.launch(Dispatchers.IO) {
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
                 var photos = chantier.value?.photos?.toMutableList()
                 var iter = photos?.listIterator()
@@ -251,7 +270,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                         }
                                     }
                                 job2.join()
-                                delay(200)
                             }
                         }
                     }
@@ -260,10 +278,76 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     }
                 }
                 ch?.photos = photos?.toTypedArray()
+                if (ch?.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                    var job3 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            getNameURI()
+                        }
+                    job3.join()
+                    var job4 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            try {
+                                val dir =
+                                    Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                    )
+                                val from = File(
+                                    dir,
+                                    ch.signatureTech!!
+                                )
+                                val to = File(dir, imageName.value!!.name!!)
+                                Log.i(
+                                    "INFO", "signature tech" +
+                                            from.exists()
+                                                .toString() + " - path ${from.absolutePath}"
+                                )
+                                if (from.exists()) from.renameTo(to)
+                                ch.signatureTech = imageName.value!!.name
+                                sendPhoto(to)
+                            } catch (e: java.lang.Exception) {
+                                Log.e("EXCEPTION", e.message!!)
+                            }
+                        }
+                    job4.join()
+                    delay(200)
+                }
+                if (ch?.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
+                    var job3 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            getNameURI()
+                        }
+                    job3.join()
+                    var job4 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            try {
+                                val dir =
+                                    Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                    )
+                                val from = File(
+                                    dir,
+                                    ch.signatureClient!!
+                                )
+                                val to = File(dir, imageName.value!!.name!!)
+                                Log.i(
+                                    "INFO", "signature client" +
+                                            from.exists()
+                                                .toString() + " - path ${from.absolutePath}"
+                                )
+                                if (from.exists()) from.renameTo(to)
+                                ch.signatureClient = imageName.value!!.name
+                                sendPhoto(to)
+                            } catch (e: java.lang.Exception) {
+                                Log.e("EXCEPTION", e.message!!)
+                            }
+                        }
+                    job4.join()
+
+                }
                 ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
                 chantier.postValue(ch!!)
                 val resp = repository.patchChantier(
-                    token!!,
+                    t,
                     chantier.value!!._id,
                     ch!!,
                     object : Callback<ChantierResponse> {
@@ -276,7 +360,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    // Log.i("INFO","${resp.fiche!!.photos?.get(0)!!}")
+                                    //Log.i("INFO","fiche chantier enregistrée")
                                 }
                             } else {
                                 val mySnackbar =
@@ -326,10 +410,59 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
         return false
     }
+  /*  fun getImage(name: String?){
+        var request =   repository.getURLPhoto(token!!,name!!,object: Callback<URLPhotoResponse> {
+            var i : File? = null
+            override fun onResponse(
+                call: Call<URLPhotoResponse>,
+                response: Response<URLPhotoResponse>
+            ) {
+                if (response.code() == 200) {
+                    var resp = response.body()
+                    repository.getPhoto(token!!,resp?.url!!, object: Callback<PhotoResponse> {
+                        override fun onResponse(
+                            call: Call<PhotoResponse>,
+                            response: Response<PhotoResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                image.value = response.body()!!.photo
+                            }
+                        }
 
+                        override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
+                            Log.e("Error","erreur ${t.message}")
+                        }
+
+                    })
+                }
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+        })
+    }*/
+  /* suspend fun getImageName() = withContext(Dispatchers.IO){
+       repository.getURLToUploadPhoto(token!!, object: Callback<URLPhotoResponse2>{
+            override fun onResponse(
+                call: Call<URLPhotoResponse2>,
+                response: Response<URLPhotoResponse2>
+            ) {
+                if (response.code() == 200) {
+                    imageName.value = response.body()!!.name
+                    Log.i("INFO", "nom renvoyé "+response.body()!!.name!!)
+                }
+            }
+
+            override fun onFailure(call: Call<URLPhotoResponse2>, t: Throwable) {
+                Log.e("Error","erreur ${t.message}")
+            }
+
+        })
+    }*/
     suspend fun getNameURI() = runBlocking {
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val resp1 = repository.getURLToUploadPhoto(token!!)
+            val resp1 = repository.getURLToUploadPhoto(token.value!!)
             withContext(Dispatchers.Main){
                 if (resp1.isSuccessful) {
                     imageName.postValue(resp1.body())
@@ -381,7 +514,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             //compressedPicture.renameTo(photo)
             Log.i("info","taille ${compressedPicture.totalSpace}")
             repository.uploadPhoto(
-                token!!,
+                token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),
                 compressedPicture,
@@ -403,7 +536,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
         var file: String? = null
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val resp1 = repository.getURLPhoto(token!!,photoName)
+            val resp1 = repository.getURLPhoto(token.value!!,photoName)
             withContext(Dispatchers.Main){
                 if (resp1.isSuccessful) {
                     if (resp1.code() == 200) {
@@ -425,6 +558,22 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         job.join()
+        /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            var resp2 = repository.getPhoto(file!!)
+            withContext(Dispatchers.Main){
+                if( resp2.isSuccessful) {
+                    saveImage(Glide.with(this@withContext)
+                        .asBitmap()
+                        .load(resp2.))
+                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
+                   // photos?.value!!.add(p)
+                   // Log.i("INFO", "chemin:"+p)
+                } else{
+                    exceptionHandler
+                }
+            }
+        }
+        job2.join()*/
         return@runBlocking file
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->

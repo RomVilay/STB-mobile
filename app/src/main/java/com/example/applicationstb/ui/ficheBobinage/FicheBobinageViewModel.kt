@@ -41,16 +41,17 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var bobinage = MutableLiveData<Bobinage>()
     var schema = MutableLiveData<String>()
-    var token: String? = null;
+    var token = MutableLiveData<String>()
     var username: String? = null;
     var context = getApplication<Application>().applicationContext
     var start = MutableLiveData<Date>()
-    var image =MutableLiveData<File>()
+    var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
-    val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
+    val sharedPref =
+        getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
 
     init {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
         }
     }
@@ -58,28 +59,32 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     @RequiresApi(Build.VERSION_CODES.M)
     fun selectBobinage(id: String) {
         if (isOnline(context)) {
-            val resp = repository.getBobinage(token!!, id, object : Callback<BobinageResponse> {
-                override fun onResponse(
-                    call: Call<BobinageResponse>,
-                    response: Response<BobinageResponse>
-                ) {
-                    if (response.code() == 200) {
-                        val resp = response.body()
-                        if (resp != null) {
-                            Log.i("INFO", "${resp.data!!._id}")
-                            bobinage.value = resp.data!!
-                            sections.value = bobinage.value!!.sectionsFils!!
-                            photos.value = mutableListOf()
+            val resp =
+                repository.getBobinage(token.value!!, id, object : Callback<BobinageResponse> {
+                    override fun onResponse(
+                        call: Call<BobinageResponse>,
+                        response: Response<BobinageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            if (resp != null) {
+                                Log.i("INFO", "${resp.data!!._id}")
+                                bobinage.value = resp.data!!
+                                sections.value = bobinage.value!!.sectionsFils!!
+                                photos.value = mutableListOf()
+                            }
+                        } else {
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()}"
+                            )
                         }
-                    } else {
-                        Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
                     }
-                }
 
-                override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
-                    Log.e("Error", "erreur ${t.message}")
-                }
-            })
+                    override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                        Log.e("Error", "erreur ${t.message}")
+                    }
+                })
         } else {
 
         }
@@ -94,11 +99,6 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
 
-    /*fun addSchema(schema: Uri) {
-        var list = schemas.value!!
-        list.add(schema.toString())
-        schemas.value = list
-    }*/
     fun addPhoto(photo: Uri) {
         Log.i("INFO", "add photo")
         var list = bobinage?.value?.photos?.toMutableList()
@@ -114,6 +114,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         photos.value = list!!
         quickSave()
     }
+
     fun somme(list: MutableList<Section>): Double {
         var tab = list.map { Math.sqrt(it.diametre) * (Math.PI / 4) * it.nbBrins }
         //Log.i("info", tab.toString())
@@ -129,7 +130,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         Log.i("INFO", sch.toString())
     }
 
-    fun addSchema(photo:String) {
+    fun addSchema(photo: String) {
         var list = bobinage?.value?.photos?.toMutableList()
         if (list != null) {
             list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
@@ -145,161 +146,174 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Navigation.findNavController(view).navigate(R.id.versFullScreen)
     }
 
-    fun connection(username: String, password: String) {
-        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(
-                call: Call<LoginResponse>,
-                response: Response<LoginResponse>
-            ) {
-                if (response.code() == 200) {
-                    val resp = response.body()
-                    if (resp != null) {
-                        token = resp.token
-                        Log.i("info","new token ${resp.token}")
-                    }
-                }
-            }
+    fun saveWconnection(context: Context, view: View) = runBlocking {
+        if (isOnline(context) && (sharedPref.getString(
+                "login",
+                ""
+            ) !== "") && (sharedPref.getString("password", "") !== "")
+        ) {
+            val resp = launch {
+                repository.logUser(
+                    sharedPref.getString("login", "")!!,
+                    sharedPref.getString("password", "")!!,
+                    object : Callback<LoginResponse> {
+                        @RequiresApi(Build.VERSION_CODES.O)
+                        override fun onResponse(
+                            call: Call<LoginResponse>,
+                            response: Response<LoginResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    token.postValue(resp.token!!)
+                                    save(context, view, resp.token!!)
+                                    Log.i("info", "chantier - connecté")
+                                }
+                            }
+                        }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("Error", "erreur ${t.message}")
+                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
             }
-        })
+            resp.join()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context, view:View)= runBlocking {
-        if (isOnline(context)) {
+    fun save(context: Context, view: View, t: String) {
+        if (isOnline(context) && token.value !== "") {
             CoroutineScope(Dispatchers.IO).launch {
-                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
-                }
-                delay(200)
                 getNameURI()
             }
             viewModelScope.launch(Dispatchers.IO) {
-            var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
-            var photos = bobinage.value?.photos?.toMutableList()
-            var iter = photos?.listIterator()
-            while (iter?.hasNext() == true) {
-                var name = iter.next()
-                if (name !== "") {
-                    runBlocking {
-                        if (name.contains(bob?.numFiche!!)) {
-                            Log.i("INFO", "fichier à upload : ${name}")
-                            //var test = getPhotoFile(name)
-                            var job =
-                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                    getNameURI()
-                                }
-                            job.join()
-                            var job2 =
-                                CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                            )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to = File(dir, imageName.value!!.name!!)
-                                        Log.i(
-                                            "INFO",
-                                            from.exists()
-                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                        )
-                                        if (from.exists()) from.renameTo(to)
-                                        sendPhoto(to)
-                                        iter.set(imageName.value!!.name!!)
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
+                var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+                var photos = bobinage.value?.photos?.toMutableList()
+                var iter = photos?.listIterator()
+                while (iter?.hasNext() == true) {
+                    var name = iter.next()
+                    if (name !== "") {
+                        runBlocking {
+                            if (name.contains(bob?.numFiche!!)) {
+                                Log.i("INFO", "fichier à upload : ${name}")
+                                //var test = getPhotoFile(name)
+                                var job =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        getNameURI()
                                     }
+                                job.join()
+                                var job2 =
+                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                        try {
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                name
+                                            )
+                                            val to = File(dir, imageName.value!!.name!!)
+                                            Log.i(
+                                                "INFO",
+                                                from.exists()
+                                                    .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
+                                            )
+                                            if (from.exists()) from.renameTo(to)
+                                            sendPhoto(to)
+                                            iter.set(imageName.value!!.name!!)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!!)
+                                        }
 
-                                }
-                            job2.join()
-                        }
-                    }
-                }
-                if (name == "") {
-                    iter.remove()
-                }
-            }
-            bob?.photos = photos?.toTypedArray()
-            bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
-            bobinage.postValue(bob!!)
-            val resp = repository.patchBobinage(
-                token!!,
-                bobinage.value!!._id,
-                bob!!,
-                object : Callback<BobinageResponse> {
-                    override fun onResponse(
-                        call: Call<BobinageResponse>,
-                        response: Response<BobinageResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            val resp = response.body()
-                            if (resp != null) {
-                                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré")
+                                    }
+                                job2.join()
                             }
-                        } else {
-                            val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
-                            mySnackbar.show()
-                            Log.i(
-                                "INFO",
-                                "code : ${response.code()} - erreur : ${response.message()}"
-                            )
                         }
                     }
-
-                    override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
-                        val mySnackbar = Snackbar.make(view,"erreur lors de l'enregistrement", 3600)
-                        mySnackbar.show()
-                        Log.e("Error", "erreur ${t.message}")
+                    if (name == "") {
+                        iter.remove()
                     }
-                })
-        }
+                }
+                bob?.photos = photos?.toTypedArray()
+                bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
+                bobinage.postValue(bob!!)
+                val resp = repository.patchBobinage(
+                    t,
+                    bobinage.value!!._id,
+                    bob!!,
+                    object : Callback<BobinageResponse> {
+                        override fun onResponse(
+                            call: Call<BobinageResponse>,
+                            response: Response<BobinageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+                                }
+                            } else {
+                                val mySnackbar =
+                                    Snackbar.make(view, "erreur lors de l'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<BobinageResponse>, t: Throwable) {
+                            val mySnackbar =
+                                Snackbar.make(view, "erreur lors de l'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
+            }
         } else {
             localSave(view)
         }
 
     }
-    fun localSave(view:View){
-        viewModelScope.launch(Dispatchers.IO){
+
+    fun localSave(view: View) {
+        viewModelScope.launch(Dispatchers.IO) {
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             if (bob !== null) {
-                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                 mySnackbar.show()
                 repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
-                Log.i("INFO","patch ${bobinage.value!!.sectionsFils}")
+                Log.i("INFO", "patch ${bobinage.value!!.sectionsFils}")
             } else {
-                val mySnackbar = Snackbar.make(view,"fiche enregistrée", 3600)
+                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                 mySnackbar.show()
                 repository.insertBobinageLocalDatabase(bobinage.value!!)
-                Log.i("INFO","insert ${bobinage.value!!._id}")
+                Log.i("INFO", "insert ${bobinage.value!!._id}")
             }
         }
     }
 
-    fun getTime(){
-        Log.i("INFO","duree avant : ${bobinage.value?.dureeTotale}")
+    fun getTime() {
+        Log.i("INFO", "duree avant : ${bobinage.value?.dureeTotale}")
         var now = Date()
         if (bobinage.value!!.dureeTotale !== null) {
             bobinage.value!!.dureeTotale =
-                (now.time - start.value!!.time ) + bobinage.value!!.dureeTotale!!
+                (now.time - start.value!!.time) + bobinage.value!!.dureeTotale!!
         } else {
             bobinage.value!!.dureeTotale = now.time - start.value!!.time
         }
         start.value = now
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    fun quickSave(){
-        Log.i("INFO","quick save")
+    fun quickSave() {
+        Log.i("INFO", "quick save")
         getTime()
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
             if (ch !== null) {
                 repository.updateBobinageLocalDatabse(bobinage.value!!.toEntity())
@@ -319,6 +333,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         cursor.close()
         return result
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     suspend fun sendExternalPicture(path: String?): String? {
         if (isOnline(context)) {
@@ -338,7 +353,8 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         } else {
             val dir =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-            val file = File(dir, bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
+            val file =
+                File(dir, bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis() + ".jpg")
             File(path).copyTo(file)
             return file.name
         }
@@ -367,13 +383,14 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         }
         return false
     }
+
     suspend fun getNameURI() = runBlocking {
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val resp1 = repository.getURLToUploadPhoto(token!!)
-            withContext(Dispatchers.Main){
+            val resp1 = repository.getURLToUploadPhoto(token.value!!)
+            withContext(Dispatchers.Main) {
                 if (resp1.isSuccessful) {
                     imageName.postValue(resp1.body())
-                    Log.i("INFO",resp1.body()?.name!!)
+                    Log.i("INFO", resp1.body()?.name!!)
                 } else {
                     exceptionHandler
                 }
@@ -381,21 +398,23 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         }
         job.join()
     }
-    fun sendPhoto(photo:File) = runBlocking{
-        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+
+    fun sendPhoto(photo: File) = runBlocking {
+        var s =
+            imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab.forEach {
-            Log.i("INFO",it)
+            Log.i("INFO", it)
         }
-        tab[1] = tab[1].replace("%2F","/")
+        tab[1] = tab[1].replace("%2F", "/")
         viewModelScope.launch(Dispatchers.IO) {
-            lateinit var  compressedPicture :File
+            lateinit var compressedPicture: File
             var job = launch { compressedPicture = Compressor.compress(context, photo) }
             job.join()
             //compressedPicture.renameTo(photo)
-            Log.i("info","taille ${compressedPicture.totalSpace}")
+            Log.i("info", "taille ${compressedPicture.totalSpace}")
             repository.uploadPhoto(
-                token!!,
+                token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),
                 compressedPicture,
@@ -414,9 +433,11 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                 })
         }
     }
+
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.i("INFO","Exception handled: ${throwable.localizedMessage}")
+        Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }
+
     fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
