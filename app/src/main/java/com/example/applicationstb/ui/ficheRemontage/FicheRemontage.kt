@@ -131,7 +131,6 @@ class FicheRemontage : Fragment() {
                 btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
                 var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
-                viewModel.getListeDemontage()
                 if (demo!!.typeFicheRemontage == 6 || demo!!.typeFicheRemontage == 7 ||demo!!.typeFicheRemontage == 9) {
                     viewModel.selection.value = demo as RemontageTriphase
                     viewModel.selection.value!!.status = 2L

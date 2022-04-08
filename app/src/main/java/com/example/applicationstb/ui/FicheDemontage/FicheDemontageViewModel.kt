@@ -111,13 +111,11 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         val action = FicheDemontageDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
     }
-
     fun retour(view: View) {
         Navigation.findNavController(view).popBackStack()
         /*var action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)*/
     }
-
     fun getTime() {
         var now = Date()
         if (selection.value!!.dureeTotale !== null) {
@@ -128,7 +126,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         start.value = now
     }
-
     fun localSave() {
         viewModelScope.launch(Dispatchers.IO) {
             if (selection.value!!.typeFicheDemontage == 1) {
@@ -275,10 +272,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.M)
     suspend fun sendExternalPicture(path: String?): String? {
         if (isOnline(context)) {
+            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            }
+            delay(200)
             getNameURI()
             try {
                 val dir =
@@ -301,12 +301,37 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                        Log.i("info","new token ${resp.token}")
+                    }
+                }
+            }
 
-
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche(view: View) {
+    fun sendFiche(view: View) = runBlocking{
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            getNameURI()
+            if (isOnline(context) == true) {
+                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+                }
+                delay(200)
+                getNameURI()
+            }
             when (selection.value!!.typeFicheDemontage) {
                 1 -> {
                     var fiche =
@@ -356,6 +381,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                                 }
                                             }
                                         job2.join()
+                                        delay(200)
                                     }
                                 }
                             }
@@ -1366,7 +1392,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
     }
-
     fun sendPhoto(photo: File) = runBlocking {
         var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
@@ -1398,8 +1423,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
 
     }
-
-
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }

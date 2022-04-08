@@ -43,6 +43,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     val selection = MutableLiveData<Remontage>()
     var start = MutableLiveData<Date>()
     var listeDemo = MutableLiveData<Array<DemontageMoteur>?>(arrayOf())
+    val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var ficheDemo = MutableLiveData<DemontageMoteur>()
     fun getListeDemo() : Array<DemontageMoteur> { return listeDemo.value!! }
 
@@ -131,10 +132,16 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun enregistrer(view: View) {
+    fun enregistrer(view: View) = runBlocking {
+        if (isOnline(getApplication<Application>().baseContext)) {
+            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            }
+            delay(200)
+        }
         if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
             var t = selection.value!! as RemontageTriphase
-            if (isOnline(context)) {
+            if (isOnline(context) && token !== "") {
                 val resp = repository.patchRemontageTriphase(
                     token!!,
                     selection.value!!._id,
@@ -197,7 +204,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         if (selection.value!!.typeFicheRemontage == 5) {
             var c = selection.value!! as RemontageCourantC
-            if (isOnline(context)) {
+            if (isOnline(context) && token !== "") {
                 val resp = repository.patchRemontageCC(
                     token!!,
                     selection.value!!._id,
@@ -247,7 +254,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
             var c = selection.value!!
-            if (isOnline(context)) {
+            if (isOnline(context) && token !== "") {
                 val resp = repository.patchRemontage(
                     token!!,
                     selection.value!!._id,
@@ -298,9 +305,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getListeDemontage(): Array<DemontageMoteur> {
+    fun getListeDemontage(): Array<DemontageMoteur> = runBlocking{
         var liste = mutableListOf<DemontageMoteur>()
-            if (isOnline(context)) {
+            if (isOnline(context) && sharedPref.getBoolean("connected",false)) {
                 var job = viewModelScope.async {
                     repository.getFichesForRemontage(
                         token!!,
@@ -324,9 +331,10 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                         })
                 }
                 Log.i("INFO", "fiches ${liste.size}")
-               return liste.toTypedArray()
+               return@runBlocking liste.toTypedArray()
             } else {
-                if (selection.value!!.typeFicheRemontage == 1) {
+                Log.i("info","fiche sélectionnée de type ${selection.value?.typeFicheRemontage}")
+                /*if (selection.value!!.typeFicheRemontage == 1) {
                     viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontagePompeLocalDatabase()
                         var t = mutableListOf<DemontageMoteur>()
@@ -401,9 +409,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                         listeDemo?.value?.get(0)?.numFiche?.let { Log.i("INFO", it) }
                     }
                 }
-                else{}
+                else{}*/
             }
-        return liste.toTypedArray()
+        return@runBlocking liste.toTypedArray()
     }
 
     fun getFichesDemontage(id: String) : DemontageMoteur? {
@@ -765,7 +773,26 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             context.sendBroadcast(mediaScanIntent)
         }
     }
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = resp.token
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
