@@ -73,7 +73,7 @@ class FicheBobinage : Fragment() {
             "tableau fiches: ${arguments?.get("listBobinage")} - token: ${arguments?.get("token")} "
         )
         var list = arguments?.get("listBobinage") as Array<Bobinage>
-        viewModel.token = arguments?.get("token") as String
+        viewModel.token.postValue(arguments?.get("token") as String)
         viewModel.listeBobinage = list.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_bobinage_fragment, container, false)
@@ -650,10 +650,11 @@ class FicheBobinage : Fragment() {
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
             viewModel.getTime()
             viewModel.quickSave()
-            viewModel.save(
-                requireContext(),
-                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
-            )
+                viewModel.save(
+                    requireContext(),
+                    layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
+                    viewModel.token.value!!
+                )
         }
         term.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
@@ -668,10 +669,11 @@ class FicheBobinage : Fragment() {
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }
-                            viewModel.save(
-                                requireContext(),
-                                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout)
-                            )
+                                viewModel.save(
+                                    requireContext(),
+                                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                                    viewModel.token.value!!
+                                )
                         })
                 builder.create()
             }
