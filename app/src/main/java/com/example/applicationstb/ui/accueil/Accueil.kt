@@ -83,12 +83,6 @@ class Accueil : Fragment() {
             }
 
         } else {
-            val mySnackbar = Snackbar.make(
-                layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                "Vous n'êtes pas connecté au réseau Internet.",
-                3600
-            )
-            mySnackbar.show()
             if (viewModel.fiches?.size == 0 || (viewModel.fiches == null && !(viewModel.isOnline(
                     viewModel.context
                 )))
@@ -215,6 +209,12 @@ class Accueil : Fragment() {
                 }
                 if (viewModel.token.value !== "") {
                     viewModel.listeFiches(viewModel.token.value!!, login!!)
+                    val mySnackbar = Snackbar.make(
+                        layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                        "Liste des fiches mise à jour.",
+                        3600
+                    )
+                    mySnackbar.show()
                 } else {
                     val mySnackbar = Snackbar.make(
                         layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),

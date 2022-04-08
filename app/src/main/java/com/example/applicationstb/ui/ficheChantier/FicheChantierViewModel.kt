@@ -278,6 +278,72 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     }
                 }
                 ch?.photos = photos?.toTypedArray()
+                if (ch?.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                    var job3 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            getNameURI()
+                        }
+                    job3.join()
+                    var job4 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            try {
+                                val dir =
+                                    Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                    )
+                                val from = File(
+                                    dir,
+                                    ch.signatureTech!!
+                                )
+                                val to = File(dir, imageName.value!!.name!!)
+                                Log.i(
+                                    "INFO", "signature tech" +
+                                            from.exists()
+                                                .toString() + " - path ${from.absolutePath}"
+                                )
+                                if (from.exists()) from.renameTo(to)
+                                ch.signatureTech = imageName.value!!.name
+                                sendPhoto(to)
+                            } catch (e: java.lang.Exception) {
+                                Log.e("EXCEPTION", e.message!!)
+                            }
+                        }
+                    job4.join()
+                    delay(200)
+                }
+                if (ch?.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
+                    var job3 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            getNameURI()
+                        }
+                    job3.join()
+                    var job4 =
+                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                            try {
+                                val dir =
+                                    Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                    )
+                                val from = File(
+                                    dir,
+                                    ch.signatureClient!!
+                                )
+                                val to = File(dir, imageName.value!!.name!!)
+                                Log.i(
+                                    "INFO", "signature client" +
+                                            from.exists()
+                                                .toString() + " - path ${from.absolutePath}"
+                                )
+                                if (from.exists()) from.renameTo(to)
+                                ch.signatureClient = imageName.value!!.name
+                                sendPhoto(to)
+                            } catch (e: java.lang.Exception) {
+                                Log.e("EXCEPTION", e.message!!)
+                            }
+                        }
+                    job4.join()
+
+                }
                 ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
                 chantier.postValue(ch!!)
                 val resp = repository.patchChantier(
