@@ -665,13 +665,14 @@ class FicheBobinage : Fragment() {
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()
                             viewModel.bobinage.value?.status = 3L
+
                             viewModel.quickSave()
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }
                                 viewModel.save(
                                     requireContext(),
-                                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                                    layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
                                     viewModel.token.value!!
                                 )
                         })
