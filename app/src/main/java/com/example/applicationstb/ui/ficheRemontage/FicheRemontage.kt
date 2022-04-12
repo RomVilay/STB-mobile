@@ -146,11 +146,11 @@ class FicheRemontage : Fragment() {
                     if (demo.isolementPorteBalaisV !== null) isoPBV.setText(
                         demo.isolementPorteBalaisV!!.toString()
                     )
-                    //isoPBV.visibility = View.VISIBLE
+                    isoPBV.visibility = View.VISIBLE
                     if (demo.isolementPorteBalaisOhm !== null) risoPBV.setText(
                         demo.isolementPorteBalaisOhm!!.toString()
                     )
-                    //risoPBV.visibility = View.VISIBLE
+                    risoPBV.visibility = View.VISIBLE
                     if (demo.tensionStator !== null) tensionStator.setChecked(
                         demo.tensionStator!!
                     )
