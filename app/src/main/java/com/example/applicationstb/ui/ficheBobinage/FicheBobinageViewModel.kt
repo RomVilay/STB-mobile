@@ -401,7 +401,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     fun sendPhoto(photo: File) = runBlocking {
         var s =
-            imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+            imageName.value!!.url!!.removePrefix("${baseUrl}:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab.forEach {
             Log.i("INFO", it)

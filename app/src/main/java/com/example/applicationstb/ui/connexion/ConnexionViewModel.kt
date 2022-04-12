@@ -1726,7 +1726,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun sendPhoto(photo: File) {
         var s =
-            imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+            imageName.value!!.url!!.removePrefix("${baseUrl}:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
         repository.uploadPhoto(

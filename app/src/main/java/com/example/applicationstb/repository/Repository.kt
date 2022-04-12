@@ -27,7 +27,7 @@ import java.time.ZonedDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var baseUrl = "http://195.154.107.195"
+var baseUrl = "http://stb.dev.alf-environnement.net"
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
