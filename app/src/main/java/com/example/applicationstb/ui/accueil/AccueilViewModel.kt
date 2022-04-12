@@ -1555,7 +1555,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 LocalDateTime.now(),
                 ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
             ) //definition du fuseau horaire
-            if (isOnline(context)) {
+            if (isOnline(context) && token.value !== "") {
                var ptn = repository.postPointages(
                     token.value!!,
                     sharedPref.getString("userId", "")!!,

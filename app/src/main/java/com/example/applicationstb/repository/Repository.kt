@@ -4612,8 +4612,8 @@ class Repository(var context: Context) {
 
     fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
         var dateMin =
-            ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1), ZoneOffset.of("+01:00"))
-        var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of("+01:00"))
+            ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
+        var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         var call =
             service.getPointages(token, "0", 0, userid, dateMin.toString(), dateMax.toString())
         call.enqueue(callback)
