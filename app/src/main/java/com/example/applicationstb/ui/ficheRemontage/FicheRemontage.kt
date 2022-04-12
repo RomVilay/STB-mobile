@@ -131,7 +131,7 @@ class FicheRemontage : Fragment() {
                 btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
                 var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
-                if (demo!!.typeFicheRemontage == 6 || demo!!.typeFicheRemontage == 7 ||demo!!.typeFicheRemontage == 9) {
+                if (demo!!.typeFicheRemontage == 6 || demo!!.typeFicheRemontage == 7 || demo!!.typeFicheRemontage == 9) {
                     viewModel.selection.value = demo as RemontageTriphase
                     viewModel.selection.value!!.status = 2L
                     fragmentManager.commit {
@@ -146,11 +146,9 @@ class FicheRemontage : Fragment() {
                     if (demo.isolementPorteBalaisV !== null) isoPBV.setText(
                         demo.isolementPorteBalaisV!!.toString()
                     )
-                    isoPBV.visibility = View.VISIBLE
                     if (demo.isolementPorteBalaisOhm !== null) risoPBV.setText(
                         demo.isolementPorteBalaisOhm!!.toString()
                     )
-                    risoPBV.visibility = View.VISIBLE
                     if (demo.tensionStator !== null) tensionStator.setChecked(
                         demo.tensionStator!!
                     )
@@ -244,14 +242,16 @@ class FicheRemontage : Fragment() {
                     if (demo.sensRotation !== null && demo.sensRotation == 2) sensRotation.setChecked(
                         true
                     ) else sensRotation.setChecked(false)
-                   /* sensRotation.setOnCheckedChangeListener { _, isChecked ->
+                    sensRotation.setOnCheckedChangeListener { _, isChecked ->
                         if (sensRotation.hasFocus()) {
                             if (isChecked) {
-                                viewModel.selection.value!!.sensRotation = 2
+                                demo.sensRotation = 2
+                                viewModel.selection.value = demo
                                 viewModel.getTime()
                                 viewModel.quickSave()
                             } else {
-                                viewModel.selection.value!!.sensRotation = 1
+                                demo.sensRotation = 1
+                                viewModel.selection.value = demo
                                 viewModel.getTime()
                                 viewModel.quickSave()
                             }
@@ -259,37 +259,43 @@ class FicheRemontage : Fragment() {
                     }
                     fixCouronne.setOnCheckedChangeListener { _, isChecked ->
                         if (fixCouronne.hasFocus()) {
-                            viewModel.selection.value!!.verificationFixationCouronne = isChecked
+                            demo.verificationFixationCouronne =
+                                isChecked//viewModel.selection.value!!.verificationFixationCouronne = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     isoPBRB.setOnCheckedChangeListener { _, isChecked ->
                         if (isoPBRB.hasFocus()) {
-                            viewModel.selection.value!!.verificationIsolementPorteBalais = isChecked
+                            demo.verificationIsolementPorteBalais = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     isoPBV.doAfterTextChanged {
                         if (isoPBV.hasFocus()) {
-                            if (isoPBV.text.isNotEmpty() && isoPBRB.text.matches(regexNombres)) viewModel.selection.value!!.isolementPorteBalaisV =
+                            if (isoPBV.text.isNotEmpty() && isoPBRB.text.matches(regexNombres)) demo.isolementPorteBalaisV =
                                 isoPBV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     risoPBV.doAfterTextChanged {
                         if (risoPBV.hasFocus() && risoPBV.text.matches(regexNombres)) {
-                            if (risoPBV.text.isNotEmpty()) viewModel.selection.value!!.isolementPorteBalaisOhm =
+                            if (risoPBV.text.isNotEmpty()) demo.isolementPorteBalaisOhm =
                                 risoPBV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionStator.setOnCheckedChangeListener { buttonView, isChecked ->
                         if (tensionStator.hasFocus() && tensionStator.text.matches(regexNombres)) {
-                            viewModel.selection.value!!.tensionStator = isChecked
+                            demo.tensionStator = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -299,8 +305,9 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.tensionStatorU =
+                            demo.tensionStatorU =
                                 tensionStatorU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -310,8 +317,9 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.tensionStatorV =
+                            demo.tensionStatorV =
                                 tensionStatorV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -321,15 +329,17 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.tensionStatorW =
+                            demo.tensionStatorW =
                                 tensionStatorW.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionInducteurs.setOnCheckedChangeListener { _, isChecked ->
                         if (tensionInducteurs.hasFocus()) {
-                            viewModel.selection.value!!.tensionInducteurs = isChecked
+                            demo.tensionInducteurs = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -339,8 +349,9 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.tensionInducteursU =
+                            demo.tensionInducteursU =
                                 tensionInducteursU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -350,8 +361,9 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.tensionInducteursV =
+                            demo.tensionInducteursV =
                                 tensionInducteursV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -361,22 +373,26 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.tensionInducteursW =
+                            demo.tensionInducteursW =
                                 tensionInducteursW.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     intensiteStator.setOnCheckedChangeListener { _, isChecked ->
-                        if (intensiteStator.hasFocus()) viewModel.selection.value!!.intensiteStator = isChecked
+                        if (intensiteStator.hasFocus())
+                            demo.intensiteStator = isChecked
+                        viewModel.selection.value = demo
                     }
                     intensiteStatorU.doAfterTextChanged {
                         if (intensiteStatorU.text.isNotEmpty() && intensiteStatorU.hasFocus() && intensiteStatorU.text.matches(
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.intensiteStatorU =
+                            demo.intensiteStatorU =
                                 intensiteStatorU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -386,8 +402,9 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.intensiteStatorV =
+                            demo.intensiteStatorV =
                                 intensiteStatorV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -397,98 +414,111 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            viewModel.selection.value!!.intensiteStatorW =
+                            demo.intensiteStatorW =
                                 intensiteStatorW.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     intensiteInducteurs.setOnCheckedChangeListener { _, isChecked ->
                         if (intensiteInducteurs.hasFocus()) {
-                            viewModel.selection.value!!.intensiteInducteurs = isChecked
+                            demo.intensiteInducteurs = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     intensiteInducteursU.doAfterTextChanged {
                         if (intensiteInducteursU.text.isNotEmpty() && intensiteInducteursU.hasFocus()) {
-                            viewModel.selection.value!!.intensiteInducteursU =
+                            demo.intensiteInducteursU =
                                 intensiteInducteursU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     intensiteInducteursV.doAfterTextChanged {
                         if (intensiteInducteursV.text.isNotEmpty() && intensiteInducteursV.hasFocus()) {
-                            viewModel.selection.value!!.intensiteInducteursV =
+                            demo.intensiteInducteursV =
                                 intensiteInducteursV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     intensiteInducteursW.doAfterTextChanged {
                         if (intensiteInducteursW.text.isNotEmpty() && intensiteInducteursW.hasFocus()) {
-                            viewModel.selection.value!!.intensiteInducteursW =
+                            demo.intensiteInducteursW =
                                 intensiteInducteursW.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionInduit.setOnCheckedChangeListener { _, isChecked ->
                         if (tensionInduit.hasFocus()) {
-                            viewModel.selection.value!!.tensionInduit = isChecked
+                            demo.tensionInduit = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionInduitU.doAfterTextChanged {
                         if (tensionInduitU.text.isNotEmpty() && tensionInduitU.hasFocus()) {
-                            viewModel.selection.value!!.tensionInduitU =
+                            demo.tensionInduitU =
                                 tensionInduitU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionInduitV.doAfterTextChanged {
                         if (tensionInduitV.text.isNotEmpty() && tensionInduitV.hasFocus()) {
-                            viewModel.selection.value!!.tensionInduitV =
+                            demo.tensionInduitV =
                                 tensionInduitV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionInduitW.doAfterTextChanged {
                         if (tensionInduitW.text.isNotEmpty() && tensionInduitW.hasFocus()) {
-                            viewModel.selection.value!!.tensionInduitW =
+                            demo.tensionInduitW =
                                 tensionInduitW.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionRotor.setOnCheckedChangeListener { _, isChecked ->
                         if (tensionRotor.hasFocus()) {
-                            viewModel.selection.value!!.tensionRotor = isChecked
+                            demo.tensionRotor = isChecked
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionRotorU.doAfterTextChanged {
                         if (tensionRotorU.text.isNotEmpty() && tensionRotorU.hasFocus()) {
-                            viewModel.selection.value!!.tensionRotorU = tensionRotorU.text.toString().toFloat()
+                            demo.tensionRotorU = tensionRotorU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionRotorV.doAfterTextChanged {
                         if (tensionRotorV.text.isNotEmpty() && tensionRotorV.hasFocus()) {
-                            viewModel.selection.value!!.tensionRotorV = tensionRotorV.text.toString().toFloat()
+                            demo.tensionRotorV = tensionRotorV.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     tensionRotorW.doAfterTextChanged {
                         if (tensionRotorW.text.isNotEmpty() && tensionRotorW.hasFocus()) {
-                            viewModel.selection.value!!.tensionRotorW = tensionRotorW.text.toString().toFloat()
+                            demo.tensionRotorW = tensionRotorW.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
@@ -496,11 +526,13 @@ class FicheRemontage : Fragment() {
                     intensiteInduitU.doAfterTextChanged {
                         if (intensiteInduitU.hasFocus()) {
                             if (intensiteInduitU.text.isNotEmpty()) {
-                                viewModel.selection.value!!.intensiteInduitU =
+                                demo.intensiteInduitU =
                                     intensiteInduitU.text.toString().toFloat()
-                                viewModel.selection.value!!.intensiteInduit = true
+                                demo.intensiteInduit = true
+                                viewModel.selection.value = demo
                             } else {
-                                viewModel.selection.value!!.intensiteInduit = false
+                                demo.intensiteInduit = false
+                                viewModel.selection.value = demo
                             }
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -508,101 +540,114 @@ class FicheRemontage : Fragment() {
                     }
                     vitesseU.doAfterTextChanged {
                         if (vitesseU.text.isNotEmpty() && vitesseU.hasFocus()) {
-                            viewModel.selection.value!!.vitesseU = vitesseU.text.toString().toFloat()
+                            demo.vitesseU = vitesseU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     puissanceU.doAfterTextChanged {
                         if (puissanceU.text.isNotEmpty() && puissanceU.hasFocus()) {
-                            viewModel.selection.value!!.puissanceU = puissanceU.text.toString().toFloat()
+                            demo.puissanceU = puissanceU.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     dureeEssai.doAfterTextChanged {
                         if (dureeEssai.text.isNotEmpty() && dureeEssai.hasFocus()) {
-                            viewModel.selection.value!!.dureeEssai = dureeEssai.text.toString().toFloat()
+                            demo.dureeEssai = dureeEssai.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     V1V.doAfterTextChanged {
                         if (V1V.text.isNotEmpty() && V1V.hasFocus()) {
-                            viewModel.selection.value!!.vitesse1V = V1V.text.toString().toFloat()
+                            demo.vitesse1V = V1V.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     V1H.doAfterTextChanged {
                         if (V1H.text.isNotEmpty() && V1H.hasFocus()) {
-                            viewModel.selection.value!!.vitesse1H = V1H.text.toString().toFloat()
+                            demo.vitesse1H = V1H.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     V2V.doAfterTextChanged {
                         if (V2V.text.isNotEmpty() && V2V.hasFocus()) {
-                            viewModel.selection.value!!.vitesse2V = V2V.text.toString().toFloat()
+                            demo.vitesse2V = V2V.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     V2H.doAfterTextChanged {
                         if (V2H.text.isNotEmpty() && V2H.hasFocus()) {
-                            viewModel.selection.value!!.vitesse2H = V2H.text.toString().toFloat()
+                            demo.vitesse2H = V2H.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     V2A.doAfterTextChanged {
                         if (V2A.text.isNotEmpty() && V2A.hasFocus()) {
-                            viewModel.selection.value!!.vitesse2A = V2A.text.toString().toFloat()
+                            demo.vitesse2A = V2A.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     A1V.doAfterTextChanged {
                         if (A1V.text.isNotEmpty() && A1V.hasFocus()) {
-                            viewModel.selection.value!!.acceleration1V = A1V.text.toString().toFloat()
+                            demo.acceleration1V = A1V.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     A1H.doAfterTextChanged {
                         if (A1H.text.isNotEmpty() && A1H.hasFocus()) {
-                            viewModel.selection.value!!.acceleration1H = A1H.text.toString().toFloat()
+                            demo.acceleration1H = A1H.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     A2V.doAfterTextChanged {
                         if (A2V.text.isNotEmpty() && A2V.hasFocus()) {
-                            viewModel.selection.value!!.acceleration2V = A2V.text.toString().toFloat()
+                            demo.acceleration2V = A2V.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     A2H.doAfterTextChanged {
                         if (A2H.text.isNotEmpty() && A2H.hasFocus()) {
-                            viewModel.selection.value!!.acceleration2H = A2H.text.toString().toFloat()
+                            demo.acceleration2H = A2H.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
                     }
                     A2A.doAfterTextChanged {
                         if (A2A.text.isNotEmpty() && A2A.hasFocus()) {
-                            viewModel.selection.value!!.acceleration2A = A2A.text.toString().toFloat()
+                            demo.acceleration2A = A2A.text.toString().toFloat()
+                            viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
                         }
-                    }*/
+                    }
                     //layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
                 }
                 if (demo!!.typeFicheRemontage == 5) {
                     viewModel.selection.value = demo as RemontageCourantC
                     viewModel.selection.value!!.status = 2L
-                    fragmentManager.commit{
+                    fragmentManager.commit {
                         replace<essaisStatCCFragment>(R.id.essaisStatiqueslayout)
                     }
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
@@ -727,16 +772,7 @@ class FicheRemontage : Fragment() {
                 layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
                 layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
 
-                if (viewModel.selection.value!!.remontageRoulement !== null) spinnerMnt.setSelection(
-                    viewModel.selection.value!!.remontageRoulement!!
-                )
-                if (viewModel.selection.value!!.collageRoulementPorteeArbre !== null) spinnerCPA.setSelection(
-                    viewModel.selection.value!!.collageRoulementPorteeArbre!!
-                )
-                if (viewModel.selection.value!!.collageRoulementFlasque !== null) spinnerCIF.setSelection(
-                    viewModel.selection.value!!.collageRoulementFlasque!!
-                )
-                if (viewModel.selection.value!!.observations !== null) obs.setText(viewModel.selection.value!!.observations!!.toString())
+
 
 
                 //infoMoteur.visibility = View.VISIBLE
@@ -810,12 +846,12 @@ class FicheRemontage : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                    if (position > 0) {
-                        viewModel.selection.value!!.remontageRoulement = position
-                        Log.i("info","roulement remontés ${spinnerMnt.selectedItem}")
-                        viewModel.getTime()
-                        viewModel.quickSave()
-                    }
+                if (position > 0) {
+                    viewModel.selection.value!!.remontageRoulement = position
+                    Log.i("info", "roulement remontés ${spinnerMnt.selectedItem}")
+                    viewModel.getTime()
+                    viewModel.quickSave()
+                }
             }
         }
         spinnerCPA.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -828,11 +864,11 @@ class FicheRemontage : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                    if (position > 0) {
-                        viewModel.selection.value!!.collageRoulementPorteeArbre = position
-                        viewModel.getTime()
-                        viewModel.quickSave()
-                    }
+                if (position > 0) {
+                    viewModel.selection.value!!.collageRoulementPorteeArbre = position
+                    viewModel.getTime()
+                    viewModel.quickSave()
+                }
             }
         }
         spinnerCIF.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -845,11 +881,11 @@ class FicheRemontage : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                    if (position > 0) {
-                        viewModel.selection.value!!.collageRoulementFlasque = position
-                        viewModel.getTime()
-                        viewModel.quickSave()
-                    }
+                if (position > 0) {
+                    viewModel.selection.value!!.collageRoulementFlasque = position
+                    viewModel.getTime()
+                    viewModel.quickSave()
+                }
             }
         }
         obs.doAfterTextChanged {

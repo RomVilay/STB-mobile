@@ -289,7 +289,7 @@
                 android:id="@+id/essaisDynamiques"
                 android:layout_width="549dp"
                 android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -312,7 +312,6 @@
                         android:id="@+id/T1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@+id/titreED"
                         tools:layout_editor_absoluteX="-55dp">
 
@@ -322,7 +321,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="40dp"
                             android:text="stator"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/titreTension"
                             app:layout_constraintStart_toEndOf="@+id/titreTension"
                             app:layout_constraintTop_toTopOf="@+id/titreTension" />
@@ -333,7 +331,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="20dp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titreTension">
 
@@ -391,7 +388,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/Tisop"
                             app:layout_constraintStart_toEndOf="@+id/Tisop"
                             app:layout_constraintTop_toTopOf="@+id/Tisop">
@@ -451,7 +447,6 @@
                             android:layout_marginTop="30dp"
                             android:text="Tension Stator/Inducteur"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -461,7 +456,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:text="inducteurs"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/radioButtonS1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/radioButtonS1"
@@ -483,7 +477,6 @@
                             android:layout_marginTop="20dp"
                             android:text="Intensité Stator/Inducteur"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -493,7 +486,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:text="stator"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/titreIntensité"
                             app:layout_constraintStart_toEndOf="@+id/titreIntensité"
                             app:layout_constraintTop_toTopOf="@+id/titreIntensité" />
@@ -504,7 +496,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:text="inducteurs"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/radioButtonS2"
                             app:layout_constraintStart_toEndOf="@+id/radioButtonS2"
                             app:layout_constraintTop_toTopOf="@+id/radioButtonS2" />
@@ -515,7 +506,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="25dp"
                             android:layout_marginTop="30dp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titreIntensité">
 
@@ -573,7 +563,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toEndOf="@+id/TStat2"
                             app:layout_constraintTop_toTopOf="@+id/TStat2">
 
@@ -639,7 +628,6 @@
                             android:layout_marginTop="20dp"
                             android:text="Tension Induit Rotor"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -649,7 +637,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:text="induit"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/textView68"
                             app:layout_constraintStart_toEndOf="@+id/textView68"
                             app:layout_constraintTop_toTopOf="@+id/textView68" />
@@ -660,7 +647,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="50dp"
                             android:text="rotor (ouvert)"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/radioInduit"
                             app:layout_constraintStart_toEndOf="@+id/radioInduit"
                             app:layout_constraintTop_toTopOf="@+id/radioInduit" />
@@ -672,7 +658,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView68">
 
@@ -730,7 +715,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/TRotoV
     "
                             app:layout_constraintStart_toEndOf="@+id/TRotoV
@@ -803,7 +787,6 @@
                             android:layout_marginTop="20dp"
                             android:text="Intensité induit: "
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -816,7 +799,6 @@
                             android:ems="10"
                             android:gravity="center"
                             android:inputType="numberSigned|number|text"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/textView69"
                             app:layout_constraintStart_toEndOf="@+id/textView69"
                             app:layout_constraintTop_toTopOf="@+id/textView69" />
@@ -828,7 +810,6 @@
                             android:layout_marginStart="50dp"
                             android:text="Vitesse"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/IntIndu"
                             app:layout_constraintStart_toEndOf="@+id/IntIndu"
                             app:layout_constraintTop_toTopOf="@+id/IntIndu" />
@@ -842,7 +823,6 @@
                             android:ems="10"
                             android:gravity="center"
                             android:inputType="numberSigned|number|text"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/textView70"
                             app:layout_constraintStart_toEndOf="@+id/textView70"
                             app:layout_constraintTop_toTopOf="@+id/textView70" />
@@ -855,7 +835,6 @@
                             android:layout_marginTop="30dp"
                             android:text="Puissance"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView69" />
 
@@ -868,7 +847,6 @@
                             android:ems="10"
                             android:gravity="center"
                             android:inputType="numberSigned|number|text"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/textView71"
                             app:layout_constraintStart_toEndOf="@+id/textView71"
                             app:layout_constraintTop_toTopOf="@+id/textView71" />
@@ -880,7 +858,6 @@
                             android:layout_marginStart="50dp"
                             android:text="Durée de l'essai"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/pRemotri"
                             app:layout_constraintStart_toEndOf="@+id/pRemotri"
                             app:layout_constraintTop_toTopOf="@+id/pRemotri" />
@@ -894,7 +871,6 @@
                             android:ems="10"
                             android:gravity="center"
                             android:inputType="time"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/textView72"
                             app:layout_constraintStart_toEndOf="@+id/textView72"
                             app:layout_constraintTop_toTopOf="@+id/textView72" />
@@ -907,7 +883,6 @@
                             android:layout_marginTop="30dp"
                             android:text="Sens de rotation vu depuis le bout d'arbre"
                             android:textSize="20sp"
-                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/pRemotri" />
 
@@ -919,7 +894,6 @@
                             android:text="sensR"
                             android:textOff="sens Horaire"
                             android:textOn="sens Anti-Horaire"
-                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/textView73"
                             app:layout_constraintStart_toEndOf="@+id/textView73"
                             app:layout_constraintTop_toTopOf="@+id/textView73" />
