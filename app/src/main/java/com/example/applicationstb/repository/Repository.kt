@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import okhttp3.ConnectionSpec
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -27,7 +28,8 @@ import java.time.ZonedDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var baseUrl = "http://stb.dev.alf-environnement.net"
+var baseUrl = "https://back-end.stb.dev.alf-environnement.net"
+var minioUrl = "https:/minio.stb.dev.alf-environnement.net"
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -3263,12 +3265,13 @@ class PhotoResponse(
 
 class Repository(var context: Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter()).add(CustomDateAdapter2())
-    val url = baseUrl+":4000"
+    val url = baseUrl
     var okHttpClient = OkHttpClient.Builder()
         .callTimeout(1, TimeUnit.MINUTES)
         .connectTimeout(1, TimeUnit.MINUTES)
         .readTimeout(1, TimeUnit.MINUTES)
         .writeTimeout(2, TimeUnit.MINUTES)
+        .connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
         .build()
 
     val retrofit = Retrofit.Builder()
@@ -3279,7 +3282,7 @@ class Repository(var context: Context) {
     val service: APIstb by lazy { retrofit.create(APIstb::class.java) }
     fun servicePhoto(): APIstb {
         return Retrofit.Builder()
-            .baseUrl(baseUrl+":9000")
+            .baseUrl(minioUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
             .build()
