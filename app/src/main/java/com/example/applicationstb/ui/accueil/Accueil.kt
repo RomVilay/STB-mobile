@@ -28,6 +28,7 @@ import com.example.applicationstb.model.DemontageMotopompe
 import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -111,6 +112,7 @@ class Accueil : Fragment() {
             btnPtn.setChecked(!(viewModel.pointage.value?.size!! % 2).equals(0))
         })
         btnPtn.setOnClickListener {
+            //Log.i("info","current offset ${SimpleDateFormat("Z").format(Date())}")
             viewModel.Pointage()
         }
         listePointage.setOnClickListener {

@@ -39,8 +39,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
@@ -1551,7 +1553,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO) {
             var date = ZonedDateTime.of(
                 LocalDateTime.now(),
-                ZoneOffset.of("+01:00")
+                ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
             ) //definition du fuseau horaire
             if (isOnline(context)) {
                var ptn = repository.postPointages(
