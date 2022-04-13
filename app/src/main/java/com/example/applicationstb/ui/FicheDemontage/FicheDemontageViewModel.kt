@@ -1393,27 +1393,27 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
     }
-    fun sendPhoto(photo: File) = runBlocking {
-        var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/"+imageName.value!!.name!!+"?X-Amz-Algorithm=")
+    fun sendPhoto(photo:File)= runBlocking{
+        var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
-        tab[1] = tab[1].replace("%2F", "/")
+        tab[1] = tab[1].replace("%2F","/")
         viewModelScope.launch(Dispatchers.IO) {
-          /* lateinit var  compressedPicture :File
+            lateinit var  compressedPicture :File
             var job = launch { compressedPicture = Compressor.compress(context, photo) }
-            job.join()*/
-            //compressedPicture.renameTo(photo)
+            job.join()
+            compressedPicture.renameTo(photo)
             repositoryPhoto.uploadPhoto(
                 token!!,
                 imageName.value!!.name!!,
                 tab.toList(),
-                photo, //compressedPicture,
+                compressedPicture,
                 object : Callback<URLPhotoResponse> {
                     override fun onResponse(
                         call: Call<URLPhotoResponse>,
                         response: Response<URLPhotoResponse>
                     ) {
-                        // Log.i("INFO", response.code().toString() + " - " + response.message())
-                        // Log.i("INFO", "envoyé ${call.request().url()}")
+                        Log.i("INFO", response.code().toString() + " - " + response.message() )
+                        Log.i("INFO", "envoyé ${call.request().url()}")
                     }
 
                     override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
@@ -1421,8 +1421,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     }
                 })
         }
-
-
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
