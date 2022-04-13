@@ -504,8 +504,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
     fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
-        var url2 = HttpUrl.get(imageName.value!!.url!!)
-        Log.i("INFO","substring "+url2.toString())
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F","/")
         viewModelScope.launch(Dispatchers.IO) {

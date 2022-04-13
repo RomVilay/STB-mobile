@@ -1394,7 +1394,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
     }
     fun sendPhoto(photo: File) = runBlocking {
-        var s = imageName.value!!.url!!.removePrefix(minioUrl+"/images/"+imageName.value!!.name!!+"?X-Amz-Algorithm=")
+        var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/"+imageName.value!!.name!!+"?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
         viewModelScope.launch(Dispatchers.IO) {
