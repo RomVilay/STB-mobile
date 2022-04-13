@@ -71,7 +71,7 @@ class Accueil : Fragment() {
                     }
                 }
                 var job2 = launch {
-                    viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+                    viewModel.listeFiches(viewModel.token.value!!, viewModel.username.toString())
                 }
                 delay(200)
                 job2.join()
