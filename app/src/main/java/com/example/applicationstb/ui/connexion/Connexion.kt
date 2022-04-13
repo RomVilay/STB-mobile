@@ -50,35 +50,33 @@ class Connexion : Fragment() {
         if (login !== "") username.setText(login)
         if (pwd !== "") password.setText(pwd)
         button.setOnClickListener{
-            if (username.text.isEmpty() ) {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre pseudo utilisateur", 3600)
-                mySnackbar.show()
-            }
-            if (password.text.isEmpty() ) {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre mot de passe", 3600)
-                mySnackbar.show()
-            }
-            if (password.text.length < 5 ) {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
-                mySnackbar.show()
-            }
-            else {
-                if (login == "") {
-                    if (sharedPref !== null) {
-                        sharedPref.edit {
-                            putString("login",username.text.toString())
-                            putString("password",password.text.toString())
+            runBlocking {
+                if (username.text.isEmpty() ) {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre pseudo utilisateur", 3600)
+                    mySnackbar.show()
+                }
+                if (password.text.isEmpty() ) {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre mot de passe", 3600)
+                    mySnackbar.show()
+                }
+                if (password.text.length < 5 ) {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
+                    mySnackbar.show()
+                }
+                else {
+                    if (login == "") {
+                        if (sharedPref !== null) {
+                            sharedPref.edit {
+                                putString("login",username.text.toString())
+                                putString("password",password.text.toString())
+                            }
                         }
                     }
+                    viewModel.login(username.text.toString(), password.text.toString(), layout, loading)
+                    viewModel.localGet()
                 }
-                viewModel.login(username.text.toString(), password.text.toString(), layout, loading)
-                viewModel.localGet()
             }
-             /*   val action = viewModel.user?.token?.let { it1 -> ConnexionDirections.versAccueil(it1) }
-            if (action != null) {
-                findNavController().navigate(action)
-            }
-                //viewModel.toAccueil(it)*/
+
         }
         return layout
     }

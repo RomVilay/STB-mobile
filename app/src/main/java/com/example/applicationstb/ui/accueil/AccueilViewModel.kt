@@ -1823,8 +1823,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                         }
                                     job4.join()
-
                                 }
+
                                 //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             }
                             val resp = repository.patchChantier(
@@ -3231,8 +3231,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
         if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
     }
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
