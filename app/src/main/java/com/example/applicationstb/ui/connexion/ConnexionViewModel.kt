@@ -43,6 +43,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     val sharedPref =
         getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var repository = Repository(getApplication<Application>().applicationContext);
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
 
@@ -1729,7 +1730,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             imageName.value!!.url!!.removePrefix("${minioUrl}/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
-        repository.uploadPhoto(
+        repositoryPhoto.uploadPhoto(
             user?.token!!,
             imageName.value!!.name!!,
             tab.toList(),

@@ -36,6 +36,7 @@ import java.util.*
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
 
     var repository = Repository(getApplication<Application>().applicationContext);
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var listeBobinage = arrayListOf<Bobinage>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
@@ -401,7 +402,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     fun sendPhoto(photo: File) = runBlocking {
         var s =
-            imageName.value!!.url!!.removePrefix("${minioUrl}/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+            imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab.forEach {
             Log.i("INFO", it)
@@ -413,7 +414,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             job.join()
             //compressedPicture.renameTo(photo)
             Log.i("info", "taille ${compressedPicture.totalSpace}")
-            repository.uploadPhoto(
+            repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),

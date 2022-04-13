@@ -46,7 +46,7 @@ import java.util.*
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
-
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
@@ -3284,7 +3284,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
             //compressedPicture.renameTo(photo)
             Log.i("info","taille ${compressedPicture.totalSpace}")
-            repository.uploadPhoto(
+            repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),

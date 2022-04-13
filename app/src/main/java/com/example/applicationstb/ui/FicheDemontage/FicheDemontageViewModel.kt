@@ -40,6 +40,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     var token: String? = null;
     var username: String? = null;
     var repository = Repository(context)
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var listeDemontages = arrayListOf<DemontageMoteur>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
@@ -1401,7 +1402,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             var job = launch { compressedPicture = Compressor.compress(context, photo) }
             job.join()*/
             //compressedPicture.renameTo(photo)
-            repository.uploadPhoto(
+            repositoryPhoto.uploadPhoto(
                 token!!,
                 imageName.value!!.name!!,
                 tab.toList(),

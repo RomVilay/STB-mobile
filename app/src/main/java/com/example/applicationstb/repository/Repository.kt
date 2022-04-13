@@ -3250,14 +3250,6 @@ class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
     companion object {}
 }
 
-class URLPhotoResponse(
-    var url: String?
-)
-
-class URLPhotoResponse2(
-    var url: String?,
-    var name: String?
-)
 
 class PhotoResponse(
     var photo: File
@@ -3280,15 +3272,6 @@ class Repository(var context: Context) {
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
     val service: APIstb by lazy { retrofit.create(APIstb::class.java) }
-    fun servicePhoto(): APIstb {
-        return Retrofit.Builder()
-            .baseUrl(minioUrl)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
-            .build()
-            .create(APIstb::class.java)
-    }
-
     var db: LocalDatabase? = null;
     var chantierDao: ChantierDao? = null;
     var bobinageDao: BobinageDao? = null;
@@ -4589,29 +4572,6 @@ class Repository(var context: Context) {
 
     // photo requests
     suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token)
-
-    fun uploadPhoto(
-        token: String,
-        name: String,
-        address: List<String>,
-        photo: File,
-        param: Callback<URLPhotoResponse>
-    ) {
-        var body = RequestBody.create(MediaType.parse("image/jpeg"), photo)
-        var call = servicePhoto().uploadPhoto(
-            token,
-            name,
-            address[0],
-            address[1].removePrefix("X-Amz-Credential="),
-            address[2].removePrefix("X-Amz-Date="),
-            address[3].removePrefix("X-Amz-Expires="),
-            address[4].removePrefix("X-Amz-SignedHeaders="),
-            address[5].removePrefix("X-Amz-Signature="),
-            body
-        )
-        var photo: String? = null
-        call.enqueue(param)
-    }
 
     fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
         var dateMin =
