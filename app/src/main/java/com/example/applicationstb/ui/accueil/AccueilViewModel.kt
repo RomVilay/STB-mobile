@@ -3283,7 +3283,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 Log.e("error",e.message!!)
             }
             //compressedPicture.renameTo(photo)
-            Log.i("info","taille ${compressedPicture.totalSpace}")
             repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
