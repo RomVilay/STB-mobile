@@ -507,15 +507,15 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F","/")
         viewModelScope.launch(Dispatchers.IO) {
-           /* lateinit var  compressedPicture :File
+            lateinit var  compressedPicture :File
             var job = launch { compressedPicture = Compressor.compress(context, photo) }
             job.join()
-            compressedPicture.renameTo(photo)*/
+            compressedPicture.renameTo(photo)
             repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),
-                photo,
+                compressedPicture,
                 object : Callback<URLPhotoResponse> {
                     override fun onResponse(
                         call: Call<URLPhotoResponse>,
