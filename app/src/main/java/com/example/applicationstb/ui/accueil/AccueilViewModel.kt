@@ -1549,12 +1549,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
-    fun Pointage() {
+    fun Pointage() =  runBlocking{
         viewModelScope.launch(Dispatchers.IO) {
             var date = ZonedDateTime.of(
-                LocalDateTime.now(),
+                LocalDateTime.now().minusSeconds(5),
                 ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
             ) //definition du fuseau horaire
+            Log.i("INFO","current time ${date}")
             if (isOnline(context) && token.value !== "") {
                var ptn = repository.postPointages(
                     token.value!!,
@@ -1563,8 +1564,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 )
                 repository.insertPointageDatabase(
                     Pointage(
-                        ptn.body()!!.data!!._id, sharedPref.getString("userId", "")!!,
-                        date
+                        ptn.body()!!.data!!._id, sharedPref.getString("userId", "")!!, date
                     )
                 )
             } else {
