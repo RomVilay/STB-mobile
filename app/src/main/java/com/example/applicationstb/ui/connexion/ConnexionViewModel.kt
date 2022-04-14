@@ -162,14 +162,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         runBlocking {
                                             if (name.contains(ch.numFiche!!)) {
                                                 Log.i("INFO", "fichier à upload : ${name}")
-                                                //var test = getPhotoFile(name)
-                                                var job =
-                                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                        getNameURI()
-                                                    }
-                                                job.join()
-                                                var job2 =
-                                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                                getNameURI2 {
                                                         try {
                                                             val dir =
                                                                 Environment.getExternalStoragePublicDirectory(
@@ -180,21 +173,15 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                                 name
                                                             )
                                                             val to =
-                                                                File(dir, imageName.value!!.name!!)
-                                                            Log.i(
-                                                                "INFO",
-                                                                from.exists()
-                                                                    .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                            )
+                                                                File(dir, it!!.name!!)
                                                             if (from.exists()) from.renameTo(to)
-                                                            sendPhoto(to)
-                                                            iter.set(imageName.value!!.name!!)
+                                                            sendPhoto2(to,it.url!!)
+                                                            iter.set(it!!.name!!)
+
                                                         } catch (e: java.lang.Exception) {
                                                             Log.e("EXCEPTION", e.message!!)
                                                         }
                                                     }
-                                                job2.join()
-                                                delay(200)
                                             }
                                         }
                                     }
