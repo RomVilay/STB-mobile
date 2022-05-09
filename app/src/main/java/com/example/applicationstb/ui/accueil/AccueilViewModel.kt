@@ -39,12 +39,14 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AccueilViewModel(application: Application) : AndroidViewModel(application) {
     var repository = Repository(getApplication<Application>().applicationContext);
-
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
@@ -1475,6 +1477,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     fun listeFicheLocal() {
         viewModelScope.launch(Dispatchers.IO) {
             var listChantier = repository.getAllChantierLocalDatabase()
+            chantiers.clear()
             for (ch in listChantier) {
                 chantiers.add(ch.toChantier())
             }
@@ -1547,13 +1550,14 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
-    fun Pointage() {
+    fun Pointage() =  runBlocking{
         viewModelScope.launch(Dispatchers.IO) {
             var date = ZonedDateTime.of(
-                LocalDateTime.now(),
-                ZoneOffset.of("+01:00")
+                LocalDateTime.now().minusSeconds(5),
+                ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
             ) //definition du fuseau horaire
-            if (isOnline(context)) {
+            Log.i("INFO","current time ${date}")
+            if (isOnline(context) && token.value !== "") {
                var ptn = repository.postPointages(
                     token.value!!,
                     sharedPref.getString("userId", "")!!,
@@ -1561,8 +1565,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 )
                 repository.insertPointageDatabase(
                     Pointage(
-                        ptn.body()!!.data!!._id, sharedPref.getString("userId", "")!!,
-                        date
+                        ptn.body()!!.data!!._id, sharedPref.getString("userId", "")!!, date
                     )
                 )
             } else {
@@ -1714,7 +1717,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                         runBlocking {
                                             if (name.contains(ch.numFiche!!)) {
-                                                Log.i("INFO", "fichier à upload : ${name}")
                                                 //var test = getPhotoFile(name)
                                                 var job =
                                                     CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -1734,11 +1736,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             )
                                                             val to =
                                                                 File(dir, imageName.value!!.name!!)
-                                                            Log.i(
-                                                                "INFO",
-                                                                from.exists()
-                                                                    .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                            )
                                                             if (from.exists()) from.renameTo(to)
                                                             sendPhoto(to)
                                                             iter.set(imageName.value!!.name!!)
@@ -1774,11 +1771,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     ch.signatureTech!!
                                                 )
                                                 val to = File(dir, imageName.value!!.name!!)
-                                                Log.i(
-                                                    "INFO", "signature tech" +
-                                                            from.exists()
-                                                                .toString() + " - path ${from.absolutePath}"
-                                                )
                                                 if (from.exists()) from.renameTo(to)
                                                 ch.signatureTech = imageName.value!!.name
                                                 sendPhoto(to)
@@ -1789,7 +1781,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     job4.join()
                                     delay(200)
                                 }
-
                                 if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
                                     var job3 =
                                         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -1808,11 +1799,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     ch.signatureClient!!
                                                 )
                                                 val to = File(dir, imageName.value!!.name!!)
-                                                Log.i(
-                                                    "INFO", "signature client" +
-                                                            from.exists()
-                                                                .toString() + " - path ${from.absolutePath}"
-                                                )
                                                 if (from.exists()) from.renameTo(to)
                                                 ch.signatureClient = imageName.value!!.name
                                                 sendPhoto(to)
@@ -1821,9 +1807,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                         }
                                     job4.join()
-
                                 }
-                                //Log.i("INFO", "signature tech déjà en bdd"+ch.signatureClient!!.contains("sign_").toString())
                             }
                             val resp = repository.patchChantier(
                                 token,
@@ -1873,10 +1857,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
-                                    //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(ch.numFiche!!)) {
-                                            Log.i("INFO", "fichier à upload : ${name}")
                                             //var test = getPhotoFile(name)
                                             var job =
                                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -1895,11 +1877,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             name
                                                         )
                                                         val to = File(dir, imageName.value!!.name!!)
-                                                        Log.i(
-                                                            "INFO",
-                                                            from.exists()
-                                                                .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                        )
                                                         if (from.exists()) from.renameTo(to)
                                                         sendPhoto(to)
                                                         iter.set(imageName.value!!.name!!)
@@ -1965,7 +1942,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
-                                    //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
                                     runBlocking {
                                         if (name.contains(dt.numFiche!!)) {
                                             Log.i("INFO", "fichier à upload : ${name}")
@@ -2435,9 +2411,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             from.exists()
                                                                 .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
                                                         )
-                                                        if (from.exists()) from.renameTo(to)
-                                                        sendPhoto(to)
-                                                        iter.set(imageName.value!!.name!!)
+                                                        if (from.exists()) {
+                                                            from.renameTo(to)
+                                                            sendPhoto(to)
+                                                            iter.set(imageName.value!!.name!!)
+                                                        }
                                                     } catch (e: java.lang.Exception) {
                                                         Log.e("EXCEPTION", e.message!!)
                                                     }
@@ -3229,8 +3207,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
         if (loading.visibility == View.VISIBLE) loading.visibility = View.GONE
     }
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
@@ -3269,7 +3245,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
     fun sendPhoto(photo: File) = runBlocking{
         var s =
-            imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+            imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/"+imageName.value!!.name!!+"?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
         viewModelScope.launch(Dispatchers.IO) {
@@ -3280,9 +3256,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             } catch (e:Throwable) {
                 Log.e("error",e.message!!)
             }
-            //compressedPicture.renameTo(photo)
-            Log.i("info","taille ${compressedPicture.totalSpace}")
-            repository.uploadPhoto(
+            delay(200)
+            compressedPicture.renameTo(photo)
+            repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),

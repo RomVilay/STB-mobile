@@ -25,6 +25,7 @@ import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.*
+import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +41,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var token= MutableLiveData<String>();
     var username: String? = null;
     var repository = Repository(context );
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var listeChantiers = arrayListOf<Chantier>()
     var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<String?>()
@@ -262,9 +264,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
                                             )
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto(to)
-                                            iter.set(imageName.value!!.name!!)
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto(to)
+                                                iter.set(imageName.value!!.name!!)
+                                            }
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -301,9 +305,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                             from.exists()
                                                 .toString() + " - path ${from.absolutePath}"
                                 )
-                                if (from.exists()) from.renameTo(to)
-                                ch.signatureTech = imageName.value!!.name
-                                sendPhoto(to)
+                                if (from.exists()) {
+                                    from.renameTo(to)
+                                    ch.signatureTech = imageName.value!!.name
+                                    sendPhoto(to)
+                                }
                             } catch (e: java.lang.Exception) {
                                 Log.e("EXCEPTION", e.message!!)
                             }
@@ -334,9 +340,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                             from.exists()
                                                 .toString() + " - path ${from.absolutePath}"
                                 )
-                                if (from.exists()) from.renameTo(to)
-                                ch.signatureClient = imageName.value!!.name
-                                sendPhoto(to)
+                                if (from.exists()) {
+                                    from.renameTo(to)
+                                    ch.signatureClient = imageName.value!!.name
+                                    sendPhoto(to)
+                                }
                             } catch (e: java.lang.Exception) {
                                 Log.e("EXCEPTION", e.message!!)
                             }
@@ -360,6 +368,14 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                     mySnackbar.show()
+                                    if (chantier.value!!.status!! > 2L) {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            repository.deleteChantierLocalDatabse(chantier.value!!.toEntity())
+                                            delay(100)
+                                            listeChantiers.remove(chantier.value!!)
+                                            chantier.postValue(null)
+                                        }
+                                    }
                                     //Log.i("INFO","fiche chantier enregistrée")
                                 }
                             } else {
@@ -501,19 +517,15 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
 
     }
     fun sendPhoto(photo:File)= runBlocking{
-        var s = imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+        var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
-        tab.forEach {
-            Log.i("INFO",it)
-        }
         tab[1] = tab[1].replace("%2F","/")
         viewModelScope.launch(Dispatchers.IO) {
             lateinit var  compressedPicture :File
             var job = launch { compressedPicture = Compressor.compress(context, photo) }
             job.join()
-            //compressedPicture.renameTo(photo)
-            Log.i("info","taille ${compressedPicture.totalSpace}")
-            repository.uploadPhoto(
+            compressedPicture.renameTo(photo)
+            repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),
@@ -523,8 +535,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                         call: Call<URLPhotoResponse>,
                         response: Response<URLPhotoResponse>
                     ) {
-                        // Log.i("INFO", response.code().toString() + " - " + response.message())
-                        // Log.i("INFO", "envoyé ${call.request().url()}")
+                         Log.i("INFO", response.code().toString() + " - " + response.message() )
+                         Log.i("INFO", "envoyé ${call.request().url()}")
                     }
 
                     override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
@@ -558,22 +570,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
         job.join()
-        /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            var resp2 = repository.getPhoto(file!!)
-            withContext(Dispatchers.Main){
-                if( resp2.isSuccessful) {
-                    saveImage(Glide.with(this@withContext)
-                        .asBitmap()
-                        .load(resp2.))
-                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
-                   // photos?.value!!.add(p)
-                   // Log.i("INFO", "chemin:"+p)
-                } else{
-                    exceptionHandler
-                }
-            }
-        }
-        job2.join()*/
         return@runBlocking file
     }
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->

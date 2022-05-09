@@ -28,6 +28,7 @@ import com.example.applicationstb.model.DemontageMotopompe
 import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -70,7 +71,7 @@ class Accueil : Fragment() {
                     }
                 }
                 var job2 = launch {
-                    viewModel.listeFiches(viewModel.token.toString(), viewModel.username.toString())
+                    viewModel.listeFiches(viewModel.token.value!!, viewModel.username.toString())
                 }
                 delay(200)
                 job2.join()
@@ -83,10 +84,6 @@ class Accueil : Fragment() {
             }
 
         } else {
-            if (viewModel.fiches?.size == 0 || (viewModel.fiches == null && !(viewModel.isOnline(
-                    viewModel.context
-                )))
-            )
                 viewModel.listeFicheLocal()
         }
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
@@ -111,6 +108,7 @@ class Accueil : Fragment() {
             btnPtn.setChecked(!(viewModel.pointage.value?.size!! % 2).equals(0))
         })
         btnPtn.setOnClickListener {
+            //Log.i("info","current offset ${SimpleDateFormat("Z").format(Date())}")
             viewModel.Pointage()
         }
         listePointage.setOnClickListener {
@@ -362,6 +360,19 @@ class Accueil : Fragment() {
                 }
             }
             activity?.finish()
+        }
+
+        var suppr = layout.findViewById<Button>(R.id.buttonSuppr2)
+        suppr.setOnClickListener {
+            Log.i("info", " token ${viewModel.token.value!!}")
+            for(i in viewModel.pointage.value!!) {
+                //Log.i("info", " item ${i._id}")
+                    var id = i._id
+                lifecycleScope.launch(Dispatchers.IO) {
+                      viewModel.repository.deletePointage(viewModel.token.value!!,id)
+                    viewModel.repository.deletePointageLocalDatabse(i.toEntity())
+                }
+            }
         }
 
         return layout

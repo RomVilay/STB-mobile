@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Pointage
 import com.example.applicationstb.model.Section
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class pointerAdapter(var list: List<Pointage>) :
     RecyclerView.Adapter<pointerAdapter.ViewHolder>() {
@@ -42,7 +44,7 @@ class pointerAdapter(var list: List<Pointage>) :
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.date.setText(list[position].timestamp?.format(dateFomater).toString())
-        holder.debut.setText(list[position].timestamp?.format(timeFomater).toString())
+        holder.debut.setText(list[position].timestamp?.plusHours(2).format(timeFomater).toString())
     }
 
 

@@ -44,10 +44,12 @@ class PointageViewModel(application: Application) : AndroidViewModel(application
         var l = list.size % 2
         if (l == 0) {
             for (i in 0..list.size-1 step 2) {
+                if (list[i].timestamp.dayOfMonth == list[i + 1].timestamp.dayOfMonth)
                t = t + Duration.between(list[i].timestamp, list[i + 1].timestamp).toHours()
             }
         } else {
             for (i in 0..list.size-2 step 2) {
+                if (list[i].timestamp.dayOfMonth == list[i + 1].timestamp.dayOfMonth)
                 t = t + Duration.between(list[i].timestamp, list[i + 1].timestamp).toHours()
             }
         }

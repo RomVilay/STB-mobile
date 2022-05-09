@@ -316,11 +316,23 @@ class FicheChantier : Fragment() {
         term.setOnClickListener {
             viewModel.chantier.value?.status = 3
             viewModel.quickSave()
-                    viewModel.save(
-                        requireContext(),
-                        layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
-                        viewModel.token.value!!
-                    )
+            viewModel.save(
+               requireContext(),
+               layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                viewModel.token.value!!
+            )
+            if (viewModel.listeChantiers.size > 1 ) {
+                lin.visibility = View.INVISIBLE
+                viewModel.listeChantiers.remove(viewModel.chantier.value!!)
+                spinner.adapter = ArrayAdapter(
+                    requireActivity(),
+                    R.layout.support_simple_spinner_dropdown_item,
+                    viewModel.listeChantiers.map { it.numFiche })
+
+            } else {
+                viewModel.back(layout)
+            }
+
         }
         return layout
     }
