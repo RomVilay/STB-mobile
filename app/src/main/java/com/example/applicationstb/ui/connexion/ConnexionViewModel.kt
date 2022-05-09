@@ -25,6 +25,7 @@ import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.example.applicationstb.repository.*
 import com.google.android.material.snackbar.Snackbar
+import id.zelory.compressor.Compressor
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,9 +33,11 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import java.util.*
 
 class ConnexionViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
@@ -174,9 +177,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                             )
                                                             val to =
                                                                 File(dir, it!!.name!!)
-                                                            if (from.exists()) from.renameTo(to)
-                                                            sendPhoto2(to,it.url!!)
-                                                            iter.set(it!!.name!!)
+                                                            if (from.exists()) {
+                                                                from.renameTo(to)
+                                                                sendPhoto2(to, it.url!!)
+                                                                iter.set(it!!.name!!)
+                                                            }
 
                                                         } catch (e: java.lang.Exception) {
                                                             Log.e("EXCEPTION", e.message!!)
@@ -296,9 +301,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
 
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
@@ -376,10 +383,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
-
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
                                                 }
@@ -458,10 +466,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
-
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
                                                 }
@@ -535,10 +544,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to =
                                                 File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto2(to,it.url!!)
-                                            iter.set(it!!.name!!)
-
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto2(to, it.url!!)
+                                                iter.set(it!!.name!!)
+                                            }
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -607,10 +617,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to =
                                                 File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto2(to,it.url!!)
-                                            iter.set(it!!.name!!)
-
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto2(to, it.url!!)
+                                                iter.set(it!!.name!!)
+                                            }
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -679,10 +690,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to =
                                                 File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto2(to,it.url!!)
-                                            iter.set(it!!.name!!)
-
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto2(to, it.url!!)
+                                                iter.set(it!!.name!!)
+                                            }
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -753,10 +765,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
-
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
                                                 }
@@ -832,9 +845,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
 
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
@@ -911,9 +926,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
 
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
@@ -990,10 +1007,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
-
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
                                                 }
@@ -1070,9 +1088,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
 
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
@@ -1152,9 +1172,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
 
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
@@ -1211,7 +1233,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     Log.i("INFO", "nb de fiches Demontage Reducteur: ${listDR.size}")
                     var listDMR: List<DemontageMotoreducteurEntity> =
                         repository.getAllDemontageMotoreducteurLocalDatabase()
-                    if (listDMP.size > 0) {
+                    if (listDMR.size > 0) {
                         for (fiche in listDMR) {
                             var dmr = fiche.toDemontageMotoreducteur()
                             var photos = dmr.photos?.toMutableList()
@@ -1234,9 +1256,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     )
                                                     val to =
                                                         File(dir, it!!.name!!)
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto2(to,it.url!!)
-                                                    iter.set(it!!.name!!)
+                                                    if (from.exists()) {
+                                                        from.renameTo(to)
+                                                        sendPhoto2(to, it.url!!)
+                                                        iter.set(it!!.name!!)
+                                                    }
 
                                                 } catch (e: java.lang.Exception) {
                                                     Log.e("EXCEPTION", e.message!!)
@@ -1314,10 +1338,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to =
                                                 File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto2(to,it.url!!)
-                                            iter.set(it!!.name!!)
-
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto2(to, it.url!!)
+                                                iter.set(it!!.name!!)
+                                            }
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -1386,9 +1411,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             )
                                             val to =
                                                 File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto2(to,it.url!!)
-                                            iter.set(it!!.name!!)
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto2(to, it.url!!)
+                                                iter.set(it!!.name!!)
+                                            }
 
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
@@ -1442,7 +1469,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     suspend fun sendPointage(token: String, userId: String) {
         var date = ZonedDateTime.of(
             LocalDateTime.now().withDayOfMonth(1),
-            ZoneOffset.of("+01:00")
+            ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
         )
         repository.getPointages(token, userId, object : Callback<PointagesResponse> {
             override fun onResponse(
@@ -1552,24 +1579,32 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         var s = url.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${photo.name}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F", "/")
-        Log.i("info", "url : $s")
-        repositoryPhoto.uploadPhoto(
-            user?.token!!,
-            photo.name,
-            tab.toList(),
-            photo,
-            object : Callback<URLPhotoResponse> {
-                override fun onResponse(
-                    call: Call<URLPhotoResponse>,
-                    response: Response<URLPhotoResponse>
-                ) {
-                    //Log.i("INFO", "envoyé ${call.request().url()}")
-                }
+        lateinit var  compressedPicture :File
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                var job = launch { compressedPicture = Compressor.compress(context, photo) }
+                job.join()
+            } catch (e: Throwable) {
+                Log.e("error", e.message!!)
+            }
+            repositoryPhoto.uploadPhoto(
+                user?.token!!,
+                photo.name,
+                tab.toList(),
+                compressedPicture,
+                object : Callback<URLPhotoResponse> {
+                    override fun onResponse(
+                        call: Call<URLPhotoResponse>,
+                        response: Response<URLPhotoResponse>
+                    ) {
+                        //Log.i("INFO", "envoyé ${call.request().url()}")
+                    }
 
-                override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
-                    Log.i("INFO", t.message!!)
-                }
-            })
+                    override fun onFailure(call: Call<URLPhotoResponse>, t: Throwable) {
+                        Log.i("INFO", t.message!!)
+                    }
+                })
+        }
     }
 
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->

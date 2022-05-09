@@ -238,6 +238,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     }
                 }
                 bob?.photos = photos?.toTypedArray()
+                bob?.status = bobinage.value?.status
                 bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
                 bobinage.postValue(bob!!)
                 val resp = repository.patchBobinage(
@@ -284,6 +285,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     fun localSave(view: View) {
         viewModelScope.launch(Dispatchers.IO) {
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            Log.i("INFO", "status ${bobinage.value!!.status}")
             if (bob !== null) {
                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                 mySnackbar.show()
@@ -312,7 +314,6 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun quickSave() {
-        Log.i("INFO", "quick save")
         getTime()
         viewModelScope.launch(Dispatchers.IO) {
             var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)

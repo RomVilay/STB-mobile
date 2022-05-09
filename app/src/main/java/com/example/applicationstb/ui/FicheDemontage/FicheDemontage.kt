@@ -40,6 +40,21 @@ class FicheDemontage : Fragment() {
         var btnDemontage = layout.findViewById<Button>(R.id.selectDemontage)
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
         val fragmentManager = childFragmentManager
+        viewModel.selection.observe(viewLifecycleOwner) {
+           /* if (viewModel.selection.value!!.status == 3L) {
+                if (viewModel.listeDemontages.size > 1 ) {
+                    layout.findViewById<FrameLayout>(R.id.fragmentContainer).removeAllViews()
+                    viewModel.listeDemontages.remove(viewModel.selection.value!!)
+                    spinner.adapter = ArrayAdapter(
+                        requireActivity(),
+                        R.layout.support_simple_spinner_dropdown_item,
+                        viewModel.listeDemontages.map { it.numFiche })
+                } else {
+                    viewModel.back(layout)
+                }
+            }*/
+
+        }
         btnDemontage.setOnClickListener {
             viewModel.start.value = Date()
             var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }

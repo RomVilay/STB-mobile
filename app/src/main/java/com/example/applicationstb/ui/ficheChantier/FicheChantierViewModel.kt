@@ -264,9 +264,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                                 from.exists()
                                                     .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
                                             )
-                                            if (from.exists()) from.renameTo(to)
-                                            sendPhoto(to)
-                                            iter.set(imageName.value!!.name!!)
+                                            if (from.exists()) {
+                                                from.renameTo(to)
+                                                sendPhoto(to)
+                                                iter.set(imageName.value!!.name!!)
+                                            }
                                         } catch (e: java.lang.Exception) {
                                             Log.e("EXCEPTION", e.message!!)
                                         }
@@ -303,9 +305,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                             from.exists()
                                                 .toString() + " - path ${from.absolutePath}"
                                 )
-                                if (from.exists()) from.renameTo(to)
-                                ch.signatureTech = imageName.value!!.name
-                                sendPhoto(to)
+                                if (from.exists()) {
+                                    from.renameTo(to)
+                                    ch.signatureTech = imageName.value!!.name
+                                    sendPhoto(to)
+                                }
                             } catch (e: java.lang.Exception) {
                                 Log.e("EXCEPTION", e.message!!)
                             }
@@ -336,9 +340,11 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                             from.exists()
                                                 .toString() + " - path ${from.absolutePath}"
                                 )
-                                if (from.exists()) from.renameTo(to)
-                                ch.signatureClient = imageName.value!!.name
-                                sendPhoto(to)
+                                if (from.exists()) {
+                                    from.renameTo(to)
+                                    ch.signatureClient = imageName.value!!.name
+                                    sendPhoto(to)
+                                }
                             } catch (e: java.lang.Exception) {
                                 Log.e("EXCEPTION", e.message!!)
                             }
@@ -362,6 +368,14 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                     mySnackbar.show()
+                                    if (chantier.value!!.status!! > 2L) {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            repository.deleteChantierLocalDatabse(chantier.value!!.toEntity())
+                                            delay(100)
+                                            listeChantiers.remove(chantier.value!!)
+                                            chantier.postValue(null)
+                                        }
+                                    }
                                     //Log.i("INFO","fiche chantier enregistrée")
                                 }
                             } else {

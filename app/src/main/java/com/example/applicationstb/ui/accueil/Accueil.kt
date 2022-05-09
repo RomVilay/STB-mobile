@@ -84,10 +84,6 @@ class Accueil : Fragment() {
             }
 
         } else {
-            if (viewModel.fiches?.size == 0 || (viewModel.fiches == null && !(viewModel.isOnline(
-                    viewModel.context
-                )))
-            )
                 viewModel.listeFicheLocal()
         }
         val deco = layout.findViewById<TextView>(R.id.btnDeco)
@@ -364,6 +360,19 @@ class Accueil : Fragment() {
                 }
             }
             activity?.finish()
+        }
+
+        var suppr = layout.findViewById<Button>(R.id.buttonSuppr2)
+        suppr.setOnClickListener {
+            Log.i("info", " token ${viewModel.token.value!!}")
+            for(i in viewModel.pointage.value!!) {
+                //Log.i("info", " item ${i._id}")
+                    var id = i._id
+                lifecycleScope.launch(Dispatchers.IO) {
+                      viewModel.repository.deletePointage(viewModel.token.value!!,id)
+                    viewModel.repository.deletePointageLocalDatabse(i.toEntity())
+                }
+            }
         }
 
         return layout

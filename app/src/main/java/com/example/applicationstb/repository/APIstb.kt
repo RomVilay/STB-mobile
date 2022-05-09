@@ -142,6 +142,9 @@ interface APIstb  {
     @POST("/pointages")
     suspend fun postPointages(@Header("auth-token") token:String, @Body body: BodyPointage) : Response<PointageResponse>
 
+    @DELETE("/pointages")
+    suspend fun deletePointage(@Header("auth-token") token:String, @Path("ficheId") pointage:String ) : Response<PointageResponse>
+
     @GET("/pointages")
     fun getPointages(@Header("auth-token")token:String, @Query("limit") limit: String, @Query("offset") offset: Int, @Query("user") user: String, @Query("minDate") minDate : String, @Query("maxDate") maxDate : String ) : Call <PointagesResponse>
 }

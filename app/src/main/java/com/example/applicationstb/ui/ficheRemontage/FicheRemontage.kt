@@ -139,7 +139,7 @@ class FicheRemontage : Fragment() {
                     }
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
-                    layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+                    //layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
                     if (demo.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
                         demo.verificationIsolementPorteBalais!!
                     )
@@ -652,7 +652,7 @@ class FicheRemontage : Fragment() {
                     }
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
-                    layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+                    //layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
                     if (demo.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
                         demo.verificationIsolementPorteBalais!!
@@ -764,7 +764,7 @@ class FicheRemontage : Fragment() {
                     viewModel.selection.value = demo
                     viewModel.selection.value!!.status = 2L
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
-                    layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
+                    //layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
 
                 }

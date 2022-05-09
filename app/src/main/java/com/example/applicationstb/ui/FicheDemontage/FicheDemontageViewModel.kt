@@ -407,10 +407,19 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                     if (response.code() == 200) {
                                         val resp = response.body()
                                         if (resp != null) {
+                                            /*if (fiche.status!! == 3L){
+                                                CoroutineScope(Dispatchers.IO).launch {
+                                                    repository.deleteDemontagePompeLocalDatabse(fiche.toEntity())
+                                                    delay(100)
+                                                    listeDemontages.remove(selection.value!!)
+                                                    selection.postValue(null)
+                                                }
+                                            }*/
                                             val mySnackbar =
                                                 Snackbar.make(view, "fiche enregistrée", 3600)
                                             mySnackbar.show()
                                             Log.i("INFO", "enregistré")
+
                                         }
                                     } else {
                                         val mySnackbar =

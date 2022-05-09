@@ -3095,7 +3095,7 @@ class Pointage2(
         return Pointage(
             _id,
             user._id,
-            ZonedDateTime.parse(timestamp).withZoneSameLocal(ZoneId.of("+01:00"))
+            ZonedDateTime.parse(timestamp).withZoneSameLocal(ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         )
     }
 }
@@ -3233,7 +3233,7 @@ class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
     override fun fromJson(reader: JsonReader): ZonedDateTime? {
         return try {
             val dateAsString = reader.nextString()
-            ZonedDateTime.parse(dateAsString).withZoneSameLocal(ZoneId.of("+01:00"))
+            ZonedDateTime.parse(dateAsString).withZoneSameLocal(ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         } catch (e: Exception) {
             null
         }
@@ -4587,6 +4587,10 @@ class Repository(var context: Context) {
 
     suspend fun getURLPhoto(token: String, photoName: String) =
         service.getURLPhoto(token, photoName)
+
+    suspend fun deletePointage(token: String,pointage:String) =
+        service.deletePointage(token,pointage)
+
 
     suspend fun getPhoto(address: String) = service.getPhoto(address)
 
