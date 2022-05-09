@@ -219,39 +219,7 @@ class RemontageCourantC(
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
     var isolementPorteBalaisOhm: Float?,
-    // essais dynamiques
-    var tensionStator: Boolean?,
-    var tensionStatorU: Float?,
-    var tensionStatorV: Float?,
-    var tensionStatorW: Float?,
-    var tensionInducteurs: Boolean?,
-    var tensionInducteursU: Float?,
-    var tensionInducteursV: Float?,
-    var tensionInducteursW: Float?,
-    var intensiteStator: Boolean?,
-    var intensiteStatorU: Float?,
-    var intensiteStatorV: Float?,
-    var intensiteStatorW: Float?,
-    var intensiteInducteurs: Boolean?,
-    var intensiteInducteursU: Float?,
-    var intensiteInducteursV: Float?,
-    var intensiteInducteursW: Float?,
-    var tensionInduit: Boolean?,
-    var tensionInduitU: Float?,
-    var tensionInduitV: Float?,
-    var tensionInduitW: Float?,
-    var tensionRotor: Boolean?,
-    var tensionRotorU: Float?,
-    var tensionRotorV: Float?,
-    var tensionRotorW: Float?,
-    var intensiteInduit: Boolean,
-    var intensiteInduitU: Float?,
-    var vitesseU: Float?,
-    var puissanceU: Float?,
-    var dureeEssai: Float?,
-    var sensRotation: Int?,
-
-//essais vibratoires
+    //essais vibratoires
     var vitesse1V: Float?,  // vitesse 1v
     var acceleration1V: Float?,  //accélération 1v
     var vitesse2V: Float?,  // vitesse 2v
@@ -262,14 +230,18 @@ class RemontageCourantC(
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
-    var resistanceInducteurs: Float?,
-    var resistanceInduit: Float?,
-    var isolementInducteursMasse: Float?,
-    var isolementInduitMasse: Float?,
-    var isolementInduitInducteurs: Float?,
-    var releveIsoInducteursMasse: Float?,
-    var releveIsoInduitMasse: Float?,
-    var releveIsoInduitInducteurs: Float?
+    var isolementPolePrincipal: Float?,
+    var isolementPoleAuxilliaire:Float?,
+    var isolementPoleCompensatoire:Float?,
+    var isolementBoiteBalais:Float?,
+    var resistanceInduit:Float?,
+    var resistancePolePrincipal:Float?,
+    var resistancePoleAuxilliaire:Float?,
+    var resistancePoleCompensatoire:Float?,
+    var tensionInduit:Float?,
+    var tensionExcit:Float?,
+    var intensiteInduit:Float?,
+    var intensiteExcit:Float?
 ) : Remontage(
     idFiche,
     numDevis,
@@ -311,36 +283,6 @@ class RemontageCourantC(
             isolementPorteBalaisV,
             isolementPorteBalaisOhm,
             // essais dynamiques
-            tensionStator,
-            tensionStatorU,
-            tensionStatorV,
-            tensionStatorW,
-            tensionInducteurs,
-            tensionInducteursU,
-            tensionInducteursV,
-            tensionInducteursW,
-            intensiteStator,
-            intensiteStatorU,
-            intensiteStatorV,
-            intensiteStatorW,
-            intensiteInducteurs,
-            intensiteInducteursU,
-            intensiteInducteursV,
-            intensiteInducteursW,
-            tensionInduit,
-            tensionInduitU,
-            tensionInduitV,
-            tensionInduitW,
-            tensionRotor,
-            tensionRotorU,
-            tensionRotorV,
-            tensionRotorW,
-            intensiteInduit,
-            intensiteInduitU,
-            vitesseU,
-            puissanceU,
-            dureeEssai,
-            sensRotation,
             vitesse1V,  // vitesse 1v
             acceleration1V,  //accélération 1v
             vitesse2V,  // vitesse 2v
@@ -351,14 +293,18 @@ class RemontageCourantC(
             acceleration2H,  //accélération 2H
             vitesse2A,  // vitesse 2A
             acceleration2A,  //accélération 2A
-            resistanceInducteurs,
+            isolementPolePrincipal,
+            isolementPoleAuxilliaire,
+            isolementPoleCompensatoire,
+            isolementBoiteBalais,
             resistanceInduit,
-            isolementInducteursMasse,
-            isolementInduitMasse,
-            isolementInduitInducteurs,
-            releveIsoInducteursMasse,
-            releveIsoInduitMasse,
-            releveIsoInduitInducteurs
+            resistancePolePrincipal,
+            resistancePoleAuxilliaire,
+            resistancePoleCompensatoire,
+            tensionInduit,
+            tensionExcit,
+            intensiteInduit,
+            intensiteExcit
         )
 
     }
