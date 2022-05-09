@@ -197,6 +197,105 @@ class RemontageTriphase(
     }
 }
 
+class RemontageMonophase(
+    idFiche: String,
+    numDevis: String,
+    numFiche: String,
+    type: Long,
+    statut: Long,
+    client: Client,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<User>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observation: String?,
+    photos: Array<String>?,
+    remontageRoulement: Int?,
+    collageRoulementPorteeArbre: Int?,
+    collageRoulementFlasque: Int?,
+    var verificationFixationCouronne: Boolean?,
+    var verificationIsolementPorteBalais: Boolean?,
+    var isolementPorteBalaisV: Float?,
+    var isolementPorteBalaisOhm: Float?,
+    // essais dynamiques
+    var resistanceTravail: Float?,
+    var resistanceDemarage:Float?,
+    var valeurCondensateur:Float?,
+    var tension:Float?,
+    var intensite:Float?,
+//essais vibratoires
+    var vitesse1V: Float?,  // vitesse 1v
+    var acceleration1V: Float?,  //accélération 1v
+    var vitesse2V: Float?,  // vitesse 2v
+    var acceleration2V: Float?,  //accélération 2v
+    var vitesse1H: Float?,  // vitesse 1H
+    var acceleration1H: Float?,  //accélération 1H
+    var vitesse2H: Float?,  // vitesse 2H
+    var acceleration2H: Float?,  //accélération 2H
+    var vitesse2A: Float?,  // vitesse 2A
+    var acceleration2A: Float?,  //accélération 2A
+) : Remontage(
+    idFiche,
+    numDevis,
+    numFiche,
+    type,
+    statut,
+    client,
+    contact,
+    telContact,
+    techniciens,
+    resp,
+    dateDebut,
+    dureeTotale,
+    observation,
+    photos,
+    2,
+    remontageRoulement,
+    collageRoulementPorteeArbre,
+    collageRoulementFlasque
+) {
+    fun toEntity(): RemontageMonophaseEntity {
+        return RemontageMonophaseEntity(
+            _id,
+            numDevis,
+            numFiche,
+            type,
+            status,
+            client!!._id,
+            contact,
+            telContact,
+            dureeTotale,
+            observations,
+            photos,
+            remontageRoulement,
+            collageRoulementPorteeArbre,
+            collageRoulementFlasque,
+            verificationFixationCouronne,
+            verificationIsolementPorteBalais,
+            isolementPorteBalaisV,
+            isolementPorteBalaisOhm,
+            resistanceTravail,
+            resistanceDemarage,
+            valeurCondensateur,
+            tension,
+            intensite,
+            vitesse1V,  // vitesse 1v
+            acceleration1V,  //accélération 1v
+            vitesse2V,  // vitesse 2v
+            acceleration2V,  //accélération 2v
+            vitesse1H,  // vitesse 1H
+            acceleration1H,  //accélération 1H
+            vitesse2H,  // vitesse 2H
+            acceleration2H,  //accélération 2H
+            vitesse2A,  // vitesse 2A
+            acceleration2A,  //accélération 2A
+        )
+
+    }
+}
+
 class RemontageCourantC(
     idFiche: String,
     numDevis: String,
