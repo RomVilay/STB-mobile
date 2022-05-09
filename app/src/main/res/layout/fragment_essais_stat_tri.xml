@@ -157,7 +157,7 @@
 " />
 
         <TableLayout
-            android:id="@+id/Tisop"
+            android:id="@+id/Ttension"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="110dp"
@@ -257,7 +257,7 @@
             android:layout_marginTop="20dp"
             android:text="Résistance"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Tisop" />
+            app:layout_constraintTop_toBottomOf="@+id/Ttension" />
 
         <TableLayout
             android:id="@+id/Tres"

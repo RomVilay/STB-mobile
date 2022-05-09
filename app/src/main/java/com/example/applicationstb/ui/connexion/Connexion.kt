@@ -16,13 +16,13 @@ import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.edit
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.applicationstb.R
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class Connexion : Fragment() {
     companion object {
@@ -50,35 +50,37 @@ class Connexion : Fragment() {
         if (login !== "") username.setText(login)
         if (pwd !== "") password.setText(pwd)
         button.setOnClickListener{
-            if (username.text.isEmpty() ) {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre pseudo utilisateur", 3600)
-                mySnackbar.show()
-            }
-            if (password.text.isEmpty() ) {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre mot de passe", 3600)
-                mySnackbar.show()
-            }
-            if (password.text.length < 5 ) {
-                val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
-                mySnackbar.show()
-            }
-            else {
-                if (login == "") {
-                    if (sharedPref !== null) {
-                        sharedPref.edit {
-                            putString("login",username.text.toString())
-                            putString("password",password.text.toString())
+            runBlocking {
+                if (username.text.isEmpty() ) {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre pseudo utilisateur", 3600)
+                    mySnackbar.show()
+                }
+                if (password.text.isEmpty() ) {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez Saisir votre mot de passe", 3600)
+                    mySnackbar.show()
+                }
+                if (password.text.length < 5 ) {
+                    val mySnackbar = Snackbar.make(layout.findViewById<CoordinatorLayout>(R.id.ConnexionFrag),"Veuillez vérifier votre mot de passe ( 5 caractères minimum)", 3600)
+                    mySnackbar.show()
+                }
+                else {
+                    if (login == "") {
+                        if (sharedPref !== null) {
+                            sharedPref.edit {
+                                putString("login",username.text.toString())
+                                putString("password",password.text.toString())
+                            }
                         }
                     }
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.getNameURI()
+                    }
+                    delay(200)
+                    viewModel.login(username.text.toString(), password.text.toString(), layout, loading)
+                    viewModel.localGet()
                 }
-                viewModel.login(username.text.toString(), password.text.toString(), layout, loading)
-                viewModel.localGet()
             }
-             /*   val action = viewModel.user?.token?.let { it1 -> ConnexionDirections.versAccueil(it1) }
-            if (action != null) {
-                findNavController().navigate(action)
-            }
-                //viewModel.toAccueil(it)*/
+
         }
         return layout
     }

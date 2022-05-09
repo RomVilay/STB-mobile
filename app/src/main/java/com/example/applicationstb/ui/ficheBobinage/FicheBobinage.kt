@@ -644,7 +644,6 @@ class FicheBobinage : Fragment() {
                 viewModel.quickSave()
             }
         }
-
         enrg.setOnClickListener {
             viewModel.bobinage.value!!.status = 2L
             viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
@@ -657,7 +656,17 @@ class FicheBobinage : Fragment() {
                 )
         }
         term.setOnClickListener {
-            val alertDialog: AlertDialog? = activity?.let {
+            viewModel.bobinage.value?.status = 3L
+            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
+            viewModel.getTime()
+            viewModel.quickSave()
+            viewModel.save(
+                requireContext(),
+                layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
+                viewModel.token.value!!
+            )
+            enrg.visibility = View.INVISIBLE
+            /*val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.setTitle("Terminer une fiche")
                     .setMessage("Êtes vous sûr de vouloir terminer la fiche? elle ne sera plus modifiable après")
@@ -665,19 +674,20 @@ class FicheBobinage : Fragment() {
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()
                             viewModel.bobinage.value?.status = 3L
+                            viewModel.bobinage.value!!.sectionsFils = viewModel.sections.value
                             viewModel.quickSave()
                             CoroutineScope(Dispatchers.IO).launch {
                                 viewModel.getNameURI()
                             }
                                 viewModel.save(
                                     requireContext(),
-                                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
+                                    layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
                                     viewModel.token.value!!
                                 )
                         })
                 builder.create()
             }
-            alertDialog?.show()
+            alertDialog?.show()*/
         }
         return layout
     }

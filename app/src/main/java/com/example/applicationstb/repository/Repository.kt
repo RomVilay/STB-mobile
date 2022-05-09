@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import okhttp3.ConnectionSpec
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -27,6 +28,8 @@ import java.time.ZonedDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+var baseUrl = "https://back-end.stb.dev.alf-environnement.net"
+var minioUrl = "https:/minio.stb.dev.alf-environnement.net"
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -3092,7 +3095,7 @@ class Pointage2(
         return Pointage(
             _id,
             user._id,
-            ZonedDateTime.parse(timestamp).withZoneSameLocal(ZoneId.of("+01:00"))
+            ZonedDateTime.parse(timestamp).withZoneSameLocal(ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         )
     }
 }
@@ -3230,7 +3233,7 @@ class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
     override fun fromJson(reader: JsonReader): ZonedDateTime? {
         return try {
             val dateAsString = reader.nextString()
-            ZonedDateTime.parse(dateAsString).withZoneSameLocal(ZoneId.of("+01:00"))
+            ZonedDateTime.parse(dateAsString).withZoneSameLocal(ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         } catch (e: Exception) {
             null
         }
@@ -3247,14 +3250,6 @@ class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
     companion object {}
 }
 
-class URLPhotoResponse(
-    var url: String?
-)
-
-class URLPhotoResponse2(
-    var url: String?,
-    var name: String?
-)
 
 class PhotoResponse(
     var photo: File
@@ -3262,12 +3257,13 @@ class PhotoResponse(
 
 class Repository(var context: Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter()).add(CustomDateAdapter2())
-    val url = "http://195.154.107.195:4000"
+    val url = baseUrl
     var okHttpClient = OkHttpClient.Builder()
         .callTimeout(1, TimeUnit.MINUTES)
         .connectTimeout(1, TimeUnit.MINUTES)
         .readTimeout(1, TimeUnit.MINUTES)
         .writeTimeout(2, TimeUnit.MINUTES)
+        .connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
         .build()
 
     val retrofit = Retrofit.Builder()
@@ -3276,15 +3272,6 @@ class Repository(var context: Context) {
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
     val service: APIstb by lazy { retrofit.create(APIstb::class.java) }
-    fun servicePhoto(): APIstb {
-        return Retrofit.Builder()
-            .baseUrl("http://195.154.107.195:9000")
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
-            .build()
-            .create(APIstb::class.java)
-    }
-
     var db: LocalDatabase? = null;
     var chantierDao: ChantierDao? = null;
     var bobinageDao: BobinageDao? = null;
@@ -4586,33 +4573,10 @@ class Repository(var context: Context) {
     // photo requests
     suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token)
 
-    fun uploadPhoto(
-        token: String,
-        name: String,
-        address: List<String>,
-        photo: File,
-        param: Callback<URLPhotoResponse>
-    ) {
-        var body = RequestBody.create(MediaType.parse("image/jpeg"), photo)
-        var call = servicePhoto().uploadPhoto(
-            token,
-            name,
-            address[0],
-            address[1].removePrefix("X-Amz-Credential="),
-            address[2].removePrefix("X-Amz-Date="),
-            address[3].removePrefix("X-Amz-Expires="),
-            address[4].removePrefix("X-Amz-SignedHeaders="),
-            address[5].removePrefix("X-Amz-Signature="),
-            body
-        )
-        var photo: String? = null
-        call.enqueue(param)
-    }
-
     fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
         var dateMin =
-            ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1), ZoneOffset.of("+01:00"))
-        var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of("+01:00"))
+            ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
+        var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         var call =
             service.getPointages(token, "0", 0, userid, dateMin.toString(), dateMax.toString())
         call.enqueue(callback)
@@ -4623,6 +4587,10 @@ class Repository(var context: Context) {
 
     suspend fun getURLPhoto(token: String, photoName: String) =
         service.getURLPhoto(token, photoName)
+
+    suspend fun deletePointage(token: String,pointage:String) =
+        service.deletePointage(token,pointage)
+
 
     suspend fun getPhoto(address: String) = service.getPhoto(address)
 

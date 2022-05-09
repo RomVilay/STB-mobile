@@ -36,6 +36,7 @@ import java.util.*
 class FicheBobinageViewModel(application: Application) : AndroidViewModel(application) {
 
     var repository = Repository(getApplication<Application>().applicationContext);
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var listeBobinage = arrayListOf<Bobinage>()
     var sections = MutableLiveData<MutableList<Section>>(mutableListOf())
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
@@ -237,6 +238,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     }
                 }
                 bob?.photos = photos?.toTypedArray()
+                bob?.status = bobinage.value?.status
                 bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
                 bobinage.postValue(bob!!)
                 val resp = repository.patchBobinage(
@@ -283,6 +285,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     fun localSave(view: View) {
         viewModelScope.launch(Dispatchers.IO) {
             var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
+            Log.i("INFO", "status ${bobinage.value!!.status}")
             if (bob !== null) {
                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                 mySnackbar.show()
@@ -311,7 +314,6 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun quickSave() {
-        Log.i("INFO", "quick save")
         getTime()
         viewModelScope.launch(Dispatchers.IO) {
             var ch = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
@@ -401,7 +403,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
 
     fun sendPhoto(photo: File) = runBlocking {
         var s =
-            imageName.value!!.url!!.removePrefix("http://195.154.107.195:9000/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
+            imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab.forEach {
             Log.i("INFO", it)
@@ -413,7 +415,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             job.join()
             //compressedPicture.renameTo(photo)
             Log.i("info", "taille ${compressedPicture.totalSpace}")
-            repository.uploadPhoto(
+            repositoryPhoto.uploadPhoto(
                 token.value!!,
                 imageName.value!!.name!!,
                 tab.toList(),
