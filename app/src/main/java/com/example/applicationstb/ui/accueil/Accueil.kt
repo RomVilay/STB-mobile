@@ -108,7 +108,7 @@ class Accueil : Fragment() {
             btnPtn.setChecked(!(viewModel.pointage.value?.size!! % 2).equals(0))
         })
         btnPtn.setOnClickListener {
-            //Log.i("info","current offset ${ZonedDateTime.parse("2022-05-10T10:04:19.324Z")}")
+            //Log.i("info","current offset ${ZonedDateTime.parse(LocalDateTime.now().toString()+"Z")}")
             viewModel.Pointage()
         }
         listePointage.setOnClickListener {
