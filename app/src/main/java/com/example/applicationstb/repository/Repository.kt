@@ -3095,7 +3095,7 @@ class Pointage2(
         return Pointage(
             _id,
             user._id,
-            ZonedDateTime.parse(timestamp).withZoneSameLocal(ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
+            ZonedDateTime.parse(timestamp)
         )
     }
 }

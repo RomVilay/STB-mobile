@@ -12,6 +12,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.encodeToJsonElement
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Entity (tableName="chantiers")
@@ -77,9 +78,10 @@ class Converters {
     fun fromZonedDateTime(value:String?) : ZonedDateTime? {
         return value?.let { ZonedDateTime.parse(it) }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun ZonedDateTimeToString(date: ZonedDateTime?) : String? {
-        return date?.toString()
+        return date?.format(DateTimeFormatter.ISO_INSTANT)
     }
 
     @TypeConverter
