@@ -65,7 +65,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     var remontages: MutableList<Remontage> = mutableListOf();
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
-    var pointage = MutableLiveData<MutableList<Pointage>>()
+    var tracking = MutableLiveData<Boolean>(false)
 
     fun connection(username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
@@ -170,6 +170,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
                 remontages.clear()
+                isTracking()
             }
             val resp = repository.getFichesUser(token, userid, object : Callback<FichesResponse> {
                 override fun onResponse(
@@ -1517,12 +1518,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             for (dt in listRMR) {
                 remontages.add(dt.toRemontageMotoreducteur())
             }
+            isTracking()
         }
     }
-    suspend fun pair():Boolean{
-        var size = repository.getAllPointageLocalDatabase().size
-        return (size % 2).equals(0)
-    }
+
     fun updatePointages(){
         repository.getPointages(token.value!!,sharedPref.getString("userId","")!!, object : Callback<PointagesResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -1541,7 +1540,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 if (test == null) repository.insertPointageDatabase(it.toPointage())
                             }
                         }
-                        pointage.postValue(list)
                     }
                 }
             }
@@ -1549,6 +1547,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 Log.e("Error", "erreur ${t.message}")
             }
         })
+        viewModelScope.launch(Dispatchers.IO) {
+            isTracking()
+        }
     }
     fun Pointage() =  runBlocking{
         viewModelScope.launch(Dispatchers.IO) {
@@ -1575,19 +1576,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     )
                 )
             }
-            /*var copy = pointage.value
-            copy?.add(Pointage(
-                SystemClock.uptimeMillis().toString(), sharedPref.getString("userId", "")!!,
-                date
-            ))
-            pointage.postValue(copy)*/
+            isTracking()
         }
-        // format iso avec fuseau horaire
-        /* var ptn = Pointage(SystemClock.uptimeMillis().toString(),username!!, LocalDateTime.now(), null)
-          pointage.value = ptn
-          viewModelScope.launch(Dispatchers.IO) {
-              repository.insertPointageDatabase(ptn)
-          }*/
+    }
+    suspend fun isTracking(){
+        var list = repository.getAllPointageLocalDatabase()
+        list.filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
+        tracking.postValue(list.size % 2 != 0)
     }
     fun toPointages(view: View) {
         Navigation.findNavController(view)

@@ -1483,16 +1483,13 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     viewModelScope.launch(Dispatchers.IO) {
                         var list2 = repository.getAllPointageLocalDatabase().toMutableList()
                         var tours = 0;
-                        list2.forEach { p2 -> //pointage issu de la bdd
-                         //   Log.i("info", "pointage ${p2.timestamp}  - ${list[0].timestamp} position ${list.indexOfFirst { p1 -> p1.timestamp.isEqual(p2.timestamp) }}")
+                        list2.forEach { p2 ->
                             var index = list.indexOfFirst { p1 -> p1.timestamp.isEqual(p2.timestamp) && p1.user == p2.user }
                             if (index < 0) {
                                     if (p2.timestamp.isBefore(date)) {
-                                        Log.i("info", "pointage  ${p2._id} est du mois précédent, pas d'ajout local")
                                          repository.postPointages(token, p2.user, p2.timestamp)
                                          repository.deletePointageLocalDatabse(p2)
                                     } else {
-                                        Log.i("info", "pointage  ${p2._id} est envoyé au serveur, remplacé en bdd")
                                         tours+=1
                                          var ptn = repository.postPointages(token, p2.user, p2.timestamp)
                                          repository.deletePointageLocalDatabse(p2)
@@ -1500,7 +1497,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
 
                             } else {
-                                    Log.i("info", "pointage ${list[index]._id} et ${p2._id} existent, p1 remplace")
                                      repository.deletePointageLocalDatabse(p2)
                                      repository.insertPointageDatabase(list[index])
                                      list.removeAt(index)
@@ -1510,7 +1506,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             repository.insertPointageDatabase(it)
                             tours+=1
                         }
-                        Log.i("infos","pointages serveurs restants ${list.size} - pointages bdd ${list2.size} - pointages crées ${tours}")
                     }
                 }
             }
