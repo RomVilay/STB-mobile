@@ -1503,8 +1503,10 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         if (list2.size <= 0 || list.size > 0) list.forEach {
-                            repository.insertPointageDatabase(it)
-                            tours+=1
+                            if (it.timestamp.month == LocalDateTime.now().month){
+                                repository.insertPointageDatabase(it)
+                                tours+=1
+                            }
                         }
                     }
                 }
