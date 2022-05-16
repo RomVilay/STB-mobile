@@ -6,12 +6,15 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.ConnectionSpec
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -25,6 +28,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -4588,8 +4592,20 @@ class Repository(var context: Context) {
     suspend fun getURLPhoto(token: String, photoName: String) =
         service.getURLPhoto(token, photoName)
 
-    suspend fun deletePointage(token: String,pointage:String) =
+    suspend fun deletePointage(token: String,pointage: String) {
         service.deletePointage(token,pointage)
+    }
+    suspend fun deleteAllPointages(token: String, userid: String){
+        var list = service.getPointages(token,"0",0, userid, "1970-01-01T00:00:00.000+01:00", ZonedDateTime.now().format(
+            DateTimeFormatter.ISO_INSTANT)).execute()
+            Log.i("info", "list ${list.body()}")
+            /*list.
+            list.body()!!.data!!.forEach {
+                deletePointage(token, it._id)
+            }*/
+
+    }
+
 
 
     suspend fun getPhoto(address: String) = service.getPhoto(address)

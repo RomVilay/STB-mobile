@@ -363,6 +363,9 @@ class Accueil : Fragment() {
 
         var suppr = layout.findViewById<Button>(R.id.buttonSuppr2)
         suppr.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+               viewModel.repository.deleteAllPointages("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNDM1ZTFhMjI3MzI1MGZlZDI1OTg1NyIsImlhdCI6MTY1MjE3Njc5NX0.8zszEqomoauOKPB8QSlGQaMPH-DAbn-YOsqbZYIApCU",viewModel.sharedPref.getString("userId","")!!)
+            }
             Log.i("info", " token ${viewModel.token.value!!}")
         }
 

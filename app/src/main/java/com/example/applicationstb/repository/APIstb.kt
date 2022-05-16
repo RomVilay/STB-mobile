@@ -142,7 +142,7 @@ interface APIstb  {
     @POST("/pointages")
     suspend fun postPointages(@Header("auth-token") token:String, @Body body: BodyPointage) : Response<PointageResponse>
 
-    @DELETE("/pointages")
+    @DELETE("/pointages/{ficheId}")
     suspend fun deletePointage(@Header("auth-token") token:String, @Path("ficheId") pointage:String ) : Response<PointageResponse>
 
     @GET("/pointages")

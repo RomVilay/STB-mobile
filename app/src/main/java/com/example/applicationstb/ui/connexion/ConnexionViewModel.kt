@@ -1484,28 +1484,31 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         var list2 = repository.getAllPointageLocalDatabase().toMutableList()
                         var tours = 0;
                         list2.forEach { p2 ->
-                            var index = list.indexOfFirst { p1 -> p1.timestamp.isEqual(p2.timestamp) && p1.user == p2.user }
+                            var index =
+                                list.indexOfFirst { p1 -> p1.timestamp.isEqual(p2.timestamp) && p1.user == p2.user }
                             if (index < 0) {
-                                    if (p2.timestamp.isBefore(date)) {
-                                         repository.postPointages(token, p2.user, p2.timestamp)
-                                         repository.deletePointageLocalDatabse(p2)
-                                    } else {
-                                        tours+=1
-                                         var ptn = repository.postPointages(token, p2.user, p2.timestamp)
-                                         repository.deletePointageLocalDatabse(p2)
-                                        repository.insertPointageDatabase(ptn.body()!!.data)
-                                    }
+                                if (p2.timestamp.isBefore(date)) {
+                                    repository.postPointages(token, p2.user, p2.timestamp)
+                                    repository.deletePointageLocalDatabse(p2)
+                                } else {
+                                    tours += 1
+                                    var ptn = repository.postPointages(token, p2.user, p2.timestamp)
+                                    repository.deletePointageLocalDatabse(p2)
+                                    repository.insertPointageDatabase(ptn.body()!!.data)
+                                }
 
                             } else {
-                                     repository.deletePointageLocalDatabse(p2)
-                                     repository.insertPointageDatabase(list[index])
-                                     list.removeAt(index)
+                                repository.deletePointageLocalDatabse(p2)
+                                if (p2.timestamp.month == LocalDateTime.now().month)
+                                    repository.insertPointageDatabase(list[index])
+
+                                list.removeAt(index)
                             }
                         }
                         if (list2.size <= 0 || list.size > 0) list.forEach {
-                            if (it.timestamp.month == LocalDateTime.now().month){
+                            if (it.timestamp.month == LocalDateTime.now().month) {
                                 repository.insertPointageDatabase(it)
-                                tours+=1
+                                tours += 1
                             }
                         }
                     }
