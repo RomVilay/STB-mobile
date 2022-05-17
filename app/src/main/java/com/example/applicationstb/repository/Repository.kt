@@ -6,12 +6,15 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.ConnectionSpec
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -25,6 +28,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -2183,36 +2187,16 @@ class BodyRemontageTriphase(
     var verificationFixationCouronne: Boolean?,
     var verificationIsolementPorteBalais: Boolean?,
     var isolementPorteBalaisV: Float?,
-    var isolementPorteBalaisOhm: Float?,
-    var tensionStator: Boolean?,
-    var tensionStatorU: Float?,
-    var tensionStatorV: Float?,
-    var tensionStatorW: Float?,
-    var tensionInducteurs: Boolean?,
-    var tensionInducteursU: Float?,
-    var tensionInducteursV: Float?,
-    var tensionInducteursW: Float?,
-    var intensiteStator: Boolean?,
-    var intensiteStatorU: Float?,
-    var intensiteStatorV: Float?,
-    var intensiteStatorW: Float?,
-    var intensiteInducteurs: Boolean?,
-    var intensiteInducteursU: Float?,
-    var intensiteInducteursV: Float?,
-    var intensiteInducteursW: Float?,
-    var tensionInduit: Boolean?,
-    var tensionInduitU: Float?,
-    var tensionInduitV: Float?,
-    var tensionInduitW: Float?,
-    var tensionRotor: Boolean?,
-    var tensionRotorU: Float?,
-    var tensionRotorV: Float?,
-    var tensionRotorW: Float?,
-    var intensiteInduit: Boolean,
-    var intensiteInduitU: Float?,
+    var isolementPhaseMasse: Float?,
+    var isolementPhase: Float?,
+    var resistanceStatorU: Float?,
+    var resistanceStatorV: Float?,
+    var resistanceStatorW: Float?,
+    var isolementPMRotorU: Float?,
+    var isolementPMRotorV: Float?,
+    var isolementPMRotorW: Float?,
     var vitesseU: Float?,
     var puissanceU: Float?,
-    var dureeEssai: Float?,
     var sensRotation: Int?,
     var vitesse1V: Float?,  // vitesse 1v
     var acceleration1V: Float?,  //accélération 1v
@@ -2224,26 +2208,12 @@ class BodyRemontageTriphase(
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
     var acceleration2A: Float?,  //accélération 2A
-    var isolementPhaseMasse: Float?,
-    var isolementPhase: Float?,
-    var resistanceStatorU: Float?,
-    var resistanceStatorV: Float?,
-    var resistanceStatorW: Float?,
-    var isolementPMStatorU: Float?,
-    var isolementPMStatorV: Float?,
-    var isolementPMStatorW: Float?,
-    var isolementPMRotorU: Float?,
-    var isolementPMRotorV: Float?,
-    var isolementPMRotorW: Float?,
-    var isolementPhaseStatorUV: Float?,
-    var isolementPhaseStatorVW: Float?,
-    var isolementPhaseStatorUW: Float?,
-    var isolementPhaseRotorUV: Float?,
-    var isolementPhaseRotorVW: Float?,
-    var isolementPhaseRotorUW: Float?,
-    var photos: Array<String>?,
-    var typeMotopompe: String?,
-    var typeMotoreducteur: String?
+    var tension:Float?,
+    var intensiteU:Float?,
+    var intensiteV:Float?,
+    var intensiteW:Float?,
+    var dureeEssai: Float?,
+    var photos: Array<String>?
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
@@ -2257,48 +2227,16 @@ class BodyRemontageTriphase(
         parcel.readBoolean(),
         parcel.readFloat(),
         parcel.readFloat(),
-        parcel.readBoolean(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
-        parcel.readBoolean(),
         parcel.readFloat(),
         parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readInt(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -2316,9 +2254,7 @@ class BodyRemontageTriphase(
         parcel.readFloat(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
-        },
-        parcel.readString(),
-        parcel.readString()
+        }
     ) {
     }
 
@@ -2333,36 +2269,16 @@ class BodyRemontageTriphase(
         parcel.writeBoolean(verificationFixationCouronne!!)
         parcel.writeBoolean(verificationIsolementPorteBalais!!)
         parcel.writeFloat(isolementPorteBalaisV!!)
-        parcel.writeFloat(isolementPorteBalaisOhm!!)
-        parcel.writeBoolean(tensionStator!!)
-        parcel.writeFloat(tensionStatorU!!)
-        parcel.writeFloat(tensionStatorV!!)
-        parcel.writeFloat(tensionStatorW!!)
-        parcel.writeBoolean(tensionInducteurs!!)
-        parcel.writeFloat(tensionInducteursU!!)
-        parcel.writeFloat(tensionInducteursV!!)
-        parcel.writeFloat(tensionInducteursW!!)
-        parcel.writeBoolean(intensiteStator!!)
-        parcel.writeFloat(intensiteStatorU!!)
-        parcel.writeFloat(intensiteStatorV!!)
-        parcel.writeFloat(intensiteStatorW!!)
-        parcel.writeBoolean(intensiteInducteurs!!)
-        parcel.writeFloat(intensiteInducteursU!!)
-        parcel.writeFloat(intensiteInducteursV!!)
-        parcel.writeFloat(intensiteInducteursW!!)
-        parcel.writeBoolean(tensionInduit!!)
-        parcel.writeFloat(tensionInduitU!!)
-        parcel.writeFloat(tensionInduitV!!)
-        parcel.writeFloat(tensionInduitW!!)
-        parcel.writeBoolean(tensionRotor!!)
-        parcel.writeFloat(tensionRotorU!!)
-        parcel.writeFloat(tensionRotorV!!)
-        parcel.writeFloat(tensionRotorW!!)
-        parcel.writeBoolean(intensiteInduit!!)
-        parcel.writeFloat(intensiteInduitU!!)
+        parcel.writeFloat(isolementPhaseMasse!!)
+        parcel.writeFloat(isolementPhase!!)
+        parcel.writeFloat(resistanceStatorU!!)
+        parcel.writeFloat(resistanceStatorV!!)
+        parcel.writeFloat(resistanceStatorW!!)
+        parcel.writeFloat(isolementPMRotorU!!)
+        parcel.writeFloat(isolementPMRotorV!!)
+        parcel.writeFloat(isolementPMRotorW!!)
         parcel.writeFloat(vitesseU!!)
         parcel.writeFloat(puissanceU!!)
-        parcel.writeFloat(dureeEssai!!)
         parcel.writeInt(sensRotation!!)
         parcel.writeFloat(vitesse1V!!)
         parcel.writeFloat(acceleration1V!!)
@@ -2374,28 +2290,14 @@ class BodyRemontageTriphase(
         parcel.writeFloat(acceleration2H!!)
         parcel.writeFloat(vitesse2A!!)
         parcel.writeFloat(acceleration2A!!)
-        parcel.writeFloat(isolementPhaseMasse!!)
-        parcel.writeFloat(isolementPhase!!)
-        parcel.writeFloat(resistanceStatorU!!)
-        parcel.writeFloat(resistanceStatorV!!)
-        parcel.writeFloat(resistanceStatorW!!)
-        parcel.writeFloat(isolementPMStatorU!!)
-        parcel.writeFloat(isolementPMStatorV!!)
-        parcel.writeFloat(isolementPMStatorW!!)
-        parcel.writeFloat(isolementPMRotorU!!)
-        parcel.writeFloat(isolementPMRotorV!!)
-        parcel.writeFloat(isolementPMRotorW!!)
-        parcel.writeFloat(isolementPhaseStatorUV!!)
-        parcel.writeFloat(isolementPhaseStatorVW!!)
-        parcel.writeFloat(isolementPhaseRotorUW!!)
-        parcel.writeFloat(isolementPhaseStatorUV!!)
-        parcel.writeFloat(isolementPhaseStatorVW!!)
-        parcel.writeFloat(isolementPhaseRotorUW!!)
+        parcel.writeFloat(tension!!)
+        parcel.writeFloat(intensiteU!!)
+        parcel.writeFloat(intensiteV!!)
+        parcel.writeFloat(intensiteW!!)
+        parcel.writeFloat(dureeEssai!!)
         arrayOf<String>().apply {
             parcel.writeArray(photos)
         }
-        parcel.writeString("1")
-        parcel.writeString("1")
     }
 
     override fun describeContents(): Int {
@@ -3960,8 +3862,17 @@ class Repository(var context: Context) {
             fiche.verificationFixationCouronne,
             fiche.verificationIsolementPorteBalais,
             fiche.isolementPorteBalaisV,
-            fiche.isolementPorteBalaisOhm,
-            fiche.dureeEssai,
+            fiche.isolementPhaseMasse,
+            fiche.isolementPhase,
+            fiche.resistanceStatorU,
+            fiche.resistanceStatorV,
+            fiche.resistanceStatorW,
+            fiche.isolementPMRotorU,
+            fiche.isolementPMRotorV,
+            fiche.isolementPMRotorW,
+            fiche.vitesseU,
+            fiche.puissanceU,
+            fiche.sensRotation,
             fiche.vitesse1V,
             fiche.acceleration1V,
             fiche.vitesse2V,
@@ -3972,26 +3883,12 @@ class Repository(var context: Context) {
             fiche.acceleration2H,
             fiche.vitesse2A,
             fiche.acceleration2A,
-            fiche.isolementPhaseMasse,
-            fiche.isolementPhase,
-            fiche.resistanceStatorU,
-            fiche.resistanceStatorV,
-            fiche.resistanceStatorW,
-            fiche.isolementPMStatorU,
-            fiche.isolementPMStatorV,
-            fiche.isolementPMStatorW,
-            fiche.isolementPMRotorU,
-            fiche.isolementPMRotorV,
-            fiche.isolementPMRotorW,
-            fiche.isolementPhaseStatorUV,
-            fiche.isolementPhaseStatorVW,
-            fiche.isolementPhaseStatorUW,
-            fiche.isolementPhaseRotorUV,
-            fiche.isolementPhaseRotorVW,
-            fiche.isolementPhaseRotorUW,
-            fiche.photos,
-            "1",
-            "1"
+            fiche.tension,
+            fiche.intensiteU,
+            fiche.intensiteV,
+            fiche.intensiteW,
+            fiche.dureeEssai,
+            fiche.photos
         )
         var call = service.patchRemontageTriphase(token, ficheId, body)
         var fiche: RemontageTriphase? = null
@@ -4524,8 +4421,20 @@ class Repository(var context: Context) {
     suspend fun getURLPhoto(token: String, photoName: String) =
         service.getURLPhoto(token, photoName)
 
-    suspend fun deletePointage(token: String,pointage:String) =
+    suspend fun deletePointage(token: String,pointage: String) {
         service.deletePointage(token,pointage)
+    }
+    suspend fun deleteAllPointages(token: String, userid: String){
+        var list = service.getPointages(token,"0",0, userid, "1970-01-01T00:00:00.000+01:00", ZonedDateTime.now().format(
+            DateTimeFormatter.ISO_INSTANT)).execute()
+            Log.i("info", "list ${list.body()}")
+            /*list.
+            list.body()!!.data!!.forEach {
+                deletePointage(token, it._id)
+            }*/
+
+    }
+
 
 
     suspend fun getPhoto(address: String) = service.getPhoto(address)

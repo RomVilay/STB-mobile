@@ -185,86 +185,86 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     iter.set(it!!.name!!)
                                                 }
 
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
+                                                        } catch (e: java.lang.Exception) {
+                                                            Log.e("EXCEPTION", e.message!!)
+                                                        }
+                                                    }
+                                                delay (200)
                                             }
                                         }
-                                        delay(200)
+                                    }
+                                    if (name == "") {
+                                        iter.remove()
                                     }
                                 }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        ch.photos = photos?.toTypedArray()
-                        if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
-                            getNameURI2 {
-                                try {
-                                    val dir =
-                                        Environment.getExternalStoragePublicDirectory(
-                                            Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                        )
-                                    val from = File(
-                                        dir,
-                                        ch.signatureTech!!
-                                    )
-                                    val to = File(dir, it!!.name!!)
-                                    if (from.exists()) from.renameTo(to)
-                                    ch.signatureTech = it!!.name!!
-                                    sendPhoto2(to, it.url!!)
-                                } catch (e: java.lang.Exception) {
-                                    Log.e("EXCEPTION", e.message!! + e.cause)
-                                }
-                            }
-                        }
-                        if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
-                            getNameURI2 {
-                                try {
-                                    val dir =
-                                        Environment.getExternalStoragePublicDirectory(
-                                            Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                        )
-                                    val from = File(
-                                        dir,
-                                        ch.signatureClient!!
-                                    )
-                                    val to = File(dir, it!!.name!!)
-                                    if (from.exists()) from.renameTo(to)
-                                    ch.signatureClient = it!!.name!!
-                                    sendPhoto2(to, it.url!!)
-                                } catch (e: java.lang.Exception) {
-                                    Log.e("EXCEPTION", e.message!! + e.cause)
-                                }
-                            }
-                        }
-                        Log.i("INFO", "signature ${ch.signatureTech}")
-                        val resp = repository.patchChantier(
-                            user!!.token!!,
-                            ch._id,
-                            ch,
-                            object : Callback<ChantierResponse> {
-                                override fun onResponse(
-                                    call: Call<ChantierResponse>,
-                                    response: Response<ChantierResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
+                                ch.photos = photos?.toTypedArray()
+                                if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                                    getNameURI2 {
+                                       try{
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                ch.signatureTech!!
+                                            )
+                                            val to = File(dir, it!!.name!!)
+                                            if (from.exists()) from.renameTo(to)
+                                            ch.signatureTech = it!!.name!!
+                                            sendPhoto2(to,it.url!!)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!! + e.cause)
                                         }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteChantierLocalDatabse(
-                                                fiche
+                                    }
+                                }
+                                if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
+                                    getNameURI2 {
+                                        try{
+                                            val dir =
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                                )
+                                            val from = File(
+                                                dir,
+                                                ch.signatureClient!!
+                                            )
+                                            val to = File(dir, it!!.name!!)
+                                            if (from.exists()) from.renameTo(to)
+                                            ch.signatureClient = it!!.name!!
+                                            sendPhoto2(to,it.url!!)
+                                        } catch (e: java.lang.Exception) {
+                                            Log.e("EXCEPTION", e.message!! + e.cause)
+                                        }
+                                    }
+                                }
+                                Log.i("INFO", "signature ${ch.signatureTech}")
+                            val resp = repository.patchChantier(
+                                user!!.token!!,
+                                ch._id,
+                                ch,
+                                object : Callback<ChantierResponse> {
+                                    override fun onResponse(
+                                        call: Call<ChantierResponse>,
+                                        response: Response<ChantierResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()
+                                            if (resp != null) {
+                                                Log.i("INFO", "fiche enregistrée")
+                                            }
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                repository.deleteChantierLocalDatabse(
+                                                    fiche
+                                                )
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
                                             )
                                         }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
                                     }
-                                }
 
                                 override fun onFailure(
                                     call: Call<ChantierResponse>,
@@ -1484,27 +1484,32 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         var list2 = repository.getAllPointageLocalDatabase().toMutableList()
                         var tours = 0;
                         list2.forEach { p2 ->
-                            var index = list.indexOfFirst { p1 -> p1.timestamp.isEqual(p2.timestamp) && p1.user == p2.user }
+                            var index =
+                                list.indexOfFirst { p1 -> p1.timestamp.isEqual(p2.timestamp) && p1.user == p2.user }
                             if (index < 0) {
-                                    if (p2.timestamp.isBefore(date)) {
-                                         repository.postPointages(token, p2.user, p2.timestamp)
-                                         repository.deletePointageLocalDatabse(p2)
-                                    } else {
-                                        tours+=1
-                                         var ptn = repository.postPointages(token, p2.user, p2.timestamp)
-                                         repository.deletePointageLocalDatabse(p2)
-                                        repository.insertPointageDatabase(ptn.body()!!.data)
-                                    }
+                                if (p2.timestamp.isBefore(date)) {
+                                    repository.postPointages(token, p2.user, p2.timestamp)
+                                    repository.deletePointageLocalDatabse(p2)
+                                } else {
+                                    tours += 1
+                                    var ptn = repository.postPointages(token, p2.user, p2.timestamp)
+                                    repository.deletePointageLocalDatabse(p2)
+                                    repository.insertPointageDatabase(ptn.body()!!.data)
+                                }
 
                             } else {
-                                     repository.deletePointageLocalDatabse(p2)
-                                     repository.insertPointageDatabase(list[index])
-                                     list.removeAt(index)
+                                repository.deletePointageLocalDatabse(p2)
+                                if (p2.timestamp.month == LocalDateTime.now().month)
+                                    repository.insertPointageDatabase(list[index])
+
+                                list.removeAt(index)
                             }
                         }
                         if (list2.size <= 0 || list.size > 0) list.forEach {
-                            repository.insertPointageDatabase(it)
-                            tours+=1
+                            if (it.timestamp.month == LocalDateTime.now().month) {
+                                repository.insertPointageDatabase(it)
+                                tours += 1
+                            }
                         }
                     }
                 }

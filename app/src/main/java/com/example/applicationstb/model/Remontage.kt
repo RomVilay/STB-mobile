@@ -81,25 +81,18 @@ class RemontageTriphase(
      var verificationFixationCouronne: Boolean?,
      var verificationIsolementPorteBalais: Boolean?,
      var isolementPorteBalaisV: Float?,
-     var isolementPorteBalaisOhm: Float?,
     // essais dynamiques
     var isolementPhaseMasse: Float?,
     var isolementPhase: Float?,
     var resistanceStatorU: Float?,
     var resistanceStatorV: Float?,
     var resistanceStatorW: Float?,
-    var isolementPMStatorU: Float?,
-    var isolementPMStatorV: Float?,
-    var isolementPMStatorW: Float?,
     var isolementPMRotorU: Float?,
     var isolementPMRotorV: Float?,
     var isolementPMRotorW: Float?,
-    var isolementPhaseStatorUV: Float?,
-    var isolementPhaseStatorVW: Float?,
-    var isolementPhaseStatorUW: Float?,
-    var isolementPhaseRotorUV: Float?,
-    var isolementPhaseRotorVW: Float?,
-    var isolementPhaseRotorUW: Float?,
+    var vitesseU: Float?,
+    var puissanceU: Float?,
+    var sensRotation: Int?,
 //essais vibratoires
      var vitesse1V: Float?,  // vitesse 1v
      var acceleration1V: Float?,  //accélération 1v
@@ -111,9 +104,7 @@ class RemontageTriphase(
      var acceleration2H: Float?,  //accélération 2H
      var vitesse2A: Float?,  // vitesse 2A
      var acceleration2A: Float?,  //accélération 2A
-     var tensionU:Float?,
-     var tensionV:Float?,
-     var tensionW:Float?,
+     var tension:Float?,
      var intensiteU:Float?,
      var intensiteV:Float?,
      var intensiteW:Float?,
@@ -157,41 +148,32 @@ class RemontageTriphase(
             verificationFixationCouronne,
             verificationIsolementPorteBalais,
             isolementPorteBalaisV,
-            isolementPorteBalaisOhm,
-            vitesse1V,  // vitesse 1v
-            acceleration1V,  //accélération 1v
-            vitesse2V,  // vitesse 2v
-            acceleration2V,  //accélération 2v
-            vitesse1H,  // vitesse 1H
-            acceleration1H,  //accélération 1H
-            vitesse2H,  // vitesse 2H
-            acceleration2H,  //accélération 2H
-            vitesse2A,  // vitesse 2A
-            acceleration2A,  //accélération 2A
             isolementPhaseMasse,
             isolementPhase,
             resistanceStatorU,
             resistanceStatorV,
             resistanceStatorW,
-            isolementPMStatorU,
-            isolementPMStatorV,
-            isolementPMStatorW,
             isolementPMRotorU,
             isolementPMRotorV,
             isolementPMRotorW,
-            isolementPhaseStatorUV,
-            isolementPhaseStatorVW,
-            isolementPhaseStatorUW,
-            isolementPhaseRotorUV,
-            isolementPhaseRotorVW,
-            isolementPhaseRotorUW,
-            tensionU,
-            tensionV,
-            tensionW,
+            vitesseU,
+            puissanceU,
+            sensRotation,
+            vitesse1V,
+            acceleration1V,
+            vitesse2V,
+            acceleration2V,
+            vitesse1H,
+            acceleration1H,
+            vitesse2H,
+            acceleration2H,
+            vitesse2A,
+            acceleration2A,
+            tension,
             intensiteU,
             intensiteV,
             intensiteW,
-            dureeEssai,
+            dureeEssai
         )
 
     }
