@@ -2196,15 +2196,15 @@ class BodyRemontageTriphase(
     var puissanceU: Float?,
     var sensRotation: Int?,
     var vitesse1V: Float?,  // vitesse 1v
-    var acceleration1V: Float?,  //accélération 1v
+    var acceleration1V: Float?,  //acceleration 1v
     var vitesse2V: Float?,  // vitesse 2v
-    var acceleration2V: Float?,  //accélération 2v
+    var acceleration2V: Float?,  //acceleration 2v
     var vitesse1H: Float?,  // vitesse 1H
-    var acceleration1H: Float?,  //accélération 1H
+    var acceleration1H: Float?,  //acceleration 1H
     var vitesse2H: Float?,  // vitesse 2H
-    var acceleration2H: Float?,  //accélération 2H
+    var acceleration2H: Float?,  //acceleration 2H
     var vitesse2A: Float?,  // vitesse 2A
-    var acceleration2A: Float?,  //accélération 2A
+    var acceleration2A: Float?,  //acceleration 2A
     var tension:Float?,
     var intensiteU:Float?,
     var intensiteV:Float?,
@@ -2402,15 +2402,15 @@ class BodyRemontageMotopompe(
     var dureeEssai: Float?,
     var sensRotation: Int?,
     var vitesse1V: Float?,  // vitesse 1v
-    var acceleration1V: Float?,  //accélération 1v
+    var acceleration1V: Float?,  //acceleration 1v
     var vitesse2V: Float?,  // vitesse 2v
-    var acceleration2V: Float?,  //accélération 2v
+    var acceleration2V: Float?,  //acceleration 2v
     var vitesse1H: Float?,  // vitesse 1H
-    var acceleration1H: Float?,  //accélération 1H
+    var acceleration1H: Float?,  //acceleration 1H
     var vitesse2H: Float?,  // vitesse 2H
-    var acceleration2H: Float?,  //accélération 2H
+    var acceleration2H: Float?,  //acceleration 2H
     var vitesse2A: Float?,  // vitesse 2A
-    var acceleration2A: Float?,  //accélération 2A
+    var acceleration2A: Float?,  //acceleration 2A
     var typeMotopompe: String?,
     var isolementPhaseMasse: Float?,
     var isolementPhase: Float?,
@@ -2763,58 +2763,59 @@ class BodyRemontageCC(
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementFlasque: Int?,
+    var isolementPhaseMasse: String?,
+    var isolementPhase: String?,
+    var resistanceStatorU: String?,
+    var resistanceStatorV: String?,
+    var resistanceStatorW: String?,
+    var isolementPhasePhaseU: String?,
+    var isolementPhasePhaseV: String?,
+    var isolementPhasePhaseW: String?,
+    var vitesseU: String?,
+    var puissanceU: String?,
+    var sensRotation: String?,
+    //champs specifiques
     var verificationFixationCouronne: Boolean?,
-    var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Float?,
-    var isolementPorteBalaisOhm: Float?,
-    var tensionStator: Boolean?,
-    var tensionStatorU: Float?,
-    var tensionStatorV: Float?,
-    var tensionStatorW: Float?,
-    var tensionInducteurs: Boolean?,
-    var tensionInducteursU: Float?,
-    var tensionInducteursV: Float?,
-    var tensionInducteursW: Float?,
-    var intensiteStator: Boolean?,
-    var intensiteStatorU: Float?,
-    var intensiteStatorV: Float?,
-    var intensiteStatorW: Float?,
-    var intensiteInducteurs: Boolean?,
-    var intensiteInducteursU: Float?,
-    var intensiteInducteursV: Float?,
-    var intensiteInducteursW: Float?,
-    var tensionInduit: Boolean?,
-    var tensionInduitU: Float?,
-    var tensionInduitV: Float?,
-    var tensionInduitW: Float?,
-    var tensionRotor: Boolean?,
-    var tensionRotorU: Float?,
-    var tensionRotorV: Float?,
-    var tensionRotorW: Float?,
-    var intensiteInduit: Boolean,
-    var intensiteInduitU: Float?,
-    var vitesseU: Float?,
-    var puissanceU: Float?,
-    var dureeEssai: Float?,
-    var sensRotation: Int?,
+    var isolementPhaseMasseRotorU:String?,
+    var isolementPhaseMasseRotorV:String?,
+    var isolementPhaseMasseRotorW:String?,
+    var isolementPhaseRotorUV:String?,
+    var isolementPhaseRotorVW:String?,
+    var isolementPhaseRotorUW:String?,
+    var tensionInducteursU:String?,
+    var tensionInducteursV:String?,
+    var tensionInducteursW:String?,
+    var intensiteInducteursU:String?,
+    var intensiteInducteursV:String?,
+    var intensiteInducteursW:String?,
+    var tensionInduitU : String?,
+    var tensionInduitV : String?,
+    var tensionInduitW : String?,
+    var tensionRotorU : String?,
+    var tensionRotorV : String?,
+    var tensionRotorW : String?,
+    var tensionUExcitation : String?,
+    var intensiteUExcitation : String?,
+    var isolementInduit: String?,
+    var isolementPolePrincipal: Float?,
+    var isolementPoleAuxilliaire:Float?,
+    var isolementPoleCompensatoire:Float?,
+    var isolementBoiteBalais:Float?,
+    var resistanceInduit:Float?,
+    var resistancePolePrincipal:Float?,
+    var resistancePoleAuxilliaire:Float?,
+    var resistancePoleCompensatoire:Float?,
+    var intensiteInduit:Float?,
     var vitesse1V: Float?,  // vitesse 1v
-    var acceleration1V: Float?,  //accélération 1v
+    var acceleration1V: Float?,  //acceleration 1v
     var vitesse2V: Float?,  // vitesse 2v
-    var acceleration2V: Float?,  //accélération 2v
+    var acceleration2V: Float?,  //acceleration 2v
     var vitesse1H: Float?,  // vitesse 1H
-    var acceleration1H: Float?,  //accélération 1H
+    var acceleration1H: Float?,  //acceleration 1H
     var vitesse2H: Float?,  // vitesse 2H
-    var acceleration2H: Float?,  //accélération 2H
+    var acceleration2H: Float?,  //acceleration 2H
     var vitesse2A: Float?,  // vitesse 2A
-    var acceleration2A: Float?,  //accélération 2A
-    var resistanceInducteurs: Float?,
-    var resistanceInduit: Float?,
-    var isolementInducteursMasse: Float?,
-    var isolementInduitMasse: Float?,
-    var isolementInduitInducteurs: Float?,
-    var releveIsoInducteursMasse: Float?,
-    var releveIsoInduitMasse: Float?,
-    var releveIsoInduitInducteurs: Float?,
+    var acceleration2A: Float?,  //acceleration 2A
     var photos: Array<String>?
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -2825,40 +2826,40 @@ class BodyRemontageCC(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readBoolean(),
-        parcel.readBoolean(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readFloat(),
-        parcel.readInt(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -2891,40 +2892,40 @@ class BodyRemontageCC(
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
         parcel.writeInt(collageRoulementFlasque!!)
+        parcel.writeString(isolementPhaseMasse!!)
+        parcel.writeString(isolementPhase!!)
+        parcel.writeString(resistanceStatorU!!)
+        parcel.writeString(resistanceStatorV!!)
+        parcel.writeString(resistanceStatorW!!)
+        parcel.writeString(isolementPhasePhaseU!!)
+        parcel.writeString(isolementPhasePhaseV!!)
+        parcel.writeString(isolementPhasePhaseW!!)
+        parcel.writeString(vitesseU!!)
+        parcel.writeString(puissanceU!!)
+        parcel.writeString(sensRotation!!)
         parcel.writeBoolean(verificationFixationCouronne!!)
-        parcel.writeBoolean(verificationIsolementPorteBalais!!)
-        parcel.writeFloat(isolementPorteBalaisV!!)
-        parcel.writeFloat(isolementPorteBalaisOhm!!)
-        parcel.writeBoolean(tensionStator!!)
-        parcel.writeFloat(tensionStatorU!!)
-        parcel.writeFloat(tensionStatorV!!)
-        parcel.writeFloat(tensionStatorW!!)
-        parcel.writeBoolean(tensionInducteurs!!)
-        parcel.writeFloat(tensionInducteursU!!)
-        parcel.writeFloat(tensionInducteursV!!)
-        parcel.writeFloat(tensionInducteursW!!)
-        parcel.writeBoolean(intensiteStator!!)
-        parcel.writeFloat(intensiteStatorU!!)
-        parcel.writeFloat(intensiteStatorV!!)
-        parcel.writeFloat(intensiteStatorW!!)
-        parcel.writeBoolean(intensiteInducteurs!!)
-        parcel.writeFloat(intensiteInducteursU!!)
-        parcel.writeFloat(intensiteInducteursV!!)
-        parcel.writeFloat(intensiteInducteursW!!)
-        parcel.writeBoolean(tensionInduit!!)
-        parcel.writeFloat(tensionInduitU!!)
-        parcel.writeFloat(tensionInduitV!!)
-        parcel.writeFloat(tensionInduitW!!)
-        parcel.writeBoolean(tensionRotor!!)
-        parcel.writeFloat(tensionRotorU!!)
-        parcel.writeFloat(tensionRotorV!!)
-        parcel.writeFloat(tensionRotorW!!)
-        parcel.writeBoolean(intensiteInduit!!)
-        parcel.writeFloat(intensiteInduitU!!)
-        parcel.writeFloat(vitesseU!!)
-        parcel.writeFloat(puissanceU!!)
-        parcel.writeFloat(dureeEssai!!)
-        parcel.writeInt(sensRotation!!)
+        parcel.writeString(isolementPhaseMasseRotorU!!)
+        parcel.writeString(isolementPhaseMasseRotorV!!)
+        parcel.writeString(isolementPhaseMasseRotorW!!)
+        parcel.writeString(isolementPhaseRotorUV!!)
+        parcel.writeString(isolementPhaseRotorVW!!)
+        parcel.writeString(isolementPhaseRotorUW!!)
+        parcel.writeString(tensionInducteursU!!)
+        parcel.writeString(tensionInducteursV!!)
+        parcel.writeString(tensionInducteursW!!)
+        parcel.writeString(tensionInduitU!!)
+        parcel.writeString(tensionInduitV!!)
+        parcel.writeString(tensionInduitW!!)
+        parcel.writeString(tensionRotorU!!)
+        parcel.writeString(tensionRotorV!!)
+        parcel.writeString(tensionRotorW!!)
+        parcel.writeString(tensionUExcitation!!)
+        parcel.writeString(intensiteUExcitation!!)
+        parcel.writeString(isolementInduit!!)
+        parcel.writeFloat(isolementPolePrincipal!!)
+        parcel.writeFloat(isolementPoleAuxilliaire!!)
+        parcel.writeFloat(isolementPoleCompensatoire!!)
+        parcel.writeFloat(intensiteInduit!!)
         parcel.writeFloat(vitesse1V!!)
         parcel.writeFloat(acceleration1V!!)
         parcel.writeFloat(vitesse2V!!)
@@ -2935,14 +2936,6 @@ class BodyRemontageCC(
         parcel.writeFloat(acceleration2H!!)
         parcel.writeFloat(vitesse2A!!)
         parcel.writeFloat(acceleration2A!!)
-        parcel.writeFloat(resistanceInducteurs!!)
-        parcel.writeFloat(resistanceInduit!!)
-        parcel.writeFloat(isolementInducteursMasse!!)
-        parcel.writeFloat(isolementInduitMasse!!)
-        parcel.writeFloat(isolementInduitInducteurs!!)
-        parcel.writeFloat(releveIsoInducteursMasse!!)
-        parcel.writeFloat(releveIsoInduitMasse!!)
-        parcel.writeFloat(releveIsoInduitInducteurs!!)
         arrayOf<String>().apply {
             parcel.writeArray(photos)
         }
@@ -3802,11 +3795,47 @@ class Repository(var context: Context) {
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
             fiche.collageRoulementFlasque,
+            fiche.isolementPhaseMasse,
+            fiche.isolementPhase,
+            fiche.resistanceStatorU,
+            fiche.resistanceStatorV,
+            fiche.resistanceStatorW,
+            fiche.isolementPhasePhaseU,
+            fiche.isolementPhasePhaseV,
+            fiche.isolementPhasePhaseW,
+            fiche.vitesseU,
+            fiche.puissanceU,
+            fiche.sensRotation,
             fiche.verificationFixationCouronne,
-            fiche.verificationIsolementPorteBalais,
-            fiche.isolementPorteBalaisV,
-            fiche.isolementPorteBalaisOhm,
-            fiche.tensionInduit,
+            fiche.isolementPhaseMasseRotorU,
+            fiche.isolementPhaseMasseRotorV,
+            fiche.isolementPhaseMasseRotorW,
+            fiche.isolementPhaseRotorUV,
+            fiche.isolementPhaseRotorVW,
+            fiche.isolementPhaseRotorUW,
+            fiche.tensionInducteursU,
+            fiche.tensionInducteursV,
+            fiche.tensionInducteursW,
+            fiche.intensitéInducteursU,
+            fiche.intensitéInducteursV,
+            fiche.intensitéInducteursW,
+            fiche.tensionInduitU,
+            fiche.tensionInduitV,
+            fiche.tensionInduitW,
+            fiche.tensionRotorU,
+            fiche.tensionRotorV,
+            fiche.tensionRotorW,
+            fiche.tensionUExcitation,
+            fiche.intensitéUExcitation,
+            fiche.isolementInduit,
+            fiche.isolementPolePrincipal,
+            fiche.isolementPoleAuxilliaire,
+            fiche.isolementPoleCompensatoire,
+            fiche.isolementBoiteBalais,
+            fiche.resistanceInduit,
+            fiche.resistancePolePrincipal,
+            fiche.resistancePoleAuxilliaire,
+            fiche.resistancePoleCompensatoire,
             fiche.intensiteInduit,
             fiche.vitesse1V,
             fiche.acceleration1V,
@@ -3818,10 +3847,8 @@ class Repository(var context: Context) {
             fiche.acceleration2H,
             fiche.vitesse2A,
             fiche.acceleration2A,
-            fiche.resistanceInduit,
             fiche.photos
         )
-        Log.i("INFO", "tensioninducteurs : ${body.tensionInducteurs}")
         var call = service.patchRemontageCC(token, ficheId, body)
         var fiche: RemontageCourantC? = null
         call.enqueue(callback)
@@ -3953,13 +3980,13 @@ class Repository(var context: Context) {
             fiche.sensRotation,
 //essais vibratoires
             fiche.vitesse1V,  // vitesse 1v
-            fiche.acceleration1V,  //accélération 1v
+            fiche.acceleration1V,  //acceleration 1v
             fiche.vitesse2V,  // vitesse 2v
-            fiche.acceleration2V,  //accélération 2v
+            fiche.acceleration2V,  //acceleration 2v
             fiche.vitesse1H,  // vitesse 1H
-            fiche.acceleration1H,  //accélération 1H
+            fiche.acceleration1H,  //acceleration 1H
             fiche.vitesse2H,  // vitesse 2H
-            fiche.acceleration2H,  //accélération 2H
+            fiche.acceleration2H,  //acceleration 2H
             fiche.vitesse2A,  // vitesse 2acceleration
             fiche.acceleration2A,
             fiche.typeMotopompe,
@@ -4479,7 +4506,7 @@ class Repository(var context: Context) {
         remontageMotopompeDao = db!!.remontageMotopompeDao()
         remontageMotoreducteurDao = db!!.remontageMotoreducteurDao()
         pointageDao = db!!.pointageDao()
-        Log.i("INFO", "db créée")
+        Log.i("INFO", "db creee")
     }
 
     //requêtes chantier

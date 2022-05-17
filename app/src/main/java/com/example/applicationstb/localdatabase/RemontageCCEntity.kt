@@ -24,10 +24,49 @@ data class RemontageCCEntity(
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementPorteeFlasque: Int?,
+    var isolementPhaseMasse: String?,
+    var isolementPhase: String?,
+    var resistanceStatorU: String?,
+    var resistanceStatorV: String?,
+    var resistanceStatorW: String?,
+    var isolementPhasePhaseU: String?,
+    var isolementPhasePhaseV: String?,
+    var isolementPhasePhaseW: String?,
+    var vitesseU: String?,
+    var puissanceU: String?,
+    var sensRotation: String?,
+    //champs spécifiques
     var verificationFixationCouronne: Boolean?,
-    var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Float?,
-    var isolementPorteBalaisOhm: Float?,
+    var isolementPhaseMasseRotorU:String?,
+    var isolementPhaseMasseRotorV:String?,
+    var isolementPhaseMasseRotorW:String?,
+    var isolementPhaseRotorUV:String?,
+    var isolementPhaseRotorVW:String?,
+    var isolementPhaseRotorUW:String?,
+    var tensionInducteursU:String?,
+    var tensionInducteursV:String?,
+    var tensionInducteursW:String?,
+    var intensitéInducteursU:String?,
+    var intensitéInducteursV:String?,
+    var intensitéInducteursW:String?,
+    var tensionInduitU : String?,
+    var tensionInduitV : String?,
+    var tensionInduitW : String?,
+    var tensionRotorU : String?,
+    var tensionRotorV : String?,
+    var tensionRotorW : String?,
+    var tensionUExcitation : String?,
+    var intensitéUExcitation : String?,
+    var isolementInduit: String?,
+    var isolementPolePrincipal: Float?,
+    var isolementPoleAuxilliaire:Float?,
+    var isolementPoleCompensatoire:Float?,
+    var isolementBoiteBalais:Float?,
+    var resistanceInduit:Float?,
+    var resistancePolePrincipal:Float?,
+    var resistancePoleAuxilliaire:Float?,
+    var resistancePoleCompensatoire:Float?,
+    var intensiteInduit:Float?,
     // essais dynamiques
 
 //essais vibratoires
@@ -40,19 +79,7 @@ data class RemontageCCEntity(
     var vitesse2H: Float?,  // vitesse 2H
     var acceleration2H: Float?,  //accélération 2H
     var vitesse2A: Float?,  // vitesse 2A
-    var acceleration2A: Float?,  //accélération 2A
-    var isolementPolePrincipal: Float?,
-    var isolementPoleAuxilliaire: Float?,
-    var isolementPoleCompensatoire: Float?,
-    var isolementBoiteBalais: Float?,
-    var resistanceInduit: Float?,
-    var resistancePolePrincipal: Float?,
-    var resistancePoleAuxilliaire: Float?,
-    var resistancePoleCompensatoire: Float?,
-    var tensionInduit: Float?,
-    var tensionExcit: Float?,
-    var intensiteInduit: Float?,
-    var intensiteExcit: Float?
+    var acceleration2A: Float?  //accélération 2
 ) {
     fun toRCourantC(): RemontageCourantC {
         return RemontageCourantC(
@@ -73,21 +100,39 @@ data class RemontageCCEntity(
             remontageRoulement,
             collageRoulementPorteeArbre,
             collageRoulementPorteeFlasque,
+            isolementPhaseMasse,
+            isolementPhase,
+            resistanceStatorU,
+            resistanceStatorV,
+            resistanceStatorW,
+            isolementPhasePhaseU,
+            isolementPhasePhaseV,
+            isolementPhasePhaseW,
+            vitesseU,
+            puissanceU,
+            sensRotation,
             verificationFixationCouronne,
-            verificationIsolementPorteBalais,
-            isolementPorteBalaisV,
-            isolementPorteBalaisOhm,
-            //essais vibratoires
-            vitesse1V,  // vitesse 1v
-            acceleration1V,  //accélération 1v
-            vitesse2V,  // vitesse 2v
-            acceleration2V,  //accélération 2v
-            vitesse1H,  // vitesse 1H
-            acceleration1H,  //accélération 1H
-            vitesse2H,  // vitesse 2H
-            acceleration2H,  //accélération 2H
-            vitesse2A,  // vitesse 2acceleration
-            acceleration2A,  //accélération 2A
+            isolementPhaseMasseRotorU,
+            isolementPhaseMasseRotorV,
+            isolementPhaseMasseRotorW,
+            isolementPhaseRotorUV,
+            isolementPhaseRotorVW,
+            isolementPhaseRotorUW,
+            tensionInducteursU,
+            tensionInducteursV,
+            tensionInducteursW,
+            intensitéInducteursU,
+            intensitéInducteursV,
+            intensitéInducteursW,
+            tensionInduitU,
+            tensionInduitV,
+            tensionInduitW,
+            tensionRotorU,
+            tensionRotorV,
+            tensionRotorW,
+            tensionUExcitation,
+            intensitéUExcitation,
+            isolementInduit,
             isolementPolePrincipal,
             isolementPoleAuxilliaire,
             isolementPoleCompensatoire,
@@ -96,10 +141,18 @@ data class RemontageCCEntity(
             resistancePolePrincipal,
             resistancePoleAuxilliaire,
             resistancePoleCompensatoire,
-            tensionInduit,
-            tensionExcit,
             intensiteInduit,
-            intensiteExcit
+            // essais dynamiques
+            vitesse1V,  // vitesse 1v
+            acceleration1V,  //accélération 1v
+            vitesse2V,  // vitesse 2v
+            acceleration2V,  //accélération 2v
+            vitesse1H,  // vitesse 1H
+            acceleration1H,  //accélération 1H
+            vitesse2H,  // vitesse 2H
+            acceleration2H,  //accélération 2H
+            vitesse2A,  // vitesse 2A
+            acceleration2A  //accélération 2A
         )
     }
 }
