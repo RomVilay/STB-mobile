@@ -2184,9 +2184,6 @@ class BodyRemontageTriphase(
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
     var collageRoulementFlasque: Int?,
-    var verificationFixationCouronne: Boolean?,
-    var verificationIsolementPorteBalais: Boolean?,
-    var isolementPorteBalaisV: Float?,
     var isolementPhaseMasse: Float?,
     var isolementPhase: Float?,
     var resistanceStatorU: Float?,
@@ -2223,9 +2220,6 @@ class BodyRemontageTriphase(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readBoolean(),
-        parcel.readBoolean(),
-        parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
         parcel.readFloat(),
@@ -2266,9 +2260,6 @@ class BodyRemontageTriphase(
         parcel.writeInt(remontageRoulement!!)
         parcel.writeInt(collageRoulementPorteeArbre!!)
         parcel.writeInt(collageRoulementFlasque!!)
-        parcel.writeBoolean(verificationFixationCouronne!!)
-        parcel.writeBoolean(verificationIsolementPorteBalais!!)
-        parcel.writeFloat(isolementPorteBalaisV!!)
         parcel.writeFloat(isolementPhaseMasse!!)
         parcel.writeFloat(isolementPhase!!)
         parcel.writeFloat(resistanceStatorU!!)
@@ -3859,17 +3850,14 @@ class Repository(var context: Context) {
             fiche.remontageRoulement,
             fiche.collageRoulementPorteeArbre,
             fiche.collageRoulementFlasque,
-            fiche.verificationFixationCouronne,
-            fiche.verificationIsolementPorteBalais,
-            fiche.isolementPorteBalaisV,
             fiche.isolementPhaseMasse,
             fiche.isolementPhase,
             fiche.resistanceStatorU,
             fiche.resistanceStatorV,
             fiche.resistanceStatorW,
-            fiche.isolementPMRotorU,
-            fiche.isolementPMRotorV,
-            fiche.isolementPMRotorW,
+            fiche.isolementPhasePhaseU,
+            fiche.isolementPhasePhaseV,
+            fiche.isolementPhasePhaseW,
             fiche.vitesseU,
             fiche.puissanceU,
             fiche.sensRotation,
