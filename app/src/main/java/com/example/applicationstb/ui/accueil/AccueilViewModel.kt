@@ -101,57 +101,57 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 for (i in demontages) {
                     when (i.typeFicheDemontage) {
                         1 -> {
-                            var fiche = repository.getByIdDemoPompeLocalDatabse(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontagePompeLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         2 -> {
-                            var fiche = repository.getByIdDemoMonoLocalDatabse(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoMonoLocalDatabse(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageMonoLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         3 -> {
-                            var fiche = repository.getByIdDemoAlterLocalDatabse(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoAlterLocalDatabse(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageAlterLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         4 -> {
-                            var fiche = repository.getByIdDemoRBLocalDatabse(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoRBLocalDatabse(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageRBLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         5 -> {
-                            var fiche = repository.getByIdDemoCCLocalDatabse(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoCCLocalDatabse(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageCCLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         6 -> {
-                            var fiche = repository.getByIdDemoTriLocalDatabse(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoTriLocalDatabse(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageTriphaseLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         7 -> {
-                            var fiche = repository.getByIdDemoMotopompeLocalDatabase(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoMotopompeLocalDatabase(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageMotoPompeLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageMotoPompeLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         8 -> {
-                            var fiche = repository.getByIdDemoReducteurLocalDatabase(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoReducteurLocalDatabase(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageReducteurLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageReducteurLocalDatabse(fiche!!.toEntity())
                             }
                         }
                         9 -> {
-                            var fiche = repository.getByIdDemoMotoreducteurLocalDatabase(i._id)
+                            var fiche = repository.demontageRepository!!.getByIdDemoMotoreducteurLocalDatabase(i._id)
                             if (fiche !== null) {
-                                repository.deleteDemontageMotoreducteurLocalDatabse(fiche!!.toEntity())
+                                repository.demontageRepository!!.deleteDemontageMotoreducteurLocalDatabse(fiche!!.toEntity())
                             }
                         }
                     }
@@ -246,7 +246,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     })
                             }
                             if (fiche.type == 2L) {
-                                val resp = repository.getDemontage(
+                                val resp = repository.demontageRepository!!.getDemontage(
                                     token,
                                     fiche._id,
                                     object : Callback<DemontageResponse> {
@@ -259,7 +259,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 if (resp != null) {
                                                     // fiche demontage pompe
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 1) {
-                                                        val demoTri = repository.getDemontagePompe(
+                                                        val demoTri = repository.demontageRepository!!.getDemontagePompe(
                                                             token,
                                                             resp.data!!._id,
                                                             object :
@@ -293,11 +293,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoP =
-                                                                                    repository.getByIdDemoPompeLocalDatabse(
+                                                                                    repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(
                                                                                         resp2.data!!._id
                                                                                     )
                                                                                 if (demoP == null) {
-                                                                                    repository.insertDemoPompeLocalDatabase(
+                                                                                    repository.demontageRepository!!.insertDemoPompeLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
                                                                                     if (demontages.indexOf(
@@ -342,7 +342,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 2) {
                                                         runBlocking {
                                                             val demoTri =
-                                                                repository.getDemontageMono(
+                                                                repository.demontageRepository!!.getDemontageMono(
                                                                     token,
                                                                     resp.data!!._id,
                                                                     object :
@@ -376,11 +376,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                         resp.data?.photos =
                                                                                             photos?.toTypedArray()
                                                                                         var demoM =
-                                                                                            repository.getByIdDemoMonoLocalDatabse(
+                                                                                            repository.demontageRepository!!.getByIdDemoMonoLocalDatabse(
                                                                                                 resp2.data!!._id
                                                                                             )
                                                                                         if (demoM == null) {
-                                                                                            repository.insertDemoMonoLocalDatabase(
+                                                                                            repository.demontageRepository!!.insertDemoMonoLocalDatabase(
                                                                                                 resp2!!.data!!
                                                                                             )
                                                                                             if (demontages.indexOf(
@@ -425,7 +425,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     // fiche demontage Alternateur
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 3) {
                                                         val demoTri =
-                                                            repository.getDemontageAlternateur(
+                                                            repository.demontageRepository!!.getDemontageAlternateur(
                                                                 token,
                                                                 resp.data!!._id,
                                                                 object :
@@ -459,11 +459,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     resp.data?.photos =
                                                                                         photos?.toTypedArray()
                                                                                     var demoA =
-                                                                                        repository.getByIdDemoAlterLocalDatabse(
+                                                                                        repository.demontageRepository!!.getByIdDemoAlterLocalDatabse(
                                                                                             resp2.data!!._id
                                                                                         )
                                                                                     if (demoA == null) {
-                                                                                        repository.insertDemoAlterLocalDatabase(
+                                                                                        repository.demontageRepository!!.insertDemoAlterLocalDatabase(
                                                                                             resp2!!.data!!
                                                                                         )
                                                                                         if (demontages.indexOf(
@@ -506,7 +506,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                     // fiche demontage Rotor
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 4) {
-                                                        val demoTri = repository.getDemontageRB(
+                                                        val demoTri = repository.demontageRepository!!.getDemontageRB(
                                                             token,
                                                             resp.data!!._id,
                                                             object :
@@ -534,11 +534,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoRB =
-                                                                                    repository.getByIdDemoRBLocalDatabse(
+                                                                                    repository.demontageRepository!!.getByIdDemoRBLocalDatabse(
                                                                                         resp2.data!!._id
                                                                                     )
                                                                                 if (demoRB == null) {
-                                                                                    repository.insertDemoRBLocalDatabase(
+                                                                                    repository.demontageRepository!!.insertDemoRBLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
                                                                                     if (demontages.indexOf(
@@ -581,7 +581,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     }
                                                     // fiche demontage Courant Continu
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 5) {
-                                                        val demoTri = repository.getDemontageCC(
+                                                        val demoTri = repository.demontageRepository!!.getDemontageCC(
                                                             token,
                                                             resp.data!!._id,
                                                             object : Callback<DemontageCCResponse> {
@@ -608,11 +608,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoCC =
-                                                                                    repository.getByIdDemoCCLocalDatabse(
+                                                                                    repository.demontageRepository!!.getByIdDemoCCLocalDatabse(
                                                                                         resp2.data!!._id
                                                                                     )
                                                                                 if (demoCC == null) {
-                                                                                    repository.insertDemoCCLocalDatabase(
+                                                                                    repository.demontageRepository!!.insertDemoCCLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
                                                                                     if (demontages.indexOf(
@@ -656,7 +656,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     //fiche demontage triphase
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 6) {
                                                         val demoTri =
-                                                            repository.getDemontageTriphase(
+                                                            repository.demontageRepository!!.getDemontageTriphase(
                                                                 token,
                                                                 resp.data!!._id,
                                                                 object :
@@ -687,11 +687,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     resp.data?.photos =
                                                                                         photos?.toTypedArray()
                                                                                     var demoT =
-                                                                                        repository.getByIdDemoTriLocalDatabse(
+                                                                                        repository.demontageRepository!!.getByIdDemoTriLocalDatabse(
                                                                                             resp2.data!!._id
                                                                                         )
                                                                                     if (demoT == null) {
-                                                                                        repository.insertDemoTriLocalDatabase(
+                                                                                        repository.demontageRepository!!.insertDemoTriLocalDatabase(
                                                                                             resp2!!.data!!
                                                                                         )
                                                                                         if (demontages.indexOf(
@@ -735,7 +735,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     //fiche demontage motopompe
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 7) {
                                                         val demoMP =
-                                                            repository.getDemontageMotopompe(
+                                                            repository.demontageRepository!!.getDemontageMotopompe(
                                                                 token,
                                                                 resp.data!!._id,
                                                                 object :
@@ -764,11 +764,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     resp.data?.photos =
                                                                                         photos?.toTypedArray()
                                                                                     var demoT =
-                                                                                        repository.getByIdDemoMotopompeLocalDatabase(
+                                                                                        repository.demontageRepository!!.getByIdDemoMotopompeLocalDatabase(
                                                                                             resp2.data!!._id
                                                                                         )
                                                                                     if (demoT == null) {
-                                                                                        repository.insertDemoMotopompeDatabase(
+                                                                                        repository.demontageRepository!!.insertDemoMotopompeDatabase(
                                                                                             resp2!!.data!!
                                                                                         )
                                                                                         if (demontages.indexOf(
@@ -811,7 +811,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     //fiche demontage reducteur
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 8) {
                                                         val demoReducteur =
-                                                            repository.getDemontageReducteur(
+                                                            repository.demontageRepository!!.getDemontageReducteur(
                                                                 token,
                                                                 resp.data!!._id,
                                                                 object :
@@ -842,11 +842,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     resp.data?.photos =
                                                                                         photos?.toTypedArray()
                                                                                     var demoT =
-                                                                                        repository.getByIdDemoReducteurLocalDatabase(
+                                                                                        repository.demontageRepository!!.getByIdDemoReducteurLocalDatabase(
                                                                                             resp2.data!!._id
                                                                                         )
                                                                                     if (demoT == null) {
-                                                                                        repository.insertDemoReducteurDatabase(
+                                                                                        repository.demontageRepository!!.insertDemoReducteurDatabase(
                                                                                             resp2!!.data!!
                                                                                         )
                                                                                         if (demontages.indexOf(
@@ -890,7 +890,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                     //fiche demontage motoreducteur
                                                     if (resp.data!!.typeFicheDemontage !== null && resp.data!!.typeFicheDemontage!! == 9) {
                                                         val demoMotored =
-                                                            repository.getDemontageMotoreducteur(
+                                                            repository.demontageRepository!!.getDemontageMotoreducteur(
                                                                 token,
                                                                 resp.data!!._id,
                                                                 object :
@@ -921,11 +921,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     resp.data?.photos =
                                                                                         photos?.toTypedArray()
                                                                                     var demoT =
-                                                                                        repository.getByIdDemoMotoreducteurLocalDatabase(
+                                                                                        repository.demontageRepository!!.getByIdDemoMotoreducteurLocalDatabase(
                                                                                             resp2.data!!._id
                                                                                         )
                                                                                     if (demoT == null) {
-                                                                                        repository.insertDemoMotoreducteurDatabase(
+                                                                                        repository.demontageRepository!!.insertDemoMotoreducteurDatabase(
                                                                                             resp2!!.data!!
                                                                                         )
                                                                                         if (demontages.indexOf(
@@ -1486,19 +1486,19 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             for (bobinage in listBobinage) {
                 bobinages.add(bobinage.toBobinage())
             }
-            var listDT = repository.getAllDemontageTriLocalDatabase()
+            var listDT = repository.demontageRepository!!.getAllDemontageTriLocalDatabase()
             for (dt in listDT) {
                 demontages.add(dt.toTriphase())
             }
-            var listDMP = repository.getAllDemontageMotopompeLocalDatabase()
+            var listDMP = repository.demontageRepository!!.getAllDemontageMotopompeLocalDatabase()
             for (dt in listDMP) {
                 demontages.add(dt.toMotoPompe())
             }
-            var listDMR = repository.getAllDemontageMotoreducteurLocalDatabase()
+            var listDMR = repository.demontageRepository!!.getAllDemontageMotoreducteurLocalDatabase()
             for (dt in listDMR) {
                 demontages.add(dt.toDemontageMotoreducteur())
             }
-            var listDCC = repository.getAllDemontageCCLocalDatabase()
+            var listDCC = repository.demontageRepository!!.getAllDemontageCCLocalDatabase()
             for (dcc in listDCC) {
                 demontages.add(dcc.toCContinu())
             }
@@ -1926,7 +1926,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listDT: List<DemontageTriphaseEntity> =
-                        repository.getAllDemontageTriLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageTriLocalDatabase()
                     Log.i("INFO", "nb de fiches DemontageTriphase: ${listDT.size}")
                     if (listDT.size > 0) {
                         for (fiche in listDT) {
@@ -1981,7 +1981,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                             //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                             dt.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageTriphase(
+                            val resp = repository.demontageRepository!!.patchDemontageTriphase(
                                 token,
                                 dt._id,
                                 dt,
@@ -1996,7 +1996,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageTriphaseLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageTriphaseLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2019,7 +2019,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listCC: List<DemontageCCEntity> =
-                        repository.getAllDemontageCCLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageCCLocalDatabase()
                     Log.i("INFO", "nb de fiches DemontageCourantContinu: ${listCC.size}")
                     if (listCC.size > 0) {
                         for (fiche in listCC) {
@@ -2073,7 +2073,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             dcc.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageCC(
+                            val resp = repository.demontageRepository!!.patchDemontageCC(
                                 token,
                                 dcc._id,
                                 dcc,
@@ -2088,7 +2088,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageCCLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageCCLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2368,7 +2368,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listDP: List<DemoPompeEntity> =
-                        repository.getAllDemontagePompeLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontagePompeLocalDatabase()
                     Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
                     if (listDP.size > 0) {
                         for (fiche in listDP) {
@@ -2424,7 +2424,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rc.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontagePompe(
+                            val resp = repository.demontageRepository!!.patchDemontagePompe(
                                 token,
                                 rc._id,
                                 rc,
@@ -2439,7 +2439,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontagePompeLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontagePompeLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2462,7 +2462,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listDM: List<DemontageMonophaseEntity> =
-                        repository.getAllDemontageMonoLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageMonoLocalDatabase()
                     Log.i("INFO", "nb de fiches Demontage monophase: ${listDM.size}")
                     if (listDM.size > 0) {
                         for (fiche in listDM) {
@@ -2516,7 +2516,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rc.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageMono(
+                            val resp = repository.demontageRepository!!.patchDemontageMono(
                                 token,
                                 rc._id,
                                 rc,
@@ -2531,7 +2531,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageMonoLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageMonoLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2554,7 +2554,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listDA: List<DemontageAlternateurEntity> =
-                        repository.getAllDemontageAlterLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageAlterLocalDatabase()
                     Log.i("INFO", "nb de fiches Demontage Alternateur: ${listDA.size}")
                     if (listDA.size > 0) {
                         for (fiche in listDA) {
@@ -2608,7 +2608,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rc.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageAlter(
+                            val resp = repository.demontageRepository!!.patchDemontageAlter(
                                 token,
                                 rc._id,
                                 rc,
@@ -2623,7 +2623,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageAlterLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageAlterLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2646,7 +2646,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listDRB: List<DemontageRotorBEntity> =
-                        repository.getAllDemontageRBLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageRBLocalDatabase()
                     Log.i("INFO", "nb de fiches Demontage Rotor Bobine: ${listDRB.size}")
                     if (listDRB.size > 0) {
                         for (fiche in listDRB) {
@@ -2702,7 +2702,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                             //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                             rc.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageRotor(
+                            val resp = repository.demontageRepository!!.patchDemontageRotor(
                                 token,
                                 rc._id,
                                 rc,
@@ -2717,7 +2717,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageRBLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageRBLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2740,7 +2740,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listDMP: List<DemontageMotopompeEntity> =
-                        repository.getAllDemontageMotopompeLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageMotopompeLocalDatabase()
                     if (listDMP.size > 0) {
                         for (fiche in listDMP) {
                             var dmp = fiche.toMotoPompe()
@@ -2795,7 +2795,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                             //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                             dmp.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageMotopompe(
+                            val resp = repository.demontageRepository!!.patchDemontageMotopompe(
                                 token,
                                 dmp._id,
                                 dmp,
@@ -2810,7 +2810,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageMotoPompeLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageMotoPompeLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2834,7 +2834,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                     Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMP.size}")
                     var listDR: List<DemontageReducteurEntity> =
-                        repository.getAllDemontageReducteurLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageReducteurLocalDatabase()
                     if (listDR.size > 0) {
                         for (fiche in listDR) {
                             var dr = fiche.toReducteur()
@@ -2889,7 +2889,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                             //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                             dr.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageReducteur(
+                            val resp = repository.demontageRepository!!.patchDemontageReducteur(
                                 token,
                                 dr._id,
                                 dr,
@@ -2904,7 +2904,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageReducteurLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageReducteurLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2928,7 +2928,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                     Log.i("INFO", "nb de fiches Demontage Reducteur: ${listDR.size}")
                     var listDMR: List<DemontageMotoreducteurEntity> =
-                        repository.getAllDemontageMotoreducteurLocalDatabase()
+                        repository.demontageRepository!!.getAllDemontageMotoreducteurLocalDatabase()
                     if (listDMP.size > 0) {
                         for (fiche in listDMR) {
                             var dmr = fiche.toDemontageMotoreducteur()
@@ -2983,7 +2983,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                             //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                             dmr.photos = photos?.toTypedArray()
-                            val resp = repository.patchDemontageMotoreducteur(
+                            val resp = repository.demontageRepository!!.patchDemontageMotoreducteur(
                                 token,
                                 dmr._id,
                                 dmr,
@@ -2998,7 +2998,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteDemontageMotoreducteurLocalDatabse(
+                                                repository.demontageRepository!!.deleteDemontageMotoreducteurLocalDatabse(
                                                     fiche
                                                 )
                                             }

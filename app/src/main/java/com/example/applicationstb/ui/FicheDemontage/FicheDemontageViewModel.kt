@@ -132,11 +132,11 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             if (selection.value!!.typeFicheDemontage == 1) {
                 var fiche = selection.value!! as DemontagePompe
                 if (fiche.sensRotation == null) fiche.sensRotation = false
-                var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoPompeLocalDatabse(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoPompeLocalDatabse(fiche.toEntity())
                 } else {
-                    repository.insertDemoPompeLocalDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoPompeLocalDatabase(fiche)
                 }
             }
             if (selection.value!!.typeFicheDemontage == 2) {
@@ -144,12 +144,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoMonoLocalDatabse(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoMonoLocalDatabse(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoMonoLocalDatabse(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoMonoLocalDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoMonoLocalDatabase(fiche)
                 }
             }
             if (selection.value!!.typeFicheDemontage == 3) {
@@ -157,12 +157,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoAlterLocalDatabse(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoAlterLocalDatabse(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoAlterLocalDatabse(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoAlterLocalDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoAlterLocalDatabase(fiche)
 
                 }
             }
@@ -171,12 +171,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoRBLocalDatabse(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoRBLocalDatabse(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoRBLocalDatabse(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoRBLocalDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoRBLocalDatabase(fiche)
 
                 }
             }
@@ -185,17 +185,17 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoCCLocalDatabse(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoCCLocalDatabse(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoCCLocalDatabse(fiche.toEntity())
 
                 } else {
                     try {
-                        repository.deleteDemontageCCLocalDatabse(fiche.toEntity())
+                        repository.demontageRepository!!.deleteDemontageCCLocalDatabse(fiche.toEntity())
                     } catch (e: Exception) {
 
                     }
-                    repository.insertDemoCCLocalDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoCCLocalDatabase(fiche)
                 }
             }
             if (selection.value!!.typeFicheDemontage == 6) {
@@ -204,12 +204,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoTriLocalDatabse(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoTriLocalDatabse(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoTriLocalDatabse(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoTriLocalDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoTriLocalDatabase(fiche)
 
                 }
             }
@@ -223,12 +223,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoMotoPompeLocalDatabase(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoMotoPompeLocalDatabase(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoMotopompeDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoMotopompeDatabase(fiche)
 
                 }
             }
@@ -242,12 +242,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false*/
-                var f = repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoReducteurLocalDatabase(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoReducteurLocalDatabase(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoReducteurDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoReducteurDatabase(fiche)
 
                 }
             }
@@ -261,12 +261,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
                 if (fiche.accouplement == null) fiche.accouplement = false
                 if (fiche.clavette == null) fiche.clavette = false*/
-                var f = repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
+                var f = repository.demontageRepository!!.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
                 if (f !== null) {
-                    repository.updateDemoMotoreducteurLocalDatabase(fiche.toEntity())
+                    repository.demontageRepository!!.updateDemoMotoreducteurLocalDatabase(fiche.toEntity())
 
                 } else {
-                    repository.insertDemoMotoreducteurDatabase(fiche)
+                    repository.demontageRepository!!.insertDemoMotoreducteurDatabase(fiche)
 
                 }
             }
@@ -336,7 +336,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             when (selection.value!!.typeFicheDemontage) {
                 1 -> {
                     var fiche =
-                        repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)!!
+                        repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)!!
                     if (isOnline(context)) {
                         CoroutineScope(Dispatchers.IO).launch {
                             getNameURI()
@@ -393,9 +393,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         fiche.photos = listPhotos?.toTypedArray()
                         selection.postValue(fiche)
                         photos.postValue(listPhotos!!)
-                        repository.updateDemoPompeLocalDatabse(fiche.toEntity())
+                        repository.demontageRepository!!.updateDemoPompeLocalDatabse(fiche.toEntity())
 
-                        val resp = repository.patchDemontagePompe(
+                        val resp = repository.demontageRepository!!.patchDemontagePompe(
                             token!!,
                             fiche._id,
                             fiche,
@@ -445,14 +445,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     } else {
                         viewModelScope.launch(Dispatchers.IO) {
                             var p = selection.value as DemontagePompe
-                            var pmp = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
+                            var pmp = repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)
                             if (pmp !== null) {
-                                repository.updateDemoPompeLocalDatabse(p.toEntity())
+                                repository.demontageRepository!!.updateDemoPompeLocalDatabse(p.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
 
                             } else {
-                                repository.insertDemoPompeLocalDatabase(p)
+                                repository.demontageRepository!!.insertDemoPompeLocalDatabase(p)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
 
@@ -461,7 +461,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     }
                 }
                 2 -> {
-                    var fiche = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)!!
+                    var fiche = repository.demontageRepository!!.getByIdDemoMonoLocalDatabse(selection.value!!._id)!!
                     if (isOnline(context)) {
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
@@ -513,8 +513,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         fiche.photos = listPhotos?.toTypedArray()
                         selection.postValue(fiche)
                         photos.postValue(listPhotos)
-                        repository.updateDemoMonoLocalDatabse(fiche.toEntity())
-                        val resp = repository.patchDemontageMono(
+                        repository.demontageRepository!!.updateDemoMonoLocalDatabse(fiche.toEntity())
+                        val resp = repository.demontageRepository!!.patchDemontageMono(
                             token!!,
                             fiche._id,
                             fiche,
@@ -558,14 +558,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                         var m = selection.value!! as DemontageMonophase
                         viewModelScope.launch(Dispatchers.IO) {
-                            var mono = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
+                            var mono = repository.demontageRepository!!.getByIdDemoMonoLocalDatabse(selection.value!!._id)
                             if (mono !== null) {
-                                repository.updateDemoMonoLocalDatabse(m.toEntity())
+                                repository.demontageRepository!!.updateDemoMonoLocalDatabse(m.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoMonoLocalDatabase(m)
+                                repository.demontageRepository!!.insertDemoMonoLocalDatabase(m)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
@@ -575,7 +575,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                 }
                 3 -> {
-                    var fiche = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)!!
+                    var fiche = repository.demontageRepository!!.getByIdDemoAlterLocalDatabse(selection.value!!._id)!!
                     if (isOnline(context)) {
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
@@ -630,8 +630,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         fiche.photos = listPhotos?.toTypedArray()
                         selection.postValue(fiche)
                         photos.postValue(listPhotos!!)
-                        repository.updateDemoAlterLocalDatabse(fiche.toEntity())
-                        val resp = repository.patchDemontageAlter(
+                        repository.demontageRepository!!.updateDemoAlterLocalDatabse(fiche.toEntity())
+                        val resp = repository.demontageRepository!!.patchDemontageAlter(
                             token!!,
                             fiche._id,
                             fiche,
@@ -673,14 +673,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         var a = selection.value!! as DemontageAlternateur
                         viewModelScope.launch(Dispatchers.IO) {
                             var alter =
-                                repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
+                                repository.demontageRepository!!.getByIdDemoAlterLocalDatabse(selection.value!!._id)
                             if (alter !== null) {
-                                repository.updateDemoAlterLocalDatabse(a.toEntity())
+                                repository.demontageRepository!!.updateDemoAlterLocalDatabse(a.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoAlterLocalDatabase(a)
+                                repository.demontageRepository!!.insertDemoAlterLocalDatabase(a)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
@@ -690,7 +690,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
                 }
                 4 -> {
-                    var fiche = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)!!
+                    var fiche = repository.demontageRepository!!.getByIdDemoRBLocalDatabse(selection.value!!._id)!!
                     var rb = selection.value!! as DemontageRotorBobine
                     if (isOnline(context)) {
                         CoroutineScope(Dispatchers.IO).launch {
@@ -748,8 +748,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         fiche.photos = listPhotos?.toTypedArray()
                         selection.postValue(fiche)
                         photos.postValue(listPhotos!!)
-                        repository.updateDemoRBLocalDatabse(fiche.toEntity())
-                        val resp = repository.patchDemontageRotor(
+                        repository.demontageRepository!!.updateDemoRBLocalDatabse(fiche.toEntity())
+                        val resp = repository.demontageRepository!!.patchDemontageRotor(
                             token!!,
                             fiche._id,
                             fiche,
@@ -789,14 +789,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             })
                     } else {
                         viewModelScope.launch(Dispatchers.IO) {
-                            var rotor = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
+                            var rotor = repository.demontageRepository!!.getByIdDemoRBLocalDatabse(selection.value!!._id)
                             if (rotor !== null) {
-                                repository.updateDemoRBLocalDatabse(rb.toEntity())
+                                repository.demontageRepository!!.updateDemoRBLocalDatabse(rb.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoRBLocalDatabase(rb)
+                                repository.demontageRepository!!.insertDemoRBLocalDatabase(rb)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
@@ -808,7 +808,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 5 -> {
                     if (isOnline(context)) {
                         Log.i("info", "fiche id: ${selection.value!!._id}")
-                        var dcc = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)!!
+                        var dcc = repository.demontageRepository!!.getByIdDemoCCLocalDatabse(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -859,8 +859,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         dcc.photos = listPhotos?.toTypedArray()
                         selection.postValue(dcc)
                         photos.postValue(listPhotos)
-                        repository.updateDemoCCLocalDatabse(dcc.toEntity())
-                        val resp = repository.patchDemontageCC(
+                        repository.demontageRepository!!.updateDemoCCLocalDatabse(dcc.toEntity())
+                        val resp = repository.demontageRepository!!.patchDemontageCC(
                             token!!,
                             dcc._id,
                             dcc,
@@ -899,11 +899,11 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     } else {
                         var c = selection.value!! as CourantContinu
                         viewModelScope.launch(Dispatchers.IO) {
-                            var tri = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
+                            var tri = repository.demontageRepository!!.getByIdDemoCCLocalDatabse(selection.value!!._id)
                             if (tri !== null) {
-                                repository.updateDemoCCLocalDatabse(c.toEntity())
+                                repository.demontageRepository!!.updateDemoCCLocalDatabse(c.toEntity())
                             } else {
-                                repository.insertDemoCCLocalDatabase(c)
+                                repository.demontageRepository!!.insertDemoCCLocalDatabase(c)
                             }
                             val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                             mySnackbar.show()
@@ -912,7 +912,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 6 -> {
                     if (isOnline(context) == true) {
-                        var dt = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)!!
+                        var dt = repository.demontageRepository!!.getByIdDemoTriLocalDatabse(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -966,10 +966,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             "info",
                             "list photo selection size 2 ${selection.value?.photos?.size} - liste photos ${photos.value?.size}"
                         )
-                        repository.updateDemoTriLocalDatabse(dt.toEntity())
+                        repository.demontageRepository!!.updateDemoTriLocalDatabse(dt.toEntity())
                         selection.postValue(dt)
                         photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageTriphase(
+                        val resp = repository.demontageRepository!!.patchDemontageTriphase(
                             token!!,
                             dt._id,
                             dt,
@@ -1008,14 +1008,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     } else {
                         var t = selection.value!! as Triphase
                         viewModelScope.launch(Dispatchers.IO) {
-                            var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
+                            var tri = repository.demontageRepository!!.getByIdDemoTriLocalDatabse(selection.value!!._id)
                             if (tri !== null) {
-                                repository.updateDemoTriLocalDatabse(t.toEntity())
+                                repository.demontageRepository!!.updateDemoTriLocalDatabse(t.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoTriLocalDatabase(t)
+                                repository.demontageRepository!!.insertDemoTriLocalDatabase(t)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
@@ -1027,7 +1027,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     if (isOnline(context) == true) {
                         Log.i("info", "marque viewmodel ${selection.value?.marque}")
                         var dt =
-                            repository.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)!!
+                            repository.demontageRepository!!.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -1075,10 +1075,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = listPhotos?.toTypedArray()
-                        repository.updateDemoMotoPompeLocalDatabase(dt.toEntity())
+                        repository.demontageRepository!!.updateDemoMotoPompeLocalDatabase(dt.toEntity())
                         selection.postValue(dt)
                         photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageMotopompe(
+                        val resp = repository.demontageRepository!!.patchDemontageMotopompe(
                             token!!,
                             dt._id,
                             dt,
@@ -1118,14 +1118,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         var t = selection.value!! as DemontageMotopompe
                         viewModelScope.launch(Dispatchers.IO) {
                             var tri =
-                                repository.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
+                                repository.demontageRepository!!.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
                             if (tri !== null) {
-                                repository.updateDemoMotoPompeLocalDatabase(t.toEntity())
+                                repository.demontageRepository!!.updateDemoMotoPompeLocalDatabase(t.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoMotopompeDatabase(t)
+                                repository.demontageRepository!!.insertDemoMotopompeDatabase(t)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
@@ -1136,7 +1136,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 8 -> {
                     if (isOnline(context) == true) {
                         var dt =
-                            repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)!!
+                            repository.demontageRepository!!.getByIdDemoReducteurLocalDatabase(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -1186,10 +1186,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = listPhotos?.toTypedArray()
-                        repository.updateDemoReducteurLocalDatabase(dt.toEntity())
+                        repository.demontageRepository!!.updateDemoReducteurLocalDatabase(dt.toEntity())
                         selection.postValue(dt)
                         photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageReducteur(
+                        val resp = repository.demontageRepository!!.patchDemontageReducteur(
                             token!!,
                             dt._id,
                             dt,
@@ -1229,14 +1229,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         var t = selection.value!! as DemontageReducteur
                         viewModelScope.launch(Dispatchers.IO) {
                             var tri =
-                                repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
+                                repository.demontageRepository!!.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
                             if (tri !== null) {
-                                repository.updateDemoReducteurLocalDatabase(t.toEntity())
+                                repository.demontageRepository!!.updateDemoReducteurLocalDatabase(t.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoReducteurDatabase(t)
+                                repository.demontageRepository!!.insertDemoReducteurDatabase(t)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")
@@ -1247,7 +1247,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 9 -> {
                     if (isOnline(context) == true) {
                         var dt =
-                            repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)!!
+                            repository.demontageRepository!!.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)!!
                         var listPhotos = photos.value?.toMutableList()
                         var iter = listPhotos?.listIterator()
                         while (iter?.hasNext() == true) {
@@ -1297,10 +1297,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = listPhotos?.toTypedArray()
-                        repository.updateDemoMotoreducteurLocalDatabase(dt.toEntity())
+                        repository.demontageRepository!!.updateDemoMotoreducteurLocalDatabase(dt.toEntity())
                         selection.postValue(dt)
                         photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageMotoreducteur(
+                        val resp = repository.demontageRepository!!.patchDemontageMotoreducteur(
                             token!!,
                             dt._id,
                             dt,
@@ -1340,14 +1340,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         var t = selection.value!! as DemontageMotoreducteur
                         viewModelScope.launch(Dispatchers.IO) {
                             var tri =
-                                repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
+                                repository.demontageRepository!!.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
                             if (tri !== null) {
-                                repository.updateDemoMotoreducteurLocalDatabase(t.toEntity())
+                                repository.demontageRepository!!.updateDemoMotoreducteurLocalDatabase(t.toEntity())
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoMotoreducteurDatabase(t)
+                                repository.demontageRepository!!.insertDemoMotoreducteurDatabase(t)
                                 val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
                                 Log.i("INFO", "enregistré local")

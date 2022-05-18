@@ -360,7 +360,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listDT: List<DemontageTriphaseEntity> =
-                    repository.getAllDemontageTriLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageTriLocalDatabase()
                 Log.i("INFO", "nb de fiches DemontageTriphase: ${listDT.size}")
                 if (listDT.size > 0) {
                     for (fiche in listDT) {
@@ -405,7 +405,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dt.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageTriphase(
+                        val resp = repository.demontageRepository!!.patchDemontageTriphase(
                             user!!.token!!,
                             dt._id,
                             dt,
@@ -420,7 +420,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageTriphaseLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageTriphaseLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -443,7 +443,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listCC: List<DemontageCCEntity> =
-                    repository.getAllDemontageCCLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageCCLocalDatabase()
                 Log.i("INFO", "nb de fiches DemontageCourantContinu: ${listCC.size}")
                 if (listCC.size > 0) {
                     for (fiche in listCC) {
@@ -486,7 +486,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         dcc.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageCC(
+                        val resp = repository.demontageRepository!!.patchDemontageCC(
                             user!!.token!!,
                             dcc._id,
                             dcc,
@@ -501,7 +501,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageCCLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageCCLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -743,7 +743,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listDP: List<DemoPompeEntity> =
-                    repository.getAllDemontagePompeLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontagePompeLocalDatabase()
                 Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
                 if (listDP.size > 0) {
                     for (fiche in listDP) {
@@ -785,7 +785,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontagePompe(
+                        val resp = repository.demontageRepository!!.patchDemontagePompe(
                             user!!.token!!,
                             rc._id,
                             rc,
@@ -800,7 +800,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontagePompeLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontagePompeLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -823,7 +823,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listDM: List<DemontageMonophaseEntity> =
-                    repository.getAllDemontageMonoLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageMonoLocalDatabase()
                 Log.i("INFO", "nb de fiches Demontage monophase: ${listDM.size}")
                 if (listDM.size > 0) {
                     for (fiche in listDM) {
@@ -866,7 +866,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageMono(
+                        val resp = repository.demontageRepository!!.patchDemontageMono(
                             user!!.token!!,
                             rc._id,
                             rc,
@@ -881,7 +881,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageMonoLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageMonoLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -904,7 +904,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listDA: List<DemontageAlternateurEntity> =
-                    repository.getAllDemontageAlterLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageAlterLocalDatabase()
                 Log.i("INFO", "nb de fiches Demontage Alternateur: ${listDA.size}")
                 if (listDA.size > 0) {
                     for (fiche in listDA) {
@@ -947,7 +947,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }
                         }
                         rc.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageAlter(
+                        val resp = repository.demontageRepository!!.patchDemontageAlter(
                             user!!.token!!,
                             rc._id,
                             rc,
@@ -962,7 +962,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageAlterLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageAlterLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -985,7 +985,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listDRB: List<DemontageRotorBEntity> =
-                    repository.getAllDemontageRBLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageRBLocalDatabase()
                 Log.i("INFO", "nb de fiches Demontage Rotor Bobine: ${listDRB.size}")
                 if (listDRB.size > 0) {
                     for (fiche in listDRB) {
@@ -1029,7 +1029,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         rc.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageRotor(
+                        val resp = repository.demontageRepository!!.patchDemontageRotor(
                             user!!.token!!,
                             rc._id,
                             rc,
@@ -1044,7 +1044,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageRBLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageRBLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -1067,7 +1067,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listDMP: List<DemontageMotopompeEntity> =
-                    repository.getAllDemontageMotopompeLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageMotopompeLocalDatabase()
                 if (listDMP.size > 0) {
                     for (fiche in listDMP) {
                         var dmp = fiche.toMotoPompe()
@@ -1111,7 +1111,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dmp.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageMotopompe(
+                        val resp = repository.demontageRepository!!.patchDemontageMotopompe(
                             user!!.token!!,
                             dmp._id,
                             dmp,
@@ -1126,7 +1126,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageMotoPompeLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageMotoPompeLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -1150,7 +1150,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMP.size}")
                 var listDR: List<DemontageReducteurEntity> =
-                    repository.getAllDemontageReducteurLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageReducteurLocalDatabase()
                 if (listDR.size > 0) {
                     for (fiche in listDR) {
                         var dr = fiche.toReducteur()
@@ -1195,7 +1195,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dr.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageReducteur(
+                        val resp = repository.demontageRepository!!.patchDemontageReducteur(
                             user!!.token!!,
                             dr._id,
                             dr,
@@ -1210,7 +1210,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageReducteurLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageReducteurLocalDatabse(
                                                 fiche
                                             )
                                         }
@@ -1234,7 +1234,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 Log.i("INFO", "nb de fiches Demontage Reducteur: ${listDR.size}")
                 var listDMR: List<DemontageMotoreducteurEntity> =
-                    repository.getAllDemontageMotoreducteurLocalDatabase()
+                    repository.demontageRepository!!.getAllDemontageMotoreducteurLocalDatabase()
                 if (listDMR.size > 0) {
                     for (fiche in listDMR) {
                         var dmr = fiche.toDemontageMotoreducteur()
@@ -1279,7 +1279,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
                         //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
                         dmr.photos = photos?.toTypedArray()
-                        val resp = repository.patchDemontageMotoreducteur(
+                        val resp = repository.demontageRepository!!.patchDemontageMotoreducteur(
                             user!!.token!!,
                             dmr._id,
                             dmr,
@@ -1294,7 +1294,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             Log.i("INFO", "fiche enregistrée")
                                         }
                                         viewModelScope.launch(Dispatchers.IO) {
-                                            repository.deleteDemontageMotoreducteurLocalDatabse(
+                                            repository.demontageRepository!!.deleteDemontageMotoreducteurLocalDatabse(
                                                 fiche
                                             )
                                         }

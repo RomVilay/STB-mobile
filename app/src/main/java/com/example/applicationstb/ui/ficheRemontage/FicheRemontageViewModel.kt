@@ -417,7 +417,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     fun getFichesDemontage(id: String) : DemontageMoteur? {
         var demo = MutableLiveData<DemontageMoteur>()
         runBlocking {
-            repository.getDemontage(token!!, id, object: Callback<DemontageResponse> {
+            repository.demontageRepository!!.getDemontage(token!!, id, object: Callback<DemontageResponse> {
                 override fun onResponse(
                     call: Call<DemontageResponse>,
                     response: Response<DemontageResponse>
@@ -427,7 +427,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                         if (fiche !== null) {
                             Log.i("INFO", (fiche.typeFicheDemontage == selection.value?.typeFicheRemontage).toString())
                             if (fiche.typeFicheDemontage == 1 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var pompe = viewModelScope.async {repository.getDemontagePompe(
+                                var pompe = viewModelScope.async {repository.demontageRepository!!.getDemontagePompe(
                                     token!!,
                                     fiche._id,
                                     object : Callback<DemontagePompeResponse> {
@@ -469,7 +469,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             if (fiche.typeFicheDemontage == 2 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
                                 Log.i("INFO", "mono")
                                 var mono =  viewModelScope.async {
-                                    repository.getDemontageMono(
+                                    repository.demontageRepository!!.getDemontageMono(
                                         token!!,
                                         fiche._id,
                                         object : Callback<DemontageMonophaseResponse> {
@@ -506,7 +506,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                 return@runBlocking demo.value
                             }
                             if (fiche.typeFicheDemontage == 3 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var alter = viewModelScope.async { repository.getDemontageAlternateur(
+                                var alter = viewModelScope.async { repository.demontageRepository!!.getDemontageAlternateur(
                                     token!!,
                                     fiche._id,
                                     object : Callback<DemontageAlternateurResponse> {
@@ -542,7 +542,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                             if (fiche.typeFicheDemontage == 4 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
                                 Log.i("INFO", "rotor")
-                                var RB = repository.getDemontageRB(
+                                var RB = repository.demontageRepository!!.getDemontageRB(
                                     token!!,
                                     fiche._id,
                                     object : Callback<DemontageRotorBobineResponse> {
@@ -581,7 +581,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             }
                             if (fiche.typeFicheDemontage == 5 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
                                 var CC =
-                                    repository.getDemontageCC(
+                                    repository.demontageRepository!!.getDemontageCC(
                                         token!!,
                                         fiche._id,
                                         object : Callback<DemontageCCResponse> {
@@ -615,7 +615,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                                         })
                             }
                             if (fiche.typeFicheDemontage == 6 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var tri = repository.getDemontageTriphase(
+                                var tri = repository.demontageRepository!!.getDemontageTriphase(
                                     token!!,
                                     fiche._id,
                                     object : Callback<DemontageTriphaseResponse> {
