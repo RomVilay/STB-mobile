@@ -160,13 +160,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 for (i in remontages) {
                     if (i.typeFicheRemontage == 5) {
                         var fiche = i as RemontageCourantC
-                        repository.deleteRemontageCCLocalDatabse(fiche.toEntity())
+                        repository.remontageRepository!!.deleteRemontageCCLocalDatabse(fiche.toEntity())
                     }
                     if (i!!.typeFicheRemontage == 6 || i!!.typeFicheRemontage == 7 || i!!.typeFicheRemontage == 9) {
                         var fiche = i as RemontageTriphase
-                        repository.deleteRemontageTriphaseLocalDatabse(fiche.toEntity())
+                        repository.remontageRepository!!.deleteRemontageTriphaseLocalDatabse(fiche.toEntity())
                     } else {
-                        repository.deleteRemontageLocalDatabse(i.toRemoEntity())
+                        repository.remontageRepository!!.deleteRemontageLocalDatabse(i.toRemoEntity())
                     }
                 }
                 remontages.clear()
@@ -985,7 +985,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             }
                             if (fiche.type == 3L) {
                                 Log.i("INFO", "fiche remontage ${fiche.numFiche} ")
-                                var remo = repository.getRemontage(
+                                var remo = repository.remontageRepository!!.getRemontage(
                                     token,
                                     fiche._id,
                                     object : Callback<RemontageResponse> {
@@ -997,7 +997,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 val resp = response.body()
                                                 if (resp != null) {
                                                     /* if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 9) {
-                                                     val demoTri = repository.getRemontageMotoreducteur(
+                                                     val demoTri = repository.repositoryRemontage.getRemontageMotoreducteur(
                                                          token,
                                                          resp.data!!._id,
                                                          object :
@@ -1075,7 +1075,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                          })
                                                  }
                                                  if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 7) {
-                                                     val demoTri = repository.getRemontageMotopompe(
+                                                     val demoTri = repository.repositoryRemontage.getRemontageMotopompe(
                                                          token,
                                                          resp.data!!._id,
                                                          object :
@@ -1157,7 +1157,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             "fiche a update ${resp.data!!.numFiche}"
                                                         )
                                                         val demoTri =
-                                                            repository.getRemontageTriphase(
+                                                            repository.remontageRepository!!.getRemontageTriphase(
                                                                 token,
                                                                 resp.data!!._id,
                                                                 object :
@@ -1189,11 +1189,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                     resp.data?.photos =
                                                                                         photos?.toTypedArray()
                                                                                     var demoT =
-                                                                                        repository.getByIdRemoTriLocalDatabse(
+                                                                                        repository.remontageRepository!!.getByIdRemoTriLocalDatabse(
                                                                                             resp2.data!!._id
                                                                                         )
                                                                                     if (demoT == null) {
-                                                                                        repository.insertRemoTriLocalDatabase(
+                                                                                        repository.remontageRepository!!.insertRemoTriLocalDatabase(
                                                                                             resp2!!.data!!
                                                                                         )
                                                                                         if (!remontages.contains(
@@ -1235,7 +1235,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 })
                                                     }
                                                     if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 5) {
-                                                        val demoTri = repository.getRemontageCC(
+                                                        val demoTri = repository.remontageRepository!!.getRemontageCC(
                                                             token,
                                                             resp.data!!._id,
                                                             object : Callback<RemontageCCResponse> {
@@ -1264,11 +1264,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoT =
-                                                                                    repository.getByIdRemoCCLocalDatabse(
+                                                                                    repository.remontageRepository!!.getByIdRemoCCLocalDatabse(
                                                                                         resp2.data!!._id
                                                                                     )
                                                                                 if (demoT == null) {
-                                                                                    repository.insertRemoCCLocalDatabase(
+                                                                                    repository.remontageRepository!!.insertRemoCCLocalDatabase(
                                                                                         resp2!!.data!!
                                                                                     )
                                                                                     if (remontages.indexOf(
@@ -1310,7 +1310,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             })
                                                     }
                                                     if (resp.data!!.typeFicheRemontage !== null && (resp.data!!.typeFicheRemontage == 3 || resp.data!!.typeFicheRemontage == 4 || resp.data!!.typeFicheRemontage == 1 || resp.data!!.typeFicheRemontage == 2 || resp.data!!.typeFicheRemontage == 8)) {
-                                                        val remo = repository.getRemontage(
+                                                        val remo = repository.remontageRepository!!.getRemontage(
                                                             token,
                                                             resp.data!!._id,
                                                             object : Callback<RemontageResponse> {
@@ -1337,11 +1337,11 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                                 resp.data?.photos =
                                                                                     photos?.toTypedArray()
                                                                                 var demoT =
-                                                                                    repository.getByIdRemoLocalDatabse(
+                                                                                    repository.remontageRepository!!.getByIdRemoLocalDatabse(
                                                                                         resp2.data!!._id
                                                                                     )
                                                                                 if (demoT == null) {
-                                                                                    repository.insertRemoLocalDatabase(
+                                                                                    repository.remontageRepository!!.insertRemoLocalDatabase(
                                                                                         resp2.data!!
                                                                                     )
                                                                                     if (remontages.indexOf(
@@ -1502,19 +1502,19 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             for (dcc in listDCC) {
                 demontages.add(dcc.toCContinu())
             }
-            var listRT = repository.getAllRemontageTriLocalDatabase()
+            var listRT = repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
             for (rt in listRT) {
                 remontages.add(rt.toRTriphase())
             }
-            var listRCC = repository.getAllRemontageCCLocalDatabase()
+            var listRCC = repository.remontageRepository!!.getAllRemontageCCLocalDatabase()
             for (rcc in listRCC) {
                 remontages.add(rcc.toRCourantC())
             }
-            var listRMP = repository.getAllRemontageMotopompeLocalDatabase()
+            var listRMP = repository.remontageRepository!!.getAllRemontageMotopompeLocalDatabase()
             for (dt in listRMP) {
                 remontages.add(dt.toRemontageMotopompe())
             }
-            var listRMR = repository.getAllRemontageMotoreducteurLocalDatabase()
+            var listRMR = repository.remontageRepository!!.getAllRemontageMotoreducteurLocalDatabase()
             for (dt in listRMR) {
                 remontages.add(dt.toRemontageMotoreducteur())
             }
@@ -2111,7 +2111,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listRT: List<RemontageTriphaseEntity> =
-                        repository.getAllRemontageTriLocalDatabase()
+                        repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
                     Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
                     if (listRT.size > 0) {
                         for (fiche in listRT) {
@@ -2161,7 +2161,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             dt.photos = photos?.toTypedArray()
-                            val resp = repository.patchRemontageTriphase(
+                            val resp = repository.remontageRepository!!.patchRemontageTriphase(
                                 token,
                                 dt._id,
                                 dt,
@@ -2176,7 +2176,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteRemontageTriphaseLocalDatabse(
+                                                repository.remontageRepository!!.deleteRemontageTriphaseLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2199,7 +2199,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listRCC: List<RemontageCCEntity> =
-                        repository.getAllRemontageCCLocalDatabase()
+                        repository.remontageRepository!!.getAllRemontageCCLocalDatabase()
                     Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
                     if (listRCC.size > 0) {
                         for (fiche in listRCC) {
@@ -2245,7 +2245,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rc.photos = photos?.toTypedArray()
-                            val resp = repository.patchRemontageCC(
+                            val resp = repository.remontageRepository!!.patchRemontageCC(
                                 token,
                                 rc._id,
                                 rc,
@@ -2260,7 +2260,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteRemontageCCLocalDatabse(
+                                                repository.remontageRepository!!.deleteRemontageCCLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -2283,7 +2283,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listRm: List<RemontageEntity> =
-                        repository.getAllRemontageLocalDatabase()
+                        repository.remontageRepository!!.getAllRemontageLocalDatabase()
                     Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
                     if (listRm.size > 0) {
                         for (fiche in listRm) {
@@ -2330,7 +2330,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rc.photos = photos?.toTypedArray()
-                            val resp = repository.patchRemontage(
+                            val resp = repository.remontageRepository!!.patchRemontage(
                                 token,
                                 rc._id,
                                 rc,
@@ -2345,7 +2345,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteRemontageLocalDatabse(
+                                                repository.remontageRepository!!.deleteRemontageLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -3022,7 +3022,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                     Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
                     var listRMP: List<RemontageMotopompeEntity> =
-                        repository.getAllRemontageMotopompeLocalDatabase()
+                        repository.remontageRepository!!.getAllRemontageMotopompeLocalDatabase()
                     Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
                     if (listRMP.size > 0) {
                         for (fiche in listRMP) {
@@ -3066,7 +3066,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rmp.photos = photos?.toTypedArray()
-                            val resp = repository.patchRemontageMotopompe(
+                            val resp = repository.remontageRepository!!.patchRemontageMotopompe(
                                 token,
                                 rmp._id,
                                 rmp,
@@ -3081,7 +3081,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteRemontageMotoPompeLocalDatabse(
+                                                repository.remontageRepository!!.deleteRemontageMotoPompeLocalDatabse(
                                                     fiche
                                                 )
                                             }
@@ -3104,7 +3104,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     var listRMR: List<RemontageMotoreducteurEntity> =
-                        repository.getAllRemontageMotoreducteurLocalDatabase()
+                        repository.remontageRepository!!.getAllRemontageMotoreducteurLocalDatabase()
                     Log.i("INFO", "nb de fiches remontage: ${listRMR.size}")
                     if (listRMR.size > 0) {
                         for (fiche in listRMR) {
@@ -3148,7 +3148,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             rmp.photos = photos?.toTypedArray()
-                            val resp = repository.patchRemontageMotoreducteur(
+                            val resp = repository.remontageRepository!!.patchRemontageMotoreducteur(
                                 token,
                                 rmp._id,
                                 rmp,
@@ -3163,7 +3163,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 Log.i("INFO", "fiche enregistrée")
                                             }
                                             viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteRemontageMotoreducteurLocalDatabse(
+                                                repository.remontageRepository!!.deleteRemontageMotoreducteurLocalDatabse(
                                                     fiche
                                                 )
                                             }

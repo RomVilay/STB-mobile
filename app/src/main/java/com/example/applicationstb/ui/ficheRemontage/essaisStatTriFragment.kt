@@ -59,7 +59,7 @@ class essaisStatTriFragment : Fragment() {
         var resW = layout.findViewById<EditText>(R.id.ResW)
             if (fiche.isolementPhase !== null) spiIsoP.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementPhase!!.toInt().toString()))
             if (fiche.isolementPhaseMasse !== null) spiIsoPM.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementPhaseMasse!!.toInt().toString()))
-            if (fiche.isolementPMStatorU !== null) isoPMSU.setText(fiche.isolementPMStatorU.toString())
+          /*  if (fiche.isolementPMStatorU !== null) isoPMSU.setText(fiche.isolementPMStatorU.toString())
             if (fiche.isolementPMStatorV !== null) isoPMSV.setText(fiche.isolementPMStatorV.toString())
             if (fiche.isolementPMStatorW !== null) isoPMSW.setText(fiche.isolementPMStatorW.toString())
             if (fiche.isolementPMRotorU !== null) isoPMRU.setText(fiche.isolementPMRotorU.toString())
@@ -83,7 +83,7 @@ class essaisStatTriFragment : Fragment() {
                 viewModel.getTime()
                 viewModel.quickSave()
             }
-        }
+        }*/
         spiIsoP.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -95,7 +95,7 @@ class essaisStatTriFragment : Fragment() {
             }
         }
         var regex = Regex.fromLiteral("""\d{0,2}(\.\d{1,2})?""")
-        isoPMSU.doAfterTextChanged {
+        /*isoPMSU.doAfterTextChanged {
             if (isoPMSU.text.isNotEmpty()) fiche.isolementPMStatorU = isoPMSU.text.toString().toFloat()
             Log.i("INFO","Isopmsu stat = ${fiche.isolementPMStatorU}")
             viewModel.selection.value = fiche
@@ -167,7 +167,7 @@ class essaisStatTriFragment : Fragment() {
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.quickSave()
-        }
+        }*/
         resV.doAfterTextChanged {
             if (resV.text.isNotEmpty() ) fiche.resistanceStatorV = resV.text.toString().toFloat()
             viewModel.selection.value = fiche

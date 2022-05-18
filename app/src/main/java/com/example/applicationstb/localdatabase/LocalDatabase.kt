@@ -32,7 +32,7 @@ import com.example.applicationstb.model.*
         VehiculeEntity::class,
         RemontageEntity::class,
         PointageEntity::class
-    ), version = 30
+    ), version = 31
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {

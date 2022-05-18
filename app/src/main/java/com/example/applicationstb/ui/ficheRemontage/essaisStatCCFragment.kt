@@ -42,7 +42,7 @@ class essaisStatCCFragment : Fragment() {
         var releveIsoInduitMasse = layout.findViewById<EditText>(R.id.valIsoInduitMasse)
         var releveIsoInduitInducteurs = layout.findViewById<EditText>(R.id.valIsoInduitInduct)
         var fiche = viewModel.selection.value as RemontageCourantC
-        if (fiche.isolementInducteursMasse !== null ) spiInductMasse.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementInducteursMasse!!.toInt().toString()))
+       /* if (fiche.isolementInducteursMasse !== null ) spiInductMasse.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementInducteursMasse!!.toInt().toString()))
         if (fiche.isolementInduitMasse !== null ) spiInduiMasse.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementInduitMasse!!.toInt().toString()))
         if (fiche.isolementInduitInducteurs !== null ) spiInduiInduc.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementInduitInducteurs!!.toInt().toString()))
         if (fiche.resistanceInduit !== null ) resistanceInduit.setText(fiche.resistanceInduit.toString())
@@ -114,7 +114,7 @@ class essaisStatCCFragment : Fragment() {
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.quickSave()
-        }
+        }*/
         return layout
     }
 

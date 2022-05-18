@@ -140,7 +140,7 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                     layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
                     //layout.findViewById<CardView>(R.id.essaisDynamiques).visibility = View.VISIBLE
-                    if (demo.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
+                    /*if (demo.verificationIsolementPorteBalais !== null) isoPBRB.setChecked(
                         demo.verificationIsolementPorteBalais!!
                     )
                     if (demo.isolementPorteBalaisV !== null) isoPBV.setText(
@@ -259,8 +259,7 @@ class FicheRemontage : Fragment() {
                     }
                     fixCouronne.setOnCheckedChangeListener { _, isChecked ->
                         if (fixCouronne.hasFocus()) {
-                            demo.verificationFixationCouronne =
-                                isChecked//viewModel.selection.value!!.verificationFixationCouronne = isChecked
+                            //demo.verificationFixationCouronne = isChecked//viewModel.selection.value!!.verificationFixationCouronne = isChecked
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -268,7 +267,7 @@ class FicheRemontage : Fragment() {
                     }
                     isoPBRB.setOnCheckedChangeListener { _, isChecked ->
                         if (isoPBRB.hasFocus()) {
-                            demo.verificationIsolementPorteBalais = isChecked
+                           // demo.verificationIsolementPorteBalais = isChecked
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -276,8 +275,7 @@ class FicheRemontage : Fragment() {
                     }
                     isoPBV.doAfterTextChanged {
                         if (isoPBV.hasFocus()) {
-                            if (isoPBV.text.isNotEmpty() && isoPBRB.text.matches(regexNombres)) demo.isolementPorteBalaisV =
-                                isoPBV.text.toString().toFloat()
+                            //if (isoPBV.text.isNotEmpty() && isoPBRB.text.matches(regexNombres)) demo.isolementPorteBalaisV = isoPBV.text.toString().toFloat()
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -285,7 +283,7 @@ class FicheRemontage : Fragment() {
                     }
                     risoPBV.doAfterTextChanged {
                         if (risoPBV.hasFocus() && risoPBV.text.matches(regexNombres)) {
-                            if (risoPBV.text.isNotEmpty()) demo.isolementPorteBalaisOhm =
+                           // if (risoPBV.text.isNotEmpty()) demo.isolementPorteBalaisOhm =
                                 risoPBV.text.toString().toFloat()
                             viewModel.selection.value = demo
                             viewModel.getTime()
@@ -294,7 +292,7 @@ class FicheRemontage : Fragment() {
                     }
                     tensionStator.setOnCheckedChangeListener { buttonView, isChecked ->
                         if (tensionStator.hasFocus() && tensionStator.text.matches(regexNombres)) {
-                            demo.tensionStator = isChecked
+                          //  demo.tensionStator = isChecked
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -305,8 +303,7 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            demo.tensionStatorU =
-                                tensionStatorU.text.toString().toFloat()
+                           // demo.tensionStatorU = tensionStatorU.text.toString().toFloat()
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -317,8 +314,7 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            demo.tensionStatorV =
-                                tensionStatorV.text.toString().toFloat()
+                          //  demo.tensionStatorV = tensionStatorV.text.toString().toFloat()
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -329,8 +325,7 @@ class FicheRemontage : Fragment() {
                                 regexNombres
                             )
                         ) {
-                            demo.tensionStatorW =
-                                tensionStatorW.text.toString().toFloat()
+                           // demo.tensionStatorW = tensionStatorW.text.toString().toFloat()
                             viewModel.selection.value = demo
                             viewModel.getTime()
                             viewModel.quickSave()
@@ -758,7 +753,7 @@ class FicheRemontage : Fragment() {
                     if (demo.verificationFixationCouronne !== null) fixCouronne.setChecked(
                         demo.verificationFixationCouronne!!
                     )
-
+                        */
                 }
                 if (demo!!.typeFicheRemontage == 1 || demo!!.typeFicheRemontage == 2 || demo!!.typeFicheRemontage == 3 || demo!!.typeFicheRemontage == 4) {
                     viewModel.selection.value = demo

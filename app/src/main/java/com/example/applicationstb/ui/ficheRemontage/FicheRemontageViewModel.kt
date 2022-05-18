@@ -102,30 +102,30 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         viewModelScope.launch(Dispatchers.IO) {
             if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9) {
                 var fiche = selection.value!! as RemontageTriphase
-                var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
+                var tri = repository.remontageRepository!!.getByIdRemoTriLocalDatabse(selection.value!!._id)
                 if (tri !== null) {
-                    repository.updateRemoTriLocalDatabse(fiche.toEntity())
+                    repository.remontageRepository!!.updateRemoTriLocalDatabse(fiche.toEntity())
                 } else {
-                    repository.insertRemoTriLocalDatabase(fiche)
+                    repository.remontageRepository!!.insertRemoTriLocalDatabase(fiche)
                 }
             }
             if (selection.value!!.typeFicheRemontage == 5) {
                 var fiche = selection.value!! as RemontageCourantC
-                var remo = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
+                var remo = repository.remontageRepository!!.getByIdRemoCCLocalDatabse(selection.value!!._id)
                 //Log.i("INFO","${ch}")
                 if (remo !== null) {
-                    repository.updateRemoCCLocalDatabse(fiche.toEntity())
+                    repository.remontageRepository!!.updateRemoCCLocalDatabse(fiche.toEntity())
                 } else {
-                    repository.insertRemoCCLocalDatabase(fiche)
+                    repository.remontageRepository!!.insertRemoCCLocalDatabase(fiche)
                 }
             }
             if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2 || selection.value!!.typeFicheRemontage == 8) {
                 var fiche = selection.value!!
-                var remo = repository.getByIdRemoLocalDatabse(fiche._id)
+                var remo = repository.remontageRepository!!.getByIdRemoLocalDatabse(fiche._id)
                 if (remo !== null) {
-                    repository.updateRemoLocalDatabse(fiche.toRemoEntity())
+                    repository.remontageRepository!!.updateRemoLocalDatabse(fiche.toRemoEntity())
                 } else {
-                    repository.insertRemoLocalDatabase(fiche)
+                    repository.remontageRepository!!.insertRemoLocalDatabase(fiche)
                 }
             }
         }
@@ -142,7 +142,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
             var t = selection.value!! as RemontageTriphase
             if (isOnline(context) && token !== "") {
-                val resp = repository.patchRemontageTriphase(
+                val resp = repository.remontageRepository!!.patchRemontageTriphase(
                     token!!,
                     selection.value!!._id,
                     t,
@@ -189,13 +189,13 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     })
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
-                    var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
+                    var tri = repository.remontageRepository!!.getByIdRemoTriLocalDatabse(selection.value!!._id)
                     if (tri !== null) {
-                        repository.updateRemoTriLocalDatabse(t.toEntity())
+                        repository.remontageRepository!!.updateRemoTriLocalDatabse(t.toEntity())
                         val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                         mySnackbar.show()
                     } else {
-                        repository.insertRemoTriLocalDatabase(t)
+                        repository.remontageRepository!!.insertRemoTriLocalDatabase(t)
                         val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                         mySnackbar.show()
                     }
@@ -205,7 +205,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.typeFicheRemontage == 5) {
             var c = selection.value!! as RemontageCourantC
             if (isOnline(context) && token !== "") {
-                val resp = repository.patchRemontageCC(
+                val resp = repository.remontageRepository!!.patchRemontageCC(
                     token!!,
                     selection.value!!._id,
                     c,
@@ -241,11 +241,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     })
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
-                    var tri = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
+                    var tri = repository.remontageRepository!!.getByIdRemoCCLocalDatabse(selection.value!!._id)
                     if (tri !== null) {
-                        repository.updateRemoCCLocalDatabse(c.toEntity())
+                        repository.remontageRepository!!.updateRemoCCLocalDatabse(c.toEntity())
                     } else {
-                        repository.insertRemoCCLocalDatabase(c)
+                        repository.remontageRepository!!.insertRemoCCLocalDatabase(c)
                     }
                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                     mySnackbar.show()
@@ -255,7 +255,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
             var c = selection.value!!
             if (isOnline(context) && token !== "") {
-                val resp = repository.patchRemontage(
+                val resp = repository.remontageRepository!!.patchRemontage(
                     token!!,
                     selection.value!!._id,
                     c,
@@ -291,11 +291,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     })
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
-                    var tri = repository.getByIdRemoLocalDatabse(selection.value!!._id)
+                    var tri = repository.remontageRepository!!.getByIdRemoLocalDatabse(selection.value!!._id)
                     if (tri !== null) {
-                        repository.updateRemoLocalDatabse(c.toRemoEntity())
+                        repository.remontageRepository!!.updateRemoLocalDatabse(c.toRemoEntity())
                     } else {
-                        repository.insertRemoLocalDatabase(c)
+                        repository.remontageRepository!!.insertRemoLocalDatabase(c)
                     }
                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                     mySnackbar.show()
@@ -309,7 +309,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         var liste = mutableListOf<DemontageMoteur>()
             if (isOnline(context) && sharedPref.getBoolean("connected",false)) {
                 var job = viewModelScope.async {
-                    repository.getFichesForRemontage(
+                    repository.remontageRepository!!.getFichesForRemontage(
                         token!!,
                         selection.value!!.numDevis!!,
                         object : Callback<DemontagesResponse> {
