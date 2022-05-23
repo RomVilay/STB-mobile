@@ -1,6 +1,22 @@
 package com.example.applicationstb.model
 
-class FicheDemontage (
+import java.util.*
+
+class FicheDemontage  (
+    idFiche: String,
+    numDevis: String?,
+    numFiche: String?,
+    type: Long?,
+    statut: Long?,
+    client: Client?,
+    contact: String?,
+    telContact: String?,
+    techniciens: Array<String>?,
+    resp: User?,
+    dateDebut: Date?,
+    dureeTotale: Long?,
+    observations: String?,
+    photos: Array<String>?,
     var subtype: Int,
     var marque: String?,
     var typeMoteur: String?,
@@ -104,13 +120,12 @@ class FicheDemontage (
     //fiche 7
     var typeMotopompe: Int?,
     // fiche 8
-    var trMinute: String,
-    var modele: String,
-    var indiceReduction: String,
-    var typeHuile: String,
-    var quantiteHuile: String,
-    var roulements: Array<Roulement>,
-    var joints: Array<Joint>,
-    var typeMotoreducteur: Int,
-) {
-}
+    var trMinute: String?,
+    var modele: String?,
+    var indiceReduction: String?,
+    var typeHuile: String?,
+    var quantiteHuile: String?,
+    var roulements: MutableList<Roulement>?,
+    var joints: MutableList<Joint>?,
+    var typeMotoreducteur: Int?,
+) : Fiche (idFiche, numDevis, numFiche, type, statut, client, resp,contact, telContact, dateDebut, dureeTotale, observations, photos, techniciens) {}

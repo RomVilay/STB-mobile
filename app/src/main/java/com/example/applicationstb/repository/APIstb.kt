@@ -41,6 +41,12 @@ interface APIstb  {
     fun patchBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyBobinage ): Call<BobinageResponse>
 
     @GET("fiches/{ficheId}")
+    fun getFicheDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<FicheDemontageResponse>
+
+    @GET("fiches/{ficheId}")
+    fun getDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageResponse>
+
+    @GET("fiches/{ficheId}")
     fun getDemontageTriphase(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageTriphaseResponse>
 
     @PATCH("fiches/{ficheId}")
@@ -68,8 +74,6 @@ interface APIstb  {
     @PATCH("fiches/{ficheId}")
     fun patchRemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontage ): Call<RemontageResponse>
 
-    @GET("fiches/{ficheId}")
-    fun getDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<DemontageResponse>
 
     @GET("fiches/{ficheId}")
     fun getRemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageResponse>

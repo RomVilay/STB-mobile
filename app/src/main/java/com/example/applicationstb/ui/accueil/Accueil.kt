@@ -25,9 +25,13 @@ import androidx.navigation.findNavController
 import com.example.applicationstb.R
 import com.example.applicationstb.localdatabase.DemontageMotopompeEntity
 import com.example.applicationstb.model.DemontageMotopompe
+import com.example.applicationstb.repository.*
 import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -298,7 +302,33 @@ class Accueil : Fragment() {
             }
         }
         dm.setOnClickListener {
-            if (viewModel.demontages.size > 0) {
+            for (i in viewModel.demontages) {
+                viewModel.repository.demontageRepository!!.getFicheDemontage(viewModel.token.value!!, i._id,  object : Callback<FicheDemontageResponse> {
+                    override fun onResponse(
+                        call: Call<FicheDemontageResponse>,
+                        response: Response<FicheDemontageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            Log.i("info", "fiche démontage de type ${resp?.data?.subtype}")
+                        } else {
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()}"
+                            )
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<FicheDemontageResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Error", "erreur ${t.message}")
+                    }
+                } )
+            }
+
+          /*  if (viewModel.demontages.size > 0) {
                 viewModel.toFicheD(layout)
             } else {
                 val mySnackbar = Snackbar.make(
@@ -307,7 +337,7 @@ class Accueil : Fragment() {
                     3600
                 )
                 mySnackbar.show()
-            }
+            }*/
         }
         cht.setOnClickListener {
             Log.i("info", viewModel.chantiers.size.toString())
