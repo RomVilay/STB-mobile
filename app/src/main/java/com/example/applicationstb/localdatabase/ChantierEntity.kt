@@ -34,7 +34,8 @@ data class ChantierEntity(
     var materiel:String?,
     var diagnostic:String?,
     var signatureTech:String?,
-    var signatureClient:String?
+    var signatureClient:String?,
+    var dureeEssai: String?
 ){
     @RequiresApi(Build.VERSION_CODES.O)
     fun toChantier() : Chantier{
@@ -45,21 +46,22 @@ data class ChantierEntity(
             1,
             status,
             Client(client,null,null,null, null),
+           null,
             contact,
             telContact,
-            null,
-            null,
             dateDebut,
             dureeTotale!!.toLong(),
             observations,
             photos,
-            vehicule,
+            null,
             adresseChantier,
+            vehicule,
             objet,
             materiel,
             diagnostic,
             signatureTech,
-            signatureClient
+            signatureClient,
+            dureeEssai
         )
     }
 }

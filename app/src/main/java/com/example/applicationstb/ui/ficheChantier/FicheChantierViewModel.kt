@@ -56,27 +56,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
        }
-       /* var i =0
-        while (i<10)
-        {
-            var chantier = Chantier (i.toString(),
-                i.toString() ,
-                client,
-                "Dupond M.",
-                3369077543,
-                listeTechs,
-                listeTechs[0],
-                Vehicule(1,"trafic",230000),
-                "2 rue des paquerettes",
-                "Lorem ipsum",
-                "Lorem ipsum",
-                "Lorem ipsum",
-
-            )
-            listeChantiers.add(chantier);
-            i++;
-        }*/
-
     }
 
 
@@ -91,7 +70,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             if (isOnline(context)) {
                 list.add(imageName.value!!.name!!)
             } else {
-                //Log.i("INFO", photo.path.toString())
                 list.add(photo.path.toString())
             }
         }
@@ -101,7 +79,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
     fun setSchema(sch: String){
         schema.value = sch
-        Log.i("INFO", sch.toString())
     }
     fun fullScreen(view: View,uri: String) {
         val action = FicheChantierDirections.versFullScreen(uri.toString())
@@ -113,7 +90,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 if ( response.code() == 200 ) {
                     val resp = response.body()
                     if (resp != null) {
-                        //Log.i("INFO","${resp.fiche!!.client.enterprise}")
                         chantier.value = resp.data!!
                     }
                 } else {
@@ -516,6 +492,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
 
     }
+
     fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()

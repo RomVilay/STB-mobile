@@ -177,10 +177,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     call: Call<FichesResponse>,
                     response: Response<FichesResponse>
                 ) {
+                    Log.i("INFO", "liste fiche")
                     if (response.code() == 200) {
                         val resp = response.body()
                         if (resp != null) {
                             fiches = resp.data
+                            Log.i("info", "nb fiches ${resp.data!!.size}")
                         }
                         for (fiche in resp!!.data!!) {
                             if (fiche.type == 1L) {
@@ -211,10 +213,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         if (ch == null) {
                                                             repository.insertChantierLocalDatabase(
                                                                 resp!!.data!!
-                                                            )
-                                                            Log.i(
-                                                                "INFO",
-                                                                "${resp!!.data!!.vehicule}"
                                                             )
                                                             if (resp!!.data!!.vehicule !== null) getVehicule(
                                                                 resp!!.data!!.vehicule!!

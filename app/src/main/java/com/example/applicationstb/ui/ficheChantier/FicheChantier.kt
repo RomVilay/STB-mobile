@@ -80,6 +80,7 @@ class FicheChantier : Fragment() {
         val quit = layout.findViewById<Button>(R.id.quit)
         val enregistrer = layout.findViewById<Button>(R.id.enregistrer)
         val term = layout.findViewById<Button>(R.id.termC)
+        val dureeEssai = layout.findViewById<EditText>(R.id.dureeEch)
         val adapter = ArrayAdapter(
             requireActivity(),
             R.layout.support_simple_spinner_dropdown_item,
@@ -112,6 +113,7 @@ class FicheChantier : Fragment() {
                 vehicule
             )
             if (viewModel.chantier.value!!.contact !== null) contact.setText(viewModel.chantier.value!!.contact)
+            if (viewModel.chantier.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.chantier.value!!.dureeEssai)
             if (viewModel.chantier.value!!.telContact !== null) numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null) dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
@@ -173,7 +175,10 @@ class FicheChantier : Fragment() {
             }
 
         }
-
+        dureeEssai.doAfterTextChanged {
+            if (dureeEssai.text.isNotEmpty()) viewModel.chantier.value?.dureeEssai = dureeEssai.text.toString()
+            viewModel.quickSave()
+        }
         btnPhoto.setOnClickListener {
             runBlocking {
                 lifecycleScope.launch(Dispatchers.IO) {

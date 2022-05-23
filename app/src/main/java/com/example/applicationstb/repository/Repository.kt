@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var baseUrl = "https://back-end.stb.dev.alf-environnement.net"
+var baseUrl = "https://back-end.stb.dev.alf-environnement.net/1.1.0/"
 var minioUrl = "https:/minio.stb.dev.alf-environnement.net"
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
@@ -85,40 +85,43 @@ class BodyPointage(var user: String?, var timestamp: String?) : Parcelable {
 
 
 class BodyChantier(
+    var observations: String?,
+    var photos: Array<String>?,
     var materiel: String?,
     var objet: String?,
-    var observations: String?,
     var status: Long?,
     var dureeTotale: Long?,
-    var photos: Array<String>?,
     var signatureClient: String?,
-    var signatureTech: String?
+    var signatureTech: String?,
+    var dureeEssai:String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readLong(),
-        parcel.readLong(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
         },
         parcel.readString(),
         parcel.readString(),
+        parcel.readLong(),
+        parcel.readLong(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(materiel)
-        parcel.writeString(objet)
         parcel.writeString(observations)
-        parcel.writeLong(status!!)
-        parcel.writeLong(dureeTotale!!)
         arrayOf<String>().apply {
             parcel.writeArray(photos)
         }
+        parcel.writeString(materiel)
+        parcel.writeString(objet)
+        parcel.writeLong(status!!)
+        parcel.writeLong(dureeTotale!!)
         parcel.writeString(signatureClient)
         parcel.writeString(signatureTech)
+        parcel.writeString(dureeEssai)
     }
 
     override fun describeContents(): Int {
@@ -424,7 +427,6 @@ class PhotoResponse(
 
 class Repository(var context: Context) {
     private val moshiBuilder = Moshi.Builder().add(CustomDateAdapter()).add(CustomDateAdapter2())
-    val url = baseUrl
     var okHttpClient = OkHttpClient.Builder()
         .callTimeout(1, TimeUnit.MINUTES)
         .connectTimeout(1, TimeUnit.MINUTES)
@@ -434,7 +436,7 @@ class Repository(var context: Context) {
         .build()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl(url)
+        .baseUrl(baseUrl)
         .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
         .build()
@@ -472,6 +474,12 @@ class Repository(var context: Context) {
 
     fun getChantier(token: String, ficheId: String, callback: Callback<ChantierResponse>) {
         var call = service.getChantier(token, ficheId)
+        var fiche: Chantier? = null
+        call.enqueue(callback)
+    }
+
+    fun getAllChantier(token: String, username: String, callback: Callback<ChantierResponse>) {
+        var call = service.getAllChantier(token, username)
         var fiche: Chantier? = null
         call.enqueue(callback)
     }
@@ -585,17 +593,17 @@ class Repository(var context: Context) {
         callback: Callback<ChantierResponse>
     ) {
         var body = BodyChantier(
+            chantier.observations,
+            chantier.photos,
             chantier.materiel,
             chantier.objet,
-            chantier.observations,
             chantier.status,
             chantier.dureeTotale,
-            chantier.photos,
             chantier.signatureClient,
-            chantier.signatureTech
+            chantier.signatureTech,
+            chantier.dureeEssai
         )
         var call = service.patchChantier(token, ficheId, body)
-        var fiche: Chantier? = null
         call.enqueue(callback)
     }
 

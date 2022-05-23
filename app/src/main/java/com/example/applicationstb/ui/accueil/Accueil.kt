@@ -310,6 +310,7 @@ class Accueil : Fragment() {
             }
         }
         cht.setOnClickListener {
+            Log.i("info", viewModel.chantiers.size.toString())
             if (viewModel.chantiers.size > 0) {
                 viewModel.toChantier(layout)
             } else {
