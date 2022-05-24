@@ -84,7 +84,7 @@ class MonophaseFragment : Fragment() {
         if( fiche.tension !== null ) tension.setText(fiche.tension.toString())
         if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
         if (fiche.status!! < 3) {
-            isolementPhaseMasse.doAfterTextChanged {
+            /*isolementPhaseMasse.doAfterTextChanged {
                 if (isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse =
                     isolementPhaseMasse.text.toString().toFloat()
                 viewModel.selection.value = fiche
@@ -137,7 +137,7 @@ class MonophaseFragment : Fragment() {
             observations.isEnabled = false
             enregistrer.visibility = View.GONE
             terminer.visibility = View.GONE
-            btnPhoto.visibility = View.INVISIBLE
+            btnPhoto.visibility = View.INVISIBLE*/
         }
 
 
@@ -202,13 +202,13 @@ class MonophaseFragment : Fragment() {
         enregistrer.setOnClickListener {
             viewModel.getTime()
             fiche.status = 2L
-            viewModel.selection.value = fiche
+           // viewModel.selection.value = fiche
             viewModel.localSave()
             if (viewModel.isOnline(requireContext())) {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -224,13 +224,13 @@ class MonophaseFragment : Fragment() {
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()
                             fiche.status = 3L
-                            viewModel.selection.value = fiche
+                            //viewModel.selection.value = fiche
                             viewModel.localSave()
                             if (viewModel.isOnline(requireContext())) {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)

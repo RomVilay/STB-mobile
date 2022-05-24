@@ -87,19 +87,19 @@ class InfoMoteurFragment : Fragment() {
             }
             puissance.doAfterTextChanged {
                 if (puissance.text.isNotEmpty() && puissance.text.matches(regexNombres) && puissance.hasFocus()) viewModel.selection.value!!.puissance =
-                    puissance.text.toString().toFloat()
+                    puissance.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }
             bride.doAfterTextChanged {
                 if (bride.text.isNotEmpty() && bride.text.matches(regexNombres) && bride.hasFocus()) viewModel.selection.value!!.bride =
-                    bride.text.toString().toFloat()
+                    bride.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }
             vitesse.doAfterTextChanged {
                 if (vitesse.text.isNotEmpty() && vitesse.text.matches(regexNombres) && vitesse.hasFocus()) viewModel.selection.value!!.vitesse =
-                    vitesse.text.toString().toFloat()
+                    vitesse.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }

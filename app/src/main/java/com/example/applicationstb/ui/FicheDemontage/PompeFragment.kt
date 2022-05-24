@@ -92,7 +92,7 @@ class PompeFragment : Fragment() {
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
-        var fiche = viewModel.selection.value!! as DemontagePompe
+        var fiche = viewModel.selection.value!!
         if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
         if (fiche.marque !== null) marque.setText(fiche.marque!!.toString())
         if (fiche.fluide !== null) fluide.setText(fiche.fluide!!.toString())
@@ -743,7 +743,7 @@ class PompeFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -765,7 +765,7 @@ class PompeFragment : Fragment() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                              //  viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)

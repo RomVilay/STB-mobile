@@ -31,6 +31,7 @@ import retrofit2.Response
 import java.util.*
 import android.graphics.Bitmap.CompressFormat
 import android.os.SystemClock
+import com.example.applicationstb.model.FicheDemontage
 import id.zelory.compressor.Compressor
 import java.io.*
 
@@ -41,10 +42,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     var username: String? = null;
     var repository = Repository(context)
     var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
-    var listeDemontages = arrayListOf<DemontageMoteur>()
+    var listeDemontages = mutableListOf<FicheDemontage>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
-    var selection = MutableLiveData<DemontageMoteur>()
+    var selection = MutableLiveData<FicheDemontage>()
     var start = MutableLiveData<Date>()
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
@@ -54,6 +55,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
+            listeDemontages = repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.toMutableList()
         }
     }
 
@@ -74,9 +76,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun setCouplage(type: String) {
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.couplage = type
-        selection.value = fichemot
+        var fichemot = selection.value
+        fichemot!!.couplage = type
+        selection.value = fichemot!!
     }
 
 
@@ -129,7 +131,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
     fun localSave() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (selection.value!!.typeFicheDemontage == 1) {
+            repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
+           /* if (selection.value!!.typeFicheDemontage == 1) {
                 var fiche = selection.value!! as DemontagePompe
                 if (fiche.sensRotation == null) fiche.sensRotation = false
                 var f = repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)
@@ -269,7 +272,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     repository.demontageRepository!!.insertDemoMotoreducteurDatabase(fiche)
 
                 }
-            }
+            }*/
 
         }
     }
@@ -323,8 +326,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         })
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche(view: View) = runBlocking{
+   /* @RequiresApi(Build.VERSION_CODES.O)
+     fun sendFiche(view: View) = runBlocking{
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             if (isOnline(context) == true) {
                 if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
@@ -333,7 +336,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 delay(200)
                 getNameURI()
             }
-            when (selection.value!!.typeFicheDemontage) {
+            when (selection.value!!.subtype) {
                 1 -> {
                     var fiche =
                         repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)!!
@@ -1359,7 +1362,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
 
         }
 
-    }
+    }*/
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =

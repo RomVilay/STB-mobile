@@ -64,44 +64,39 @@ class FicheDemontage : Fragment() {
             var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
             viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()*/
 
-            when (viewModel.selection.value){
-                is CourantContinu -> fragmentManager.commit {
-                    replace<CCFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-                is Triphase -> fragmentManager.commit {
-                    replace<TriphaseFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-                is DemontagePompe -> fragmentManager.commit {
+            when (viewModel.selection.value!!.subtype){
+                /*1 -> fragmentManager.commit {
                     replace<PompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageMonophase -> fragmentManager.commit {
+                2 -> fragmentManager.commit {
                     replace<MonophaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-               is DemontageRotorBobine -> fragmentManager.commit {
-                    replace<RotorBobineFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-
-                is DemontageAlternateur ->fragmentManager.commit {
+                3 ->fragmentManager.commit {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageMotoreducteur ->fragmentManager.commit {
-                    replace<MotoReducteurFragment>(R.id.fragmentContainer)
+                5 -> fragmentManager.commit {
+                    replace<CCFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }*/
+                6 -> fragmentManager.commit {
+                    replace<TriphaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageMotopompe ->fragmentManager.commit {
+               /* 7 ->fragmentManager.commit {
                     replace<MotopompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageReducteur ->fragmentManager.commit {
+                8 ->fragmentManager.commit {
                     replace<ReducteurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
+                9 ->fragmentManager.commit {
+                    replace<MotoReducteurFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }*/
             }
         }
         return layout

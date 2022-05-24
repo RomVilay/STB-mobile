@@ -94,7 +94,7 @@ class CCFragment : Fragment() {
         retour.setOnClickListener {
             viewModel.retour(layout)
         }
-        var fiche = viewModel.selection.value!! as CourantContinu
+        var fiche = viewModel.selection.value!!
             if(fiche.isolementMasseInduit !== null )isopmu.setText(fiche.isolementMasseInduit.toString())
             if(fiche.isolementMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolementMassePolesPrincipaux.toString())  //pole principal
             if(fiche.isolementMassePolesAuxilliaires !== null ) isopmw.setText(fiche.isolementMassePolesAuxilliaires.toString())  //pole auxilliare
@@ -106,17 +106,13 @@ class CCFragment : Fragment() {
              if (fiche.resistancePA !== null) rI.setText(fiche.resistancePA.toString())    //resistance pôle auxilliaire
              if (fiche.resistancePC !== null) rPP.setText(fiche.resistancePC.toString())   // resistance pôle compensatoire
             // essais dynamiques
-             if (fiche.tensionInduit !== null) vU.setText(fiche.tensionInduit.toString())    //tension induit
-             if (fiche.tensionExcitation !== null) vV.setText(fiche.tensionExcitation.toString())   //tension excitation
-             if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
-             if (fiche.intensiteExcitation !== null )vVI.setText(fiche.intensiteExcitation.toString())
             if (fiche.observations !== null) observations.setText(fiche.observations.toString())
         viewModel.photos.value = fiche.photos!!.toMutableList()
         if (fiche.status!! < 3L) {
             isopmu.doAfterTextChanged {
                 if (isopmu.text.isNotEmpty() && isopmu.hasFocus() && isopmu.text.matches(regexNombres)) {
                     fiche.isolementMasseInduit =
-                        isopmu.text.toString().toFloat()
+                        isopmu.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -125,7 +121,7 @@ class CCFragment : Fragment() {
             isopmv.doAfterTextChanged {
                 if (isopmv.text.isNotEmpty() && isopmv.hasFocus() && isopmv.text.matches(regexNombres)) {
                     fiche.isolementMassePolesPrincipaux =
-                        isopmv.text.toString().toFloat()
+                        isopmv.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -134,7 +130,7 @@ class CCFragment : Fragment() {
             isopmw.doAfterTextChanged {
                 if (isopmw.text.isNotEmpty() && isopmw.hasFocus() && isopmw.text.matches(regexNombres)) {
                     fiche.isolementMassePolesAuxilliaires =
-                        isopmw.text.toString().toFloat()
+                        isopmw.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -143,7 +139,7 @@ class CCFragment : Fragment() {
             isoppU.doAfterTextChanged {
                 if (isoppU.text.isNotEmpty() && isoppU.hasFocus() && isoppU.text.matches(regexNombres)) {
                     fiche.isolementMassePolesCompensatoires =
-                        isoppU.text.toString().toFloat()
+                        isoppU.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -152,7 +148,7 @@ class CCFragment : Fragment() {
             isoppV.doAfterTextChanged {
                 if (isoppV.text.isNotEmpty() && isoppV.hasFocus() && isoppV.text.matches(regexNombres)) {
                     fiche.isolementMassePorteBalais =
-                        isoppV.text.toString().toFloat()
+                        isoppV.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -160,7 +156,7 @@ class CCFragment : Fragment() {
             }
             rU.doAfterTextChanged {
                 if (rU.text.isNotEmpty() && rU.hasFocus() && rU.text.matches(regexNombres)) {
-                    fiche.resistanceInduit = rU.text.toString().toFloat()
+                    fiche.resistanceInduit = rU.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -168,7 +164,7 @@ class CCFragment : Fragment() {
             }
             rI.doAfterTextChanged {
                 if (rI.text.isNotEmpty() && rI.hasFocus() && rI.text.matches(regexNombres)) {
-                    fiche.resistancePA = rI.text.toString().toFloat()
+                    fiche.resistancePA = rI.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -176,7 +172,7 @@ class CCFragment : Fragment() {
             }
             rV.doAfterTextChanged {
                 if (rV.text.isNotEmpty() && rV.hasFocus() && rV.text.matches(regexNombres)) {
-                    fiche.resistancePP = rV.text.toString().toFloat()
+                    fiche.resistancePP = rV.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -184,39 +180,7 @@ class CCFragment : Fragment() {
             }
             rPP.doAfterTextChanged {
                 if (rPP.text.isNotEmpty() && rPP.hasFocus() && rPP.text.matches(regexNombres)) {
-                    fiche.resistancePC = rPP.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-            vU.doAfterTextChanged {
-                if (vU.text.isNotEmpty() && vU.hasFocus() && vU.text.matches(regexNombres)) {
-                    fiche.tensionInduit = vU.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-            vV.doAfterTextChanged {
-                if (vV.text.isNotEmpty() && vV.hasFocus() && vV.text.matches(regexNombres)) {
-                    fiche.tensionExcitation = vV.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-            vUI.doAfterTextChanged {
-                if (vUI.text.isNotEmpty() && vUI.hasFocus() && vUI.text.matches(regexNombres)) {
-                    fiche.intensiteInduit = vUI.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-            vVI.doAfterTextChanged {
-                if (vVI.text.isNotEmpty() && vVI.hasFocus() && vVI.text.matches(regexNombres)) {
-                    fiche.intensiteExcitation = vVI.text.toString().toFloat()
+                    fiche.resistancePC = rPP.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -256,7 +220,7 @@ class CCFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -283,7 +247,7 @@ class CCFragment : Fragment() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)

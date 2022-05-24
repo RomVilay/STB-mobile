@@ -101,7 +101,7 @@ class ReducteurFragment : Fragment() {
         var joints = MutableLiveData<MutableList<Joint>?>()
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
-        var fiche = viewModel.selection.value!! as DemontageReducteur
+        var fiche = viewModel.selection.value!!
         //roulements
         if (fiche.roulements !== null) roulements.value = fiche.roulements else roulements.value = mutableListOf<Roulement>()
         var adapterRoulement = RoulementRedAdapter(mutableListOf<Roulement>(),{typeAv,refAv,typeAr,refAr,position ->
@@ -151,7 +151,7 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
             trMin.doAfterTextChanged {
-                if(trMin.hasFocus() && trMin.text.isNotEmpty() && trMin.text.matches(regexNombres)) fiche.trMinute = trMin.text.toString().toFloat()
+                if(trMin.hasFocus() && trMin.text.isNotEmpty() && trMin.text.matches(regexNombres)) fiche.trMinute = trMin.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -175,7 +175,7 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
             quantiteHuile.doAfterTextChanged {
-                if(quantiteHuile.hasFocus() && quantiteHuile.text.isNotEmpty() && quantiteHuile.text.matches(regexNombres)) fiche.quantiteHuile = quantiteHuile.text.toString().toFloat()
+                if(quantiteHuile.hasFocus() && quantiteHuile.text.isNotEmpty() && quantiteHuile.text.matches(regexNombres)) fiche.quantiteHuile = quantiteHuile.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -284,7 +284,7 @@ class ReducteurFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -312,7 +312,7 @@ class ReducteurFragment : Fragment() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)

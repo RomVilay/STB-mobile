@@ -31,7 +31,7 @@ class MecaFragment : Fragment() {
         // Inflate the layout for this fragment
 
         var layout = inflater.inflate(R.layout.fragment_meca, container, false)
-        var fiche = viewModel.selection.value as DemontageMoteur
+        var fiche = viewModel.selection.value!!
         //if (fiche.typeRoulementAvant !== null) fiche.typeRoulementAvant = fiche.typeRoulementAvant!!.filter { it == "" }.toTypedArray()
         //couplage
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
