@@ -31,8 +31,9 @@ import com.example.applicationstb.model.*
         ClientEntity::class,
         VehiculeEntity::class,
         RemontageEntity::class,
-        PointageEntity::class
-    ), version = 32
+        PointageEntity::class,
+        DemontageEntity::class
+    ), version = 33
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
@@ -55,6 +56,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun vehiculesDao(): VehiculeDao
     abstract fun clientDao(): ClientsDao
     abstract fun pointageDao(): PointageDao
+    abstract fun demontageDao(): DemontageDao
 
     @Volatile
     private var INSTANCE: LocalDatabase? = null

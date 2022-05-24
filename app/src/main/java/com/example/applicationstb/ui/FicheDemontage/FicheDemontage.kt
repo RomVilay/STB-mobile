@@ -28,9 +28,8 @@ class FicheDemontage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var list = arguments?.get("listDemontages") as Array<DemontageMoteur>
         viewModel.token = arguments?.get("token") as String
-        viewModel.listeDemontages = list.toCollection(ArrayList())
+        //viewModel.listeDemontages = list.toCollection(ArrayList())
         viewModel.listeDemontages = viewModel.listeDemontages.filter { it.status!! < 3 }.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)

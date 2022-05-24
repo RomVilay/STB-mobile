@@ -16,10 +16,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.Navigation
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -244,7 +241,39 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     })
                             }
                             if (fiche.type == 2L) {
-                                val resp = repository.demontageRepository!!.getDemontage(
+                                repository.demontageRepository!!.getFicheDemontage(token, fiche._id,  object : Callback<FicheDemontageResponse> {
+                                    override fun onResponse(
+                                        call: Call<FicheDemontageResponse>,
+                                        response: Response<FicheDemontageResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()!!
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                var index = repository.demontageRepository!!.getByIdDemontageLocalDatabse(resp.data!!._id)
+                                                if (index !== null){
+                                                    repository.demontageRepository!!.updateDemontageLocalDatabse(resp.data!!.toEntity())
+                                                    Log.i("info","fiche demontage: ${resp.data!!._id} mis à jour BDD")
+                                                } else {
+                                                    repository.demontageRepository!!.insertDemontageLocalDatabase(resp.data!!)
+                                                    Log.i("info","fiche demontage: ${resp.data!!._id} ajout BDD")
+                                                }
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<FicheDemontageResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                } )
+                                /*val resp = repository.demontageRepository!!.getDemontage(
                                     token,
                                     fiche._id,
                                     object : Callback<DemontageResponse> {
@@ -979,7 +1008,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         ) {
                                             Log.e("Error", "erreur ${t.message}")
                                         }
-                                    })
+                                    })*/
                             }
                             if (fiche.type == 3L) {
                                 Log.i("INFO", "fiche remontage ${fiche.numFiche} ")
@@ -1472,6 +1501,10 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
     }
 
+    suspend fun nbFichesDemontage() : Int {
+        return repository.demontageRepository!!.demontageDao.getAll().size
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun listeFicheLocal() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -1592,7 +1625,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheD(view: View) {
-        var action = AccueilDirections.versFicheD(token.value!!, username!!, demontages!!.toTypedArray())
+        var action = AccueilDirections.versFicheD(token.value!!, username!!)
         Navigation.findNavController(view).navigate(action)
     }
     fun toFicheR(view: View) {

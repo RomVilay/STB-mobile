@@ -1,23 +1,27 @@
-package com.example.applicationstb.model
+package com.example.applicationstb.localdatabase
 
-import com.example.applicationstb.localdatabase.DemontageEntity
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.FicheDemontage
+import com.example.applicationstb.model.Joint
+import com.example.applicationstb.model.Roulement
 import java.util.*
 
-class FicheDemontage  (
-    idFiche: String,
-    numDevis: String?,
-    numFiche: String?,
-    type: Long?,
-    statut: Long?,
-    client: Client?,
-    contact: String?,
-    telContact: String?,
-    techniciens: Array<String>?,
-    resp: User?,
-    dateDebut: Date?,
-    dureeTotale: Long?,
-    observations: String?,
-    photos: Array<String>?,
+@Entity(tableName = "demontage")
+class DemontageEntity (
+    @PrimaryKey
+    var _id: String,
+    var numDevis: String?,
+    var numFiche: String?,
+    var statut: Long?,
+    var client: String,
+    var contact: String?,
+    var telContact: String?,
+    var dateDebut: Date?,
+    var dureeTotale: Long?,
+    var observation: String?,
+    var photos:Array<String>?,
     var subtype: Int,
     var marque: String?,
     var typeMoteur: String?,
@@ -128,20 +132,23 @@ class FicheDemontage  (
     var quantiteHuile: String?,
     var roulements: MutableList<Roulement>?,
     var joints: MutableList<Joint>?,
-    var typeMotoreducteur: Int?,
-) : Fiche (idFiche, numDevis, numFiche, type, statut, client, resp,contact, telContact, dateDebut, dureeTotale, observations, photos, techniciens) {
-    fun toEntity(): DemontageEntity {
-        return DemontageEntity(
+    var typeMotoreducteur: Int?
+) {
+    fun toFicheDemontage(): FicheDemontage{
+        return FicheDemontage(
             _id,
             numDevis,
             numFiche,
             2,
-            client!!._id,
+            statut,
+            Client(client,null,null,null, null),
             contact,
             telContact,
+            null,
+            null,
             dateDebut,
             dureeTotale,
-            observations,
+            observation,
             photos,
             subtype,
             marque,

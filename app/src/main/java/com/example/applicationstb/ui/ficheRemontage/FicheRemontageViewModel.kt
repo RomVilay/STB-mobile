@@ -78,8 +78,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
 
     fun toFicheDemo(view: View, fiche: DemontageMoteur) {
         val action = FicheRemontageDirections.actionFicheRemontageToFicheDemontage(
-            token!!, username!!,
-            arrayOf(fiche)
+            token!!, username!!
         )
         Navigation.findNavController(view).navigate(action)
     }

@@ -19,6 +19,7 @@ import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
@@ -302,42 +303,21 @@ class Accueil : Fragment() {
             }
         }
         dm.setOnClickListener {
-            for (i in viewModel.demontages) {
-                viewModel.repository.demontageRepository!!.getFicheDemontage(viewModel.token.value!!, i._id,  object : Callback<FicheDemontageResponse> {
-                    override fun onResponse(
-                        call: Call<FicheDemontageResponse>,
-                        response: Response<FicheDemontageResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            val resp = response.body()
-                            Log.i("info", "fiche démontage de type ${resp?.data?.subtype}")
-                        } else {
-                            Log.i(
-                                "INFO",
-                                "code : ${response.code()} - erreur : ${response.message()}"
-                            )
+            lifecycleScope.launch(Dispatchers.IO) {
+                var index = viewModel.nbFichesDemontage()
+                    if (index > 0) {
+                        withContext(Dispatchers.Main) {
+                            viewModel.toFicheD(layout)
                         }
+                    } else {
+                        val mySnackbar = Snackbar.make(
+                            layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                            "Vous n'avez pas de Demontages attribués",
+                            3600
+                        )
+                        mySnackbar.show()
                     }
-
-                    override fun onFailure(
-                        call: Call<FicheDemontageResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Error", "erreur ${t.message}")
-                    }
-                } )
             }
-
-          /*  if (viewModel.demontages.size > 0) {
-                viewModel.toFicheD(layout)
-            } else {
-                val mySnackbar = Snackbar.make(
-                    layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                    "Vous n'avez pas de Demontages attribués",
-                    3600
-                )
-                mySnackbar.show()
-            }*/
         }
         cht.setOnClickListener {
             Log.i("info", viewModel.chantiers.size.toString())

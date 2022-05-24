@@ -2279,11 +2279,13 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
     var demontageMotopompeDao = db!!.demontageMotopompeDao()
     var demontageMotoreducteurDao = db!!.demontageMotoreducteurDao()
     var demontageReducteurDao = db!!.demontageReducteurDao()
+    var demontageDao = db!!.demontageDao()
 
     fun getFicheDemontage(token: String, ficheId: String, callback: Callback<FicheDemontageResponse>) {
         val call = service.getFicheDemontage(token, ficheId)
         call.enqueue(callback)
     }
+
 
     fun getDemontage(token: String, ficheId: String, callback: Callback<DemontageResponse>) {
         val call = service.getDemontage(token, ficheId)
@@ -3056,6 +3058,34 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
         var fiche: DemontageRotorBobine? = null
         call.enqueue(callback)
 
+    }
+
+    //dao demontage triphase
+    suspend fun insertDemontageLocalDatabase(demo: FicheDemontage) {
+        demontageDao!!.insertAll(demo.toEntity())
+    }
+
+    suspend fun getAllDemontageLocalDatabase(): List<DemontageEntity> {
+        return demontageDao!!.getAll()
+    }
+
+    suspend fun getByIdDemontageLocalDatabse(id: String): FicheDemontage? {
+        try {
+            if (demontageDao!!.getById(id) !== null) {
+                return demontageDao!!.getById(id).toFicheDemontage()
+            } else return null
+        } catch (e: Error) {
+            Log.i("e", e.message!!)
+            return null
+        }
+    }
+
+    suspend fun updateDemontageLocalDatabse(demo: DemontageEntity) {
+        demontageDao!!.update(demo)
+    }
+
+    suspend fun deleteDemontageLocalDatabse(demo: DemontageEntity) {
+        demontageDao!!.delete(demo)
     }
 
     //dao demontage triphase
