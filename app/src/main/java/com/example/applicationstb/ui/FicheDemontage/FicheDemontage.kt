@@ -65,11 +65,11 @@ class FicheDemontage : Fragment() {
             viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()*/
 
             when (viewModel.selection.value!!.subtype){
-                /*1 -> fragmentManager.commit {
+                1 -> fragmentManager.commit {
                     replace<PompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                2 -> fragmentManager.commit {
+                /*2 -> fragmentManager.commit {
                     replace<MonophaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }

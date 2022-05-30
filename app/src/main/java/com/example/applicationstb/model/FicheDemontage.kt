@@ -135,7 +135,7 @@ class FicheDemontage  (
             _id,
             numDevis,
             numFiche,
-            2,
+            status,
             client!!._id,
             contact,
             telContact,

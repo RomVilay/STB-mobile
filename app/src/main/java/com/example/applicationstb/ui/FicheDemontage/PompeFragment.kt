@@ -743,7 +743,7 @@ class PompeFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -761,11 +761,12 @@ class PompeFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.localSave()
+                            Log.i("info", "fiche statut ${viewModel.selection.value!!.status}")
                             if (viewModel.isOnline(requireContext())) {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                              //  viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)

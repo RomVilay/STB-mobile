@@ -10,7 +10,10 @@ import com.example.applicationstb.model.*
 import retrofit2.Callback
 
 class BodyFicheDemontage(
+                          var status: Int?,
                           var subtype: Int,
+                          var observations: String?,
+                          var photos: Array<String>?,
                           var marque: String?,
                           var typeMoteur: String?,
                           var numSerie: String?,
@@ -123,6 +126,11 @@ class BodyFicheDemontage(
                           var typeMotoreducteur: Int?) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -232,7 +240,12 @@ class BodyFicheDemontage(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(status!!)
         parcel.writeInt(subtype)
+        parcel.writeString(observations)
+        arrayOf<String>().apply {
+            parcel.readArray(String::class.java.classLoader)
+        }
         parcel.writeString(marque)
         parcel.writeString(typeMoteur)
         parcel.writeString(numSerie)
@@ -2292,7 +2305,10 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
                             demontage: FicheDemontage,
                             callback: Callback<FicheDemontageResponse>){
         var body = BodyFicheDemontage(
+            demontage.status!!.toInt(),
             demontage.subtype,
+            demontage.observations,
+            demontage.photos,
             demontage.marque,
             demontage.typeMoteur,
             demontage.numSerie,
