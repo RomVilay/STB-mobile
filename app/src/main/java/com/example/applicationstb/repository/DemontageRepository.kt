@@ -2413,7 +2413,6 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
         )
         var call = service.patchFicheDemontage(token, ficheId, body)
         call.enqueue(callback)
-
     }
 
 
