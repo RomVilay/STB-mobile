@@ -326,7 +326,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         })
     }
-   /* @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
      fun sendFiche(view: View) = runBlocking{
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             if (isOnline(context) == true) {
@@ -335,8 +335,44 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 delay(200)
                 getNameURI()
+                repository.demontageRepository!!.patchFicheDemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<FicheDemontageResponse> {
+                    override fun onResponse(
+                        call: Call<FicheDemontageResponse>,
+                        response: Response<FicheDemontageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            if (resp != null) {
+                                val mySnackbar =
+                                    Snackbar.make(view, "fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "enregistré")
+
+                            }
+                        } else {
+                            val mySnackbar =
+                                Snackbar.make(view, "erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                    response.errorBody()!!.charStream().readText()
+                                }"
+                            )
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<FicheDemontageResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Error", "${t.stackTraceToString()}")
+                        Log.e("Error", "erreur ${t.message}")
+                    }})
+            } else {
+                repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
             }
-            when (selection.value!!.subtype) {
+           /* when (selection.value!!.subtype) {
                 1 -> {
                     var fiche =
                         repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)!!
@@ -1358,11 +1394,11 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                     }
                 }
-            }
+            }*/
 
         }
 
-    }*/
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =

@@ -96,7 +96,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="numberSigned|number|text"
+                            android:inputType="number|text"
                             android:padding="5dp" />
 
                         <TextView

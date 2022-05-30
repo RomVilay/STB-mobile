@@ -90,7 +90,6 @@ class TriphaseFragment : Fragment() {
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var ter = layout.findViewById<Button>(R.id.termTri)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
-        var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!!
         if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
         if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!.toString()) else 0
@@ -244,7 +243,7 @@ class TriphaseFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -266,7 +265,7 @@ class TriphaseFragment : Fragment() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
