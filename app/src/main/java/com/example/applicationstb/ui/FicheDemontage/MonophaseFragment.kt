@@ -16,10 +16,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -31,12 +29,10 @@ import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.model.DemontageMonophase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -63,12 +59,12 @@ class MonophaseFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_monophase, container, false)
-        var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmU)
         var resistanceTravail = layout.findViewById<EditText>(R.id.isopmV)
         var resistanceDemarrage	= layout.findViewById<EditText>(R.id.rdem)
         var valeurCondensateur	= layout.findViewById<EditText>(R.id.condens)
-        var tension	= layout.findViewById<EditText>(R.id.vV)
-        var intensite	= layout.findViewById<EditText>(R.id.vW)
+        var tensionU	= layout.findViewById<EditText>(R.id.tU)
+        var tensionV	= layout.findViewById<EditText>(R.id.tV)
+        var tensionW	= layout.findViewById<EditText>(R.id.tW)
         var observations = layout.findViewById<EditText>(R.id.obs2)
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
@@ -76,47 +72,47 @@ class MonophaseFragment : Fragment() {
         var btnPhoto = layout.findViewById<Button>(R.id.photo2)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
-        var fiche = viewModel.selection.value as DemontageMonophase
-        if( fiche.isolementPhaseMasse !== null) isolementPhaseMasse.setText(fiche.isolementPhaseMasse.toString())
+        var fiche = viewModel.selection.value!!
         if( fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail.toString())
         if( fiche.resistanceDemarrage !== null ) resistanceDemarrage.setText(fiche.resistanceDemarrage.toString())
         if( fiche.valeurCondensateur !== null ) valeurCondensateur.setText(fiche.valeurCondensateur.toString())
-        if( fiche.tension !== null ) tension.setText(fiche.tension.toString())
-        if( fiche.intensite !== null ) intensite.setText(fiche.intensite.toString())
+        if( fiche.tensionU !== null ) tensionU.setText(fiche.tensionU.toString())
+        if( fiche.tensionV !== null ) tensionV.setText(fiche.tensionV.toString())
+        if( fiche.tensionW !== null ) tensionW.setText(fiche.tensionW.toString())
         if (fiche.status!! < 3) {
-            /*isolementPhaseMasse.doAfterTextChanged {
-                if (isolementPhaseMasse.text.isNotEmpty()) fiche.isolementPhaseMasse =
-                    isolementPhaseMasse.text.toString().toFloat()
-                viewModel.selection.value = fiche
-                viewModel.getTime()
-                viewModel.localSave()
-            }
+
             resistanceTravail.doAfterTextChanged {
-                if (resistanceTravail.text.isNotEmpty() && (resistanceTravail.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) ) fiche.resistanceTravail = resistanceTravail.text.toString().toFloat()
+                if (resistanceTravail.text.isNotEmpty()) fiche.resistanceTravail = resistanceTravail.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceDemarrage.doAfterTextChanged {
-                if (resistanceDemarrage.text.isNotEmpty() && (resistanceDemarrage.text.matches(regexNombres) || resistanceDemarrage.text.matches(regexInt)) ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString().toFloat()
+                if (resistanceDemarrage.text.isNotEmpty() ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             valeurCondensateur.doAfterTextChanged {
-                if (valeurCondensateur.text.isNotEmpty() && (valeurCondensateur.text.matches(regexNombres) || valeurCondensateur.text.matches(regexInt)) ) fiche.valeurCondensateur = valeurCondensateur.text.toString().toFloat()
+                if (valeurCondensateur.text.isNotEmpty()  ) fiche.valeurCondensateur = valeurCondensateur.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-            tension.doAfterTextChanged {
-                if (tension.text.isNotEmpty() && (tension.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt) )) fiche.tension = tension.text.toString().toFloat()
+            tensionU.doAfterTextChanged {
+                if (tensionU.text.isNotEmpty() ) fiche.tensionU = tensionU.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-            intensite.doAfterTextChanged {
-                if (intensite.text.isNotEmpty() && (intensite.text.matches(regexNombres) || resistanceTravail.text.matches(regexInt)) )fiche.intensite = intensite.text.toString().toFloat()
+            tensionV.doAfterTextChanged {
+                if (tensionV.text.isNotEmpty() )fiche.tensionV = tensionV.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionW.doAfterTextChanged {
+                if (tensionW.text.isNotEmpty() )fiche.tensionW = tensionV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -128,16 +124,16 @@ class MonophaseFragment : Fragment() {
                 viewModel.localSave()
             }
         }  else {
-            isolementPhaseMasse.isEnabled = false
             resistanceTravail.isEnabled = false
             resistanceDemarrage.isEnabled = false
             valeurCondensateur.isEnabled = false
-            tension.isEnabled = false
-            intensite.isEnabled = false
+            tensionU.isEnabled = false
+            tensionV.isEnabled = false
+            tensionW.isEnabled = false
             observations.isEnabled = false
             enregistrer.visibility = View.GONE
             terminer.visibility = View.GONE
-            btnPhoto.visibility = View.INVISIBLE*/
+            btnPhoto.visibility = View.INVISIBLE
         }
 
 
@@ -202,13 +198,13 @@ class MonophaseFragment : Fragment() {
         enregistrer.setOnClickListener {
             viewModel.getTime()
             fiche.status = 2L
-           // viewModel.selection.value = fiche
+            viewModel.selection.value = fiche
             viewModel.localSave()
             if (viewModel.isOnline(requireContext())) {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -224,13 +220,13 @@ class MonophaseFragment : Fragment() {
                         DialogInterface.OnClickListener { dialog, id ->
                             viewModel.getTime()
                             fiche.status = 3L
-                            //viewModel.selection.value = fiche
+                            viewModel.selection.value = fiche
                             viewModel.localSave()
                             if (viewModel.isOnline(requireContext())) {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)

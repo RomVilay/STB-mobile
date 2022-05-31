@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,17 +25,12 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.model.MediaStoreFileLoader
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Triphase
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -79,8 +73,8 @@ class TriphaseFragment : Fragment() {
         var RV = layout.findViewById<EditText>(R.id.rV)
         var RW = layout.findViewById<EditText>(R.id.rW)
         var VU = layout.findViewById<EditText>(R.id.vU)
-        var VV = layout.findViewById<EditText>(R.id.vV)
-        var VW = layout.findViewById<EditText>(R.id.vW)
+        var VV = layout.findViewById<EditText>(R.id.tU)
+        var VW = layout.findViewById<EditText>(R.id.tV)
         var VUI = layout.findViewById<EditText>(R.id.vUI)
         var VVI = layout.findViewById<EditText>(R.id.vVI)
         var VWI = layout.findViewById<EditText>(R.id.vWI)

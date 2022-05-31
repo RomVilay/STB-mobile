@@ -69,11 +69,11 @@ class FicheDemontage : Fragment() {
                     replace<PompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                /*2 -> fragmentManager.commit {
+                2 -> fragmentManager.commit {
                     replace<MonophaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                3 ->fragmentManager.commit {
+                /*3 ->fragmentManager.commit {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }

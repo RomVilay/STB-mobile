@@ -19,21 +19,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.databinding.ActivityMainBinding
-import com.example.applicationstb.model.CourantContinu
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -81,7 +76,7 @@ class CCFragment : Fragment() {
         var rPP = layout.findViewById<EditText>(R.id.RPP)   // resistance pôle compensatoire
         // essais dynamiques
         var vU = layout.findViewById<EditText>(R.id.vU)     //tension induit
-        var vV = layout.findViewById<EditText>(R.id.vV)     //tension excitation
+        var vV = layout.findViewById<EditText>(R.id.tU)     //tension excitation
         var vUI = layout.findViewById<EditText>(R.id.vUI)   //intensité induit
         var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
         var enr = layout.findViewById<Button>(R.id.enregistrerCC)

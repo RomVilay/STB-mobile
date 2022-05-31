@@ -385,7 +385,7 @@
                             android:text="Tension Excitation:" />
 
                         <EditText
-                            android:id="@+id/vV"
+                            android:id="@+id/tU"
                             android:layout_width="85dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"

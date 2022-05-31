@@ -381,7 +381,7 @@
                             android:text="V:" />
 
                         <EditText
-                            android:id="@+id/vV"
+                            android:id="@+id/tU"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -405,7 +405,7 @@
                             android:text="W:" />
 
                         <EditText
-                            android:id="@+id/vW"
+                            android:id="@+id/tV"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"

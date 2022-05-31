@@ -42,12 +42,12 @@ class MecaFragment : Fragment() {
             couplage.isEnabled = false
             txtclp.isEnabled = false
         }
-        if (fiche.couplage !== null && arrayOf<String>("Y","Δ","Autre").indexOf(fiche.couplage) == -1) txtclp.setText(fiche.couplage)
+        if (fiche.couplage !== null && arrayOf<String>("","Y","Δ","Autre").indexOf(fiche.couplage) == -1) txtclp.setText(fiche.couplage)
         txtclp.doAfterTextChanged {
            if(txtclp.text.isNotEmpty()) viewModel.selection.value!!.couplage = txtclp.text.toString()
         }
         couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Y","Δ","Autre"))
-        if (fiche.couplage !== null) couplage.setSelection(if (arrayOf<String>("Y","Δ","Autre").indexOf(fiche.couplage) >=0 ) arrayOf<String>("Y","Δ","Autre").indexOf(fiche.couplage) else 0)
+        if (fiche.couplage !== null) couplage.setSelection(if (arrayOf<String>("","Y","Δ","Autre").indexOf(fiche.couplage) >=0 ) arrayOf<String>("","Y","Δ","Autre").indexOf(fiche.couplage) else 0)
         couplage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
