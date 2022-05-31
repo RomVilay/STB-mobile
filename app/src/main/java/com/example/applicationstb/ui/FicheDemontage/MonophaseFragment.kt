@@ -59,7 +59,7 @@ class MonophaseFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_monophase, container, false)
-        var resistanceTravail = layout.findViewById<EditText>(R.id.isopmV)
+        var resistanceTravail = layout.findViewById<EditText>(R.id.isopmPP)
         var resistanceDemarrage	= layout.findViewById<EditText>(R.id.rdem)
         var valeurCondensateur	= layout.findViewById<EditText>(R.id.condens)
         var tensionU	= layout.findViewById<EditText>(R.id.tU)

@@ -3,12 +3,10 @@ package com.example.applicationstb.ui.FicheDemontage
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,11 +21,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.applicationstb.R
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
@@ -35,8 +31,6 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.applicationstb.model.DemontageMotopompe
-import com.example.applicationstb.model.DemontagePompe
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +38,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
-import java.io.OutputStream
 import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -130,14 +123,14 @@ class MotopompeFragment : Fragment() {
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         //triphase
-        var UM = layout.findViewById<EditText>(R.id.isopmU)
-        var VM = layout.findViewById<EditText>(R.id.isopmV)
-        var WM = layout.findViewById<EditText>(R.id.isopmW)
-        var UV = layout.findViewById<EditText>(R.id.isoppU)
-        var UW = layout.findViewById<EditText>(R.id.isoppV)
+        var UM = layout.findViewById<EditText>(R.id.isopmPA)
+        var VM = layout.findViewById<EditText>(R.id.isopmPP)
+        var WM = layout.findViewById<EditText>(R.id.isopmI)
+        var UV = layout.findViewById<EditText>(R.id.isoppPC)
+        var UW = layout.findViewById<EditText>(R.id.isoppPB)
         var iVW = layout.findViewById<EditText>(R.id.isoppW)
-        var RU = layout.findViewById<EditText>(R.id.rU)
-        var RV = layout.findViewById<EditText>(R.id.rV)
+        var RU = layout.findViewById<EditText>(R.id.rInduit)
+        var RV = layout.findViewById<EditText>(R.id.rPP)
         var RW = layout.findViewById<EditText>(R.id.rW)
         //mono
         var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmUe)

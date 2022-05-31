@@ -78,18 +78,30 @@
                         app:layout_constraintTop_toBottomOf="@+id/titre2" />
 
                     <TextView
+                        android:id="@+id/textView46"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/cell"
+                        android:text="Essais Dynamiques"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
+                        app:layout_constraintStart_toStartOf="@+id/linearLayout5"
+                        app:layout_constraintTop_toBottomOf="@+id/Resistances" />
+
+                    <TextView
                         android:id="@+id/titrePP"
                         android:layout_width="300dp"
                         android:layout_height="41dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="40dp"
-                        android:background="@drawable/round_top_full_grey"
+                        android:background="#B5B5B5"
                         android:gravity="center"
                         android:text=" Tensions U/V/W"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Resistances" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
                     <LinearLayout
                         android:id="@+id/linearLayout5"
@@ -139,10 +151,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="80dp"
+                        android:layout_marginTop="30dp"
                         android:text="Test Diodes"
                         android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@+id/linearLayout5"
-                        tools:layout_editor_absoluteY="549dp" />
+                        app:layout_constraintTop_toBottomOf="@+id/Resistances" />
 
                     <Switch
                         android:id="@+id/switchDiode"

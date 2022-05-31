@@ -82,7 +82,7 @@
                             android:textSize="20sp" />
 
                         <EditText
-                            android:id="@+id/isopmV"
+                            android:id="@+id/isopmPP"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
