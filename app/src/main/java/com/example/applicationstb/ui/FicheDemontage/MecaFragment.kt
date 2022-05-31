@@ -498,7 +498,7 @@ class MecaFragment : Fragment() {
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
         cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","Cassé","Absent"))
            //if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
-        if (fiche.capotV !== null) cvent.setSelection(arrayOf<String>("Bon état","Cassé","Absent").indexOf(fiche.capotV.toString()))
+        if (fiche.capotV !== null) cvent.setSelection(arrayOf<String>("","Bon état","Cassé","Absent").indexOf(fiche.capotV.toString()))
         if (fiche.status!! == 3L) cvent.isEnabled = false
         if (fiche.status!! !== 3L) {
             cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -521,7 +521,7 @@ class MecaFragment : Fragment() {
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
         vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","A changer","Absent"))
         if (fiche.status!! == 3L) vent.isEnabled = false
-        if (fiche.ventilateur !== null) vent.setSelection(arrayOf<String>("Bon état","A changer","Absent").indexOf(fiche.ventilateur.toString()))
+        if (fiche.ventilateur !== null) vent.setSelection(arrayOf<String>("","Bon état","Cassé","Absent").indexOf(fiche.ventilateur.toString()))
         if (fiche.status!! < 3L) {
             vent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {

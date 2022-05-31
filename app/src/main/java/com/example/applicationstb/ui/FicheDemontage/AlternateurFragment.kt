@@ -31,7 +31,6 @@ import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.model.DemontageAlternateur
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -41,13 +40,6 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AlternteurFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AlternateurFragment : Fragment() {
 
     private val viewModel: FicheDemontageViewModel by activityViewModels()
@@ -60,8 +52,6 @@ class AlternateurFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -72,25 +62,14 @@ class AlternateurFragment : Fragment() {
         var isolementMasseStatorPrincipalW	 = layout.findViewById<EditText>(R.id.wpm)
         var isolementMasseRotorPrincipal	 = layout.findViewById<EditText>(R.id.impRP)
         var isolementMasseStatorExcitation	 = layout.findViewById<EditText>(R.id.ipmSE)
-        var isolementMasseRotorExcitation	 = layout.findViewById<EditText>(R.id.ipmSE3)
-        var resistanceStatorPrincipalU	 = layout.findViewById<EditText>(R.id.U)
-        var resistanceStatorPrincipalV	 = layout.findViewById<EditText>(R.id.V)
-        var resistanceStatorPrincipalW	 = layout.findViewById<EditText>(R.id.W)
-        var resistanceRotorPrincipal	 = layout.findViewById<EditText>(R.id.b1b3)
-        var resistanceStatorExcitation	 = layout.findViewById<EditText>(R.id.b1b2)
-        var resistanceRotorExcitation	 = layout.findViewById<EditText>(R.id.b2b3)
-        var isolementPhasePhaseStatorPrincipalUV	 = layout.findViewById<EditText>(R.id.u)
-        var isolementPhasePhaseStatorPrincipalVW	 = layout.findViewById<EditText>(R.id.v2)
-        var isolementPhasePhaseStatorPrincipalUW	 = layout.findViewById<EditText>(R.id.w)
+        var isolementMasseRotorExcitation	 = layout.findViewById<EditText>(R.id.ipmRE)
+        var resistanceRotorPrincipal	 = layout.findViewById<EditText>(R.id.RRP)
+        var resistanceStatorExcitation	 = layout.findViewById<EditText>(R.id.RSE)
+        var resistanceRotorExcitation	 = layout.findViewById<EditText>(R.id.RRE)
         var testDiode  = layout.findViewById<Switch>(R.id.switchDiode)
-        var tensionU	 = layout.findViewById<EditText>(R.id.tu)
-        var tensionV	 = layout.findViewById<EditText>(R.id.tv)
-        var tensionW	 = layout.findViewById<EditText>(R.id.tw)
-        var intensiteU	 = layout.findViewById<EditText>(R.id.iu)
-        var intensiteV	 = layout.findViewById<EditText>(R.id.iv)
-        var intensiteW	 = layout.findViewById<EditText>(R.id.iw)
-        var tensionUExcitation	 = layout.findViewById<EditText>(R.id.tw2)
-        var tensionVExcitation	 = layout.findViewById<EditText>(R.id.tw3)
+        var tensionU	 = layout.findViewById<EditText>(R.id.u)
+        var tensionV	 = layout.findViewById<EditText>(R.id.v)
+        var tensionW	 = layout.findViewById<EditText>(R.id.w)
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
         var regexInt = Regex("^\\d+")
@@ -112,7 +91,7 @@ class AlternateurFragment : Fragment() {
         if (fiche.observations !== null) obs.setText(fiche.observations!!.toString())
         if (fiche.status!! < 3L) {
             isolementMasseStatorPrincipalU.doAfterTextChanged {
-                if (isolementMasseStatorPrincipalU.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus() && isolementMasseStatorPrincipalU.text.matches(regexNombres)) {
+                if (isolementMasseStatorPrincipalU.text.isNotEmpty() && isolementMasseStatorPrincipalU.hasFocus() ) {
                     fiche.isolementMasseStatorPrincipalU =
                         isolementMasseStatorPrincipalU.text.toString()
                     viewModel.selection.value = fiche
@@ -121,7 +100,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseStatorPrincipalV.doAfterTextChanged {
-                if (isolementMasseStatorPrincipalV.text.isNotEmpty() && isolementMasseStatorPrincipalV.hasFocus() && isolementMasseStatorPrincipalV.text.matches(regexNombres)) {
+                if (isolementMasseStatorPrincipalV.text.isNotEmpty() && isolementMasseStatorPrincipalV.hasFocus() ) {
                     fiche.isolementMasseStatorPrincipalV =
                         isolementMasseStatorPrincipalV.text.toString()
                     viewModel.selection.value = fiche
@@ -130,7 +109,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseStatorPrincipalW.doAfterTextChanged {
-                if (isolementMasseStatorPrincipalW.text.isNotEmpty() && isolementMasseStatorPrincipalW.hasFocus() && isolementMasseStatorPrincipalW.text.matches(regexNombres)) {
+                if (isolementMasseStatorPrincipalW.text.isNotEmpty() && isolementMasseStatorPrincipalW.hasFocus() ) {
                     fiche.isolementMasseStatorPrincipalW =
                         isolementMasseStatorPrincipalW.text.toString()
                     viewModel.selection.value = fiche
@@ -139,7 +118,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseStatorExcitation.doAfterTextChanged {
-                if (isolementMasseStatorExcitation.text.isNotEmpty() && isolementMasseStatorExcitation.hasFocus() && isolementMasseStatorExcitation.text.matches(regexNombres)) {
+                if (isolementMasseStatorExcitation.text.isNotEmpty() && isolementMasseStatorExcitation.hasFocus() ) {
                     fiche.isolementMasseStatorExcitation =
                         isolementMasseStatorExcitation.text.toString()
                     viewModel.selection.value = fiche
@@ -148,7 +127,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseRotorPrincipal.doAfterTextChanged {
-                if (isolementMasseRotorPrincipal.text.isNotEmpty() && isolementMasseRotorPrincipal.hasFocus() && isolementMasseRotorPrincipal.text.matches(regexNombres) ) {
+                if (isolementMasseRotorPrincipal.text.isNotEmpty() && isolementMasseRotorPrincipal.hasFocus()  ) {
                     fiche.isolementMasseRotorPrincipal =
                         isolementMasseRotorPrincipal.text.toString()
                     viewModel.selection.value = fiche
@@ -157,7 +136,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             isolementMasseRotorExcitation.doAfterTextChanged {
-                if (isolementMasseRotorExcitation.text.isNotEmpty() && isolementMasseRotorExcitation.hasFocus() && isolementMasseRotorExcitation.text.matches(regexNombres)) {
+                if (isolementMasseRotorExcitation.text.isNotEmpty() && isolementMasseRotorExcitation.hasFocus() ) {
                     fiche.isolementMasseRotorExcitation =
                         isolementMasseRotorExcitation.text.toString()
                     viewModel.selection.value = fiche
@@ -166,7 +145,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceRotorPrincipal.doAfterTextChanged {
-                if (resistanceRotorPrincipal.text.isNotEmpty() && resistanceRotorPrincipal.hasFocus() && resistanceRotorPrincipal.text.matches(regexNombres)) {
+                if (resistanceRotorPrincipal.text.isNotEmpty() && resistanceRotorPrincipal.hasFocus() ) {
                     fiche.resistanceRotorPrincipal =
                         resistanceRotorPrincipal.text.toString()
                     viewModel.selection.value = fiche
@@ -175,7 +154,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceStatorExcitation.doAfterTextChanged {
-                if (resistanceStatorExcitation.text.isNotEmpty() && resistanceStatorExcitation.hasFocus() && resistanceStatorExcitation.text.matches(regexNombres)) {
+                if (resistanceStatorExcitation.text.isNotEmpty() && resistanceStatorExcitation.hasFocus() ) {
                     fiche.resistanceStatorExcitation =
                         resistanceStatorExcitation.text.toString()
                     viewModel.selection.value = fiche
@@ -184,7 +163,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             resistanceRotorExcitation.doAfterTextChanged {
-                if (resistanceRotorExcitation.text.isNotEmpty() && resistanceRotorExcitation.hasFocus() && resistanceRotorExcitation.text.matches(regexNombres)) {
+                if (resistanceRotorExcitation.text.isNotEmpty() && resistanceRotorExcitation.hasFocus() ) {
                     fiche.resistanceRotorExcitation =
                         resistanceRotorExcitation.text.toString()
                     viewModel.selection.value = fiche
@@ -207,7 +186,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionV.doAfterTextChanged {
-                if (tensionV.text.isNotEmpty() && tensionV.hasFocus() && tensionV.text.matches(regexNombres)) {
+                if (tensionV.text.isNotEmpty() && tensionV.hasFocus() ) {
                     fiche.tensionV = tensionV.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -215,7 +194,7 @@ class AlternateurFragment : Fragment() {
                 }
             }
             tensionW.doAfterTextChanged {
-                if (tensionW.text.isNotEmpty() && tensionW.hasFocus() && tensionW.text.matches(regexNombres)) {
+                if (tensionW.text.isNotEmpty() && tensionW.hasFocus() ) {
                     fiche.tensionW = tensionW.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
@@ -237,24 +216,10 @@ class AlternateurFragment : Fragment() {
             isolementMasseStatorExcitation.isEnabled = false
             isolementMasseRotorPrincipal.isEnabled = false
             isolementMasseRotorExcitation.isEnabled = false
-            resistanceStatorPrincipalU.isEnabled = false
-            resistanceStatorPrincipalV.isEnabled = false
-            resistanceStatorPrincipalW.isEnabled = false
-            resistanceRotorPrincipal.isEnabled = false
-            resistanceStatorExcitation.isEnabled = false
-            resistanceRotorExcitation.isEnabled = false
-            isolementPhasePhaseStatorPrincipalUV.isEnabled = false
-            isolementPhasePhaseStatorPrincipalUW.isEnabled = false
-            isolementPhasePhaseStatorPrincipalVW.isEnabled = false
             testDiode.isEnabled = false
             tensionU.isEnabled = false
             tensionV.isEnabled = false
             tensionW.isEnabled = false
-            intensiteU.isEnabled = false
-            intensiteV.isEnabled = false
-            intensiteW.isEnabled = false
-            tensionUExcitation.isEnabled = false
-            tensionVExcitation.isEnabled = false
             obs.isEnabled = false
         }
 
@@ -329,7 +294,7 @@ class AlternateurFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -351,7 +316,7 @@ class AlternateurFragment : Fragment() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                               // viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
