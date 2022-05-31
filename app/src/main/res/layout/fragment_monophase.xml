@@ -204,7 +204,7 @@
                             android:textSize="20sp" />
 
                         <EditText
-                            android:id="@+id/tU"
+                            android:id="@+id/tensionV"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -229,7 +229,7 @@
                             android:textSize="20sp" />
 
                         <EditText
-                            android:id="@+id/tV"
+                            android:id="@+id/tensionW"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"

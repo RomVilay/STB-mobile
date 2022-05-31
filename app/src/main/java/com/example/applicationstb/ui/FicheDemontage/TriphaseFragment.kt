@@ -72,13 +72,13 @@ class TriphaseFragment : Fragment() {
         var RU = layout.findViewById<EditText>(R.id.rInduit)
         var RV = layout.findViewById<EditText>(R.id.rPP)
         var RW = layout.findViewById<EditText>(R.id.rW)
-        var VU = layout.findViewById<EditText>(R.id.vU)
-        var VV = layout.findViewById<EditText>(R.id.tU)
-        var VW = layout.findViewById<EditText>(R.id.tV)
         var VUI = layout.findViewById<EditText>(R.id.vUI)
         var VVI = layout.findViewById<EditText>(R.id.vVI)
         var VWI = layout.findViewById<EditText>(R.id.vWI)
-        var dessai = layout.findViewById<EditText>(R.id.tpse)
+        var tensionU = layout.findViewById<EditText>(R.id.u)
+        var tensionV = layout.findViewById<EditText>(R.id.v)
+        var tensionW = layout.findViewById<EditText>(R.id.w)
+        var isolementPhase = layout.findViewById<EditText>(R.id.isoPM)
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
@@ -94,9 +94,9 @@ class TriphaseFragment : Fragment() {
         if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
         if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
         if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
-        if (fiche.tensionU !== null) VU.setText(fiche.tensionU!!.toString()) else 0
-        if (fiche.tensionV !== null) VV.setText(fiche.tensionV!!.toString()) else 0
-        if (fiche.tensionW !== null) VW.setText(fiche.tensionW!!.toString()) else 0
+        if (fiche.tensionU !== null) tensionU.setText(fiche.tensionU!!.toString()) else 0
+        if (fiche.tensionV !== null) tensionV.setText(fiche.tensionV!!.toString()) else 0
+        if (fiche.tensionW !== null) tensionW.setText(fiche.tensionW!!.toString()) else 0
         if (fiche.observations !== null) obs.setText(fiche.observations)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         viewModel.photos.value = fiche.photos!!.toMutableList()
@@ -116,85 +116,92 @@ class TriphaseFragment : Fragment() {
 
         if (fiche.status!! < 3L) {
             UM.doAfterTextChanged {
-                if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
+                if (UM.text.isNotEmpty() && UM.hasFocus() ) fiche.isolementPhaseMasseStatorUM =
                     UM.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VM.doAfterTextChanged {
-                if (VM.text.isNotEmpty() && VM.hasFocus() && VM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorVM =
+                if (VM.text.isNotEmpty() && VM.hasFocus() ) fiche.isolementPhaseMasseStatorVM =
                     VM.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             WM.doAfterTextChanged {
-                if (WM.text.isNotEmpty() && WM.hasFocus() && WM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorWM =
+                if (WM.text.isNotEmpty() && WM.hasFocus()) fiche.isolementPhaseMasseStatorWM =
                     WM.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             UV.doAfterTextChanged {
-                if (UV.text.isNotEmpty() && UV.hasFocus() && UV.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUV =
+                if (UV.text.isNotEmpty() && UV.hasFocus() ) fiche.isolementPhasePhaseStatorUV =
                     UV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             UW.doAfterTextChanged {
-                if (UW.text.isNotEmpty() && UW.hasFocus() && UW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUW =
+                if (UW.text.isNotEmpty() && UW.hasFocus() ) fiche.isolementPhasePhaseStatorUW =
                     UW.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             iVW.doAfterTextChanged {
-                if (iVW.text.isNotEmpty() && iVW.hasFocus() && iVW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorVW =
+                if (iVW.text.isNotEmpty() && iVW.hasFocus() ) fiche.isolementPhasePhaseStatorVW =
                     iVW.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RU.doAfterTextChanged {
-                if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU =
+                if (RU.text.isNotEmpty() && RU.hasFocus() ) fiche.resistanceStatorU =
                     RU.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RV.doAfterTextChanged {
-                if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV =
+                if (RV.text.isNotEmpty() && RV.hasFocus() ) fiche.resistanceStatorV =
                     RV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RW.doAfterTextChanged {
-                if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW =
+                if (RW.text.isNotEmpty() && RW.hasFocus()) fiche.resistanceStatorW =
                     RW.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-            VU.doAfterTextChanged {
-                if (VU.text.isNotEmpty() && VU.hasFocus() && VU.text.matches(regexNombres)) fiche.tensionU =
-                    VU.text.toString()
+            tensionU.doAfterTextChanged {
+                if (tensionU.text.isNotEmpty() && tensionU.hasFocus() ) fiche.tensionU =
+                    tensionU.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-            VV.doAfterTextChanged {
-                if (VV.text.isNotEmpty() && VV.hasFocus() && VV.text.matches(regexNombres)) fiche.tensionV =
-                    VV.text.toString()
+            tensionV.doAfterTextChanged {
+                if (tensionV.text.isNotEmpty() && tensionV.hasFocus() ) fiche.tensionV =
+                    tensionV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-            VW.doAfterTextChanged {
-                if (VW.text.isNotEmpty() && VW.hasFocus() && VW.text.matches(regexNombres)) fiche.tensionW =
-                    VW.text.toString()
+            tensionW.doAfterTextChanged {
+                if (tensionW.text.isNotEmpty() && tensionW.hasFocus() ) fiche.tensionW =
+                    tensionW.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhase.doAfterTextChanged {
+                if (isolementPhase.text.isNotEmpty() && isolementPhase.hasFocus() ) fiche.isolementPhase =
+                    isolementPhase.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -215,13 +222,12 @@ class TriphaseFragment : Fragment() {
             RU.isEnabled = false
             RV.isEnabled = false
             RW.isEnabled = false
-            VU.isEnabled = false
-            VV.isEnabled = false
-            VW.isEnabled = false
+            tensionU.isEnabled = false
+            tensionV.isEnabled = false
+            tensionW.isEnabled = false
             VUI.isEnabled = false
             VVI.isEnabled = false
             VWI.isEnabled = false
-            dessai.isEnabled = false
             obs.isEnabled = false
             enr.visibility = View.GONE
             ter.visibility = View.GONE
