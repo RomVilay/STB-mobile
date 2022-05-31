@@ -70,6 +70,7 @@ class AlternateurFragment : Fragment() {
         var tensionU	 = layout.findViewById<EditText>(R.id.u)
         var tensionV	 = layout.findViewById<EditText>(R.id.v)
         var tensionW	 = layout.findViewById<EditText>(R.id.w)
+        var isolementPhases = layout.findViewById<EditText>(R.id.isoP)
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
         var regexInt = Regex("^\\d+")
@@ -88,6 +89,7 @@ class AlternateurFragment : Fragment() {
         if (fiche.tensionU !== null) tensionU.setText(fiche.tensionU.toString())
         if (fiche.tensionV !== null) tensionV.setText(fiche.tensionV.toString())
         if (fiche.tensionW !== null) tensionW.setText(fiche.tensionW.toString())
+        if (fiche.isolementPhase !== null) isolementPhases.setText(fiche.isolementPhase.toString())
         if (fiche.observations !== null) obs.setText(fiche.observations!!.toString())
         if (fiche.status!! < 3L) {
             isolementMasseStatorPrincipalU.doAfterTextChanged {
@@ -196,6 +198,15 @@ class AlternateurFragment : Fragment() {
             tensionW.doAfterTextChanged {
                 if (tensionW.text.isNotEmpty() && tensionW.hasFocus() ) {
                     fiche.tensionW = tensionW.text.toString()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            isolementPhases.doAfterTextChanged {
+                if (isolementPhases.text.isNotEmpty() && isolementPhases.hasFocus() ) {
+                    fiche.isolementPhase =
+                        isolementPhases.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()

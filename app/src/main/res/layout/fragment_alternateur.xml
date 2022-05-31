@@ -82,7 +82,7 @@
                         android:layout_width="300dp"
                         android:layout_height="41dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="40dp"
                         android:background="@drawable/round_top_full_grey"
                         android:gravity="center"
                         android:text=" Tensions U/V/W"
@@ -96,7 +96,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titrePP">
@@ -139,12 +138,11 @@
                         android:id="@+id/textView44"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="56dp"
+                        android:layout_marginStart="80dp"
                         android:text="Test Diodes"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
                         app:layout_constraintStart_toEndOf="@+id/linearLayout5"
-                        app:layout_constraintTop_toTopOf="@+id/titrePP" />
+                        tools:layout_editor_absoluteY="549dp" />
 
                     <Switch
                         android:id="@+id/switchDiode"
@@ -419,6 +417,48 @@
                                 android:gravity="center"
                                 android:inputType="numberSigned|number|text" />
                         </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/linearLayout5"
+                        app:layout_constraintTop_toBottomOf="@+id/switchDiode">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/titreIP"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:background="@drawable/round_top_full_grey"
+                                android:gravity="center"
+                                android:text="Isolement Phases"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/Resistances" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:id="@+id/isoP"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@drawable/cell"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text" />
+                        </TableRow>
+
                     </TableLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

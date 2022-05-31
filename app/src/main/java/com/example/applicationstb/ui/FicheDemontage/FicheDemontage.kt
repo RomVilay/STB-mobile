@@ -77,10 +77,10 @@ class FicheDemontage : Fragment() {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                /*5 -> fragmentManager.commit {
+                5 -> fragmentManager.commit {
                     replace<CCFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
-                }*/
+                }
                 6 -> fragmentManager.commit {
                     replace<TriphaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
