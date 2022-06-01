@@ -1483,7 +1483,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/intensité"
+                        android:id="@+id/isoPhasetitre"
                         android:layout_width="400dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
@@ -1495,7 +1495,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tensionsTri">
 
                         <TextView
-                            android:id="@+id/UI"
+                            android:id="@+id/isoPhase"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

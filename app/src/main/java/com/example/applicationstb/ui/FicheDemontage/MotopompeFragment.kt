@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.applicationstb.R
@@ -132,13 +133,17 @@ class MotopompeFragment : Fragment() {
         var RU = layout.findViewById<EditText>(R.id.rInduit)
         var RV = layout.findViewById<EditText>(R.id.rPP)
         var RW = layout.findViewById<EditText>(R.id.rW)
+        var isolementPhase = layout.findViewById<EditText>(R.id.vUI)
+        var tensionU = layout.findViewById<EditText>(R.id.tensionU)
+        var tensionV = layout.findViewById<EditText>(R.id.vVtri)
+        var tensionW = layout.findViewById<EditText>(R.id.vWtri)
         //mono
-        var isolementPhaseMasse = layout.findViewById<EditText>(R.id.isopmUe)
         var resistanceTravail = layout.findViewById<EditText>(R.id.isopmVe)
         var resistanceDemarrage = layout.findViewById<EditText>(R.id.rdem)
         var valeurCondensateur = layout.findViewById<EditText>(R.id.condens)
-        var tension = layout.findViewById<EditText>(R.id.vVe)
-        var intensite = layout.findViewById<EditText>(R.id.vWe)
+        var tensionMU = layout.findViewById<EditText>(R.id.tensionV)
+        var tensionMV = layout.findViewById<EditText>(R.id.tensionW)
+        var tensionMW = layout.findViewById<EditText>(R.id.tW)
         var fiche = viewModel.selection.value!!
         switchGarniture.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -231,6 +236,7 @@ class MotopompeFragment : Fragment() {
                     if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU!!.toString()) else 0
                     if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV!!.toString()) else 0
                     if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW!!.toString()) else 0
+                    if (fiche.isolementPhase !== null) isolementPhase.setText(fiche.isolementPhase!!.toString()) else 0
                 }
                 if (typemotopompe.selectedItem.toString() == "Monophasé") {
                     partMeca.visibility = View.VISIBLE
@@ -265,6 +271,29 @@ class MotopompeFragment : Fragment() {
         if (fiche.longueurRotativeNonComprimee !== null) longueurRotativeNonComprimee.setText(fiche.longueurRotativeNonComprimee!!.toString())
         if (fiche.longueurRotativeComprimee !== null) longueurRotativeComprimee.setText(fiche.longueurRotativeComprimee!!.toString())
         if (fiche.longueurRotativeTravail !== null) longueurRotativeTravail.setText(fiche.longueurRotativeTravail!!.toString())
+        if(fiche.typeMotopompe == 2 ){
+            if (fiche.resistanceTravail !== null) resistanceTravail.setText(fiche.resistanceTravail!!)
+            if (fiche.resistanceDemarrage !== null) resistanceDemarrage.setText(fiche.resistanceDemarrage!!)
+            if (fiche.valeurCondensateur !== null) valeurCondensateur.setText(fiche.valeurCondensateur!!)
+            if (fiche.tensionU !== null) tensionMU.setText(fiche.tensionU)
+            if (fiche.tensionV !== null) tensionMV.setText(fiche.tensionV)
+            if (fiche.tensionW !== null) tensionMW.setText(fiche.tensionW)
+        }
+        if(fiche.typeMotopompe == 1 ){
+            if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!)
+            if (fiche.isolementPhaseMasseStatorVM !== null) VM.setText(fiche.isolementPhaseMasseStatorVM!!)
+            if (fiche.isolementPhaseMasseStatorWM !== null) WM.setText(fiche.isolementPhaseMasseStatorWM!!)
+            if (fiche.isolementPhasePhaseStatorUV !== null) UV.setText(fiche.isolementPhasePhaseStatorUV!!)
+            if (fiche.isolementPhasePhaseStatorUW !== null) UW.setText(fiche.isolementPhasePhaseStatorUW!!)
+            if (fiche.isolementPhasePhaseStatorVW !== null) iVW.setText(fiche.isolementPhasePhaseStatorVW!!)
+            if (fiche.resistanceStatorU !== null) RU.setText(fiche.resistanceStatorU)
+            if (fiche.resistanceStatorV !== null) RV.setText(fiche.resistanceStatorV)
+            if (fiche.resistanceStatorW !== null) RW.setText(fiche.resistanceStatorW)
+            if (fiche.tensionU !== null) tensionU.setText(fiche.tensionU)
+            if (fiche.tensionV !== null) tensionV.setText(fiche.tensionV)
+            if (fiche.tensionW !== null) tensionW.setText(fiche.tensionW)
+            if (fiche.isolementPhase !== null) isolementPhase.setText(fiche.isolementPhase)
+        }
         if (fiche.observations !== null) obs.setText(fiche.observations!!)
         viewModel.photos.value = fiche.photos!!.toMutableList()
         var retour = layout.findViewById<Button>(R.id.retourmp)
@@ -405,123 +434,129 @@ class MotopompeFragment : Fragment() {
                 viewModel.localSave()
             }
             UM.doAfterTextChanged {
-                if (UM.text.isNotEmpty() && UM.hasFocus() && UM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorUM =
+                if (UM.text.isNotEmpty() && UM.hasFocus()) fiche.isolementPhaseMasseStatorUM =
                     UM.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             VM.doAfterTextChanged {
-                if (VM.text.isNotEmpty() && VM.hasFocus() && VM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorVM =
+                if (VM.text.isNotEmpty() && VM.hasFocus() ) fiche.isolementPhaseMasseStatorVM =
                     VM.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             WM.doAfterTextChanged {
-                if (WM.text.isNotEmpty() && WM.hasFocus() && WM.text.matches(regexNombres)) fiche.isolementPhaseMasseStatorWM =
+                if (WM.text.isNotEmpty() && WM.hasFocus() ) fiche.isolementPhaseMasseStatorWM =
                     WM.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             UV.doAfterTextChanged {
-                if (UV.text.isNotEmpty() && UV.hasFocus() && UV.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUV =
+                if (UV.text.isNotEmpty() && UV.hasFocus() ) fiche.isolementPhasePhaseStatorUV =
                     UV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             UW.doAfterTextChanged {
-                if (UW.text.isNotEmpty() && UW.hasFocus() && UW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorUW =
+                if (UW.text.isNotEmpty() && UW.hasFocus() ) fiche.isolementPhasePhaseStatorUW =
                     UW.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             iVW.doAfterTextChanged {
-                if (iVW.text.isNotEmpty() && iVW.hasFocus() && iVW.text.matches(regexNombres)) fiche.isolementPhasePhaseStatorVW =
+                if (iVW.text.isNotEmpty() && iVW.hasFocus() ) fiche.isolementPhasePhaseStatorVW =
                     iVW.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RU.doAfterTextChanged {
-                if (RU.text.isNotEmpty() && RU.hasFocus() && RU.text.matches(regexNombres)) fiche.resistanceStatorU =
+                if (RU.text.isNotEmpty() && RU.hasFocus() ) fiche.resistanceStatorU =
                     RU.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RV.doAfterTextChanged {
-                if (RV.text.isNotEmpty() && RV.hasFocus() && RV.text.matches(regexNombres)) fiche.resistanceStatorV =
+                if (RV.text.isNotEmpty() && RV.hasFocus() ) fiche.resistanceStatorV =
                     RV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             RW.doAfterTextChanged {
-                if (RW.text.isNotEmpty() && RW.hasFocus() && RW.text.matches(regexNombres)) fiche.resistanceStatorW =
+                if (RW.text.isNotEmpty() && RW.hasFocus() ) fiche.resistanceStatorW =
                     RW.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-            /*isolementPhaseMasse.doAfterTextChanged {
-                if (isolementPhaseMasse.text.isNotEmpty() && isolementPhaseMasse.hasFocus() && isolementPhaseMasse.text.matches(
-                        regexNombres
-                    )
-                ) fiche.isolementPhaseMasse =
-                    isolementPhaseMasse.text.toString().toFloat()
-                viewModel.selection.value = fiche
-                viewModel.getTime()
-                viewModel.localSave()
-            }*/
             resistanceTravail.doAfterTextChanged {
-                if (resistanceTravail.text.isNotEmpty() && resistanceTravail.hasFocus() && resistanceTravail.text.matches(
-                        regexNombres
-                    )
-                ) fiche.resistanceTravail = resistanceTravail.text.toString()
+                if (resistanceTravail.text.isNotEmpty() && resistanceTravail.hasFocus()) fiche.resistanceTravail = resistanceTravail.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             resistanceDemarrage.doAfterTextChanged {
-                if (resistanceDemarrage.text.isNotEmpty() && resistanceDemarrage.hasFocus() && resistanceDemarrage.text.matches(
-                        regexNombres
-                    )
-                ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString()
+                if (resistanceDemarrage.text.isNotEmpty() && resistanceDemarrage.hasFocus() ) fiche.resistanceDemarrage = resistanceDemarrage.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
             valeurCondensateur.doAfterTextChanged {
-                if (valeurCondensateur.text.isNotEmpty() && valeurCondensateur.hasFocus() && valeurCondensateur.text.matches(
-                        regexNombres
-                    )
-                ) fiche.valeurCondensateur = valeurCondensateur.text.toString()
+                if (valeurCondensateur.text.isNotEmpty() && valeurCondensateur.hasFocus() ) fiche.valeurCondensateur = valeurCondensateur.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
             }
-           /* tension.doAfterTextChanged {
-                if (tension.text.isNotEmpty() && tension.hasFocus() && tension.text.matches(
-                        regexNombres
-                    )
-                ) fiche.tension = tension.text.toString().toFloat()
+            tensionU.doAfterTextChanged {
+                if (tensionU.text.isNotEmpty() && tensionU.hasFocus() ) fiche.tensionU = tensionU.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
-            }*/
-          /*  intensite.doAfterTextChanged {
-                if (intensite.text.isNotEmpty() && intensite.hasFocus() && intensite.text.matches(
-                        regexNombres
-                    )
-                ) fiche.intensite = intensite.text.toString().toFloat()
+            }
+            tensionV.doAfterTextChanged {
+                if (tensionV.text.isNotEmpty() && tensionV.hasFocus()) fiche.tensionV = tensionV.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
-            }*/
+            }
+            tensionW.doAfterTextChanged {
+                if (tensionW.text.isNotEmpty() && tensionW.hasFocus()  ) fiche.tensionW = tensionW.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionMU.doAfterTextChanged {
+                if (tensionMU.text.isNotEmpty() && tensionMU.hasFocus() ) fiche.tensionU = tensionMU.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionMV.doAfterTextChanged {
+                if (tensionMV.text.isNotEmpty() && tensionMV.hasFocus()) fiche.tensionV = tensionMV.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            tensionMW.doAfterTextChanged {
+                if (tensionMW.text.isNotEmpty() && tensionMW.hasFocus()  ) fiche.tensionW = tensionMW.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
+            isolementPhase.doAfterTextChanged {
+                if (isolementPhase.text.isNotEmpty() && isolementPhase.hasFocus() ) fiche.isolementPhase =
+                    isolementPhase.text.toString()
+                viewModel.selection.value = fiche
+                viewModel.getTime()
+                viewModel.localSave()
+            }
             obs.doAfterTextChanged {
                 fiche.observations = obs.text.toString()
                 viewModel.selection.value = fiche
@@ -541,12 +576,16 @@ class MotopompeFragment : Fragment() {
             longueurRotativeNonComprimee.isEnabled = false
             longueurRotativeComprimee.isEnabled = false
             longueurRotativeTravail.isEnabled = false
-            isolementPhaseMasse.isEnabled = false
             resistanceTravail.isEnabled = false
             resistanceDemarrage.isEnabled = false
             valeurCondensateur.isEnabled = false
-            tension.isEnabled = false
-            intensite.isEnabled = false
+            tensionMU.isEnabled = false
+            tensionMV.isEnabled = false
+            tensionMW.isEnabled = false
+            tensionMU.isEnabled = false
+            tensionU.isEnabled = false
+            tensionV.isEnabled = false
+            tensionW.isEnabled = false
             UM.isEnabled = false
             VM.isEnabled = false
             WM.isEnabled = false
@@ -726,7 +765,7 @@ class MotopompeFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getNameURI()
                 }
-                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
@@ -751,7 +790,7 @@ class MotopompeFragment : Fragment() {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     viewModel.getNameURI()
                                 }
-                                //viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
+                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
                                     Snackbar.make(layout, "fiche enregistrée localement", 3600)
