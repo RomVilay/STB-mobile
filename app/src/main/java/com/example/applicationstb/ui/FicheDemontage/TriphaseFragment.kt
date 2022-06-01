@@ -73,8 +73,6 @@ class TriphaseFragment : Fragment() {
         var RV = layout.findViewById<EditText>(R.id.rPP)
         var RW = layout.findViewById<EditText>(R.id.rW)
         var VUI = layout.findViewById<EditText>(R.id.vUI)
-        var VVI = layout.findViewById<EditText>(R.id.vVI)
-        var VWI = layout.findViewById<EditText>(R.id.vWI)
         var tensionU = layout.findViewById<EditText>(R.id.u)
         var tensionV = layout.findViewById<EditText>(R.id.v)
         var tensionW = layout.findViewById<EditText>(R.id.w)
@@ -226,8 +224,6 @@ class TriphaseFragment : Fragment() {
             tensionV.isEnabled = false
             tensionW.isEnabled = false
             VUI.isEnabled = false
-            VVI.isEnabled = false
-            VWI.isEnabled = false
             obs.isEnabled = false
             enr.visibility = View.GONE
             ter.visibility = View.GONE
