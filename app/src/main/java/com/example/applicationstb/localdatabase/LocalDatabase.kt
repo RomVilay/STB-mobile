@@ -33,7 +33,7 @@ import com.example.applicationstb.model.*
         RemontageEntity::class,
         PointageEntity::class,
         DemontageEntity::class
-    ), version = 33
+    ), version = 34
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {

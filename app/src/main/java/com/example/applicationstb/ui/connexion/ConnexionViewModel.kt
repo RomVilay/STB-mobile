@@ -523,7 +523,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
-                var listRT: List<RemontageTriphaseEntity> =
+               /* var listRT: List<RemontageTriphaseEntity> =
                     repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
                 Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
                 if (listRT.size > 0) {
@@ -741,7 +741,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             })
                     }
-                }
+                }*/
                 var listDP: List<DemoPompeEntity> =
                     repository.demontageRepository!!.getAllDemontagePompeLocalDatabase()
                 Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
@@ -1317,7 +1317,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
-                var listRMP: List<RemontageMotopompeEntity> =
+               /* var listRMP: List<RemontageMotopompeEntity> =
                     repository.remontageRepository!!.getAllRemontageMotopompeLocalDatabase()
                 Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
                 if (listRMP.size > 0) {
@@ -1463,7 +1463,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
                             })
                     }
-                }
+                }*/
             }
         }
     }

@@ -119,13 +119,13 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
             if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2 || selection.value!!.typeFicheRemontage == 8) {
-                var fiche = selection.value!!
+            /*    var fiche = selection.value!!
                 var remo = repository.remontageRepository!!.getByIdRemoLocalDatabse(fiche._id)
                 if (remo !== null) {
-                    repository.remontageRepository!!.updateRemoLocalDatabse(fiche.toRemoEntity())
+                    repository.remontageRepository!!.updateRemoLocalDatabse(fiche.to)
                 } else {
                     repository.remontageRepository!!.insertRemoLocalDatabase(fiche)
-                }
+                }*/
             }
         }
     }
@@ -204,7 +204,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.typeFicheRemontage == 5) {
             var c = selection.value!! as RemontageCourantC
             if (isOnline(context) && token !== "") {
-                val resp = repository.remontageRepository!!.patchRemontageCC(
+               /* val resp = repository.remontageRepository!!.patchRemontageCC(
                     token!!,
                     selection.value!!._id,
                     c,
@@ -237,7 +237,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             val mySnackbar = Snackbar.make(view, "erreur d'enregistrement", 3600)
                             mySnackbar.show()
                         }
-                    })
+                    })*/
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
                     var tri = repository.remontageRepository!!.getByIdRemoCCLocalDatabse(selection.value!!._id)
@@ -254,7 +254,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
             var c = selection.value!!
             if (isOnline(context) && token !== "") {
-                val resp = repository.remontageRepository!!.patchRemontage(
+                /*val resp = repository.remontageRepository!!.patchRemontage(
                     token!!,
                     selection.value!!._id,
                     c,
@@ -287,14 +287,14 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             val mySnackbar = Snackbar.make(view, "erreur d'enregistrement", 3600)
                             mySnackbar.show()
                         }
-                    })
+                    })*/
             } else {
                 viewModelScope.launch(Dispatchers.IO) {
                     var tri = repository.remontageRepository!!.getByIdRemoLocalDatabse(selection.value!!._id)
                     if (tri !== null) {
-                        repository.remontageRepository!!.updateRemoLocalDatabse(c.toRemoEntity())
+                     //   repository.remontageRepository!!.updateRemoLocalDatabse(c.toRemoEntity())
                     } else {
-                        repository.remontageRepository!!.insertRemoLocalDatabase(c)
+                       // repository.remontageRepository!!.insertRemoLocalDatabase(c)
                     }
                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                     mySnackbar.show()

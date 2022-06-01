@@ -163,7 +163,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         var fiche = i as RemontageTriphase
                         repository.remontageRepository!!.deleteRemontageTriphaseLocalDatabse(fiche.toEntity())
                     } else {
-                        repository.remontageRepository!!.deleteRemontageLocalDatabse(i.toRemoEntity())
+                        //repository.remontageRepository!!.deleteRemontageLocalDatabse(i.to)
                     }
                 }
                 remontages.clear()
@@ -252,7 +252,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                 var index = repository.demontageRepository!!.getByIdDemontageLocalDatabse(resp.data!!._id)
                                                 if (index !== null){
                                                     repository.demontageRepository!!.updateDemontageLocalDatabse(resp.data!!.toEntity())
-                                                    Log.i("info","fiche demontage: ${resp.data!!._id} mis à jour BDD")
                                                 } else {
                                                     repository.demontageRepository!!.insertDemontageLocalDatabase(resp.data!!)
                                                     Log.i("info","fiche demontage: ${resp.data!!._id} ajout BDD")
@@ -1023,6 +1022,15 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             if (response.code() == 200) {
                                                 val resp = response.body()
                                                 if (resp != null) {
+                                                    viewModelScope.launch(Dispatchers.IO) {
+                                                        var index = repository.remontageRepository!!.getByIdRemoLocalDatabse(resp.data!!._id)
+                                                        if (index !== null){
+                                                            repository.remontageRepository!!.updateRemoLocalDatabse (resp.data!!.toEntity())
+                                                        } else {
+                                                            repository.remontageRepository!!.insertRemoLocalDatabase(resp.data!!)
+                                                            Log.i("info","fiche demontage: ${resp.data!!._id} ajout BDD")
+                                                        }
+                                                    }
                                                     /* if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 9) {
                                                      val demoTri = repository.repositoryRemontage.getRemontageMotoreducteur(
                                                          token,
@@ -1177,7 +1185,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                  )
                                                              }
                                                          })
-                                                 }*/
+                                                 }
                                                     if (resp.data!!.typeFicheRemontage !== null && (resp.data!!.typeFicheRemontage!! == 6 || resp.data!!.typeFicheRemontage!! == 7 || resp.data!!.typeFicheRemontage!! == 9)) {
                                                         Log.i(
                                                             "info",
@@ -1260,8 +1268,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                         )
                                                                     }
                                                                 })
-                                                    }
-                                                    if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 5) {
+                                                    }*/
+                                                    /*if (resp.data!!.typeFicheRemontage !== null && resp.data!!.typeFicheRemontage!! == 5) {
                                                         val demoTri = repository.remontageRepository!!.getRemontageCC(
                                                             token,
                                                             resp.data!!._id,
@@ -1409,8 +1417,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 }
 
                                                             })
-                                                    }
+                                                    } */
                                                 }
+                                            }   else {
+                                                Log.i(
+                                                    "INFO",
+                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                )
                                             }
                                         }
 
@@ -2141,263 +2154,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 })
                         }
                     }
-                    var listRT: List<RemontageTriphaseEntity> =
-                        repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
-                    Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
-                    if (listRT.size > 0) {
-                        for (fiche in listRT) {
-                            var dt = fiche.toRTriphase()
-                            var photos = dt.photos?.toMutableList()
-                            var iter = photos?.listIterator()
-                            while (iter?.hasNext() == true) {
-                                var name = iter.next()
-                                Log.i(
-                                    "INFO",
-                                    name.contains(dt.numFiche!!)
-                                        .toString() + " fichier ${name} - numfiche ${dt.numFiche!!}"
-                                )
-                                if (name.contains(dt.numFiche!!)) {
-                                    Log.i("INFO", "fichier à upload : ${name}")
-                                    //var test = getPhotoFile(name)
-                                    var job =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            getNameURI()
-                                        }
-                                    job.join()
-                                    var job2 =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to = File(dir, imageName.value!!.name!!)
-                                                iter.set(imageName.value!!.name!!)
-                                                sendPhoto(from)
-                                                Log.i(
-                                                    "INFO",
-                                                    from.exists()
-                                                        .toString() + " - path ${from.absolutePath}"
-                                                )
-                                                if (from.exists()) from.renameTo(to)
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                    job2.join()
-                                }
-                            }
-                            dt.photos = photos?.toTypedArray()
-                            val resp = repository.remontageRepository!!.patchRemontageTriphase(
-                                token,
-                                dt._id,
-                                dt,
-                                object : Callback<RemontageTriphaseResponse> {
-                                    override fun onResponse(
-                                        call: Call<RemontageTriphaseResponse>,
-                                        response: Response<RemontageTriphaseResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            val resp = response.body()
-                                            if (resp != null) {
-                                                Log.i("INFO", "fiche enregistrée")
-                                            }
-                                            viewModelScope.launch(Dispatchers.IO) {
-                                                repository.remontageRepository!!.deleteRemontageTriphaseLocalDatabse(
-                                                    fiche
-                                                )
-                                            }
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()}"
-                                            )
-                                        }
-                                    }
-
-                                    override fun onFailure(
-                                        call: Call<RemontageTriphaseResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "${t.stackTraceToString()}")
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
-                        }
-                    }
-                    var listRCC: List<RemontageCCEntity> =
-                        repository.remontageRepository!!.getAllRemontageCCLocalDatabase()
-                    Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
-                    if (listRCC.size > 0) {
-                        for (fiche in listRCC) {
-                            var rc = fiche.toRCourantC()
-                            var photos = rc.photos?.toMutableList()
-                            var iter = photos?.listIterator()
-                            while (iter?.hasNext() == true) {
-                                var name = iter.next()
-                                Log.i("INFO", name.contains(rc.numFiche!!).toString())
-                                if (name.contains(rc.numFiche!!)) {
-                                    Log.i("INFO", "fichier à upload : ${name}")
-                                    //var test = getPhotoFile(name)
-                                    var job =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            getNameURI()
-                                        }
-                                    job.join()
-                                    var job2 =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to = File(dir, imageName.value!!.name!!)
-                                                iter.set(imageName.value!!.name!!)
-                                                sendPhoto(from)
-                                                Log.i(
-                                                    "INFO",
-                                                    from.exists()
-                                                        .toString() + " - path ${from.absolutePath}"
-                                                )
-                                                if (from.exists()) from.renameTo(to)
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                    job2.join()
-                                }
-                            }
-                            rc.photos = photos?.toTypedArray()
-                            val resp = repository.remontageRepository!!.patchRemontageCC(
-                                token,
-                                rc._id,
-                                rc,
-                                object : Callback<RemontageCCResponse> {
-                                    override fun onResponse(
-                                        call: Call<RemontageCCResponse>,
-                                        response: Response<RemontageCCResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            val resp = response.body()
-                                            if (resp != null) {
-                                                Log.i("INFO", "fiche enregistrée")
-                                            }
-                                            viewModelScope.launch(Dispatchers.IO) {
-                                                repository.remontageRepository!!.deleteRemontageCCLocalDatabse(
-                                                    fiche
-                                                )
-                                            }
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()}"
-                                            )
-                                        }
-                                    }
-
-                                    override fun onFailure(
-                                        call: Call<RemontageCCResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "${t.stackTraceToString()}")
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
-                        }
-                    }
-                    var listRm: List<RemontageEntity> =
-                        repository.remontageRepository!!.getAllRemontageLocalDatabase()
-                    Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
-                    if (listRm.size > 0) {
-                        for (fiche in listRm) {
-                            var rc = fiche.toRemo()
-                            var photos = rc.photos?.toMutableList()
-                            var iter = photos?.listIterator()
-                            while (iter?.hasNext() == true) {
-                                var name = iter.next()
-                                Log.i("INFO", name.contains(rc.numFiche!!).toString())
-                                if (name.contains(rc.numFiche!!)) {
-                                    Log.i("INFO", "fichier à upload : ${name}")
-                                    //var test = getPhotoFile(name)
-                                    var job =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            getNameURI()
-                                        }
-                                    job.join()
-                                    var job2 =
-                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to = File(dir, imageName.value!!.name!!)
-                                                iter.set(imageName.value!!.name!!)
-                                                sendPhoto(from)
-                                                Log.i(
-                                                    "INFO",
-                                                    from.exists()
-                                                        .toString() + " - path ${from.absolutePath}"
-                                                )
-                                                if (from.exists()) from.renameTo(to)
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                    job2.join()
-                                    delay(200)
-                                }
-                            }
-                            rc.photos = photos?.toTypedArray()
-                            val resp = repository.remontageRepository!!.patchRemontage(
-                                token,
-                                rc._id,
-                                rc,
-                                object : Callback<RemontageResponse> {
-                                    override fun onResponse(
-                                        call: Call<RemontageResponse>,
-                                        response: Response<RemontageResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            val resp = response.body()
-                                            if (resp != null) {
-                                                Log.i("INFO", "fiche enregistrée")
-                                            }
-                                            viewModelScope.launch(Dispatchers.IO) {
-                                                repository.remontageRepository!!.deleteRemontageLocalDatabse(
-                                                    fiche
-                                                )
-                                            }
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()}"
-                                            )
-                                        }
-                                    }
-
-                                    override fun onFailure(
-                                        call: Call<RemontageResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "${t.stackTraceToString()}")
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
-                        }
-                    }
                     var listDP: List<DemoPompeEntity> =
                         repository.demontageRepository!!.getAllDemontagePompeLocalDatabase()
                     Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
@@ -3052,6 +2808,263 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         }
                     }
                     Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
+                    /*var listRT: List<RemontageTriphaseEntity> =
+                        repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
+                    Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
+                    if (listRT.size > 0) {
+                        for (fiche in listRT) {
+                            var dt = fiche.toRTriphase()
+                            var photos = dt.photos?.toMutableList()
+                            var iter = photos?.listIterator()
+                            while (iter?.hasNext() == true) {
+                                var name = iter.next()
+                                Log.i(
+                                    "INFO",
+                                    name.contains(dt.numFiche!!)
+                                        .toString() + " fichier ${name} - numfiche ${dt.numFiche!!}"
+                                )
+                                if (name.contains(dt.numFiche!!)) {
+                                    Log.i("INFO", "fichier à upload : ${name}")
+                                    //var test = getPhotoFile(name)
+                                    var job =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                        }
+                                    job.join()
+                                    var job2 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            try {
+                                                val dir =
+                                                    Environment.getExternalStoragePublicDirectory(
+                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                    )
+                                                val from = File(
+                                                    dir,
+                                                    name
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                iter.set(imageName.value!!.name!!)
+                                                sendPhoto(from)
+                                                Log.i(
+                                                    "INFO",
+                                                    from.exists()
+                                                        .toString() + " - path ${from.absolutePath}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
+                                        }
+                                    job2.join()
+                                }
+                            }
+                            dt.photos = photos?.toTypedArray()
+                            val resp = repository.remontageRepository!!.patchRemontageTriphase(
+                                token,
+                                dt._id,
+                                dt,
+                                object : Callback<RemontageTriphaseResponse> {
+                                    override fun onResponse(
+                                        call: Call<RemontageTriphaseResponse>,
+                                        response: Response<RemontageTriphaseResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()
+                                            if (resp != null) {
+                                                Log.i("INFO", "fiche enregistrée")
+                                            }
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                repository.remontageRepository!!.deleteRemontageTriphaseLocalDatabse(
+                                                    fiche
+                                                )
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<RemontageTriphaseResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
+                        }
+                    }
+                    var listRCC: List<RemontageCCEntity> =
+                        repository.remontageRepository!!.getAllRemontageCCLocalDatabase()
+                    Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
+                    if (listRCC.size > 0) {
+                        for (fiche in listRCC) {
+                            var rc = fiche.toRCourantC()
+                            var photos = rc.photos?.toMutableList()
+                            var iter = photos?.listIterator()
+                            while (iter?.hasNext() == true) {
+                                var name = iter.next()
+                                Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                                if (name.contains(rc.numFiche!!)) {
+                                    Log.i("INFO", "fichier à upload : ${name}")
+                                    //var test = getPhotoFile(name)
+                                    var job =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                        }
+                                    job.join()
+                                    var job2 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            try {
+                                                val dir =
+                                                    Environment.getExternalStoragePublicDirectory(
+                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                    )
+                                                val from = File(
+                                                    dir,
+                                                    name
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                iter.set(imageName.value!!.name!!)
+                                                sendPhoto(from)
+                                                Log.i(
+                                                    "INFO",
+                                                    from.exists()
+                                                        .toString() + " - path ${from.absolutePath}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
+                                        }
+                                    job2.join()
+                                }
+                            }
+                            rc.photos = photos?.toTypedArray()
+                            val resp = repository.remontageRepository!!.patchRemontageCC(
+                                token,
+                                rc._id,
+                                rc,
+                                object : Callback<RemontageCCResponse> {
+                                    override fun onResponse(
+                                        call: Call<RemontageCCResponse>,
+                                        response: Response<RemontageCCResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()
+                                            if (resp != null) {
+                                                Log.i("INFO", "fiche enregistrée")
+                                            }
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                repository.remontageRepository!!.deleteRemontageCCLocalDatabse(
+                                                    fiche
+                                                )
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<RemontageCCResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
+                        }
+                    }
+                    var listRm: List<RemontageEntity> =
+                        repository.remontageRepository!!.getAllRemontageLocalDatabase()
+                    Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
+                    if (listRm.size > 0) {
+                        for (fiche in listRm) {
+                            var rc = fiche.toRemo()
+                            var photos = rc.photos?.toMutableList()
+                            var iter = photos?.listIterator()
+                            while (iter?.hasNext() == true) {
+                                var name = iter.next()
+                                Log.i("INFO", name.contains(rc.numFiche!!).toString())
+                                if (name.contains(rc.numFiche!!)) {
+                                    Log.i("INFO", "fichier à upload : ${name}")
+                                    //var test = getPhotoFile(name)
+                                    var job =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            getNameURI()
+                                        }
+                                    job.join()
+                                    var job2 =
+                                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                                            try {
+                                                val dir =
+                                                    Environment.getExternalStoragePublicDirectory(
+                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                                    )
+                                                val from = File(
+                                                    dir,
+                                                    name
+                                                )
+                                                val to = File(dir, imageName.value!!.name!!)
+                                                iter.set(imageName.value!!.name!!)
+                                                sendPhoto(from)
+                                                Log.i(
+                                                    "INFO",
+                                                    from.exists()
+                                                        .toString() + " - path ${from.absolutePath}"
+                                                )
+                                                if (from.exists()) from.renameTo(to)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
+                                            }
+                                        }
+                                    job2.join()
+                                    delay(200)
+                                }
+                            }
+                            rc.photos = photos?.toTypedArray()
+                            val resp = repository.remontageRepository!!.patchRemontage(
+                                token,
+                                rc._id,
+                                rc,
+                                object : Callback<RemontageResponse> {
+                                    override fun onResponse(
+                                        call: Call<RemontageResponse>,
+                                        response: Response<RemontageResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()
+                                            if (resp != null) {
+                                                Log.i("INFO", "fiche enregistrée")
+                                            }
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                repository.remontageRepository!!.deleteRemontageLocalDatabse(
+                                                    fiche
+                                                )
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<RemontageResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
+                        }
+                    }
                     var listRMP: List<RemontageMotopompeEntity> =
                         repository.remontageRepository!!.getAllRemontageMotopompeLocalDatabase()
                     Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
@@ -3215,7 +3228,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 })
                         }
-                    }
+                    }*/
                 }
             } else {
                 var job =

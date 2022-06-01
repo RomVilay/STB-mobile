@@ -26,25 +26,7 @@ open class Remontage(
 ) : Fiche(
     idFiche, numDevis, numFiche, type, statut, client, resp,contact, telContact, dateDebut, dureeTotale, observations, photos, techniciens
 ) {
-    fun toRemoEntity(): RemontageEntity {
-        return RemontageEntity(
-            _id,
-            numDevis,
-            numFiche,
-            type,
-            status,
-            client!!._id,
-            contact,
-            telContact,
-            dureeTotale,
-            observations,
-            photos,
-            typeFicheRemontage,
-            remontageRoulement,
-            collageRoulementPorteeArbre,
-            collageRoulementFlasque
-        )
-    }
+
 }
 
 class RemontageTriphase(
@@ -747,23 +729,5 @@ class RemontageReducteur(
     collageRoulementPorteeArbre,
     collageRoulementFlasque
 ) {
-    fun toEntity(): RemontageEntity {
-        return RemontageEntity(
-            _id,
-            numDevis!!,
-            numFiche,
-            type,
-            status,
-            client!!._id,
-            contact,
-            telContact,
-            dureeTotale,
-            observations,
-            photos,
-            typeFicheRemontage,
-            remontageRoulement,
-            collageRoulementPorteeArbre,
-            collageRoulementFlasque,
-        )
-    }
+
 }
