@@ -32,15 +32,16 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
+import com.example.applicationstb.model.FicheRemontage
 
 class FicheRemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
     var token: String? = null;
     var username: String? = null;
     var repository = Repository(context)
-    var listeRemontages = arrayListOf<Remontage>()
+    var listeRemontages = mutableListOf<FicheRemontage>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
-    val selection = MutableLiveData<Remontage>()
+    val selection = MutableLiveData<FicheRemontage>()
     var start = MutableLiveData<Date>()
     var listeDemo = MutableLiveData<Array<DemontageMoteur>?>(arrayOf())
     val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
@@ -50,6 +51,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
+            listeRemontages = repository.remontageRepository!!.getAllRemontageLocalDatabase().map {it.toFicheRemo()}.toMutableList()
         }
     }
 
@@ -99,7 +101,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         Log.i("INFO", "quick save")
         getTime()
         viewModelScope.launch(Dispatchers.IO) {
-            if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9) {
+            repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
+            /*if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9) {
                 var fiche = selection.value!! as RemontageTriphase
                 var tri = repository.remontageRepository!!.getByIdRemoTriLocalDatabse(selection.value!!._id)
                 if (tri !== null) {
@@ -126,7 +129,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 } else {
                     repository.remontageRepository!!.insertRemoLocalDatabase(fiche)
                 }*/
-            }
+            }*/
         }
     }
 
@@ -137,8 +140,47 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
             }
             delay(200)
+            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                repository.remontageRepository!!.patchRemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<RemontageResponse>{
+                    override fun onResponse(
+                        call: Call<RemontageResponse>,
+                        response: Response<RemontageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            if (resp != null) {
+                                val mySnackbar =
+                                    Snackbar.make(view, "fiche enregistrée", 3600)
+                                mySnackbar.show()
+                                Log.i("INFO", "enregistré")
+
+                            }
+                        } else {
+                            val mySnackbar =
+                                Snackbar.make(view, "erreur d'enregistrement", 3600)
+                            mySnackbar.show()
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                    response.errorBody()!!.charStream().readText()
+                                }"
+                            )
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<RemontageResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Error", "${t.stackTraceToString()}")
+                        Log.e("Error", "erreur ${t.message}")
+                    }})
+            }
+        } else {
+            repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
         }
-        if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
+
+        /*if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
             var t = selection.value!! as RemontageTriphase
             if (isOnline(context) && token !== "") {
                 val resp = repository.remontageRepository!!.patchRemontageTriphase(
@@ -300,11 +342,11 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                     mySnackbar.show()
                 }
             }
-        }
+        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getListeDemontage(): Array<DemontageMoteur> = runBlocking{
+    /*fun getListeDemontage(): Array<DemontageMoteur> = runBlocking{
         var liste = mutableListOf<DemontageMoteur>()
             if (isOnline(context) && sharedPref.getBoolean("connected",false)) {
                 var job = viewModelScope.async {
@@ -332,7 +374,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 Log.i("INFO", "fiches ${liste.size}")
                return@runBlocking liste.toTypedArray()
             } else {
-                Log.i("info","fiche sélectionnée de type ${selection.value?.typeFicheRemontage}")
                 /*if (selection.value!!.typeFicheRemontage == 1) {
                     viewModelScope.launch(Dispatchers.IO) {
                         var list = repository.getAllDemontagePompeLocalDatabase()
@@ -411,9 +452,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 else{}*/
             }
         return@runBlocking liste.toTypedArray()
-    }
+    }*/
 
-    fun getFichesDemontage(id: String) : DemontageMoteur? {
+    /*fun getFichesDemontage(id: String) : DemontageMoteur? {
         var demo = MutableLiveData<DemontageMoteur>()
         runBlocking {
             repository.demontageRepository!!.getDemontage(token!!, id, object: Callback<DemontageResponse> {
@@ -658,7 +699,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             })
         }
         return demo.value
-    }
+    }*/
     suspend fun getPhotoFile(photoName: String): String? = runBlocking {
         var file = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)

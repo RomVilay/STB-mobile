@@ -34,9 +34,7 @@ class FicheRemontage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //viewModel = ViewModelProvider(this).get(FicheRemontageViewModel::class.java)
-        var list = arguments?.get("listRemontages") as Array<Remontage>
         viewModel.token = arguments?.get("token") as String
-        viewModel.listeRemontages = list.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
@@ -128,7 +126,7 @@ class FicheRemontage : Fragment() {
                 )
                 mySnackbar.show()
             } else {
-                btnFichesD.visibility = View.VISIBLE
+                /*btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
                 var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }
                 if (demo!!.typeFicheRemontage == 6 || demo!!.typeFicheRemontage == 7 || demo!!.typeFicheRemontage == 9) {
@@ -763,13 +761,11 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
 
                 }
-                if (viewModel.selection.value !== null && viewModel.isOnline(viewModel.context)) viewModel.getListeDemontage()
+                if (viewModel.selection.value !== null && viewModel.isOnline(viewModel.context)) viewModel.getListeDemontage()*/
+                layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
+                layout.findViewById<CardView>(R.id.essaisSats).visibility = View.VISIBLE
                 layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
                 layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
-
-
-
-
                 //infoMoteur.visibility = View.VISIBLE
                 //essaisDynamiques.visibility = View.VISIBLE
             }
@@ -782,12 +778,12 @@ class FicheRemontage : Fragment() {
         btnquitter.setOnClickListener {
             viewModel.retour(layout)
         }
-        btnFichesD.setOnClickListener {
+        /*btnFichesD.setOnClickListener {
             if (context?.let { it1 -> viewModel.isOnline(it1) } == true) {
                 viewModel.getListeDemontage()
             }
-        }
-        btnDemo.setOnClickListener {
+        }*/
+       /* btnDemo.setOnClickListener {
             // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
             if (viewModel.isOnline(viewModel.context)) {
                 runBlocking {
@@ -828,7 +824,7 @@ class FicheRemontage : Fragment() {
                 )
                 mySnackbar.show()
             }
-        }
+        }*/
 
 
         spinnerMnt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

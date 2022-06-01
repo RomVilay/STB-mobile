@@ -1517,6 +1517,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     suspend fun nbFichesDemontage() : Int {
         return repository.demontageRepository!!.demontageDao.getAll().size
     }
+    suspend fun nbFichesRemontage() : Int {
+        return repository.remontageRepository!!.remontageDao.getAll().size
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun listeFicheLocal() {
@@ -1643,7 +1646,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
     fun toFicheR(view: View) {
         var action =
-            AccueilDirections.versFicheRemontage(token.value!!, username!!, remontages!!.toTypedArray())
+            AccueilDirections.versFicheRemontage(token.value!!, username!!)
         Navigation.findNavController(view).navigate(action)
     }
     fun toBobinage(view: View) {

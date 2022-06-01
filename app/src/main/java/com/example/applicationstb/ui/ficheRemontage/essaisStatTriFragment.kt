@@ -37,7 +37,7 @@ class essaisStatTriFragment : Fragment() {
         // Inflate the layout for this fragment
         //viewModel = ViewModelProvider(this).get(FicheRemontageViewModel::class.java)
         var layout = inflater.inflate(R.layout.fragment_essais_stat_tri, container, false)
-        var fiche = viewModel.selection.value!! as RemontageTriphase
+        var fiche = viewModel.selection.value!!
         val spiIsoPM = layout.findViewById<Spinner>(R.id.spinnerIsoPMT)
         spiIsoPM.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>(" ","500","1000","2500","5000"))
         val spiIsoP = layout.findViewById<Spinner>(R.id.spinnerIsoP)
@@ -58,7 +58,6 @@ class essaisStatTriFragment : Fragment() {
         var resV = layout.findViewById<EditText>(R.id.ResV)
         var resW = layout.findViewById<EditText>(R.id.ResW)
             if (fiche.isolementPhase !== null) spiIsoP.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementPhase!!.toInt().toString()))
-            if (fiche.isolementPhaseMasse !== null) spiIsoPM.setSelection(arrayOf<String>(" ","500","1000","2500","5000").indexOf(fiche.isolementPhaseMasse!!.toInt().toString()))
           /*  if (fiche.isolementPMStatorU !== null) isoPMSU.setText(fiche.isolementPMStatorU.toString())
             if (fiche.isolementPMStatorV !== null) isoPMSV.setText(fiche.isolementPMStatorV.toString())
             if (fiche.isolementPMStatorW !== null) isoPMSW.setText(fiche.isolementPMStatorW.toString())
@@ -88,10 +87,10 @@ class essaisStatTriFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(spiIsoP.selectedItem.toString() !== " ") fiche.isolementPhase = spiIsoP.selectedItem.toString().toFloat()
+             /*   if(spiIsoP.selectedItem.toString() !== " ") fiche.isolementPhase = spiIsoP.selectedItem.toString().toFloat()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
-                viewModel.quickSave()
+                viewModel.quickSave()*/
             }
         }
         var regex = Regex.fromLiteral("""\d{0,2}(\.\d{1,2})?""")
@@ -169,19 +168,19 @@ class essaisStatTriFragment : Fragment() {
             viewModel.quickSave()
         }*/
         resV.doAfterTextChanged {
-            if (resV.text.isNotEmpty() ) fiche.resistanceStatorV = resV.text.toString().toFloat()
+            if (resV.text.isNotEmpty() ) fiche.resistanceStatorV = resV.text.toString()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.quickSave()
         }
         resU.doAfterTextChanged {
-            if (resU.text.isNotEmpty() ) fiche.resistanceStatorU = resU.text.toString().toFloat()
+            if (resU.text.isNotEmpty() ) fiche.resistanceStatorU = resU.text.toString()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.quickSave()
         }
         resW.doAfterTextChanged {
-            if (resW.text.isNotEmpty() ) fiche.resistanceStatorW = resW.text.toString().toFloat()
+            if (resW.text.isNotEmpty() ) fiche.resistanceStatorW = resW.text.toString()
             viewModel.selection.value = fiche
             viewModel.getTime()
             viewModel.quickSave()

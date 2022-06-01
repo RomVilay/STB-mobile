@@ -335,7 +335,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
                 delay(200)
                 getNameURI()
-                Log.i("info","statut ${selection.value!!.status}")
                 repository.demontageRepository!!.patchFicheDemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<FicheDemontageResponse> {
                     override fun onResponse(
                         call: Call<FicheDemontageResponse>,

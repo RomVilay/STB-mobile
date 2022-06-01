@@ -64,7 +64,7 @@
                 android:id="@+id/infoMoteur"
                 android:layout_width="549dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -289,12 +289,11 @@
                 android:id="@+id/essaisDynamiques"
                 android:layout_width="549dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/titreED"
@@ -652,8 +651,7 @@
                             app:layout_constraintTop_toTopOf="@+id/radioInduit" />
 
                         <TableLayout
-                            android:id="@+id/TRotoV
-    "
+                            android:id="@+id/TRotoV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -710,17 +708,13 @@
                         </TableLayout>
 
                         <TableLayout
-                            android:id="@+id/TIndV
-    "
+                            android:id="@+id/TIndV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/TRotoV
-    "
-                            app:layout_constraintStart_toEndOf="@+id/TRotoV
-    "
-                            app:layout_constraintTop_toTopOf="@+id/TRotoV
-    ">
+                            app:layout_constraintBottom_toBottomOf="@+id/TRotoV"
+                            app:layout_constraintStart_toEndOf="@+id/TRotoV"
+                            app:layout_constraintTop_toTopOf="@+id/TRotoV">
 
                             <TableRow
                                 android:layout_width="match_parent"
@@ -907,7 +901,7 @@
                 android:id="@+id/essaisVibratoires"
                 android:layout_width="549dp"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <FrameLayout
                     android:layout_width="549dp"

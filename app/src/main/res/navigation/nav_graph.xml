@@ -129,9 +129,6 @@
         <argument
             android:name="username"
             app:argType="string" />
-        <argument
-            android:name="listRemontages"
-            app:argType="com.example.applicationstb.model.Remontage[]" />
         <action
             android:id="@+id/deRemoVersFScreen"
             app:destination="@id/schemaFragment" />

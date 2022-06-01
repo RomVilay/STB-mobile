@@ -333,15 +333,20 @@ class Accueil : Fragment() {
             }
         }
         rm.setOnClickListener {
-            if (viewModel.remontages.size > 0) {
-                viewModel.toFicheR(layout)
-            } else {
-                val mySnackbar = Snackbar.make(
-                    layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                    "Vous n'avez pas de Remontages attribués",
-                    3600
-                )
-                mySnackbar.show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                var index = viewModel.nbFichesRemontage()
+                if (index > 0) {
+                    withContext(Dispatchers.Main) {
+                        viewModel.toFicheR(layout)
+                    }
+                } else {
+                    val mySnackbar = Snackbar.make(
+                        layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                        "Vous n'avez pas de Demontages attribués",
+                        3600
+                    )
+                    mySnackbar.show()
+                }
             }
         }
         rb.setOnClickListener {
