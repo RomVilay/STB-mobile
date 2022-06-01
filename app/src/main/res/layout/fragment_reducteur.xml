@@ -79,7 +79,7 @@
                     <EditText
                         android:id="@+id/trMin"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginStart="20dp"
                         android:background="@drawable/round_textview"
                         android:ems="5"
@@ -88,8 +88,7 @@
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/Trmintitre"
                         app:layout_constraintStart_toEndOf="@+id/Trmintitre"
-                        app:layout_constraintTop_toTopOf="@+id/Trmintitre"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintTop_toTopOf="@+id/Trmintitre" />
 
                     <TextView
                         android:id="@+id/titremodel"
@@ -100,13 +99,12 @@
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/trMin"
                         app:layout_constraintStart_toEndOf="@+id/trMin"
-                        app:layout_constraintTop_toTopOf="@+id/trMin"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toTopOf="@+id/trMin" />
 
                     <EditText
                         android:id="@+id/modele"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginStart="36dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
@@ -115,25 +113,24 @@
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/titremodel"
                         app:layout_constraintStart_toEndOf="@+id/titremodel"
-                        app:layout_constraintTop_toTopOf="@+id/titremodel"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toTopOf="@+id/titremodel" />
 
                     <TextView
                         android:id="@+id/indRedTitre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="40dp"
                         android:text="indice de réduction :"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/Trmintitre" />
 
                     <EditText
                         android:id="@+id/indRed"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="10dp"
                         android:background="@drawable/round_textview"
                         android:ems="5"
                         android:gravity="center"
@@ -141,8 +138,7 @@
                         android:textSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/indRedTitre"
                         app:layout_constraintStart_toEndOf="@+id/indRedTitre"
-                        app:layout_constraintTop_toTopOf="@+id/indRedTitre"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintTop_toTopOf="@+id/indRedTitre" />
 
                     <TextView
                         android:id="@+id/titrehuile"
@@ -153,13 +149,12 @@
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="@+id/indRed"
                         app:layout_constraintStart_toEndOf="@+id/indRed"
-                        app:layout_constraintTop_toTopOf="@+id/indRed"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toTopOf="@+id/indRed" />
 
                     <EditText
                         android:id="@+id/typeHuile"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"
                         android:gravity="center"
@@ -173,7 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="40dp"
                         android:text="Quantité huile :"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -182,7 +177,7 @@
                     <EditText
                         android:id="@+id/qteHuile"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginStart="16dp"
                         android:background="@drawable/round_textview"
                         android:ems="5"
@@ -202,13 +197,12 @@
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="@+id/qteHuile"
                         app:layout_constraintStart_toEndOf="@+id/qteHuile"
-                        app:layout_constraintTop_toTopOf="@+id/qteHuile"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintTop_toTopOf="@+id/qteHuile" />
 
                     <EditText
                         android:id="@+id/peintureRed"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginStart="19dp"
                         android:background="@drawable/round_textview"
                         android:ems="10"

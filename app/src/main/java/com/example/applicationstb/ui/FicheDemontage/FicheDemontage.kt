@@ -89,11 +89,11 @@ class FicheDemontage : Fragment() {
                     replace<MotopompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-               /* 8 ->fragmentManager.commit {
+                8 ->fragmentManager.commit {
                     replace<ReducteurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                9 ->fragmentManager.commit {
+                /*9 ->fragmentManager.commit {
                     replace<MotoReducteurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }*/
