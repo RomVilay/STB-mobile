@@ -11,8 +11,14 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Spinner
 import androidx.fragment.app.*
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,15 +35,18 @@ class FicheDemontage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.token = arguments?.get("token") as String
-        viewModel.listeDemontages = viewModel.listeDemontages.filter { it.status!! < 3 }.toCollection(ArrayList())
+        //viewModel.listeDemontages.value = viewModel.listeDemontages.value!!.filter { it.status!! < 3 }.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
-        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.numFiche  })
-        spinner.adapter = adapterDemontages
+/*        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
+        spinner.adapter = adapterDemontages*/
         var btnDemontage = layout.findViewById<Button>(R.id.selectDemontage)
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
         val fragmentManager = childFragmentManager
+        viewModel.listeDemontages.observe(viewLifecycleOwner){
+            spinner.adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
+        }
         viewModel.selection.observe(viewLifecycleOwner) {
            /* if (viewModel.selection.value!!.status == 3L) {
                 if (viewModel.listeDemontages.size > 1 ) {
@@ -55,7 +64,7 @@ class FicheDemontage : Fragment() {
         }
         btnDemontage.setOnClickListener {
             viewModel.start.value = Date()
-            var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
+            var demo = viewModel.listeDemontages.value!!.find { it.numFiche == spinner.selectedItem }
             viewModel.selection.value = demo
             viewModel.selection.value!!.status = 2L
             /*var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
@@ -104,6 +113,13 @@ class FicheDemontage : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch(Dispatchers.IO){
+            viewModel.getLocalFiches()
+        }
     }
    /* private fun chargerFiche(){
         var selection: Fragment = FicheMonophase();

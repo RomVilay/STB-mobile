@@ -42,7 +42,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     var username: String? = null;
     var repository = Repository(context)
     var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
-    var listeDemontages = mutableListOf<FicheDemontage>()
+    var listeDemontages = MutableLiveData<MutableList<FicheDemontage>>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
     var selection = MutableLiveData<FicheDemontage>()
@@ -55,8 +55,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
-            listeDemontages = repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.toMutableList()
+            getLocalFiches()
         }
+    }
+
+    suspend fun getLocalFiches(){
+        listeDemontages.postValue(repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.toMutableList())
     }
 
     fun back(view: View) {
@@ -132,148 +136,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     fun localSave() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
-           /* if (selection.value!!.typeFicheDemontage == 1) {
-                var fiche = selection.value!! as DemontagePompe
-                if (fiche.sensRotation == null) fiche.sensRotation = false
-                var f = repository.demontageRepository!!.getByIdDemoPompeLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoPompeLocalDatabse(fiche.toEntity())
-                } else {
-                    repository.demontageRepository!!.insertDemoPompeLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 2) {
-                var fiche = selection.value!! as DemontageMonophase
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.demontageRepository!!.getByIdDemoMonoLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoMonoLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoMonoLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 3) {
-                var fiche = selection.value!! as DemontageAlternateur
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.demontageRepository!!.getByIdDemoAlterLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoAlterLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoAlterLocalDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 4) {
-                var fiche = selection.value!! as DemontageRotorBobine
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.demontageRepository!!.getByIdDemoRBLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoRBLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoRBLocalDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 5) {
-                var fiche = selection.value!! as CourantContinu
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.demontageRepository!!.getByIdDemoCCLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoCCLocalDatabse(fiche.toEntity())
-
-                } else {
-                    try {
-                        repository.demontageRepository!!.deleteDemontageCCLocalDatabse(fiche.toEntity())
-                    } catch (e: Exception) {
-
-                    }
-                    repository.demontageRepository!!.insertDemoCCLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 6) {
-
-                var fiche = selection.value!! as Triphase
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.demontageRepository!!.getByIdDemoTriLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoTriLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoTriLocalDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 7) {
-
-                var fiche = selection.value!! as DemontageMotopompe
-                if (fiche.sensRotation == null) fiche.sensRotation = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.demontageRepository!!.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoMotoPompeLocalDatabase(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoMotopompeDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 8) {
-
-                var fiche = selection.value!! as DemontageReducteur
-                /*if (fiche.sensRotation == null) fiche.sensRotation = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false*/
-                var f = repository.demontageRepository!!.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoReducteurLocalDatabase(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoReducteurDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 9) {
-
-                var fiche = selection.value!! as DemontageMotoreducteur
-                /*if (fiche.sensRotation == null) fiche.sensRotation = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false*/
-                var f = repository.demontageRepository!!.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
-                if (f !== null) {
-                    repository.demontageRepository!!.updateDemoMotoreducteurLocalDatabase(fiche.toEntity())
-
-                } else {
-                    repository.demontageRepository!!.insertDemoMotoreducteurDatabase(fiche)
-
-                }
-            }*/
-
         }
     }
     @RequiresApi(Build.VERSION_CODES.M)

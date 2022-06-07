@@ -185,86 +185,86 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                                     iter.set(it!!.name!!)
                                                 }
 
-                                                        } catch (e: java.lang.Exception) {
-                                                            Log.e("EXCEPTION", e.message!!)
-                                                        }
-                                                    }
-                                                delay (200)
+                                            } catch (e: java.lang.Exception) {
+                                                Log.e("EXCEPTION", e.message!!)
                                             }
                                         }
-                                    }
-                                    if (name == "") {
-                                        iter.remove()
+                                        delay(200)
                                     }
                                 }
-                                ch.photos = photos?.toTypedArray()
-                                if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
-                                    getNameURI2 {
-                                       try{
-                                            val dir =
-                                                Environment.getExternalStoragePublicDirectory(
-                                                    Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                                )
-                                            val from = File(
-                                                dir,
-                                                ch.signatureTech!!
-                                            )
-                                            val to = File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            ch.signatureTech = it!!.name!!
-                                            sendPhoto2(to,it.url!!)
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!! + e.cause)
+                            }
+                            if (name == "") {
+                                iter.remove()
+                            }
+                        }
+                        ch.photos = photos?.toTypedArray()
+                        if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                            getNameURI2 {
+                                try {
+                                    val dir =
+                                        Environment.getExternalStoragePublicDirectory(
+                                            Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                        )
+                                    val from = File(
+                                        dir,
+                                        ch.signatureTech!!
+                                    )
+                                    val to = File(dir, it!!.name!!)
+                                    if (from.exists()) from.renameTo(to)
+                                    ch.signatureTech = it!!.name!!
+                                    sendPhoto2(to, it.url!!)
+                                } catch (e: java.lang.Exception) {
+                                    Log.e("EXCEPTION", e.message!! + e.cause)
+                                }
+                            }
+                        }
+                        if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
+                            getNameURI2 {
+                                try {
+                                    val dir =
+                                        Environment.getExternalStoragePublicDirectory(
+                                            Environment.DIRECTORY_PICTURES + "/test_signatures"
+                                        )
+                                    val from = File(
+                                        dir,
+                                        ch.signatureClient!!
+                                    )
+                                    val to = File(dir, it!!.name!!)
+                                    if (from.exists()) from.renameTo(to)
+                                    ch.signatureClient = it!!.name!!
+                                    sendPhoto2(to, it.url!!)
+                                } catch (e: java.lang.Exception) {
+                                    Log.e("EXCEPTION", e.message!! + e.cause)
+                                }
+                            }
+                        }
+                        Log.i("INFO", "signature ${ch.signatureTech}")
+                        val resp = repository.patchChantier(
+                            user!!.token!!,
+                            ch._id,
+                            ch,
+                            object : Callback<ChantierResponse> {
+                                override fun onResponse(
+                                    call: Call<ChantierResponse>,
+                                    response: Response<ChantierResponse>
+                                ) {
+                                    if (response.code() == 200) {
+                                        val resp = response.body()
+                                        if (resp != null) {
+                                            Log.i("INFO", "fiche enregistrée")
                                         }
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.deleteChantierLocalDatabse(
+                                                fiche
+                                            )
+                                        }
+                                    } else {
+                                        Log.i(
+                                            "INFO",
+                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                        )
                                     }
                                 }
-                                if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
-                                    getNameURI2 {
-                                        try{
-                                            val dir =
-                                                Environment.getExternalStoragePublicDirectory(
-                                                    Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                                )
-                                            val from = File(
-                                                dir,
-                                                ch.signatureClient!!
-                                            )
-                                            val to = File(dir, it!!.name!!)
-                                            if (from.exists()) from.renameTo(to)
-                                            ch.signatureClient = it!!.name!!
-                                            sendPhoto2(to,it.url!!)
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!! + e.cause)
-                                        }
-                                    }
-                                }
-                                Log.i("INFO", "signature ${ch.signatureTech}")
-                            val resp = repository.patchChantier(
-                                user!!.token!!,
-                                ch._id,
-                                ch,
-                                object : Callback<ChantierResponse> {
-                                    override fun onResponse(
-                                        call: Call<ChantierResponse>,
-                                        response: Response<ChantierResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            val resp = response.body()
-                                            if (resp != null) {
-                                                Log.i("INFO", "fiche enregistrée")
-                                            }
-                                            viewModelScope.launch(Dispatchers.IO) {
-                                                repository.deleteChantierLocalDatabse(
-                                                    fiche
-                                                )
-                                            }
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()}"
-                                            )
-                                        }
-                                    }
 
                                 override fun onFailure(
                                     call: Call<ChantierResponse>,
@@ -359,171 +359,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
-                var listDT: List<DemontageTriphaseEntity> =
-                    repository.demontageRepository!!.getAllDemontageTriLocalDatabase()
-                Log.i("INFO", "nb de fiches DemontageTriphase: ${listDT.size}")
-                if (listDT.size > 0) {
-                    for (fiche in listDT) {
-                        var dt = fiche.toTriphase()
-                        var photos = dt.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(dt.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dt.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageTriphase(
-                            user!!.token!!,
-                            dt._id,
-                            dt,
-                            object : Callback<DemontageTriphaseResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    response: Response<DemontageTriphaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageTriphaseLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listCC: List<DemontageCCEntity> =
-                    repository.demontageRepository!!.getAllDemontageCCLocalDatabase()
-                Log.i("INFO", "nb de fiches DemontageCourantContinu: ${listCC.size}")
-                if (listCC.size > 0) {
-                    for (fiche in listCC) {
-                        var dcc = fiche.toCContinu()
-                        var photos = dcc.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dcc.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        dcc.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageCC(
-                            user!!.token!!,
-                            dcc._id,
-                            dcc,
-                            object : Callback<DemontageCCResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageCCResponse>,
-                                    response: Response<DemontageCCResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageCCLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageCCResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-               /* var listRT: List<RemontageTriphaseEntity> =
+                /* var listRT: List<RemontageTriphaseEntity> =
                     repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
                 Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
                 if (listRT.size > 0) {
@@ -742,592 +578,14 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }*/
-                var listDP: List<DemoPompeEntity> =
-                    repository.demontageRepository!!.getAllDemontagePompeLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage pompe: ${listDP.size}")
-                if (listDP.size > 0) {
-                    for (fiche in listDP) {
-                        var rc = fiche.toDemoPompe()
-                        var photos = rc.photos?.toMutableList()
+                var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
+                if (listD.size > 0) {
+                    for (fiche in listD) {
+                        var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(rc.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        rc.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontagePompe(
-                            user!!.token!!,
-                            rc._id,
-                            rc,
-                            object : Callback<DemontagePompeResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontagePompeResponse>,
-                                    response: Response<DemontagePompeResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontagePompeLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontagePompeResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listDM: List<DemontageMonophaseEntity> =
-                    repository.demontageRepository!!.getAllDemontageMonoLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage monophase: ${listDM.size}")
-                if (listDM.size > 0) {
-                    for (fiche in listDM) {
-                        var rc = fiche.toMonophase()
-                        var photos = rc.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(rc.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        rc.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageMono(
-                            user!!.token!!,
-                            rc._id,
-                            rc,
-                            object : Callback<DemontageMonophaseResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMonophaseResponse>,
-                                    response: Response<DemontageMonophaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageMonoLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur mono code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMonophaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listDA: List<DemontageAlternateurEntity> =
-                    repository.demontageRepository!!.getAllDemontageAlterLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage Alternateur: ${listDA.size}")
-                if (listDA.size > 0) {
-                    for (fiche in listDA) {
-                        var rc = fiche.toDemontageAlternateur()
-                        var photos = rc.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(rc.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        rc.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageAlter(
-                            user!!.token!!,
-                            rc._id,
-                            rc,
-                            object : Callback<DemontageAlternateurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageAlternateurResponse>,
-                                    response: Response<DemontageAlternateurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageAlterLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur alter code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageAlternateurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listDRB: List<DemontageRotorBEntity> =
-                    repository.demontageRepository!!.getAllDemontageRBLocalDatabase()
-                Log.i("INFO", "nb de fiches Demontage Rotor Bobine: ${listDRB.size}")
-                if (listDRB.size > 0) {
-                    for (fiche in listDRB) {
-                        var rc = fiche.toDemoRotorB()
-                        var photos = rc.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(rc.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        rc.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageRotor(
-                            user!!.token!!,
-                            rc._id,
-                            rc,
-                            object : Callback<DemontageRotorBobineResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageRotorBobineResponse>,
-                                    response: Response<DemontageRotorBobineResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageRBLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageRotorBobineResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listDMP: List<DemontageMotopompeEntity> =
-                    repository.demontageRepository!!.getAllDemontageMotopompeLocalDatabase()
-                if (listDMP.size > 0) {
-                    for (fiche in listDMP) {
-                        var dmp = fiche.toMotoPompe()
-                        var photos = dmp.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(dmp.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dmp.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageMotopompe(
-                            user!!.token!!,
-                            dmp._id,
-                            dmp,
-                            object : Callback<DemontageMotopompeResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMotopompeResponse>,
-                                    response: Response<DemontageMotopompeResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageMotoPompeLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMotopompeResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                Log.i("INFO", "nb de fiches Demontage Motopompe: ${listDMP.size}")
-                var listDR: List<DemontageReducteurEntity> =
-                    repository.demontageRepository!!.getAllDemontageReducteurLocalDatabase()
-                if (listDR.size > 0) {
-                    for (fiche in listDR) {
-                        var dr = fiche.toReducteur()
-                        var photos = dr.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dr.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dr.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageReducteur(
-                            user!!.token!!,
-                            dr._id,
-                            dr,
-                            object : Callback<DemontageReducteurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageReducteurResponse>,
-                                    response: Response<DemontageReducteurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageReducteurLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageReducteurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                Log.i("INFO", "nb de fiches Demontage Reducteur: ${listDR.size}")
-                var listDMR: List<DemontageMotoreducteurEntity> =
-                    repository.demontageRepository!!.getAllDemontageMotoreducteurLocalDatabase()
-                if (listDMR.size > 0) {
-                    for (fiche in listDMR) {
-                        var dmr = fiche.toDemontageMotoreducteur()
-                        var photos = dmr.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dmr.numFiche!!)) {
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
-                                            }
-                                        }
-                                        delay(200)
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dmr.photos = photos?.toTypedArray()
-                        val resp = repository.demontageRepository!!.patchDemontageMotoreducteur(
-                            user!!.token!!,
-                            dmr._id,
-                            dmr,
-                            object : Callback<DemontageMotoreducteurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMotoreducteurResponse>,
-                                    response: Response<DemontageMotoreducteurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.demontageRepository!!.deleteDemontageMotoreducteurLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "erreur rotor bobine, code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMotoreducteurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                Log.i("INFO", "nb de fiches Demontage Motoreducteur: ${listDMR.size}")
-               /* var listRMP: List<RemontageMotopompeEntity> =
-                    repository.remontageRepository!!.getAllRemontageMotopompeLocalDatabase()
-                Log.i("INFO", "nb de fiches remontage Motopompe: ${listRMP.size}")
-                if (listRMP.size > 0) {
-                    for (fiche in listRMP) {
-                        var rmp = fiche.toRemontageMotopompe()
-                        var photos = rmp.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(rmp.numFiche!!)) {
+                            if (name.contains(fiche.numFiche!!)) {
                                 getNameURI2 {
                                     try {
                                         val dir =
@@ -1352,36 +610,29 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 delay(200)
                             }
                         }
-                        rmp.photos = photos?.toTypedArray()
-                        val resp = repository.remontageRepository!!.patchRemontageMotopompe(
+                        fiche.photos = photos?.toTypedArray()
+                        repository.demontageRepository!!.patchFicheDemontage(
                             user!!.token!!,
-                            rmp._id,
-                            rmp,
-                            object : Callback<RemontageMotopompeResponse> {
+                            fiche._id,
+                            fiche.toFicheDemontage(),
+                            object : Callback<FicheDemontageResponse> {
                                 override fun onResponse(
-                                    call: Call<RemontageMotopompeResponse>,
-                                    response: Response<RemontageMotopompeResponse>
+                                    call: Call<FicheDemontageResponse>,
+                                    response: Response<FicheDemontageResponse>
                                 ) {
                                     if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.remontageRepository!!.deleteRemontageMotoPompeLocalDatabse(
-                                                fiche
-                                            )
-                                        }
                                     } else {
                                         Log.i(
                                             "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
+                                            "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                                response.errorBody()!!.charStream().readText()
+                                            }"
                                         )
                                     }
                                 }
 
                                 override fun onFailure(
-                                    call: Call<RemontageMotopompeResponse>,
+                                    call: Call<FicheDemontageResponse>,
                                     t: Throwable
                                 ) {
                                     Log.e("Error", "${t.stackTraceToString()}")
@@ -1390,80 +641,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
-                var listRMR: List<RemontageMotoreducteurEntity> =
-                    repository.remontageRepository!!.getAllRemontageMotoreducteurLocalDatabase()
-                Log.i("INFO", "nb de fiches remontage: ${listRMR.size}")
-                if (listRMR.size > 0) {
-                    for (fiche in listRMR) {
-                        var rmp = fiche.toRemontageMotoreducteur()
-                        var photos = rmp.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(rmp.numFiche!!)) {
-                                getNameURI2 {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                            )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to =
-                                            File(dir, it!!.name!!)
-                                        if (from.exists()) {
-                                            from.renameTo(to)
-                                            sendPhoto2(to, it.url!!)
-                                            iter.set(it!!.name!!)
-                                        }
-
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
-                                    }
-                                }
-                                delay(200)
-                            }
-                        }
-                        rmp.photos = photos?.toTypedArray()
-                        val resp = repository.remontageRepository!!.patchRemontageMotoreducteur(
-                            user!!.token!!,
-                            rmp._id,
-                            rmp,
-                            object : Callback<RemontageMotoreducteurResponse> {
-                                override fun onResponse(
-                                    call: Call<RemontageMotoreducteurResponse>,
-                                    response: Response<RemontageMotoreducteurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.remontageRepository!!.deleteRemontageMotoreducteurLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<RemontageMotoreducteurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }*/
             }
         }
     }
