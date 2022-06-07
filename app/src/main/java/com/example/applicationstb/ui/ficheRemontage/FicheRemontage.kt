@@ -347,6 +347,9 @@ class FicheRemontage : Fragment() {
                             if (demo.isolementPhaseRotorUV !== null) isolementPhaseRotorUV.setText(
                                 demo.isolementPhaseRotorUV!!
                             )
+                            if (demo.isolementPhaseRotorUW !== null) isolementPhaseRotorUW.setText(
+                                demo.isolementPhaseRotorUW!!
+                            )
                             if (demo.isolementPhaseRotorVW !== null) isolementPhaseRotorVW.setText(
                                 demo.isolementPhaseRotorVW!!
                             )
