@@ -641,6 +641,67 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
+                var listR = repository.remontageRepository!!.getAllRemontageLocalDatabase()
+                if (listR.size > 0) {
+                    for (fiche in listR) {
+                        var photos = fiche.photos?.toMutableList()
+                        var iter = photos?.listIterator()
+                        while (iter?.hasNext() == true) {
+                            var name = iter.next()
+                            if (name.contains(fiche.numFiche!!)) {
+                                getNameURI2 {
+                                    try {
+                                        val dir =
+                                            Environment.getExternalStoragePublicDirectory(
+                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                                            )
+                                        val from = File(
+                                            dir,
+                                            name
+                                        )
+                                        val to =
+                                            File(dir, it!!.name!!)
+                                        if (from.exists()) {
+                                            from.renameTo(to)
+                                            sendPhoto2(to, it.url!!)
+                                            iter.set(it!!.name!!)
+                                        }
+                                    } catch (e: java.lang.Exception) {
+                                        Log.e("EXCEPTION", e.message!!)
+                                    }
+                                }
+                                delay(200)
+                            }
+                        }
+                        fiche.photos = photos?.toTypedArray()
+                        repository.remontageRepository!!.patchRemontage(user?.token!!, fiche._id, fiche.toFicheRemo(), object : Callback<RemontageResponse>{
+                            override fun onResponse(
+                                call: Call<RemontageResponse>,
+                                response: Response<RemontageResponse>
+                            ) {
+                                if (response.code() == 200) {
+                                    val resp = response.body()
+                                    if (resp != null) {
+                                    }
+                                } else {
+                                    Log.i(
+                                        "INFO",
+                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                            response.errorBody()!!.charStream().readText()
+                                        }"
+                                    )
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<RemontageResponse>,
+                                t: Throwable
+                            ) {
+                                Log.e("Error", "${t.stackTraceToString()}")
+                                Log.e("Error", "erreur ${t.message}")
+                            }})
+                    }
+                }
             }
         }
     }

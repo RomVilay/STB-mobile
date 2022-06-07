@@ -33,25 +33,12 @@ import com.example.applicationstb.model.*
         RemontageEntity::class,
         PointageEntity::class,
         DemontageEntity::class
-    ), version = 34
+    ), version = 35
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun chantierDao(): ChantierDao
     abstract fun bobinageDao(): BobinageDao
-    abstract fun demontageTriphaseDao(): DemontageTriphaseDao
-    abstract fun demontageCCDao(): DemontageCCDao
-    abstract fun demontagePDao(): DemontagePDao
-    abstract fun demontageAlternateurDao(): DemontageAlternateurDao
-    abstract fun demontageMonophaseDao(): DemontageMonophaseDao
-    abstract fun demontageRotorBobineDao(): DemontageRotorBobineDao
-    abstract fun demontageMotopompeDao(): DemontageMotopompeDao
-    abstract fun demontageMotoreducteurDao(): DemontageMotoreducteurDao
-    abstract fun demontageReducteurDao(): DemontageReducteurDao
-    abstract fun remontageTriphaseDao(): RemontageTriphaseDao
-    abstract fun remontageCCDao(): RemontageCCDao
-    abstract fun remontageMotoreducteurDao(): RemontageMotoreducteurDao
-    abstract fun remontageMotopompeDao(): RemontageMotopompeDao
     abstract fun remontageDao(): RemontageDao
     abstract fun vehiculesDao(): VehiculeDao
     abstract fun clientDao(): ClientsDao

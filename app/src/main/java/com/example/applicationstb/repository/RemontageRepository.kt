@@ -1002,10 +1002,6 @@ class RemontageReducteurResponse(
 
 class RemontageRepository(var service: APIstb, var db: LocalDatabase) {
     var remontageDao = db!!.remontageDao()
-    var remontageTriphaseDao = db!!.remontageTriphaseDao()
-    var remontageCourantCDao = db!!.remontageCCDao()
-    var remontageMotopompeDao = db!!.remontageMotopompeDao()
-    var remontageMotoreducteurDao = db!!.remontageMotoreducteurDao()
     fun getFichesForRemontage(
         token: String,
         numDevis: String,
@@ -1311,33 +1307,6 @@ class RemontageRepository(var service: APIstb, var db: LocalDatabase) {
         call.enqueue(callback)
     }
 
-    //dao remontage triphase
-    suspend fun insertRemoTriLocalDatabase(remo: RemontageTriphase) {
-        remontageTriphaseDao!!.insertAll(remo.toEntity())
-    }
-
-    suspend fun getAllRemontageTriLocalDatabase(): List<RemontageTriphaseEntity> {
-        return remontageTriphaseDao!!.getAll()
-    }
-
-    suspend fun getByIdRemoTriLocalDatabse(id: String): RemontageTriphase? {
-        try {
-            if (remontageTriphaseDao!!.getById(id) !== null) {
-                return remontageTriphaseDao!!.getById(id).toRTriphase()
-            } else return null
-        } catch (e: Error) {
-            Log.i("e", e.message!!)
-            return null
-        }
-    }
-
-    suspend fun updateRemoTriLocalDatabse(remo: RemontageTriphaseEntity) {
-        remontageTriphaseDao!!.update(remo)
-    }
-
-    suspend fun deleteRemontageTriphaseLocalDatabse(remo: RemontageTriphaseEntity) {
-        remontageTriphaseDao!!.delete(remo)
-    }
 
     //dao remontage
     suspend fun insertRemoLocalDatabase(remo: FicheRemontage) {
@@ -1365,88 +1334,6 @@ class RemontageRepository(var service: APIstb, var db: LocalDatabase) {
 
     suspend fun deleteRemontageLocalDatabse(remo: RemontageEntity) {
         remontageDao!!.delete(remo)
-    }
-
-    // dao remo courant continu
-    suspend fun insertRemoCCLocalDatabase(remo: RemontageCourantC) {
-        remontageCourantCDao!!.insertAll(remo.toEntity())
-    }
-
-    suspend fun getAllRemontageCCLocalDatabase(): List<RemontageCCEntity> {
-        return remontageCourantCDao!!.getAll()
-    }
-
-    suspend fun getByIdRemoCCLocalDatabse(id: String): RemontageCourantC? {
-        try {
-            if (remontageCourantCDao!!.getById(id) !== null) {
-                return remontageCourantCDao!!.getById(id).toRCourantC()
-            } else return null
-        } catch (e: Error) {
-            Log.i("e", e.message!!)
-            return null
-        }
-    }
-
-    suspend fun updateRemoCCLocalDatabse(remo: RemontageCCEntity) {
-        remontageCourantCDao!!.update(remo)
-    }
-
-    suspend fun deleteRemontageCCLocalDatabse(remo: RemontageCCEntity) {
-        remontageCourantCDao!!.delete(remo)
-    }
-
-    suspend fun insertRemoMotopompeDatabase(demo: RemontageMotopompe) {
-        remontageMotopompeDao!!.insertAll(demo.toEntity())
-    }
-
-    suspend fun getAllRemontageMotopompeLocalDatabase(): List<RemontageMotopompeEntity> {
-        return remontageMotopompeDao!!.getAll()
-    }
-
-    suspend fun getByIdRemoMotopompeLocalDatabase(id: String): RemontageMotopompe? {
-        try {
-            if (remontageMotopompeDao!!.getById(id) !== null) {
-                return remontageMotopompeDao!!.getById(id).toRemontageMotopompe()
-            } else return null
-        } catch (e: Error) {
-            Log.i("e", e.message!!)
-            return null
-        }
-    }
-
-    suspend fun updateRemoMotoPompeLocalDatabase(demo: RemontageMotopompeEntity) {
-        remontageMotopompeDao!!.update(demo)
-    }
-
-    suspend fun deleteRemontageMotoPompeLocalDatabse(demo: RemontageMotopompeEntity) {
-        remontageMotopompeDao!!.delete(demo)
-    }
-
-    suspend fun insertRemoMotoreducteurDatabase(demo: RemontageMotoreducteur) {
-        remontageMotoreducteurDao!!.insertAll(demo.toEntity())
-    }
-
-    suspend fun getAllRemontageMotoreducteurLocalDatabase(): List<RemontageMotoreducteurEntity> {
-        return remontageMotoreducteurDao!!.getAll()
-    }
-
-    suspend fun getByIdRemoMotoreducteurLocalDatabase(id: String): RemontageMotoreducteur? {
-        try {
-            if (remontageMotoreducteurDao!!.getById(id) !== null) {
-                return remontageMotoreducteurDao!!.getById(id).toRemontageMotoreducteur()
-            } else return null
-        } catch (e: Error) {
-            Log.i("e", e.message!!)
-            return null
-        }
-    }
-
-    suspend fun updateRemoMotoreducteurLocalDatabase(demo: RemontageMotoreducteurEntity) {
-        remontageMotoreducteurDao!!.update(demo)
-    }
-
-    suspend fun deleteRemontageMotoreducteurLocalDatabse(demo: RemontageMotoreducteurEntity) {
-        remontageMotoreducteurDao!!.delete(demo)
     }
 
 }
