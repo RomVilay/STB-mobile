@@ -39,7 +39,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     var token: String? = null;
     var username: String? = null;
     var repository = Repository(context)
-    var listeRemontages = mutableListOf<FicheRemontage>()
+    var listeRemontages = MutableLiveData<MutableList<FicheRemontage>>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     val selection = MutableLiveData<FicheRemontage>()
     var start = MutableLiveData<Date>()
@@ -51,12 +51,14 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
-            listeRemontages = repository.remontageRepository!!.getAllRemontageLocalDatabase().map {it.toFicheRemo()}.toMutableList()
+            getLocalFiches()
         }
     }
-
+    suspend fun getLocalFiches(){
+        listeRemontages.postValue(repository.remontageRepository!!.getAllRemontageLocalDatabase().map {it.toFicheRemo()}.toMutableList())
+    }
     fun select(i: Int) {
-        selection.value = listeRemontages[i]
+        selection.value = listeRemontages.value!![i]
         //selection.value?.let { afficherFiche(it) }
     }
 

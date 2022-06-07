@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.*
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import java.util.*
@@ -39,11 +40,12 @@ class FicheRemontage : Fragment() {
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
-        val adapterRemontages = ArrayAdapter(
-            requireActivity(),
-            R.layout.support_simple_spinner_dropdown_item,
-            viewModel.listeRemontages.map { it.numFiche })
-        spinner.adapter = adapterRemontages
+        viewModel.listeRemontages.observe(viewLifecycleOwner){
+            spinner.adapter = ArrayAdapter(
+                requireActivity(),
+                R.layout.support_simple_spinner_dropdown_item,
+                viewModel.listeRemontages.value!!.map { it.numFiche })
+        }
         var btnRemontage = layout.findViewById<Button>(R.id.btnDemarrer)
         val fragmentManager = childFragmentManager
         //infos moteur
@@ -154,7 +156,7 @@ class FicheRemontage : Fragment() {
             } else {
                 //btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
-                var demo = viewModel.listeRemontages.find { it.numFiche == spinner.selectedItem }.apply {
+                var demo = viewModel.listeRemontages.value!!.find { it.numFiche == spinner.selectedItem }.apply {
                     this!!.status = 2L
                 }
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
@@ -1073,6 +1075,13 @@ class FicheRemontage : Fragment() {
 
 
         return layout
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch(Dispatchers.IO){
+            viewModel.getLocalFiches()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
