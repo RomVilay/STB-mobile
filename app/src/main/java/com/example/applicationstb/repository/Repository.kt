@@ -678,10 +678,23 @@ class Repository(var context: Context) {
             database.execSQL("ALTER TABLE demontage_pompe ADD COLUMN typeJointArriere INTEGER")
         }
     }
+    val MIGRATION_35_36 = object : Migration(35, 36) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("DROP TABLE demontage_pompe ")
+            database.execSQL("DROP TABLE demontage_alternateur ")
+            database.execSQL("DROP TABLE demontage_monophase ")
+            database.execSQL("DROP TABLE demontage_motopompe")
+            database.execSQL("DROP TABLE demontage_motoreducteur")
+            database.execSQL("DROP TABLE demontage_reducteur")
+            database.execSQL("DROP TABLE demontage_triphase")
+            database.execSQL("DROP TABLE demontage_cc")
+        }
+    }
 
     suspend fun createDb() {
         db = Room.databaseBuilder(context, LocalDatabase::class.java, "database-local")
-            .fallbackToDestructiveMigration()
+            //.fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_35_36)
             .build()
         chantierDao = db!!.chantierDao()
         bobinageDao = db!!.bobinageDao()
