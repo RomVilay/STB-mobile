@@ -681,6 +681,7 @@ class Repository(var context: Context) {
     val MIGRATION_35_36 = object : Migration(35, 36) {
         override fun migrate(database: SupportSQLiteDatabase) {
             database.execSQL("DROP TABLE demontage_pompe ")
+            database.execSQL("DROP TABLE demontage_rotorb ")
             database.execSQL("DROP TABLE demontage_alternateur ")
             database.execSQL("DROP TABLE demontage_monophase ")
             database.execSQL("DROP TABLE demontage_motopompe")
@@ -688,6 +689,10 @@ class Repository(var context: Context) {
             database.execSQL("DROP TABLE demontage_reducteur")
             database.execSQL("DROP TABLE demontage_triphase")
             database.execSQL("DROP TABLE demontage_cc")
+            database.execSQL("DROP TABLE remontage_cc ")
+            database.execSQL("DROP TABLE remontage_motopompe ")
+            database.execSQL("DROP TABLE remontage_motoreducteur ")
+            database.execSQL("DROP TABLE remontage_triphase ")
         }
     }
 
