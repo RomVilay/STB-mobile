@@ -15,25 +15,12 @@ import com.example.applicationstb.model.*
     entities = arrayOf(
         ChantierEntity::class,
         BobinageEntity::class,
-        DemontageTriphaseEntity::class,
-        DemontageCCEntity::class,
-        RemontageTriphaseEntity::class,
-        RemontageCCEntity::class,
-        DemontageMotopompeEntity::class,
-        RemontageMotopompeEntity::class,
-        DemontageMotoreducteurEntity::class,
-        RemontageMotoreducteurEntity::class,
-        DemontageReducteurEntity::class,
-        DemoPompeEntity::class,
-        DemontageAlternateurEntity::class,
-        DemontageRotorBEntity::class,
-        DemontageMonophaseEntity::class,
         ClientEntity::class,
         VehiculeEntity::class,
         RemontageEntity::class,
         PointageEntity::class,
         DemontageEntity::class
-    ), version = 35
+    ), version = 36
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {

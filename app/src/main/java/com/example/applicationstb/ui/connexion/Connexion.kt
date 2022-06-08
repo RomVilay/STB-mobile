@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.example.applicationstb.BuildConfig
 import com.example.applicationstb.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -47,6 +48,7 @@ class Connexion : Fragment() {
         val loading = layout.findViewById<CardView>(R.id.loadingLogIn)
         val password = layout.findViewById<EditText>(R.id.psw)
         val button = layout.findViewById<Button>(R.id.button)
+        layout.findViewById<TextView>(R.id.version).setText(BuildConfig.VERSION_NAME+" - ALF Environnement 2022")
         if (login !== "") username.setText(login)
         if (pwd !== "") password.setText(pwd)
         button.setOnClickListener{
