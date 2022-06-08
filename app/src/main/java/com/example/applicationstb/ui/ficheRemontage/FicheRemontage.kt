@@ -325,7 +325,7 @@ class FicheRemontage : Fragment() {
                             ccStat.visibility = View.VISIBLE
                             tvf.visibility = View.VISIBLE
                             fixCouronne.visibility = View.VISIBLE
-                            fixCouronne.setChecked(demo.verificationFixationCouronne!!)
+                            if (demo.verificationFixationCouronne !== null) fixCouronne.setChecked(demo.verificationFixationCouronne!!)
                             fixCouronne.setOnCheckedChangeListener { _, isChecked ->
                                     demo.verificationFixationCouronne = isChecked//viewModel.selection.value!!.verificationFixationCouronne = isChecked
                                     viewModel.selection.value = demo
