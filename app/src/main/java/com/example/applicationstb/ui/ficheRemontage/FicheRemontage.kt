@@ -959,7 +959,14 @@ class FicheRemontage : Fragment() {
                         }
                         //layout.findViewById<CardView>(R.id.essaisVibratoires).visibility = View.VISIBLE
                     }
-
+                    obs.doAfterTextChanged {
+                        if (obs.text.isNotEmpty() && obs.hasFocus()) {
+                            demo.observations = obs.text.toString()
+                            viewModel.selection.value = demo
+                            viewModel.getTime()
+                            viewModel.quickSave()
+                        }
+                    }
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
 
                     layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
@@ -1026,20 +1033,7 @@ class FicheRemontage : Fragment() {
          }*/
 
 
-
-        obs.doAfterTextChanged {
-            if (obs.text.isNotEmpty() && obs.hasFocus()) {
-                viewModel.selection.value!!.observations = obs.text.toString()
-                viewModel.getTime()
-                viewModel.quickSave()
-            }
-        }
-
         btnenregistrer.setOnClickListener {
-            Log.i(
-                "INFO",
-                "collage inté flasque ${viewModel.selection.value!!.collageRoulementPorteeArbre}"
-            )
             var fiche = viewModel.selection.value!!
             if (fiche.dureeTotale !== null) {
                 fiche.dureeTotale =

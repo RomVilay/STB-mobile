@@ -1184,7 +1184,6 @@ class RemontageRepository(var service: APIstb, var db: LocalDatabase) {
             fiche.typeMotoreducteur
         )
         var call = service.patchRemontage(token, ficheId, body)
-        var fiche: Remontage? = null
         call.enqueue(callback)
     }
 

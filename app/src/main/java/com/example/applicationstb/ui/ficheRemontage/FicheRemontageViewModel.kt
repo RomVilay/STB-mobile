@@ -133,6 +133,9 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                             val mySnackbar =
                                 Snackbar.make(view, "erreur d'enregistrement", 3600)
                             mySnackbar.show()
+                            viewModelScope.launch(Dispatchers.IO){
+                                repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
+                            }
                             Log.i(
                                 "INFO",
                                 "code : ${response.code()} - erreur : ${response.message()} - body request ${
@@ -154,6 +157,10 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             viewModelScope.launch(Dispatchers.IO){
                 repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
             }
+            val mySnackbar =
+                Snackbar.make(view, "fiche enregistrée", 3600)
+            mySnackbar.show()
+
         }
     }
 

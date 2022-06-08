@@ -680,9 +680,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 response: Response<RemontageResponse>
                             ) {
                                 if (response.code() == 200) {
-                                    val resp = response.body()
-                                    if (resp != null) {
-                                    }
+                                   // Log.i("info","fiche remontage ${fiche._id} updated")
                                 } else {
                                     Log.i(
                                         "INFO",
