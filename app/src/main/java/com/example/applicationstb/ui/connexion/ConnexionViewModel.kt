@@ -359,225 +359,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             })
                     }
                 }
-                /* var listRT: List<RemontageTriphaseEntity> =
-                    repository.remontageRepository!!.getAllRemontageTriLocalDatabase()
-                Log.i("INFO", "nb de fiches RemontageTriphase: ${listRT.size}")
-                if (listRT.size > 0) {
-                    for (fiche in listRT) {
-                        var dt = fiche.toRTriphase()
-                        var photos = dt.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(dt.numFiche!!)) {
-                                getNameURI2 {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                            )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to =
-                                            File(dir, it!!.name!!)
-                                        if (from.exists()) {
-                                            from.renameTo(to)
-                                            sendPhoto2(to, it.url!!)
-                                            iter.set(it!!.name!!)
-                                        }
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
-                                    }
-                                }
-                                delay(200)
-                            }
-                        }
-                        dt.photos = photos?.toTypedArray()
-                        val resp = repository.remontageRepository!!.patchRemontageTriphase(
-                            user!!.token!!,
-                            dt._id,
-                            dt,
-                            object : Callback<RemontageTriphaseResponse> {
-                                override fun onResponse(
-                                    call: Call<RemontageTriphaseResponse>,
-                                    response: Response<RemontageTriphaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.remontageRepository!!.deleteRemontageTriphaseLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<RemontageTriphaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listRCC: List<RemontageCCEntity> =
-                    repository.remontageRepository!!.getAllRemontageCCLocalDatabase()
-                Log.i("INFO", "nb de fiches remontageCC: ${listRCC.size}")
-                if (listRCC.size > 0) {
-                    for (fiche in listRCC) {
-                        var rc = fiche.toRCourantC()
-                        var photos = rc.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(rc.numFiche!!)) {
-                                getNameURI2 {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                            )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to =
-                                            File(dir, it!!.name!!)
-                                        if (from.exists()) {
-                                            from.renameTo(to)
-                                            sendPhoto2(to, it.url!!)
-                                            iter.set(it!!.name!!)
-                                        }
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
-                                    }
-                                }
-                                delay(200)
-                            }
-                        }
-                        rc.photos = photos?.toTypedArray()
-                        val resp = repository.remontageRepository!!.patchRemontageCC(
-                            user!!.token!!,
-                            rc._id,
-                            rc,
-                            object : Callback<RemontageCCResponse> {
-                                override fun onResponse(
-                                    call: Call<RemontageCCResponse>,
-                                    response: Response<RemontageCCResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.remontageRepository!!.deleteRemontageCCLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<RemontageCCResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }
-                var listRm: List<RemontageEntity> =
-                    repository.remontageRepository!!.getAllRemontageLocalDatabase()
-                Log.i("INFO", "nb de fiches remontage: ${listRm.size}")
-                if (listRm.size > 0) {
-                    for (fiche in listRm) {
-                        var rc = fiche.toRemo()
-                        var photos = rc.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(rc.numFiche!!)) {
-                                getNameURI2 {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                            )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to =
-                                            File(dir, it!!.name!!)
-                                        if (from.exists()) {
-                                            from.renameTo(to)
-                                            sendPhoto2(to, it.url!!)
-                                            iter.set(it!!.name!!)
-                                        }
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
-                                    }
-                                }
-                                delay(200)
-                            }
-                        }
-                        rc.photos = photos?.toTypedArray()
-                        val resp = repository.remontageRepository!!.patchRemontage(
-                            user!!.token!!,
-                            rc._id,
-                            rc,
-                            object : Callback<RemontageResponse> {
-                                override fun onResponse(
-                                    call: Call<RemontageResponse>,
-                                    response: Response<RemontageResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                        viewModelScope.launch(Dispatchers.IO) {
-                                            repository.remontageRepository!!.deleteRemontageLocalDatabse(
-                                                fiche
-                                            )
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<RemontageResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    }
-                }*/
                 var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
                 if (listD.size > 0) {
                     for (fiche in listD) {
@@ -680,7 +461,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 response: Response<RemontageResponse>
                             ) {
                                 if (response.code() == 200) {
-                                   // Log.i("info","fiche remontage ${fiche._id} updated")
+                                   Log.i("info","fiche remontage ${fiche._id} updated")
                                 } else {
                                     Log.i(
                                         "INFO",
@@ -703,7 +484,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-
     fun sendPointage(token: String, userId: String) {
         var date = ZonedDateTime.of(
             LocalDateTime.now().withDayOfMonth(1),
@@ -756,7 +536,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             }
         })
     }
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
