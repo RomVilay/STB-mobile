@@ -36,8 +36,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.applicationstb.model.DemontagePompe
-import com.example.applicationstb.model.DemontageReducteur
 import com.example.applicationstb.model.Joint
 import com.example.applicationstb.model.Roulement
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter

@@ -11,7 +11,6 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.applicationstb.R
-import com.example.applicationstb.model.DemontageMoteur
 import android.util.Log
 import android.widget.*
 import androidx.core.widget.doAfterTextChanged

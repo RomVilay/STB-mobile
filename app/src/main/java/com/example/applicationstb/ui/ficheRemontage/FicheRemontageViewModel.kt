@@ -43,10 +43,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     val selection = MutableLiveData<FicheRemontage>()
     var start = MutableLiveData<Date>()
-    var listeDemo = MutableLiveData<Array<DemontageMoteur>?>(arrayOf())
     val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
-    var ficheDemo = MutableLiveData<DemontageMoteur>()
-    fun getListeDemo() : Array<DemontageMoteur> { return listeDemo.value!! }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -77,13 +74,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
 
     fun fullScreen(view: View, uri: String) {
         val action = FicheRemontageDirections.deRemoVersFScreen(uri.toString())
-        Navigation.findNavController(view).navigate(action)
-    }
-
-    fun toFicheDemo(view: View, fiche: DemontageMoteur) {
-        val action = FicheRemontageDirections.actionFicheRemontageToFicheDemontage(
-            token!!, username!!
-        )
         Navigation.findNavController(view).navigate(action)
     }
 

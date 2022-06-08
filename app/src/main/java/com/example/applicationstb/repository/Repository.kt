@@ -314,54 +314,8 @@ class BobinageResponse(
     var data: Bobinage?
 )
 
-class DemontageTriphaseResponse(
-    var data: Triphase?
-)
-
-class DemontageMotoreducteurResponse(
-    var data: DemontageMotoreducteur?
-)
-
-class DemontageMotopompeResponse(
-    var data: DemontageMotopompe?
-)
-
-class DemontageReducteurResponse(
-    var data: DemontageReducteur?
-)
-
-
-class DemontageCCResponse(
-    var data: CourantContinu?
-)
-
-class DemontagePompeResponse(
-    var data: DemontagePompe?
-)
-
 class VehiculesResponse(
     var data: Vehicule?
-)
-
-class DemontageResponse(
-    var data: DemontageMoteur?
-)
-
-
-class DemontagesResponse(
-    var data: Array<DemontageMoteur>?
-)
-
-class DemontageAlternateurResponse(
-    var data: DemontageAlternateur?
-)
-
-class DemontageMonophaseResponse(
-    var data: DemontageMonophase?
-)
-
-class DemontageRotorBobineResponse(
-    var data: DemontageRotorBobine?
 )
 
 class ClientsResponse(

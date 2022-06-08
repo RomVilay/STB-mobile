@@ -67,18 +67,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)
     }
-
-    fun afficherFiche(fiche: Fiche) {
-        when (fiche) {
-            is CourantContinu -> Log.i("INFO", "Type Courant Continu")
-            is Triphase -> Log.i("Info", "Type triphasé")
-            /*is RotorBobine -> Log.i("INFO","Type Rotor Bobine")
-            is Monophase -> Log.i("Info","Type monophasé")
-            is Alternateur -> Log.i("INFO","type alternateur")
-            is DemontagePompe -> Log.i("Info", "type pompe")*/
-        }
-    }
-
     fun setCouplage(type: String) {
         var fichemot = selection.value
         fichemot!!.couplage = type
