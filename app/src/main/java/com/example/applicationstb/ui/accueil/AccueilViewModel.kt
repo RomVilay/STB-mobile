@@ -592,7 +592,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             runBlocking {
                                 var photos = ch.photos?.toMutableList()
                                 var iter = photos?.listIterator()
-                                while (iter?.hasNext() == true) {
+                               /* while (iter?.hasNext() == true) {
                                     var name = iter.next()
                                     if (name !== "") {
                                         //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
@@ -688,7 +688,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             }
                                         }
                                     job4.join()
-                                }
+                                }*/
                             }
                             val resp = repository.patchChantier(
                                 token,
@@ -735,7 +735,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             var ch = fiche.toBobinage()
                             var photos = ch.photos?.toMutableList()
                             var iter = photos?.listIterator()
-                            while (iter?.hasNext() == true) {
+                            /*while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
                                     runBlocking {
@@ -774,7 +774,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     iter.remove()
                                 }
                             }
-                            ch.photos = photos?.toTypedArray()
+                            ch.photos = photos?.toTypedArray()*/
                             val resp = repository.patchBobinage(
                                 token,
                                 ch._id,
@@ -817,7 +817,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         for (fiche in listD) {
                             var photos = fiche.photos?.toMutableList()
                             var iter = photos?.listIterator()
-                            while (iter?.hasNext() == true) {
+                            /*while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
                                     //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
@@ -863,7 +863,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     iter.remove()
                                 }
                             }
-                            fiche.photos = photos?.toTypedArray()
+                            fiche.photos = photos?.toTypedArray()*/
                             repository.demontageRepository!!.patchFicheDemontage(
                                 token!!,
                                 fiche._id,
@@ -899,7 +899,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         for (fiche in listR) {
                             var photos = fiche.photos?.toMutableList()
                             var iter = photos?.listIterator()
-                            while (iter?.hasNext() == true) {
+                            /*while (iter?.hasNext() == true) {
                                 var name = iter.next()
                                 if (name !== "") {
                                     //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
@@ -945,7 +945,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     iter.remove()
                                 }
                             }
-                            fiche.photos = photos?.toTypedArray()
+                            fiche.photos = photos?.toTypedArray()*/
                             repository.remontageRepository!!.patchRemontage(
                                 token!!,
                                 fiche._id,
@@ -1452,7 +1452,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         job.join()
     }
 
-    fun sendPhoto(photo: File) = runBlocking {
+    /*fun sendPhoto(photo: File) = runBlocking {
         var s =
             imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/" + imageName.value!!.name!! + "?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
@@ -1486,7 +1486,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                 })
         }
-    }
+    }*/
 
     suspend fun getPhotoFile(photoName: String): String? = runBlocking {
         var file = File(

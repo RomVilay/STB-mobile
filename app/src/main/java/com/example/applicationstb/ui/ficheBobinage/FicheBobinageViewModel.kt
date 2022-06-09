@@ -191,7 +191,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             viewModelScope.launch(Dispatchers.IO) {
                 var bob = repository.getByIdBobinageLocalDatabse(bobinage.value!!._id)
                 var photos = bobinage.value?.photos?.toMutableList()
-                var iter = photos?.listIterator()
+               /* var iter = photos?.listIterator()
                 while (iter?.hasNext() == true) {
                     var name = iter.next()
                     if (name !== "") {
@@ -237,7 +237,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                         iter.remove()
                     }
                 }
-                bob?.photos = photos?.toTypedArray()
+                bob?.photos = photos?.toTypedArray()*/
                 bob?.status = bobinage.value?.status
                 bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
                 bobinage.postValue(bob!!)
@@ -339,7 +339,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     @RequiresApi(Build.VERSION_CODES.M)
     suspend fun sendExternalPicture(path: String?): String? {
         if (isOnline(context)) {
-            getNameURI()
+          /*  getNameURI()
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
@@ -351,7 +351,8 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
                 return null
-            }
+            }*/
+            return null
         } else {
             val dir =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
@@ -401,7 +402,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         job.join()
     }
 
-    fun sendPhoto(photo: File) = runBlocking {
+    /*fun sendPhoto(photo: File) = runBlocking {
         var s =
             imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
@@ -434,7 +435,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                     }
                 })
         }
-    }
+    }*/
 
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")

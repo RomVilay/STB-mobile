@@ -377,7 +377,7 @@ class FicheChantier : Fragment() {
                         try {
                             viewModel.addPhoto(Uri.parse(to.absolutePath))
                             viewModel.galleryAddPic(to.absolutePath)
-                            viewModel.sendPhoto(to)
+                          //  viewModel.sendPhoto(to)
                             viewModel.quickSave()
                         } catch (e: java.lang.Exception) {
                             Log.e("EXCEPTION", e.message!!)
@@ -392,7 +392,7 @@ class FicheChantier : Fragment() {
             }
             if (resultCode == Activity.RESULT_OK && requestCode == 6) {
                 var file = viewModel.getRealPathFromURI(data?.data!!)
-                CoroutineScope(Dispatchers.IO).launch {
+               /* CoroutineScope(Dispatchers.IO).launch {
                     if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
                     var nfile = viewModel.sendExternalPicture(file!!)
                     if (nfile !== null) {
@@ -403,7 +403,7 @@ class FicheChantier : Fragment() {
                         viewModel.chantier.value?.photos = list?.toTypedArray()
                         viewModel.photos.postValue(list!!)
                     }
-                }
+                }*/
 
             }
         }

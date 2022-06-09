@@ -18,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -25,6 +26,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
@@ -247,6 +249,7 @@ class TriphaseFragment : Fragment() {
             }
         }
         ter.setOnClickListener {
+            layout.findViewById<CardView>(R.id.loadTriD).visibility = View.VISIBLE
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.setTitle("Terminer une fiche")
@@ -280,7 +283,21 @@ class TriphaseFragment : Fragment() {
             openGalleryForImage()
         }
         btnPhoto.setOnClickListener {
-            var test = ActivityCompat.checkSelfPermission(
+             //  layout.findViewById<CardView>(R.id.loadTriD).visibility = View.VISIBLE
+            /*lifecycleScope.launch {
+                var list = launch {  var list = viewModel.repositoryPhoto.sendPhotos(viewModel.token!!.filterNot { it.isWhitespace() },viewModel.selection.value!!.photos!!.toMutableList(),requireContext())
+                    viewModel.selection.value!!.apply {
+                        this.photos = list.toTypedArray()
+                        viewModel.localSave()
+                    }
+                   list.forEach { Log.i("info","nom photo ${it}") }
+                }
+                list.join()
+                withContext(Dispatchers.Main) {
+                    layout.findViewById<CardView>(R.id.loadTriD).visibility = View.GONE
+                }
+            }*/
+        var test = ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
@@ -334,7 +351,6 @@ class TriphaseFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             //Log.i("info", "photo camera: ${currentPhotoPath}")
             viewModel.addPhoto(currentPhotoPath)

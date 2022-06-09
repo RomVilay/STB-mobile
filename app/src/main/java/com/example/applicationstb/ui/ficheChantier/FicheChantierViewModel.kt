@@ -211,7 +211,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
                 var photos = chantier.value?.photos?.toMutableList()
                 var iter = photos?.listIterator()
-                while (iter?.hasNext() == true) {
+               /* while (iter?.hasNext() == true) {
                     var name = iter.next()
                     if (name !== "") {
                         runBlocking {
@@ -257,8 +257,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                         iter.remove()
                     }
                 }
-                ch?.photos = photos?.toTypedArray()
-                if (ch?.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
+                ch?.photos = photos?.toTypedArray()*/
+                /*if (ch?.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
                     var job3 =
                         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
                             getNameURI()
@@ -327,7 +327,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                         }
                     job4.join()
 
-                }
+                }*/
                 ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
                 chantier.postValue(ch!!)
                 val resp = repository.patchChantier(
@@ -468,7 +468,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    suspend fun sendExternalPicture(path: String?): String? {
+    /*suspend fun sendExternalPicture(path: String?): String? {
         if (isOnline(context)) {
             getNameURI()
             try {
@@ -491,9 +491,9 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             return file.name
         }
 
-    }
+    }*/
 
-    fun sendPhoto(photo:File)= runBlocking{
+    /*fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F","/")
@@ -521,7 +521,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     }
                 })
         }
-    }
+    }*/
     suspend fun getPhotoFile(photoName: String, index: Int) : String? = runBlocking {
         var file: String? = null
         var job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

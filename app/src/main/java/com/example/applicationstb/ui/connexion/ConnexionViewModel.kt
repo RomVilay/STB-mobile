@@ -159,7 +159,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
                         var ch = fiche.toChantier()
-                        var photos = ch.photos?.toMutableList()
+                       /* var photos = ch.photos?.toMutableList()
                         var iter = photos?.listIterator()
                         while (iter?.hasNext() == true) {
                             var name = iter.next()
@@ -237,7 +237,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     Log.e("EXCEPTION", e.message!! + e.cause)
                                 }
                             }
-                        }
+                        }*/
                         Log.i("INFO", "signature ${ch.signatureTech}")
                         val resp = repository.patchChantier(
                             user!!.token!!,
@@ -284,7 +284,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         var ch = fiche.toBobinage()
                         var photos = ch.photos?.toMutableList()
                         var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
+                       /* while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name !== "") {
                                 //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
@@ -321,7 +321,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 iter.remove()
                             }
                         }
-                        ch.photos = photos?.toTypedArray()
+                        ch.photos = photos?.toTypedArray()*/
                         val resp = repository.patchBobinage(
                             user!!.token!!,
                             ch._id,
@@ -364,7 +364,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     for (fiche in listD) {
                         var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
+                        /*while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name.contains(fiche.numFiche!!)) {
                                 getNameURI2 {
@@ -391,7 +391,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 delay(200)
                             }
                         }
-                        fiche.photos = photos?.toTypedArray()
+                        fiche.photos = photos?.toTypedArray()*/
                         repository.demontageRepository!!.patchFicheDemontage(
                             user!!.token!!,
                             fiche._id,
@@ -427,7 +427,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     for (fiche in listR) {
                         var photos = fiche.photos?.toMutableList()
                         var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
+                        /*while (iter?.hasNext() == true) {
                             var name = iter.next()
                             if (name.contains(fiche.numFiche!!)) {
                                 getNameURI2 {
@@ -454,7 +454,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 delay(200)
                             }
                         }
-                        fiche.photos = photos?.toTypedArray()
+                        fiche.photos = photos?.toTypedArray()*/
                         repository.remontageRepository!!.patchRemontage(user?.token!!, fiche._id, fiche.toFicheRemo(), object : Callback<RemontageResponse>{
                             override fun onResponse(
                                 call: Call<RemontageResponse>,
@@ -585,7 +585,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
 
     }
 
-    fun sendPhoto(photo: File) {
+   /* fun sendPhoto(photo: File) {
         var s =
             imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
@@ -607,9 +607,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     Log.i("INFO", t.message!!)
                 }
             })
-    }
+    }*/
 
-    fun sendPhoto2(photo: File, url: String) {
+   /* fun sendPhoto2(photo: File, url: String) {
         var s =
             url.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${photo.name}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
@@ -640,7 +640,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 })
         }
-    }
+    }*/
 
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")

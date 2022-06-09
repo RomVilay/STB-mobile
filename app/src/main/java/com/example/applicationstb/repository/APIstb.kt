@@ -46,9 +46,11 @@ interface APIstb  {
     @GET("clients/{id}")
     fun getClientsById(@Header("auth-token") token:String, @Path("id") id:String ): Call<ClientsResponse>
     @PUT("images/{name}")
-    fun uploadPhoto( @Header("auth-token") token:String, @Path("name", encoded = true) name:String,@Query("X-Amz-Algorithm") algo:String ,@Query(value = "X-Amz-Credential", encoded = true ) cred:String ,@Query("X-Amz-Date") date:String ,@Query("X-Amz-Expires") Expires:String ,@Query("X-Amz-SignedHeaders") SignedHeaders:String ,@Query("X-Amz-Signature") Signature:String,@Body body: RequestBody ): Call<URLPhotoResponse>
-    @GET("images/put")
-    suspend fun getURLToUploadPhoto( @Header("auth-token") token:String) : Response<URLPhotoResponse2>
+    suspend fun uploadPhoto( @Header("auth-token") token:String, @Path("name", encoded = true) name:String,@Query("X-Amz-Algorithm") algo:String ,@Query(value = "X-Amz-Credential", encoded = true ) cred:String ,@Query("X-Amz-Date") date:String ,@Query("X-Amz-Expires") Expires:String ,@Query("X-Amz-SignedHeaders") SignedHeaders:String ,@Query("X-Amz-Signature") Signature:String,@Body body: RequestBody ): Response<URLPhotoResponse>
+    @PUT
+    suspend fun uploadPhoto2( @Url url:String , @Header("auth-token") token:String, @Body body: RequestBody ): Response<Unit>
+    @GET("images/put/")
+    suspend fun getURLToUploadPhoto( @Header("auth-token") token:String,@Query("name") name:String) : Response<URLPhotoResponse2>
     @GET("images/get/{photoName}")
     suspend fun getURLPhoto(@Header("auth-token") token:String, @Path("photoName")photoName: String ): Response <URLPhotoResponse>
     @Streaming

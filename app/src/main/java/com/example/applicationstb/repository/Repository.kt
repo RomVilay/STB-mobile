@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.room.Room
@@ -569,7 +570,7 @@ class Repository(var context: Context) {
     }
 
     // photo requests
-    suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token)
+    suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token,"photo ${SystemClock.uptimeMillis()}")
 
     fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
         var dateMin =
@@ -599,11 +600,7 @@ class Repository(var context: Context) {
             }*/
 
     }
-
-
-
     suspend fun getPhoto(address: String) = service.getPhoto(address)
-
     val MIGRATION_20_21 = object : Migration(20, 21) {
         override fun migrate(database: SupportSQLiteDatabase) {
             // Create the new table

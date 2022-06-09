@@ -79,14 +79,17 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         var list = selection.value?.photos?.toMutableList()
         if (list != null) {
             list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+        } else {
+            selection.value?.photos = arrayOf(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
         selection.value?.photos = list?.toTypedArray()
         photos.value = list!!
         galleryAddPic(photo)
         localSave()
+        viewModelScope.launch {
+            repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },File(photo).name,context)
+        }
     }
-
-
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(context, contentUri, proj, null, null, null)
@@ -97,11 +100,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         cursor.close()
         return result
     }
-
     fun setSchema(sch: String) {
         schema.value = sch
     }
-
     fun fullScreen(view: View, uri: String) {
         val action = FicheDemontageDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
@@ -127,21 +128,21 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
     }
     @RequiresApi(Build.VERSION_CODES.M)
-    suspend fun sendExternalPicture(path: String?): String? {
+    suspend fun sendExternalPicture(path: String): String? {
         if (isOnline(context)) {
             if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
                 connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
             }
-            delay(200)
-            getNameURI()
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                val file = File(dir, imageName.value!!.name!!)
+                var file = File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
+                while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
+                    file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").toInt()+1}.jpg")
+                }
                 File(path).copyTo(file)
-                delay(100)
-                sendPhoto(file)
-                return imageName.value!!.name!!
+                repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },"${selection.value?.numFiche}_${selection.value?.photos?.size}",context)
+                return file.name
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
                 return null
@@ -183,8 +184,18 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
                     connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
                 }
-                delay(200)
-                getNameURI()
+                selection.value?.photos?.forEach {
+                   var test = async{ repositoryPhoto.getURL(token!!,it) }
+                    test.await()
+                    if (test.isCompleted){
+                        if(test.await().code().equals(200)){
+                            var check = repositoryPhoto.getURLPhoto(token!!,test.await().body()?.url!!)
+                            if(!check.code().equals(200)){
+                                repositoryPhoto.sendPhoto(token!!,it,context)
+                            }
+                        }
+                    }
+                }
                 repository.demontageRepository!!.patchFicheDemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<FicheDemontageResponse> {
                     override fun onResponse(
                         call: Call<FicheDemontageResponse>,
@@ -268,7 +279,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
     }
-    fun sendPhoto(photo:File)= runBlocking{
+    /*fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F","/")
@@ -296,7 +307,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     }
                 })
         }
-    }
+    }*/
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }

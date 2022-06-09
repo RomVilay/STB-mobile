@@ -790,7 +790,7 @@ class FicheBobinage : Fragment() {
                         try {
                             viewModel.addPhoto(Uri.parse(to.absolutePath))
                             viewModel.galleryAddPic(to.absolutePath)
-                            viewModel.sendPhoto(to)
+                           // viewModel.sendPhoto(to)
                             viewModel.quickSave()
                         } catch (e: java.lang.Exception) {
                             Log.e("EXCEPTION", e.message!!)
@@ -805,7 +805,7 @@ class FicheBobinage : Fragment() {
             }
             if (resultCode == Activity.RESULT_OK && requestCode == 6) {
                 var file = viewModel.getRealPathFromURI(data?.data!!)
-                CoroutineScope(Dispatchers.IO).launch {
+                /*CoroutineScope(Dispatchers.IO).launch {
                     if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
                     var nfile = viewModel.sendExternalPicture(file!!)
                     if (nfile !== null) {
@@ -816,7 +816,7 @@ class FicheBobinage : Fragment() {
                         viewModel.bobinage.value?.photos = list?.toTypedArray()
                         viewModel.photos.postValue(list!!)
                     }
-                }
+                }*/
 
             }
         }
