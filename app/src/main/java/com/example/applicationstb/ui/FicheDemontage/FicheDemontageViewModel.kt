@@ -128,7 +128,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
     }
     @RequiresApi(Build.VERSION_CODES.M)
-    suspend fun sendExternalPicture(path: String): String? {
+    suspend fun sendExternalPicture(path: String): String? = runBlocking{
         if (isOnline(context)) {
             if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
                 connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
@@ -138,25 +138,25 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
                 var file = File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
                 var old = File(path)
-                old.copyTo(file,true).apply {
-                    repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },file.name,context)
-                }
+                old.copyTo(file,true)
+                var s = async  {repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },file.name,context)}
+                s.join()
                 Log.i("info","photo nom send ext ${file.name} - path ${file.absolutePath}")
                /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
                     file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
                     Log.i("info","photo nom send ext ${file}")
                 }*/
-                return file.name
+                return@runBlocking file.name
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
-                return null
+                return@runBlocking null
             }
         } else {
             val dir =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
             val file = File(dir, selection.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
             File(path).copyTo(file,true)
-            return file.name
+            return@runBlocking file.name
         }
 
     }

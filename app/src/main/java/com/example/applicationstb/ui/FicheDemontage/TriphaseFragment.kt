@@ -368,6 +368,7 @@ class TriphaseFragment : Fragment() {
                     }
                     viewModel.selection.value?.photos = list?.toTypedArray()
                     viewModel.photos.postValue(list!!)
+                    viewModel.localSave()
                 }
             }
 
