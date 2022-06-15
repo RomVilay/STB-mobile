@@ -55,7 +55,7 @@ interface APIstb  {
     suspend fun getURLPhoto(@Header("auth-token") token:String, @Path("photoName")photoName: String ): Response <URLPhotoResponse>
     @Streaming
     @GET
-    suspend fun getPhoto(@Url address: String): Response<ResponseBody>
+    suspend fun getPhoto(@Url url: String): Response<ResponseBody>
     @POST("pointages")
     suspend fun postPointages(@Header("auth-token") token:String, @Body body: BodyPointage) : Response<PointageResponse>
 

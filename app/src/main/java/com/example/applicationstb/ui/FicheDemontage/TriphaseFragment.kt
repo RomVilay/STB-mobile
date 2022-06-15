@@ -359,11 +359,12 @@ class TriphaseFragment : Fragment() {
             var file = viewModel.getRealPathFromURI(data?.data!!)
             CoroutineScope(Dispatchers.IO).launch {
                 if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
-                var nfile = viewModel.sendExternalPicture(file!!)
-                if (nfile !== null) {
+                var nfile = async { viewModel.sendExternalPicture(file!!) }
+                nfile.join()
+                if (nfile.isCompleted) {
                     var list = viewModel.selection.value?.photos?.toMutableList()
                     if (list != null) {
-                        list.add(nfile)
+                        list.add(nfile.await()!!)
                     }
                     viewModel.selection.value?.photos = list?.toTypedArray()
                     viewModel.photos.postValue(list!!)

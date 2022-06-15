@@ -137,11 +137,15 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
                 var file = File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
-                while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
-                    file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").toInt()+1}.jpg")
+                var old = File(path)
+                old.copyTo(file,true).apply {
+                    repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },file.name,context)
                 }
-                File(path).copyTo(file)
-                repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },"${selection.value?.numFiche}_${selection.value?.photos?.size}",context)
+                Log.i("info","photo nom send ext ${file.name} - path ${file.absolutePath}")
+               /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
+                    file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
+                    Log.i("info","photo nom send ext ${file}")
+                }*/
                 return file.name
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
@@ -151,7 +155,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             val dir =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
             val file = File(dir, selection.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
-            File(path).copyTo(file)
+            File(path).copyTo(file,true)
             return file.name
         }
 
@@ -189,9 +193,11 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     test.await()
                     if (test.isCompleted){
                         if(test.await().code().equals(200)){
-                            var check = repositoryPhoto.getURLPhoto(token!!,test.await().body()?.url!!)
+                            var check = repositoryPhoto.getURLPhoto(token!!,test.await().body()?.name!!)
+                            Log.i("info","photo ${check.code()}")
                             if(!check.code().equals(200)){
-                                repositoryPhoto.sendPhoto(token!!,it,context)
+                                Log.i("info","photo ${it}")
+                               // repositoryPhoto.sendPhoto(token!!,it,context)
                             }
                         }
                     }
