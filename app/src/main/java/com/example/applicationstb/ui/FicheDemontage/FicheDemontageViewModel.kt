@@ -77,6 +77,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     @RequiresApi(Build.VERSION_CODES.M)
     fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
+        list!!.removeAll{ it == ""}
         if (list != null) {
             list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         } else {
@@ -123,6 +124,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         start.value = now
     }
     fun localSave() {
+
         viewModelScope.launch(Dispatchers.IO) {
             repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
         }
@@ -194,10 +196,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     if (test.isCompleted){
                         if(test.await().code().equals(200)){
                             var check = repositoryPhoto.getURLPhoto(token!!,test.await().body()?.name!!)
-                            Log.i("info","photo ${check.code()}")
+                            Log.i("info","photo ${check.code()} - url ${test.await().body()?.url!!.replace("%2F", "/")}")
                             if(!check.code().equals(200)){
-                                Log.i("info","photo ${it}")
-                               // repositoryPhoto.sendPhoto(token!!,it,context)
+                                Log.i("info","photo à envoyer${it}")
+                                repositoryPhoto.sendPhoto(token!!,it,context)
                             }
                         }
                     }

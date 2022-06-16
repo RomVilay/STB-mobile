@@ -283,20 +283,6 @@ class TriphaseFragment : Fragment() {
             openGalleryForImage()
         }
         btnPhoto.setOnClickListener {
-             //  layout.findViewById<CardView>(R.id.loadTriD).visibility = View.VISIBLE
-            /*lifecycleScope.launch {
-                var list = launch {  var list = viewModel.repositoryPhoto.sendPhotos(viewModel.token!!.filterNot { it.isWhitespace() },viewModel.selection.value!!.photos!!.toMutableList(),requireContext())
-                    viewModel.selection.value!!.apply {
-                        this.photos = list.toTypedArray()
-                        viewModel.localSave()
-                    }
-                   list.forEach { Log.i("info","nom photo ${it}") }
-                }
-                list.join()
-                withContext(Dispatchers.Main) {
-                    layout.findViewById<CardView>(R.id.loadTriD).visibility = View.GONE
-                }
-            }*/
         var test = ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -363,6 +349,7 @@ class TriphaseFragment : Fragment() {
                 nfile.join()
                 if (nfile.isCompleted) {
                     var list = viewModel.selection.value?.photos?.toMutableList()
+                    list!!.removeAll{ it == ""}
                     if (list != null) {
                         list.add(nfile.await()!!)
                     }
