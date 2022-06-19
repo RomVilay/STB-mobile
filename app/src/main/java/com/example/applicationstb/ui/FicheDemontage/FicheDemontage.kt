@@ -48,18 +48,21 @@ class FicheDemontage : Fragment() {
             spinner.adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
         }
         viewModel.selection.observe(viewLifecycleOwner) {
-           /* if (viewModel.selection.value!!.status == 3L) {
-                if (viewModel.listeDemontages.size > 1 ) {
+            if (viewModel.selection.value !== null){
+                spinner.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
+            }
+            if (viewModel.selection.value!!.status == 3L) {
+                if (viewModel.listeDemontages.value!!.size > 1 ) {
                     layout.findViewById<FrameLayout>(R.id.fragmentContainer).removeAllViews()
-                    viewModel.listeDemontages.remove(viewModel.selection.value!!)
+                    viewModel.listeDemontages.value?.remove(viewModel.selection.value!!)
                     spinner.adapter = ArrayAdapter(
                         requireActivity(),
                         R.layout.support_simple_spinner_dropdown_item,
-                        viewModel.listeDemontages.map { it.numFiche })
+                        viewModel.listeDemontages.value!!.map { it.numFiche })
                 } else {
                     viewModel.back(layout)
                 }
-            }*/
+            }
 
         }
         btnDemontage.setOnClickListener {
