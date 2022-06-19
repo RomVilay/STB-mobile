@@ -146,6 +146,33 @@ class PhotoRepository(context: Context) {
                 }
         }
     }
+    suspend fun sendSignature(token:String, photo:String, context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val url = getURL(token,photo)
+            Log.i("info", "url  ${url.body()!!.url}")
+            val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_signatures" ), photo)
+            try {
+                var compress = async { Compressor.compress(context, file)  }
+                compress.join()
+                if (compress.isCompleted) {
+                    var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
+                    var upload = async {
+                        servicePhoto().uploadPhoto2(url.body()!!.url!!, token , body)
+                    }
+                    withContext(Dispatchers.Main){
+                        return@withContext ServerResponse(upload.await().code(),upload.await().message())
+                    }
+                    Log.i("info","photo ${photo} uploaded ")
+                } else {
+                    withContext(Dispatchers.Main){
+                        return@withContext ServerResponse(400,"Transfert échoué.")
+                    }
+                }
+            } catch (e:Exception){
+                Log.e("error",e.message!!)
+            }
+        }
+    }
     suspend fun photoCheck(token:String,photoName:String) {
         CoroutineScope(Dispatchers.IO).launch {
             var test = async { getURL(token!!, photoName) }

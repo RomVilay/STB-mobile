@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import java.io.File
@@ -264,13 +266,24 @@ class FicheChantier : Fragment() {
                 var uri = v.showLog()
                 Log.i(
                     "INFO",
-                    "uri client: " + uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/")
+                    "uri client: " + uri!!
                 )
                 viewModel.signatures.add(uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/"))
                 viewModel.chantier.value?.signatureClient =
                     uri!!.removePrefix("/storage/emulated/0/Pictures/test_signatures/")
                 viewModel.getTime()
                 viewModel.quickSave()
+                if (viewModel.isOnline(requireContext())){
+                    Log.i("info","signature ${viewModel.chantier.value!!.signatureClient!!}")
+                    CoroutineScope(Dispatchers.IO).launch {
+                       var s = async{viewModel.repositoryPhoto.sendSignature(viewModel.token.value!!, viewModel.chantier.value!!.signatureClient!!, requireContext())}
+                        s.await()
+                        withContext(Dispatchers.Main){
+                            val mySnackbar = Snackbar.make(layout, "signature envoyée", 3600)
+                            mySnackbar.show()
+                        }
+                    }
+                }
             }
         }
         btnTech.setOnClickListener {
@@ -293,6 +306,16 @@ class FicheChantier : Fragment() {
                 //Log.i("INFO",sign.exists().toString())
                 viewModel.getTime()
                 viewModel.quickSave()
+                if (viewModel.isOnline(requireContext())){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        var s = async{viewModel.repositoryPhoto.sendSignature(viewModel.token.value!!, viewModel.chantier.value!!.signatureTech!!, requireContext())}
+                        s.await()
+                        withContext(Dispatchers.Main){
+                            val mySnackbar = Snackbar.make(layout, "signature envoyée", 3600)
+                            mySnackbar.show()
+                        }
+                    }
+                }
             }
         }
 

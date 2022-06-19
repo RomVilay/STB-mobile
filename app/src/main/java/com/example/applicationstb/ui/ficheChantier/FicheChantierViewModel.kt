@@ -472,7 +472,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                 if (code.await().code() >= 400) {
                                     Log.i("info", "signature à envoyer${chantier.value!!.signatureClient}")
-                                    var s = async{ repositoryPhoto.sendPhoto(token.value!!, chantier.value!!.signatureClient!!, context) }
+                                    var s = async{ repositoryPhoto.sendSignature(token.value!!, chantier.value!!.signatureClient!!, context) }
                                     s.await()
                                 }
                             }
@@ -498,7 +498,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 code.await()
                                 //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                 if (code.await().code() >= 400) {
-                                    var s = async{ repositoryPhoto.sendPhoto(token.value!!, chantier.value!!.signatureTech!!, context) }
+                                    var s = async{ repositoryPhoto.sendSignature(token.value!!, chantier.value!!.signatureTech!!, context) }
                                     s.await()
                                 }
                             }
