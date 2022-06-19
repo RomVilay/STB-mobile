@@ -42,7 +42,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     var username: String? = null;
     var repository = Repository(context );
     var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
-    var listeChantiers = arrayListOf<Chantier>()
+    var listeChantiers = MutableLiveData<MutableList<Chantier>>()
     var chantier = MutableLiveData<Chantier>()
     var signatures = arrayListOf<String?>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
@@ -55,27 +55,252 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     init {
          viewModelScope.launch(Dispatchers.IO){
             repository.createDb()
+             getLocalFiches()
        }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getLocalFiches() {
+        listeChantiers.postValue(repository.getAllChantierLocalDatabase()
+                .map { it.toChantier() }.toMutableList())
 
-
+    }
     fun back(view:View){
         Navigation.findNavController(view).popBackStack()
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addPhoto(photo: Uri) {
-        Log.i("INFO", "add photo")
-       var list = chantier?.value?.photos?.toMutableList()
+    fun addPhoto(photo: String) {
+        var list = chantier.value?.photos?.toMutableList()
+        list!!.removeAll { it == "" }
         if (list != null) {
-            if (isOnline(context)) {
-                list.add(imageName.value!!.name!!)
-            } else {
-                list.add(photo.path.toString())
-            }
+            list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+        } else {
+            chantier.value?.photos =
+                arrayOf(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
         chantier.value?.photos = list?.toTypedArray()
         photos.value = list!!
+        galleryAddPic(photo)
         quickSave()
+        if (isOnline(context)) {
+            viewModelScope.launch {
+                var s = async { repositoryPhoto.sendPhoto(
+                    token.value!!.filterNot { it.isWhitespace() },
+                    File(photo).name,
+                    context
+                )}
+                s.await()
+                var s2 = async { sendFicheNoText()}
+                s2.await()
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendFicheNoText() = runBlocking {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            if (isOnline(context) == true) {
+                if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                        "login",
+                        ""
+                    ) !== "" && sharedPref?.getString("password", "") !== "")
+                ) {
+                    connection(
+                        sharedPref?.getString("login", "")!!,
+                        sharedPref?.getString("password", "")!!
+                    )
+                }
+                if (chantier.value!!.photos?.size!! > 0) {
+                    chantier.value!!.photos?.forEach {
+                        var test = async { repositoryPhoto.getURL(token.value!!, it) }
+                        test.await()
+                        if (test.isCompleted) {
+                            if (test.await().code().equals(200)) {
+                                var check = async {
+                                    repositoryPhoto.getURLPhoto(
+                                        token.value!!,
+                                        test.await().body()?.name!!
+                                    )
+                                }
+                                check.await()
+                                if (check.isCompleted) {
+                                    var code =
+                                        async { repository.getPhoto(check.await().body()!!.url!!) }
+                                    code.await()
+                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                    if (code.await().code() >= 400) {
+                                        Log.i("info", "photo à envoyer${it}")
+                                        var s = async{ repositoryPhoto.sendPhoto(token.value!!, it, context) }
+                                        s.await()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (chantier.value!!.signatureClient !== null) {
+                    var test = async { repositoryPhoto.getURL(token.value!!, chantier.value!!.signatureClient!!) }
+                    test.await()
+                    if (test.isCompleted) {
+                        if (test.await().code().equals(200)) {
+                            var check = async {
+                                repositoryPhoto.getURLPhoto(
+                                    token.value!!,
+                                    test.await().body()?.name!!
+                                )
+                            }
+                            check.await()
+                            if (check.isCompleted) {
+                                var code =
+                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                code.await()
+                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                if (code.await().code() >= 400) {
+                                    Log.i("info", "signature à envoyer${chantier.value!!.signatureClient}")
+                                    var s = async{ repositoryPhoto.sendPhoto(token.value!!, chantier.value!!.signatureClient!!, context) }
+                                    s.await()
+                                }
+                            }
+                        }
+                    }
+
+                }
+                if (chantier.value!!.signatureTech !== null) {
+                    var test = async { repositoryPhoto.getURL(token.value!!, chantier.value!!.signatureTech!!) }
+                    test.await()
+                    if (test.isCompleted) {
+                        if (test.await().code().equals(200)) {
+                            var check = async {
+                                repositoryPhoto.getURLPhoto(
+                                    token.value!!,
+                                    test.await().body()?.name!!
+                                )
+                            }
+                            check.await()
+                            if (check.isCompleted) {
+                                var code =
+                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                code.await()
+                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                if (code.await().code() >= 400) {
+                                    var s = async{ repositoryPhoto.sendPhoto(token.value!!, chantier.value!!.signatureTech!!, context) }
+                                    s.await()
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                repository.patchChantier(
+                    token.value!!,
+                    chantier.value!!._id,
+                    chantier.value!!,
+                    object : Callback<ChantierResponse> {
+                        override fun onResponse(
+                            call: Call<ChantierResponse>,
+                            response: Response<ChantierResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    //Log.i("INFO","fiche chantier enregistrée")
+                                }
+                            } else {
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ChantierResponse>, t: Throwable) {
+                            Log.e("Error", "${t.stackTraceToString()}")
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
+            } else {
+                repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
+            }
+
+        }
+
+    }
+
+    fun connection(username: String, password: String) {
+        val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp != null) {
+                        token = token
+                        Log.i("info", "new token ${resp.token}")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("Error", "erreur ${t.message}")
+            }
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun sendExternalPicture(path: String): String? = runBlocking {
+        if (isOnline(context)) {
+            if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                    "login",
+                    ""
+                ) !== "" && sharedPref?.getString("password", "") !== "")
+            ) {
+                connection(
+                    sharedPref?.getString("login", "")!!,
+                    sharedPref?.getString("password", "")!!
+                )
+            }
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                var file =
+                    File(dir, "${chantier.value?.numFiche}_${chantier.value?.photos?.size}.jpg")
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token.value!!.filterNot { it.isWhitespace() },
+                        file.name,
+                        context
+                    )
+                }
+                s.join()
+                /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
+                     file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
+                     Log.i("info","photo nom send ext ${file}")
+                 }*/
+                return@runBlocking file.name
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return@runBlocking null
+            }
+        } else {
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                var file =
+                    File(dir, "${chantier.value?.numFiche}_${chantier.value?.photos?.size}.jpg")
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                return@runBlocking file.name
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return@runBlocking null
+            }
+        }
+
     }
     fun setSchema(sch: String){
         schema.value = sch
@@ -152,14 +377,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun quickSave(){
-        getTime()
         viewModelScope.launch(Dispatchers.IO){
-            var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
-            if (ch !== null) {
-                repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
-            } else {
-                repository.insertChantierLocalDatabase(chantier.value!!)
-            }
+            repository.updateChantierLocalDatabse(chantier.value!!.toEntity())
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -204,130 +423,89 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context, view: View, t:String)= runBlocking{
         if (isOnline(context) && token.value !== "") {
-            CoroutineScope(Dispatchers.IO).launch {
-                getNameURI()
-            }
             viewModelScope.launch(Dispatchers.IO) {
                 var ch = repository.getByIdChantierLocalDatabse(chantier.value!!._id)
-                var photos = chantier.value?.photos?.toMutableList()
-                var iter = photos?.listIterator()
-               /* while (iter?.hasNext() == true) {
-                    var name = iter.next()
-                    if (name !== "") {
-                        runBlocking {
-                            if (name.contains(ch?.numFiche!!)) {
-                                Log.i("INFO", "fichier à upload : ${name}")
-                                //var test = getPhotoFile(name)
-                                var job =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        getNameURI()
+                if (chantier.value!!.photos?.size!! > 0) {
+                    chantier.value!!.photos?.forEach {
+                        var test = async { repositoryPhoto.getURL(token.value!!, it) }
+                        test.await()
+                        if (test.isCompleted) {
+                            if (test.await().code().equals(200)) {
+                                var check = async {
+                                    repositoryPhoto.getURLPhoto(
+                                        token.value!!,
+                                        test.await().body()?.name!!
+                                    )
+                                }
+                                check.await()
+                                if (check.isCompleted) {
+                                    var code =
+                                        async { repository.getPhoto(check.await().body()!!.url!!) }
+                                    code.await()
+                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                    if (code.await().code() >= 400) {
+                                        Log.i("info", "photo à envoyer${it}")
+                                        var s = async{ repositoryPhoto.sendPhoto(token.value!!, it, context) }
+                                        s.await()
                                     }
-                                job.join()
-                                var job2 =
-                                    CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                        try {
-                                            val dir =
-                                                Environment.getExternalStoragePublicDirectory(
-                                                    Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                )
-                                            val from = File(
-                                                dir,
-                                                name
-                                            )
-                                            val to = File(dir, imageName.value!!.name!!)
-                                            Log.i(
-                                                "INFO",
-                                                from.exists()
-                                                    .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                            )
-                                            if (from.exists()) {
-                                                from.renameTo(to)
-                                                sendPhoto(to)
-                                                iter.set(imageName.value!!.name!!)
-                                            }
-                                        } catch (e: java.lang.Exception) {
-                                            Log.e("EXCEPTION", e.message!!)
-                                        }
-                                    }
-                                job2.join()
+                                }
                             }
                         }
                     }
-                    if (name == "") {
-                        iter.remove()
+                }
+                if (chantier.value!!.signatureClient !== null) {
+                    var test = async { repositoryPhoto.getURL(token.value!!, chantier.value!!.signatureClient!!) }
+                    test.await()
+                    if (test.isCompleted) {
+                        if (test.await().code().equals(200)) {
+                            var check = async {
+                                repositoryPhoto.getURLPhoto(
+                                    token.value!!,
+                                    test.await().body()?.name!!
+                                )
+                            }
+                            check.await()
+                            if (check.isCompleted) {
+                                var code =
+                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                code.await()
+                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                if (code.await().code() >= 400) {
+                                    Log.i("info", "signature à envoyer${chantier.value!!.signatureClient}")
+                                    var s = async{ repositoryPhoto.sendPhoto(token.value!!, chantier.value!!.signatureClient!!, context) }
+                                    s.await()
+                                }
+                            }
+                        }
                     }
-                }
-                ch?.photos = photos?.toTypedArray()*/
-                /*if (ch?.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
-                    var job3 =
-                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                            getNameURI()
-                        }
-                    job3.join()
-                    var job4 =
-                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                            try {
-                                val dir =
-                                    Environment.getExternalStoragePublicDirectory(
-                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                    )
-                                val from = File(
-                                    dir,
-                                    ch.signatureTech!!
-                                )
-                                val to = File(dir, imageName.value!!.name!!)
-                                Log.i(
-                                    "INFO", "signature tech" +
-                                            from.exists()
-                                                .toString() + " - path ${from.absolutePath}"
-                                )
-                                if (from.exists()) {
-                                    from.renameTo(to)
-                                    ch.signatureTech = imageName.value!!.name
-                                    sendPhoto(to)
-                                }
-                            } catch (e: java.lang.Exception) {
-                                Log.e("EXCEPTION", e.message!!)
-                            }
-                        }
-                    job4.join()
-                    delay(200)
-                }
-                if (ch?.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
-                    var job3 =
-                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                            getNameURI()
-                        }
-                    job3.join()
-                    var job4 =
-                        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                            try {
-                                val dir =
-                                    Environment.getExternalStoragePublicDirectory(
-                                        Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                    )
-                                val from = File(
-                                    dir,
-                                    ch.signatureClient!!
-                                )
-                                val to = File(dir, imageName.value!!.name!!)
-                                Log.i(
-                                    "INFO", "signature client" +
-                                            from.exists()
-                                                .toString() + " - path ${from.absolutePath}"
-                                )
-                                if (from.exists()) {
-                                    from.renameTo(to)
-                                    ch.signatureClient = imageName.value!!.name
-                                    sendPhoto(to)
-                                }
-                            } catch (e: java.lang.Exception) {
-                                Log.e("EXCEPTION", e.message!!)
-                            }
-                        }
-                    job4.join()
 
-                }*/
+                }
+                if (chantier.value!!.signatureTech !== null) {
+                    var test = async { repositoryPhoto.getURL(token.value!!, chantier.value!!.signatureTech!!) }
+                    test.await()
+                    if (test.isCompleted) {
+                        if (test.await().code().equals(200)) {
+                            var check = async {
+                                repositoryPhoto.getURLPhoto(
+                                    token.value!!,
+                                    test.await().body()?.name!!
+                                )
+                            }
+                            check.await()
+                            if (check.isCompleted) {
+                                var code =
+                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                code.await()
+                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                if (code.await().code() >= 400) {
+                                    var s = async{ repositoryPhoto.sendPhoto(token.value!!, chantier.value!!.signatureTech!!, context) }
+                                    s.await()
+                                }
+                            }
+                        }
+                    }
+
+                }
                 ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
                 chantier.postValue(ch!!)
                 val resp = repository.patchChantier(
@@ -344,14 +522,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                                 if (resp != null) {
                                     val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    if (chantier.value!!.status!! > 2L) {
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            repository.deleteChantierLocalDatabse(chantier.value!!.toEntity())
-                                            delay(100)
-                                            listeChantiers.remove(chantier.value!!)
-                                            chantier.postValue(null)
-                                        }
-                                    }
                                     //Log.i("INFO","fiche chantier enregistrée")
                                 }
                             } else {

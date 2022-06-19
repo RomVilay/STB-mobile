@@ -93,7 +93,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 )
                             }
                             sendPointage(resp.token!!, resp.user!!._id!!)
-
                             sendFiche()
                             if (action != null) {
                                 if (loading.visibility == View.VISIBLE) loading.visibility =
@@ -159,84 +158,87 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
                         var ch = fiche.toChantier()
-                       /* var photos = ch.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(ch.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
+                        /*if (ch.photos?.size!! > 0) {
+                            ch.photos?.forEach {
+                                var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
+                                                user!!.token!!,
+                                                test.await().body()?.name!!
+                                            )
+                                        }
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "photo à envoyer${it}")
+                                                var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, it, context) }
+                                                s.await()
                                             }
                                         }
-                                        delay(200)
                                     }
                                 }
                             }
-                            if (name == "") {
-                                iter.remove()
-                            }
                         }
-                        ch.photos = photos?.toTypedArray()
-                        if (ch.signatureTech !== null && ch.signatureTech!!.contains("sign_")) {
-                            getNameURI2 {
-                                try {
-                                    val dir =
-                                        Environment.getExternalStoragePublicDirectory(
-                                            Environment.DIRECTORY_PICTURES + "/test_signatures"
+                        if (ch.signatureClient !== null) {
+                                var test = async { repositoryPhoto.getURL(user!!.token!!, ch.signatureClient!!) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
+                                                user!!.token!!,
+                                                test.await().body()?.name!!
+                                            )
+                                        }
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "signature à envoyer${ch.signatureClient}")
+                                                var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, ch.signatureClient!!, context) }
+                                                s.await()
+                                            }
+                                        }
+                                    }
+                                }
+
+                        }
+                        if (ch.signatureTech !== null) {
+                            var test = async { repositoryPhoto.getURL(user!!.token!!, ch.signatureTech!!) }
+                            test.await()
+                            if (test.isCompleted) {
+                                if (test.await().code().equals(200)) {
+                                    var check = async {
+                                        repositoryPhoto.getURLPhoto(
+                                            user!!.token!!,
+                                            test.await().body()?.name!!
                                         )
-                                    val from = File(
-                                        dir,
-                                        ch.signatureTech!!
-                                    )
-                                    val to = File(dir, it!!.name!!)
-                                    if (from.exists()) from.renameTo(to)
-                                    ch.signatureTech = it!!.name!!
-                                    sendPhoto2(to, it.url!!)
-                                } catch (e: java.lang.Exception) {
-                                    Log.e("EXCEPTION", e.message!! + e.cause)
+                                    }
+                                    check.await()
+                                    if (check.isCompleted) {
+                                        var code =
+                                            async { repository.getPhoto(check.await().body()!!.url!!) }
+                                        code.await()
+                                        //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                        if (code.await().code() >= 400) {
+                                            Log.i("info", "signature à envoyer${ch.signatureTech}")
+                                            var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, ch.signatureTech!!, context) }
+                                            s.await()
+                                        }
+                                    }
                                 }
                             }
-                        }
-                        if (ch.signatureClient !== null && ch.signatureClient!!.contains("sign_")) {
-                            getNameURI2 {
-                                try {
-                                    val dir =
-                                        Environment.getExternalStoragePublicDirectory(
-                                            Environment.DIRECTORY_PICTURES + "/test_signatures"
-                                        )
-                                    val from = File(
-                                        dir,
-                                        ch.signatureClient!!
-                                    )
-                                    val to = File(dir, it!!.name!!)
-                                    if (from.exists()) from.renameTo(to)
-                                    ch.signatureClient = it!!.name!!
-                                    sendPhoto2(to, it.url!!)
-                                } catch (e: java.lang.Exception) {
-                                    Log.e("EXCEPTION", e.message!! + e.cause)
-                                }
-                            }
+
                         }*/
                         Log.i("INFO", "signature ${ch.signatureTech}")
                         val resp = repository.patchChantier(
@@ -282,46 +284,34 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 if (listb.size > 0) {
                     for (fiche in listb) {
                         var ch = fiche.toBobinage()
-                        var photos = ch.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                       /* while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(ch.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        getNameURI2 {
-                                            try {
-                                                val dir =
-                                                    Environment.getExternalStoragePublicDirectory(
-                                                        Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                    )
-                                                val from = File(
-                                                    dir,
-                                                    name
-                                                )
-                                                val to =
-                                                    File(dir, it!!.name!!)
-                                                if (from.exists()) {
-                                                    from.renameTo(to)
-                                                    sendPhoto2(to, it.url!!)
-                                                    iter.set(it!!.name!!)
-                                                }
-
-                                            } catch (e: java.lang.Exception) {
-                                                Log.e("EXCEPTION", e.message!!)
+                       /* if (ch.photos?.size!! > 0) {
+                            ch.photos?.forEach {
+                                var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
+                                                user!!.token!!,
+                                                test.await().body()?.name!!
+                                            )
+                                        }
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "photo à envoyer${it}")
+                                                var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, it, context) }
+                                                s.await()
                                             }
                                         }
-                                        delay(200)
                                     }
                                 }
                             }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        ch.photos = photos?.toTypedArray()*/
+                        }*/
                         val resp = repository.patchBobinage(
                             user!!.token!!,
                             ch._id,
@@ -362,36 +352,34 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
                 if (listD.size > 0) {
                     for (fiche in listD) {
-                        var photos = fiche.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        /*while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(fiche.numFiche!!)) {
-                                getNameURI2 {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                        /*if (fiche.photos?.size!! > 0) {
+                            fiche.photos?.forEach {
+                                var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
+                                                user!!.token!!,
+                                                test.await().body()?.name!!
                                             )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to =
-                                            File(dir, it!!.name!!)
-                                        if (from.exists()) {
-                                            from.renameTo(to)
-                                            sendPhoto2(to, it.url!!)
-                                            iter.set(it!!.name!!)
                                         }
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "photo à envoyer${it}")
+                                                var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, it, context) }
+                                                s.await()
+                                            }
+                                        }
                                     }
                                 }
-                                delay(200)
                             }
-                        }
-                        fiche.photos = photos?.toTypedArray()*/
+                        }*/
                         repository.demontageRepository!!.patchFicheDemontage(
                             user!!.token!!,
                             fiche._id,
@@ -425,36 +413,34 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 var listR = repository.remontageRepository!!.getAllRemontageLocalDatabase()
                 if (listR.size > 0) {
                     for (fiche in listR) {
-                        var photos = fiche.photos?.toMutableList()
-                        var iter = photos?.listIterator()
-                        /*while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name.contains(fiche.numFiche!!)) {
-                                getNameURI2 {
-                                    try {
-                                        val dir =
-                                            Environment.getExternalStoragePublicDirectory(
-                                                Environment.DIRECTORY_PICTURES + "/test_pictures"
+                       /* if (fiche.photos?.size!! > 0) {
+                            fiche.photos?.forEach {
+                                var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
+                                                user!!.token!!,
+                                                test.await().body()?.name!!
                                             )
-                                        val from = File(
-                                            dir,
-                                            name
-                                        )
-                                        val to =
-                                            File(dir, it!!.name!!)
-                                        if (from.exists()) {
-                                            from.renameTo(to)
-                                            sendPhoto2(to, it.url!!)
-                                            iter.set(it!!.name!!)
                                         }
-                                    } catch (e: java.lang.Exception) {
-                                        Log.e("EXCEPTION", e.message!!)
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "photo à envoyer${it}")
+                                                var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, it, context) }
+                                                s.await()
+                                            }
+                                        }
                                     }
                                 }
-                                delay(200)
                             }
-                        }
-                        fiche.photos = photos?.toTypedArray()*/
+                        }*/
                         repository.remontageRepository!!.patchRemontage(user?.token!!, fiche._id, fiche.toFicheRemo(), object : Callback<RemontageResponse>{
                             override fun onResponse(
                                 call: Call<RemontageResponse>,
