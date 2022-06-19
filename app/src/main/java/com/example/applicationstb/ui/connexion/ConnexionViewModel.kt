@@ -158,8 +158,10 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 if (listCh.size > 0) {
                     for (fiche in listCh) {
                         var ch = fiche.toChantier()
-                        /*if (ch.photos?.size!! > 0) {
-                            ch.photos?.forEach {
+                        if (ch.photos?.size!! > 0) {
+                            var list = ch.photos?.toMutableList()!!
+                                list.removeAll { it == "" }
+                            list.forEach {
                                 var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
                                 test.await()
                                 if (test.isCompleted) {
@@ -205,7 +207,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                             //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                             if (code.await().code() >= 400) {
                                                 Log.i("info", "signature à envoyer${ch.signatureClient}")
-                                                var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, ch.signatureClient!!, context) }
+                                                var s = async{ repositoryPhoto.sendSignature(user!!.token!!, ch.signatureClient!!, context) }
                                                 s.await()
                                             }
                                         }
@@ -232,15 +234,14 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                         if (code.await().code() >= 400) {
                                             Log.i("info", "signature à envoyer${ch.signatureTech}")
-                                            var s = async{ repositoryPhoto.sendPhoto(user!!.token!!, ch.signatureTech!!, context) }
+                                            var s = async{ repositoryPhoto.sendSignature(user!!.token!!, ch.signatureTech!!, context) }
                                             s.await()
                                         }
                                     }
                                 }
                             }
 
-                        }*/
-                        Log.i("INFO", "signature ${ch.signatureTech}")
+                        }
                         val resp = repository.patchChantier(
                             user!!.token!!,
                             ch._id,
@@ -284,8 +285,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 if (listb.size > 0) {
                     for (fiche in listb) {
                         var ch = fiche.toBobinage()
-                       /* if (ch.photos?.size!! > 0) {
-                            ch.photos?.forEach {
+                        if (ch.photos?.size!! > 0) {
+                            var list = ch.photos?.toMutableList()!!
+                            list.removeAll { it == "" }
+                            ch.photos = list.toTypedArray()
+                            list.forEach {
                                 var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
                                 test.await()
                                 if (test.isCompleted) {
@@ -311,7 +315,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                        }*/
+                        }
                         val resp = repository.patchBobinage(
                             user!!.token!!,
                             ch._id,
@@ -352,8 +356,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
                 if (listD.size > 0) {
                     for (fiche in listD) {
-                        /*if (fiche.photos?.size!! > 0) {
-                            fiche.photos?.forEach {
+                        if (fiche.photos?.size!! > 0) {
+                            var list = fiche.photos?.toMutableList()!!
+                            list.removeAll { it == "" }
+                            fiche.photos = list.toTypedArray()
+                            list.forEach {
                                 var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
                                 test.await()
                                 if (test.isCompleted) {
@@ -379,7 +386,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                        }*/
+                        }
                         repository.demontageRepository!!.patchFicheDemontage(
                             user!!.token!!,
                             fiche._id,
@@ -413,8 +420,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 var listR = repository.remontageRepository!!.getAllRemontageLocalDatabase()
                 if (listR.size > 0) {
                     for (fiche in listR) {
-                       /* if (fiche.photos?.size!! > 0) {
-                            fiche.photos?.forEach {
+                        if (fiche.photos?.size!! > 0) {
+                            var list = fiche.photos?.toMutableList()!!
+                            list.removeAll { it == "" }
+                            fiche.photos = list.toTypedArray()
+                            list.forEach {
                                 var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
                                 test.await()
                                 if (test.isCompleted) {
@@ -440,7 +450,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                        }*/
+                        }
                         repository.remontageRepository!!.patchRemontage(user?.token!!, fiche._id, fiche.toFicheRemo(), object : Callback<RemontageResponse>{
                             override fun onResponse(
                                 call: Call<RemontageResponse>,
