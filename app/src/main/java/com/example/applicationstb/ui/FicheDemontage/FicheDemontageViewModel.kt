@@ -78,7 +78,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
         list!!.removeAll { it == "" }
@@ -100,6 +100,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     context
                 )}
                 s.await()
+                var s2 = async { sendFicheNoText()}
+                s2.await()
             }
         }
     }
@@ -147,7 +149,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun sendExternalPicture(path: String): String? = runBlocking {
         if (isOnline(context)) {
             if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
@@ -180,6 +182,8 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                      file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
                      Log.i("info","photo nom send ext ${file}")
                  }*/
+                var s2 = async{sendFicheNoText()}
+                s2.await()
                 return@runBlocking file.name
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
@@ -289,6 +293,87 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                 val mySnackbar =
                                     Snackbar.make(view, "erreur d'enregistrement", 3600)
                                 mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                        response.errorBody()!!.charStream().readText()
+                                    }"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<FicheDemontageResponse>,
+                            t: Throwable
+                        ) {
+                            Log.e("Error", "${t.stackTraceToString()}")
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
+            } else {
+                repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
+            }
+
+        }
+
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendFicheNoText() = runBlocking {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            if (isOnline(context) == true) {
+                if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                        "login",
+                        ""
+                    ) !== "" && sharedPref?.getString("password", "") !== "")
+                ) {
+                    connection(
+                        sharedPref?.getString("login", "")!!,
+                        sharedPref?.getString("password", "")!!
+                    )
+                }
+                if (selection.value?.photos?.size!! > 0) {
+                    selection.value?.photos?.forEach {
+                        var test = async { repositoryPhoto.getURL(token!!, it) }
+                        test.await()
+                        if (test.isCompleted) {
+                            if (test.await().code().equals(200)) {
+                                var check = async {
+                                    repositoryPhoto.getURLPhoto(
+                                        token!!,
+                                        test.await().body()?.name!!
+                                    )
+                                }
+                                check.await()
+                                if (check.isCompleted) {
+                                    var code =
+                                        async { repository.getPhoto(check.await().body()!!.url!!) }
+                                    code.await()
+                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                    if (code.await().code() >= 400) {
+                                        var s = async{ repositoryPhoto.sendPhoto(token!!, it, context) }
+                                        s.await()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                repository.demontageRepository!!.patchFicheDemontage(
+                    token!!,
+                    selection.value!!._id,
+                    selection.value!!,
+                    object : Callback<FicheDemontageResponse> {
+                        override fun onResponse(
+                            call: Call<FicheDemontageResponse>,
+                            response: Response<FicheDemontageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    Log.i("INFO", "enregistré")
+
+                                }
+                            } else {
                                 Log.i(
                                     "INFO",
                                     "code : ${response.code()} - erreur : ${response.message()} - body request ${
