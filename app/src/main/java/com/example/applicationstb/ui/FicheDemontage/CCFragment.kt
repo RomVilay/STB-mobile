@@ -34,6 +34,7 @@ import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -247,10 +248,7 @@ class CCFragment : Fragment() {
             viewModel.getTime()
             viewModel.selection.value!!.status = 2L
             viewModel.localSave()
-            if (viewModel.isOnline(requireContext())) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getNameURI()
-                }
+            if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
@@ -275,9 +273,6 @@ class CCFragment : Fragment() {
                             viewModel.selection.value!!.status = 3L
                             viewModel.localSave()
                             if (viewModel.isOnline(requireContext())) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    viewModel.getNameURI()
-                                }
                                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
@@ -365,15 +360,18 @@ class CCFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == 6) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
             CoroutineScope(Dispatchers.IO).launch {
-                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
-                var nfile = viewModel.sendExternalPicture(file!!)
-                if (nfile !== null) {
+                var nfile = async { viewModel.sendExternalPicture(file!!) }
+                nfile.await()
+                if (nfile.isCompleted) {
+                    Log.i("info","photo ext ${nfile.await()}")
                     var list = viewModel.selection.value?.photos?.toMutableList()
+                    list!!.removeAll { it == "" }
                     if (list != null) {
-                        list.add(nfile)
+                        list.add(nfile.await()!!)
                     }
                     viewModel.selection.value?.photos = list?.toTypedArray()
                     viewModel.photos.postValue(list!!)
+                    viewModel.localSave()
                 }
             }
 

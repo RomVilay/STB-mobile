@@ -146,5 +146,35 @@ class PhotoRepository(context: Context) {
                 }
         }
     }
+    suspend fun photoCheck(token:String,photoName:String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var test = async { getURL(token!!, photoName) }
+            test.await()
+            if (test.isCompleted) {
+                if (test.await().code().equals(200)) {
+                    var check = async { getURLPhoto(token!!, test.await().body()?.name!!) }
+                    check.await()
+                    if (check.isCompleted) {
+                        var code = async { getPhoto(check.await().body()!!.url!!) }
+                        code.await()
+                        withContext(Dispatchers.Main) {
+                            return@withContext code.await().code() == 400
+                        }
+                        Log.i(
+                            "info",
+                            "url : ${check.await().body()!!.url} - code photo ${
+                                code.await().code()
+                            } "
+                        )
+                    }
+
+                    /*if(!check.code().equals(200)){
+                        Log.i("info","photo à envoyer${it}")
+                        repositoryPhoto.sendPhoto(token!!,it,context)
+                    }*/
+                }
+            }
+        }
+    }
 
 }

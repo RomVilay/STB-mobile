@@ -59,14 +59,18 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    suspend fun getLocalFiches(){
-        listeDemontages.postValue(repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.toMutableList())
+    suspend fun getLocalFiches() {
+        listeDemontages.postValue(
+            repository.demontageRepository!!.getAllDemontageLocalDatabase()
+                .map { it.toFicheDemontage() }.toMutableList()
+        )
     }
 
     fun back(view: View) {
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)
     }
+
     fun setCouplage(type: String) {
         var fichemot = selection.value
         fichemot!!.couplage = type
@@ -77,20 +81,28 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     @RequiresApi(Build.VERSION_CODES.M)
     fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
-        list!!.removeAll{ it == ""}
+        list!!.removeAll { it == "" }
         if (list != null) {
             list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         } else {
-            selection.value?.photos = arrayOf(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+            selection.value?.photos =
+                arrayOf(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
         selection.value?.photos = list?.toTypedArray()
         photos.value = list!!
         galleryAddPic(photo)
         localSave()
-        viewModelScope.launch {
-            repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },File(photo).name,context)
+        if (isOnline(context)) {
+            viewModelScope.launch {
+                repositoryPhoto.sendPhoto(
+                    token!!.filterNot { it.isWhitespace() },
+                    File(photo).name,
+                    context
+                )
+            }
         }
     }
+
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(context, contentUri, proj, null, null, null)
@@ -101,18 +113,22 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         cursor.close()
         return result
     }
+
     fun setSchema(sch: String) {
         schema.value = sch
     }
+
     fun fullScreen(view: View, uri: String) {
         val action = FicheDemontageDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
     }
+
     fun retour(view: View) {
         Navigation.findNavController(view).popBackStack()
         /*var action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)*/
     }
+
     fun getTime() {
         var now = Date()
         if (selection.value!!.dureeTotale !== null) {
@@ -123,45 +139,70 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         start.value = now
     }
+
     fun localSave() {
 
         viewModelScope.launch(Dispatchers.IO) {
             repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
-    suspend fun sendExternalPicture(path: String): String? = runBlocking{
+    suspend fun sendExternalPicture(path: String): String? = runBlocking {
         if (isOnline(context)) {
-            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                    "login",
+                    ""
+                ) !== "" && sharedPref?.getString("password", "") !== "")
+            ) {
+                connection(
+                    sharedPref?.getString("login", "")!!,
+                    sharedPref?.getString("password", "")!!
+                )
             }
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file = File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
+                var file =
+                    File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
+                galleryAddPic(file.absolutePath)
                 var old = File(path)
-                old.copyTo(file,true)
-                var s = async  {repositoryPhoto.sendPhoto(token!!.filterNot { it.isWhitespace() },file.name,context)}
+                old.copyTo(file, true)
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token!!.filterNot { it.isWhitespace() },
+                        file.name,
+                        context
+                    )
+                }
                 s.join()
-                Log.i("info","photo nom send ext ${file.name} - path ${file.absolutePath}")
-               /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
-                    file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
-                    Log.i("info","photo nom send ext ${file}")
-                }*/
+                /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
+                     file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
+                     Log.i("info","photo nom send ext ${file}")
+                 }*/
                 return@runBlocking file.name
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
                 return@runBlocking null
             }
         } else {
-            val dir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-            val file = File(dir, selection.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
-            File(path).copyTo(file,true)
-            return@runBlocking file.name
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                var file =
+                    File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                return@runBlocking file.name
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return@runBlocking null
+            }
         }
 
     }
+
     fun connection(username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -173,7 +214,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     val resp = response.body()
                     if (resp != null) {
                         token = resp.token
-                        Log.i("info","new token ${resp.token}")
+                        Log.i("info", "new token ${resp.token}")
                     }
                 }
             }
@@ -183,61 +224,88 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         })
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-     fun sendFiche(view: View) = runBlocking{
+    fun sendFiche(view: View) = runBlocking {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             if (isOnline(context) == true) {
-                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+                if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                        "login",
+                        ""
+                    ) !== "" && sharedPref?.getString("password", "") !== "")
+                ) {
+                    connection(
+                        sharedPref?.getString("login", "")!!,
+                        sharedPref?.getString("password", "")!!
+                    )
                 }
-                selection.value?.photos?.forEach {
-                   var test = async{ repositoryPhoto.getURL(token!!,it) }
-                    test.await()
-                    if (test.isCompleted){
-                        if(test.await().code().equals(200)){
-                            var check = repositoryPhoto.getURLPhoto(token!!,test.await().body()?.name!!)
-                            Log.i("info","photo ${check.code()} - url ${test.await().body()?.url!!.replace("%2F", "/")}")
-                            if(!check.code().equals(200)){
-                                Log.i("info","photo à envoyer${it}")
-                                repositoryPhoto.sendPhoto(token!!,it,context)
+                if (selection.value?.photos?.size!! > 0) {
+                    selection.value?.photos?.forEach {
+                        var test = async { repositoryPhoto.getURL(token!!, it) }
+                        test.await()
+                        if (test.isCompleted) {
+                            if (test.await().code().equals(200)) {
+                                var check = async {
+                                    repositoryPhoto.getURLPhoto(
+                                        token!!,
+                                        test.await().body()?.name!!
+                                    )
+                                }
+                                check.await()
+                                if (check.isCompleted) {
+                                    var code =
+                                        async { repository.getPhoto(check.await().body()!!.url!!) }
+                                    code.await()
+                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                    if (code.await().code() >= 400) {
+                                        Log.i("info", "photo à envoyer${it}")
+                                        var s = async{ repositoryPhoto.sendPhoto(token!!, it, context) }
+                                        s.await()
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                repository.demontageRepository!!.patchFicheDemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<FicheDemontageResponse> {
-                    override fun onResponse(
-                        call: Call<FicheDemontageResponse>,
-                        response: Response<FicheDemontageResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            val resp = response.body()
-                            if (resp != null) {
+                repository.demontageRepository!!.patchFicheDemontage(
+                    token!!,
+                    selection.value!!._id,
+                    selection.value!!,
+                    object : Callback<FicheDemontageResponse> {
+                        override fun onResponse(
+                            call: Call<FicheDemontageResponse>,
+                            response: Response<FicheDemontageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar =
+                                        Snackbar.make(view, "fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+
+                                }
+                            } else {
                                 val mySnackbar =
-                                    Snackbar.make(view, "fiche enregistrée", 3600)
+                                    Snackbar.make(view, "erreur d'enregistrement", 3600)
                                 mySnackbar.show()
-                                Log.i("INFO", "enregistré")
-
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                        response.errorBody()!!.charStream().readText()
+                                    }"
+                                )
                             }
-                        } else {
-                            val mySnackbar =
-                                Snackbar.make(view, "erreur d'enregistrement", 3600)
-                            mySnackbar.show()
-                            Log.i(
-                                "INFO",
-                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                    response.errorBody()!!.charStream().readText()
-                                }"
-                            )
                         }
-                    }
 
-                    override fun onFailure(
-                        call: Call<FicheDemontageResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Error", "${t.stackTraceToString()}")
-                        Log.e("Error", "erreur ${t.message}")
-                    }})
+                        override fun onFailure(
+                            call: Call<FicheDemontageResponse>,
+                            t: Throwable
+                        ) {
+                            Log.e("Error", "${t.stackTraceToString()}")
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
             } else {
                 repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
             }
@@ -245,6 +313,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =
@@ -267,6 +336,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         return false
     }
+
     fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
@@ -276,17 +346,19 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             context.sendBroadcast(mediaScanIntent)
         }
     }
-    suspend fun getNameURI()  {
-            val resp1 = repository.getURLToUploadPhoto(token!!)
-            withContext(Dispatchers.Main) {
-                if (resp1.isSuccessful) {
-                    imageName.postValue(resp1.body())
-                    Log.i("INFO", resp1.body()?.name!!)
-                } else {
-                    exceptionHandler
-                }
+
+    suspend fun getNameURI() {
+        val resp1 = repository.getURLToUploadPhoto(token!!)
+        withContext(Dispatchers.Main) {
+            if (resp1.isSuccessful) {
+                imageName.postValue(resp1.body())
+                Log.i("INFO", resp1.body()?.name!!)
+            } else {
+                exceptionHandler
             }
+        }
     }
+
     /*fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()

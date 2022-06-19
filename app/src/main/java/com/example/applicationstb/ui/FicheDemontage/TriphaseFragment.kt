@@ -238,9 +238,6 @@ class TriphaseFragment : Fragment() {
             viewModel.selection.value = fiche
             viewModel.localSave()
             if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getNameURI()
-                }
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
@@ -261,9 +258,6 @@ class TriphaseFragment : Fragment() {
                             viewModel.selection.value = fiche
                             viewModel.localSave()
                             if (viewModel.isOnline(requireContext())) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    viewModel.getNameURI()
-                                }
                                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
@@ -344,12 +338,12 @@ class TriphaseFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             var file = viewModel.getRealPathFromURI(data?.data!!)
             CoroutineScope(Dispatchers.IO).launch {
-                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
                 var nfile = async { viewModel.sendExternalPicture(file!!) }
-                nfile.join()
+                nfile.await()
                 if (nfile.isCompleted) {
+                    Log.i("info","photo ext ${nfile.await()}")
                     var list = viewModel.selection.value?.photos?.toMutableList()
-                    list!!.removeAll{ it == ""}
+                    list!!.removeAll { it == "" }
                     if (list != null) {
                         list.add(nfile.await()!!)
                     }
@@ -357,8 +351,7 @@ class TriphaseFragment : Fragment() {
                     viewModel.photos.postValue(list!!)
                     viewModel.localSave()
                 }
-            }
-
+        }
         }
 
     }
@@ -371,12 +364,11 @@ class TriphaseFragment : Fragment() {
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         if (storageDir.exists()) {
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                viewModel.selection.value?.numFiche + "_" + viewModel.selection.value?.photos!!.size, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -386,7 +378,7 @@ class TriphaseFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                viewModel.selection.value?.numFiche + "_" + viewModel.selection.value?.photos!!.size, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
