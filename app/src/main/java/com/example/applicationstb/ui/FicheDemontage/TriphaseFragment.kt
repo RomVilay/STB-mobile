@@ -341,12 +341,9 @@ class TriphaseFragment : Fragment() {
                 var nfile = async { viewModel.sendExternalPicture(file!!) }
                 nfile.await()
                 if (nfile.isCompleted) {
-                    Log.i("info","photo ext ${nfile.await()}")
                     var list = viewModel.selection.value?.photos?.toMutableList()
                     list!!.removeAll { it == "" }
-                    if (list != null) {
                         list.add(nfile.await()!!)
-                    }
                     viewModel.selection.value?.photos = list?.toTypedArray()
                     viewModel.photos.postValue(list!!)
                     viewModel.localSave()

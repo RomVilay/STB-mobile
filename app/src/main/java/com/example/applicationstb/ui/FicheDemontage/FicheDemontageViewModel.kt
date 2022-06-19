@@ -94,11 +94,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         localSave()
         if (isOnline(context)) {
             viewModelScope.launch {
-                repositoryPhoto.sendPhoto(
+               var s = async { repositoryPhoto.sendPhoto(
                     token!!.filterNot { it.isWhitespace() },
                     File(photo).name,
                     context
-                )
+                )}
+                s.await()
             }
         }
     }
@@ -141,7 +142,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun localSave() {
-
         viewModelScope.launch(Dispatchers.IO) {
             repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
         }
