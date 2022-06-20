@@ -455,7 +455,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
            var list = async {repository.getAllPointageLocalDatabase()}
            list.await()
            list.await().filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
-           tracking.postValue(list.await().size % 2 == 0)
+           Log.i("info","state ${list.await().size % 2 != 0}")
+           if (list.await().size > 0) tracking.postValue(list.await().size % 2 != 0) else tracking.postValue(false)
        }
     }
 
