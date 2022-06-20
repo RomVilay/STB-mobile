@@ -92,7 +92,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     it1.username
                                 )
                             }
-                            sendPointage(resp.token!!, resp.user!!._id!!)
+                            //sendPointage(resp.token!!, resp.user!!._id!!)
                             sendFiche()
                             if (action != null) {
                                 if (loading.visibility == View.VISIBLE) loading.visibility =
@@ -148,10 +148,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     fun sendFiche() = runBlocking {
         if (isOnline(context) == true) {
             viewModelScope.launch(Dispatchers.IO) {
-                var job = launch {
-                    getNameURI()
-                }
-                job.join()
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
                 Log.i("INFO", "nb de fiches chantier: ${listCh.size}")

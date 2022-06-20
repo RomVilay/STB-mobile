@@ -405,6 +405,15 @@ class FicheChantier : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getLocalFiches()
+        }
+        Log.i("info", "retour chantier")
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     @Throws(IOException::class)
     private fun createImageFile(): File {
