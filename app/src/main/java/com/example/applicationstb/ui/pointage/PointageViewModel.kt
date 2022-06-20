@@ -54,6 +54,7 @@ class PointageViewModel(application: Application) : AndroidViewModel(application
             }
         }
         total.postValue(t)
+        list2.sortBy { it.timestamp }
         pointages.postValue(list2)
     }
 
