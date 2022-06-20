@@ -450,10 +450,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    suspend fun isTracking() {
-        var list = repository.getAllPointageLocalDatabase()
-        list.filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
-        tracking.postValue(list.size % 2 != 0)
+   fun isTracking() {
+       viewModelScope.launch(Dispatchers.IO) {
+           var list = async {repository.getAllPointageLocalDatabase()}
+           list.await()
+           list.await().filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
+           tracking.postValue(list.await().size % 2 == 0)
+       }
     }
 
     fun toPointages(view: View) {

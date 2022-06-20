@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -104,7 +105,7 @@ class Accueil : Fragment() {
             btnPtn.setChecked(viewModel.tracking.value!!)
         })
         btnPtn.setOnClickListener {
-            viewModel.Pointage()
+                viewModel.Pointage()
         }
         listePointage.setOnClickListener {
             viewModel.updatePointages()

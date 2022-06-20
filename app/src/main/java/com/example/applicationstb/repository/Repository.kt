@@ -27,8 +27,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var baseUrl = "https://back-end.stb.dev.alf-environnement.net/1.1.0/"
-var minioUrl = "https:/minio.stb.dev.alf-environnement.net"
+var baseUrl = "https://back-end.stb.dev.alf-environnement.net/"
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(
