@@ -123,8 +123,8 @@ class PhotoRepository(context: Context) {
        CoroutineScope(Dispatchers.IO).launch {
                 val url = getURL(token,photo)
                 Log.i("info", "url  ${url.body()!!.url}")
-                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
                 try {
+                    val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
                     var compress = async { Compressor.compress(context, file)  }
                     compress.join()
                     if (compress.isCompleted) {

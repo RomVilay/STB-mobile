@@ -38,10 +38,7 @@ import com.example.applicationstb.R
 import com.example.applicationstb.model.Bobinage
 import com.example.applicationstb.model.Section
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -341,13 +338,6 @@ class FicheBobinage : Fragment() {
         }
         addschema.setOnClickListener {
             runBlocking {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    // var job = CoroutineScope(Dispatchers.IO).launch {
-                    if (viewModel.isOnline(requireContext())) {
-                        viewModel.getNameURI()
-                    }
-                    //}
-                    //job.join()
                     var test = ActivityCompat.checkSelfPermission(
                         requireContext(),
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -384,7 +374,7 @@ class FicheBobinage : Fragment() {
                             }
                         }
                     }
-                }
+
             }
         }
         marque.setOnFocusChangeListener { _, hasFocus ->
@@ -708,7 +698,7 @@ class FicheBobinage : Fragment() {
         if (storageDir.exists()) {
             if (viewModel.isOnline(requireContext())) {
                 return File.createTempFile(
-                    viewModel.imageName.value!!.name.toString().removeSuffix(".jpg"),/* prefix */
+                    viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
                     ".jpg", /* suffix */
                     storageDir /* directory */
                 ).apply {
@@ -730,7 +720,7 @@ class FicheBobinage : Fragment() {
             makeFolder()
             if (viewModel.isOnline(requireContext())) {
                 return File.createTempFile(
-                    viewModel.imageName.value?.name.toString().removeSuffix(".jpg"),/* prefix */
+                    viewModel.bobinage.value?.numFiche+ "_" + SystemClock.uptimeMillis(),/* prefix */
                     ".jpg", /* suffix */
                     storageDir /* directory */
                 ).apply {
@@ -758,65 +748,23 @@ class FicheBobinage : Fragment() {
         val dir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
         if (resultCode < 0 || resultCode > 0) {
-            if (requestCode == PHOTO_RESULT) {
-                val photo: Bitmap = data?.extras?.get("data") as Bitmap
-                val uri = context?.let { photo.saveImage(it.applicationContext) }
-                if (uri != null) {
-                    Log.i("INFO", "uri:" + uri)
-                    viewModel.addPhoto(uri)
-                    viewModel.galleryAddPic(uri.path)
-                    /*var picture = File(uri.path)
-                    try {
-                        viewModel.sendPhoto(data?.extras?.get("data") as File)
-                    } catch (e: java.lang.Exception) {
-                        Log.e("EXCEPTION",e.message!!)
-                    }*/
-                }
-                Log.i("INFO", uri.toString())
-            }
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-                //imageView.setImageBitmap(photo)
-                val dir =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                if (dir.exists()) {
-                    if (viewModel.isOnline(requireContext())) {
-                        val from = File(
-                            dir,
-                            currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")
-                        )
-                        val to = File(dir, viewModel.imageName.value!!.name)
-                        if (from.exists()) from.renameTo(to)
-                        try {
-                            viewModel.addPhoto(Uri.parse(to.absolutePath))
-                            viewModel.galleryAddPic(to.absolutePath)
-                           // viewModel.sendPhoto(to)
-                            viewModel.quickSave()
-                        } catch (e: java.lang.Exception) {
-                            Log.e("EXCEPTION", e.message!!)
-                        }
-                    } else {
-                        viewModel.addPhoto(Uri.parse(currentPhotoPath.removePrefix("/storage/emulated/0/Pictures/test_pictures/")))
-                        viewModel.galleryAddPic(currentPhotoPath)
-                        viewModel.quickSave()
-                    }
-                }
-                //viewModel.sendPhoto(data?.extras?.get("data") as File)
+               viewModel.addPhoto(currentPhotoPath)
             }
             if (resultCode == Activity.RESULT_OK && requestCode == 6) {
                 var file = viewModel.getRealPathFromURI(data?.data!!)
-                /*CoroutineScope(Dispatchers.IO).launch {
-                    if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
-                    var nfile = viewModel.sendExternalPicture(file!!)
-                    if (nfile !== null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    var nfile = async { viewModel.sendExternalPicture(file!!) }
+                    nfile.await()
+                    if (nfile.isCompleted) {
                         var list = viewModel.bobinage.value?.photos?.toMutableList()
-                        if (list != null) {
-                            list.add(nfile)
-                        }
+                        list!!.removeAll { it == "" }
+                        list.add(nfile.await()!!)
                         viewModel.bobinage.value?.photos = list?.toTypedArray()
                         viewModel.photos.postValue(list!!)
+                        viewModel.quickSave()
                     }
-                }*/
+                }
 
             }
         }
@@ -837,7 +785,7 @@ class FicheBobinage : Fragment() {
         values.put(MediaStore.Images.Media.IS_PENDING, true)
         values.put(
             MediaStore.Images.Media.DISPLAY_NAME,
-            viewModel.imageName.value!!.name.toString()
+            viewModel.bobinage.value?.numFiche + "_" + SystemClock.uptimeMillis()
         )
 
         val uri: Uri? =

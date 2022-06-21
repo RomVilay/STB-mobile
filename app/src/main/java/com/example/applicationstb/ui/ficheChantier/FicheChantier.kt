@@ -481,7 +481,7 @@ class FicheChantier : Fragment() {
         values.put(MediaStore.Images.Media.IS_PENDING, true)
         values.put(
             MediaStore.Images.Media.DISPLAY_NAME,
-            viewModel.imageName.value!!.name.toString()
+            viewModel.chantier.value?.numFiche + "_" + SystemClock.uptimeMillis()
         )
 
         val uri: Uri? =
