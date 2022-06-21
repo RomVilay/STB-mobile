@@ -94,13 +94,15 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         localSave()
         if (isOnline(context)) {
             viewModelScope.launch {
-               var s = async { repositoryPhoto.sendPhoto(
-                    token!!.filterNot { it.isWhitespace() },
-                    File(photo).name,
-                    context
-                )}
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token!!.filterNot { it.isWhitespace() },
+                        File(photo).name,
+                        context
+                    )
+                }
                 s.await()
-                var s2 = async { sendFicheNoText()}
+                var s2 = async { sendFicheNoText() }
                 s2.await()
             }
         }
@@ -165,8 +167,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file =
-                    File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
+                Log.i("info", "size ${selection.value?.photos?.size} is empty ${selection.value?.photos?.isEmpty()}")
+                var file = if (selection.value?.photos?.size!! == 1 && selection.value?.photos!![0] == "") File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!+1}.jpg"
+                )
                 galleryAddPic(file.absolutePath)
                 var old = File(path)
                 old.copyTo(file, true)
@@ -182,7 +190,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                      file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
                      Log.i("info","photo nom send ext ${file}")
                  }*/
-                var s2 = async{sendFicheNoText()}
+                var s2 = async { sendFicheNoText() }
                 s2.await()
                 return@runBlocking file.name
             } catch (e: java.lang.Exception) {
@@ -193,8 +201,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file =
-                    File(dir, "${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg")
+                Log.i("info", "size ${selection.value?.photos?.size}  first ${selection.value?.photos!![0]} ")
+                var file = if (selection.value?.photos?.size!! == 1 && selection.value?.photos!![0] == "") File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!+1}.jpg"
+                )
                 galleryAddPic(file.absolutePath)
                 var old = File(path)
                 old.copyTo(file, true)
@@ -263,7 +277,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                     //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                     if (code.await().code() >= 400) {
                                         Log.i("info", "photo à envoyer${it}")
-                                        var s = async{ repositoryPhoto.sendPhoto(token!!, it, context) }
+                                        var s = async {
+                                            repositoryPhoto.sendPhoto(
+                                                token!!,
+                                                it,
+                                                context
+                                            )
+                                        }
                                         s.await()
                                     }
                                 }
@@ -317,6 +337,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFicheNoText() = runBlocking {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
@@ -350,7 +371,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                     code.await()
                                     //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                     if (code.await().code() >= 400) {
-                                        var s = async{ repositoryPhoto.sendPhoto(token!!, it, context) }
+                                        var s = async {
+                                            repositoryPhoto.sendPhoto(
+                                                token!!,
+                                                it,
+                                                context
+                                            )
+                                        }
                                         s.await()
                                     }
                                 }

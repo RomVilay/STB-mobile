@@ -263,8 +263,13 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file =
-                    File(dir, "${chantier.value?.numFiche}_${chantier.value?.photos?.size}.jpg")
+                var file = if (chantier.value?.photos?.size!! == 1 && chantier.value?.photos!![0] == "") File(
+                    dir,
+                    "${chantier.value?.numFiche}_${chantier.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${chantier.value?.numFiche}_${chantier.value?.photos?.size!!+1}.jpg"
+                )
                 galleryAddPic(file.absolutePath)
                 var old = File(path)
                 old.copyTo(file, true)
@@ -276,8 +281,8 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                     )
                 }
                 s.join()
-                /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
-                     file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
+                /* while(File(dir,"${chantier.value?.numFiche}_${chantier.value?.photos?.size}.jpg").exists()){
+                     file = File(dir, "${chantier.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
                      Log.i("info","photo nom send ext ${file}")
                  }*/
                 return@runBlocking file.name
@@ -289,8 +294,13 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file =
-                    File(dir, "${chantier.value?.numFiche}_${chantier.value?.photos?.size}.jpg")
+                var file = if (chantier.value?.photos?.size!! == 1 && chantier.value?.photos!![0] == "") File(
+                    dir,
+                    "${chantier.value?.numFiche}_${chantier.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${chantier.value?.numFiche}_${chantier.value?.photos?.size!!+1}.jpg"
+                )
                 galleryAddPic(file.absolutePath)
                 var old = File(path)
                 old.copyTo(file, true)

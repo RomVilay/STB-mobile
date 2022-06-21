@@ -93,11 +93,18 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 )
                             }
                             //sendPointage(resp.token!!, resp.user!!._id!!)
-                            sendFiche()
-                            if (action != null) {
-                                if (loading.visibility == View.VISIBLE) loading.visibility =
-                                    View.GONE
-                                Navigation.findNavController(view).navigate(action)
+                            CoroutineScope(Dispatchers.IO).launch{
+                                var s = async {sendFiche()}
+                                s.await()
+                                if (s.isCompleted) {
+                                    withContext(Dispatchers.Main){
+                                        if (action != null) {
+                                            if (loading.visibility == View.VISIBLE) loading.visibility =
+                                                View.GONE
+                                            Navigation.findNavController(view).navigate(action)
+                                        }
+                                    }
+                                }
                             }
                             //toAccueil(view)
                         }
@@ -145,9 +152,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche() = runBlocking {
+    suspend fun sendFiche() = runBlocking {
         if (isOnline(context) == true) {
-            viewModelScope.launch(Dispatchers.IO) {
                 var listCh: List<ChantierEntity> =
                     repository.getAllChantierLocalDatabase()
                 Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
@@ -350,13 +356,17 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
                 var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
+                Log.i("INFO", "nb de fiches démontage: ${listD.size}")
                 if (listD.size > 0) {
                     for (fiche in listD) {
-                        if (fiche.photos?.size!! > 0) {
+                        var ficheD = fiche
+                        if (ficheD.photos?.size!! > 0) {
                             var list = fiche.photos?.toMutableList()!!
                             list.removeAll { it == "" }
-                            fiche.photos = list.toTypedArray()
+                            ficheD.photos = list.toTypedArray()
                             list.forEach {
+                                Log.i("info", "photo à envoyer${it}")
+                                //Snackbar.make(it,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
                                 var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
                                 test.await()
                                 if (test.isCompleted) {
@@ -385,8 +395,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                         }
                         repository.demontageRepository!!.patchFicheDemontage(
                             user!!.token!!,
-                            fiche._id,
-                            fiche.toFicheDemontage(),
+                            ficheD._id,
+                            ficheD.toFicheDemontage(),
                             object : Callback<FicheDemontageResponse> {
                                 override fun onResponse(
                                     call: Call<FicheDemontageResponse>,
@@ -473,7 +483,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                             }})
                     }
                 }
-            }
+
         }
     }
     fun sendPointage(token: String, userId: String) {

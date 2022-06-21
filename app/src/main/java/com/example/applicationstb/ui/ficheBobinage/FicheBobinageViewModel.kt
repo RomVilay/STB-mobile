@@ -450,8 +450,13 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file =
-                    File(dir, "${bobinage.value?.numFiche}_${bobinage.value?.photos?.size}.jpg")
+                var file = if (bobinage.value?.photos?.size!! == 1 && bobinage.value?.photos!![0] == "") File(
+                    dir,
+                    "${bobinage.value?.numFiche}_${bobinage.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${bobinage.value?.numFiche}_${bobinage.value?.photos?.size!!+1}.jpg"
+                )
                 galleryAddPic(file.absolutePath)
                 var old = File(path)
                 old.copyTo(file, true)
@@ -476,8 +481,13 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                var file =
-                    File(dir, "${bobinage.value?.numFiche}_${bobinage.value?.photos?.size}.jpg")
+                var file = if (bobinage.value?.photos?.size!! == 1 && bobinage.value?.photos!![0] == "") File(
+                    dir,
+                    "${bobinage.value?.numFiche}_${bobinage.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${bobinage.value?.numFiche}_${bobinage.value?.photos?.size!!+1}.jpg"
+                )
                 galleryAddPic(file.absolutePath)
                 var old = File(path)
                 old.copyTo(file, true)

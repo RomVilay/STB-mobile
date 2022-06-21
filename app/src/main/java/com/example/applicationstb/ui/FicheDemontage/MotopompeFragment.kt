@@ -115,7 +115,7 @@ class MotopompeFragment : Fragment() {
         typemotopompe.adapter = ArrayAdapter<String>(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item,
-            arrayOf<String>(" ", "Triphasé", "Monophasé")
+            arrayOf<String>("Sélectionnez un type de motopompe", "Triphasé", "Monophasé")
         )
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termmp)
@@ -827,9 +827,13 @@ class MotopompeFragment : Fragment() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        var num = if (viewModel.selection.value?.photos?.size!! == 1 && viewModel.selection.value?.photos!![0] == "")
+            "${viewModel.selection.value?.numFiche}_${viewModel.selection.value?.photos?.size!!}"
+        else
+            "${viewModel.selection.value?.numFiche}_${viewModel.selection.value?.photos?.size!!+1}.jpg"
         if (storageDir.exists()) {
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(),/* prefix */
+                viewModel.selection.value?.numFiche + "_" + num,/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -839,7 +843,7 @@ class MotopompeFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                viewModel.selection.value?.numFiche + "_" + num, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
