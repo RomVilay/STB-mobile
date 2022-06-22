@@ -92,8 +92,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     it1.username
                                 )
                             }
-                            //sendPointage(resp.token!!, resp.user!!._id!!)
                             CoroutineScope(Dispatchers.IO).launch{
+                               // var p = async {sendPointage(resp.token!!, resp.user!!._id!!)}
+                               // p.await()
                                 var s = async {sendFiche()}
                                 s.await()
                                 if (s.isCompleted) {
@@ -491,7 +492,20 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             LocalDateTime.now().withDayOfMonth(1),
             ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
         )
-        repository.getPointages(token, userId, object : Callback<PointagesResponse> {
+        viewModelScope.launch(Dispatchers.IO) {
+            var listePointageDist = async{repository.getPointages2(token,userId)}
+            listePointageDist.await()
+            var listPointageLocal = async { repository.getAllPointageLocalDatabase() }
+            listPointageLocal.await()
+            if (listePointageDist.isCompleted && listPointageLocal.isCompleted){
+                for (pointage in listePointageDist.await().body()!!.data!!){
+                    Log.i("info","pointage ${pointage.timestamp}")
+                    //var p1 = listPointageLocal.await().indexOf(pointage.toEntity().timestamp)
+
+                }
+            }
+        }
+       /* repository.getPointages(token, userId, object : Callback<PointagesResponse> {
             override fun onResponse(
                 call: Call<PointagesResponse>,
                 response: Response<PointagesResponse>
@@ -536,7 +550,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             override fun onFailure(call: Call<PointagesResponse>, t: Throwable) {
                 Log.e("Error", "erreur ${t.message}")
             }
-        })
+        })*/
     }
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {

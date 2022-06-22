@@ -13,6 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import kotlinx.coroutines.runBlocking
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import retrofit2.Callback
@@ -298,6 +299,9 @@ class PointageResponse(
     var data: Pointage
 )
 
+class listPointagesResponse(
+    var data: Array<Pointage>
+)
 class PointagesResponse(
     var data: Array<Pointage2>?
 )
@@ -571,7 +575,14 @@ class Repository(var context: Context) {
     // photo requests
     suspend fun getURLToUploadPhoto(token: String) = service.getURLToUploadPhoto(token,"photo ${SystemClock.uptimeMillis()}")
 
-    fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
+    suspend fun getPointages2(token:String, userid:String) =  runBlocking{
+        var dateMin =
+            ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
+        var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
+        service.getPointages2(token,"0",0,userid,dateMin.toString(),dateMax.toString())
+    }
+
+     fun getPointages(token: String, userid: String, callback: Callback<PointagesResponse>) {
         var dateMin =
             ZonedDateTime.of(LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
         var dateMax = ZonedDateTime.of(LocalDateTime.now(), ZoneOffset.of(SimpleDateFormat("Z").format(Date())))

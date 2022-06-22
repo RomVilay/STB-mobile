@@ -45,9 +45,7 @@ class AlternateurFragment : Fragment() {
 
     private val viewModel: FicheDemontageViewModel by activityViewModels()
     private lateinit var photos:RecyclerView
-    private  val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
-    val REQUEST_IMAGE_CAPTURE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -282,7 +280,7 @@ class AlternateurFragment : Fragment() {
                             it
                         )
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        startActivityForResult(cameraIntent, viewModel.CAMERA_CAPTURE)
                         //viewModel.addSchema(photoURI)
                     }
                 }
@@ -291,7 +289,7 @@ class AlternateurFragment : Fragment() {
         var gal = layout.findViewById<Button>(R.id.g4)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 6)
+            startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
         }
 
         retour.setOnClickListener {
@@ -349,26 +347,33 @@ class AlternateurFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(currentPhotoPath)
+        if (requestCode == viewModel.CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.addPhoto(currentPhotoPath)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
-            var file = viewModel.getRealPathFromURI(data?.data!!)
-            CoroutineScope(Dispatchers.IO).launch {
-                var nfile = async { viewModel.sendExternalPicture(file!!) }
-                nfile.await()
-                if (nfile.isCompleted) {
-                    var list = viewModel.selection.value?.photos?.toMutableList()
-                    list!!.removeAll { it == "" }
-                    list.add(nfile.await()!!)
-                    viewModel.selection.value?.photos = list?.toTypedArray()
-                    viewModel.photos.postValue(list!!)
-                    viewModel.localSave()
+        if (requestCode == viewModel.GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    var nfile = async { viewModel.sendExternalPicture(file!!) }
+                    nfile.await()
+                    if (nfile.isCompleted) {
+                        var list = viewModel.selection.value?.photos?.toMutableList()
+                        list!!.removeAll { it == "" }
+                        list.add(nfile.await()!!)
+                        viewModel.selection.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                        viewModel.localSave()
+                    }
                 }
             }
-
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
+            }
         }
     }
 

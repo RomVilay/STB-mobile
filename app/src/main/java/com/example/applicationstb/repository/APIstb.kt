@@ -63,5 +63,8 @@ interface APIstb  {
     suspend fun deletePointage(@Header("auth-token") token:String, @Path("ficheId") pointage:String ) : Response<PointageResponse>
 
     @GET("pointages")
+    suspend fun getPointages2(@Header("auth-token")token:String, @Query("limit") limit: String, @Query("offset") offset: Int, @Query("user") user: String, @Query("minDate") minDate : String, @Query("maxDate") maxDate : String ) : Response<PointagesResponse>
+
+    @GET("pointages")
     fun getPointages(@Header("auth-token")token:String, @Query("limit") limit: String, @Query("offset") offset: Int, @Query("user") user: String, @Query("minDate") minDate : String, @Query("maxDate") maxDate : String ) : Call <PointagesResponse>
 }

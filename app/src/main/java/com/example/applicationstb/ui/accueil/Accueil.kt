@@ -108,8 +108,37 @@ class Accueil : Fragment() {
                 viewModel.Pointage()
         }
         listePointage.setOnClickListener {
-            viewModel.updatePointages()
-            viewModel.toPointages(layout)
+            //tri des pointages distants et locaux, vérification à partir des ids
+            lifecycleScope.launch(Dispatchers.IO) {
+                var listePointageDist = async{viewModel.repository.getPointages2(token!!,viewModel.sharedPref.getString("userId","")!!)}.await().body()!!.data!!.toMutableList()
+                var listPointageLocal = async { viewModel.repository.getAllPointageLocalDatabase() }.await().toMutableList()
+                    var iter = listePointageDist.iterator()
+                    while(iter.hasNext()){
+                        var pointage = iter.next()
+                        var index = listPointageLocal.indexOfFirst {  it._id == pointage._id }
+                        if (index >= 0) {
+                            Log.i("info","pointage ${pointage.timestamp} et pointage ${listPointageLocal[index].timestamp} sont identiques")
+                            iter.remove()
+                            listPointageLocal.removeAt(index)
+                        }
+                        else Log.i("info","pointage ${pointage.timestamp} n'existe pas en bdd")
+                    //var p1 = listPointageLocal.await().indexOf(pointage.toEntity().timestamp)
+                    }
+                    Log.i("info","pointages à ajouter en local ${listePointageDist.size} - pointages à ajouter en BDD ${listPointageLocal.size}")
+                //ajout des pointages distants
+                for (pointage in listPointageLocal){
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            var p = async{ viewModel.repository.postPointages(viewModel.token.value!!, viewModel.sharedPref.getString("userId","")!!, pointage.timestamp)}
+                            if (p.await().isSuccessful){
+                                viewModel.repository.deletePointageLocalDatabse(pointage)
+                                //viewModel.repository.insertPointageDatabase()
+                            }
+                        }
+                    }
+
+            }
+            /*viewModel.updatePointages()
+            viewModel.toPointages(layout)*/
         }
         deco.setOnClickListener {
             val alertDialogBuilder: AlertDialog? = activity?.let {

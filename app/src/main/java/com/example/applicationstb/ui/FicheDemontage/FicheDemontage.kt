@@ -69,11 +69,12 @@ class FicheDemontage : Fragment() {
             viewModel.start.value = Date()
             var demo = viewModel.listeDemontages.value!!.find { it.numFiche == spinner.selectedItem }
             viewModel.selection.value = demo
+            viewModel.photos.value = demo!!.photos!!.toMutableList()
             viewModel.selection.value!!.status = 2L
-            /*var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
+            var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
             viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
             var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
-            viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()*/
+            viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()
 
             when (viewModel.selection.value!!.subtype){
                 1 -> fragmentManager.commit {
