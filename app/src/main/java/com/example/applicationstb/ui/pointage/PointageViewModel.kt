@@ -14,6 +14,7 @@ import com.example.applicationstb.model.Pointage
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.accueil.AccueilDirections
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
@@ -35,7 +36,7 @@ class PointageViewModel(application: Application) : AndroidViewModel(application
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getListePointages() = viewModelScope.launch(Dispatchers.IO) {
-        var list = repository.getAllPointageLocalDatabase()
+        var list = async {repository.getAllPointageLocalDatabase()}.await()
         var list2 = mutableListOf<Pointage>()
         var t = 0L
         list.forEach {

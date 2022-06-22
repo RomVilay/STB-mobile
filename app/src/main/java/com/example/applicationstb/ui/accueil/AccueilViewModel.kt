@@ -131,13 +131,13 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             val resp = response.body()
                                             if (resp != null) {
                                                 viewModelScope.launch(Dispatchers.IO) {
-                                                   /* var photos =
-                                                        resp.data?.photos?.toMutableList()
-                                                    var iter = photos?.listIterator()
-                                                    while (iter?.hasNext() == true) {
-                                                        getPhotoFile(iter.next().toString())
-                                                    }
-                                                    resp.data?.photos = photos?.toTypedArray()*/
+                                                    /* var photos =
+                                                         resp.data?.photos?.toMutableList()
+                                                     var iter = photos?.listIterator()
+                                                     while (iter?.hasNext() == true) {
+                                                         getPhotoFile(iter.next().toString())
+                                                     }
+                                                     resp.data?.photos = photos?.toTypedArray()*/
                                                     var ch =
                                                         repository.getByIdChantierLocalDatabse(
                                                             resp.data!!._id
@@ -387,107 +387,120 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    suspend fun updatePointages() = runBlocking{
-            var listePointageDist = async{repository.getPointages2(token.value!!,sharedPref.getString("userId","")!!)}.await().body()!!.data!!.toMutableList()
-            var listPointageLocal = async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
-            var iter = listePointageDist.iterator()
-            while(iter.hasNext()){
-                var pointage = iter.next()
-                var index = listPointageLocal.indexOfFirst {  it._id == pointage._id }
-                if (index >= 0) {
-                    Log.i("info","pointage ${pointage.timestamp} et pointage ${listPointageLocal[index].timestamp} sont identiques")
-                    iter.remove()
-                    listPointageLocal.removeAt(index)
-                }
-                else Log.i("info","pointage ${pointage.timestamp} n'existe pas en bdd")
-                //var p1 = listPointageLocal.await().indexOf(pointage.toEntity().timestamp)
-            }
-            Log.i("info","pointages à ajouter en local ${listePointageDist.size} - pointages à ajouter en BDD ${listPointageLocal.size}")
-            //nettoyage des pointages locaux
-            for (pointage in listPointageLocal){
-                    var p = async{ repository.postPointages(token.value!!, sharedPref.getString("userId","")!!, pointage.timestamp)}
-                    if (p.await().isSuccessful){
-                        repository.deletePointageLocalDatabse(pointage)
-                    }
-            }
-            //ajout des pointages distants vers la bdd locale
-            for (pointage in listePointageDist){
-                repository.insertPointageDatabase(pointage.toPointage())
-            }
-            isTracking()
+    suspend fun updatePointages() = runBlocking {
+        var listePointageDist = async {
+            repository.getPointages2(
+                token.value!!,
+                sharedPref.getString("userId", "")!!
+            )
+        }.await().body()!!.data!!.toMutableList()
+        var listPointageLocal =
+            async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
+        var iter = listePointageDist.iterator()
+        while (iter.hasNext()) {
+            var pointage = iter.next()
+            var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
+            if (index >= 0) {
+                Log.i(
+                    "info",
+                    "pointage ${pointage.timestamp} et pointage ${listPointageLocal[index].timestamp} sont identiques"
+                )
+                iter.remove()
+                listPointageLocal.removeAt(index)
+            } else Log.i("info", "pointage ${pointage.timestamp} n'existe pas en bdd")
+            //var p1 = listPointageLocal.await().indexOf(pointage.toEntity().timestamp)
+        }
+        Log.i(
+            "info",
+            "pointages à ajouter en local ${listePointageDist.size} - pointages à ajouter en BDD ${listPointageLocal.size}"
+        )
+        //nettoyage des pointages locaux
+        for (pointage in listPointageLocal) {
+            repository.deletePointageLocalDatabse(pointage)
+        }
+        //ajout des pointages distants vers la bdd locale
+        for (pointage in listePointageDist) {
+            repository.insertPointageDatabase(pointage.toPointage())
+        }
+        isTracking()
     }
 
     fun sendPointage() = runBlocking {
-            var date = ZonedDateTime.of(
-                LocalDateTime.now().minusSeconds(5),
-                ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
-            ) //definition du fuseau horaire
-            if (isOnline(context) && token.value !== "") {
-                var listePointageDist = async {
-                    repository.getPointages2(
-                        token.value!!,
-                        sharedPref.getString("userId", "")!!
-                    )
-                }.await().body()!!.data!!.toMutableList()
-                var listPointageLocal =
-                    async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
-                //tri des pointages à partir de leurs ids
-                var iter = listePointageDist.iterator()
-                while (iter.hasNext()) {
-                    var pointage = iter.next()
-                    var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
-                    if (index >= 0 ) {
-                        iter.remove()
-                        listPointageLocal.removeAt(index)
-                    }
+        var date = ZonedDateTime.of(
+            LocalDateTime.now().minusSeconds(5),
+            ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
+        ) //definition du fuseau horaire
+        if (isOnline(context) && token.value !== "") {
+            var listePointageDist = async {
+                repository.getPointages2(
+                    token.value!!,
+                    sharedPref.getString("userId", "")!!
+                )
+            }.await().body()!!.data!!.toMutableList()
+            var listPointageLocal =
+                async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
+            //tri des pointages à partir de leurs ids
+            var iter = listePointageDist.iterator()
+            while (iter.hasNext()) {
+                var pointage = iter.next()
+                var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
+                if (index >= 0) {
+                    iter.remove()
+                    listPointageLocal.removeAt(index)
                 }
-                //envois des pointages locaux vers la bdd
-                for (pointage in listPointageLocal) {
-                    if (pointage.timestamp.isAfter(ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0))){
-                        var p = async {
-                            repository.postPointages(
-                                token.value!!,
-                                sharedPref.getString("userId", "")!!,
-                                pointage.timestamp
-                            )
-                        }
-                        if (p.await().isSuccessful) {
-                            repository.deletePointageLocalDatabse(pointage)
-                            repository.insertPointageDatabase(p.await().body()!!.data)
-                        }
-                    } else {
+            }
+            //envois des pointages locaux vers la bdd
+            for (pointage in listPointageLocal) {
+                if (pointage.timestamp.isAfter(
+                        ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)
+                    )
+                ) {
+                    var p = async {
+                        repository.postPointages(
+                            token.value!!,
+                            sharedPref.getString("userId", "")!!,
+                            pointage.timestamp
+                        )
+                    }
+                    if (p.await().isSuccessful) {
                         repository.deletePointageLocalDatabse(pointage)
+                        repository.insertPointageDatabase(p.await().body()!!.data)
                     }
+                } else {
+                    repository.deletePointageLocalDatabse(pointage)
                 }
-                var np = async {
-                    repository.postPointages(
-                        token.value!!,
-                        sharedPref.getString("userId", "")!!,
-                        date
-                    )
-                }
-                if (np.await().isSuccessful) {
-                    repository.insertPointageDatabase(np.await().body()!!.data)
-                }
-            } else {
-                repository.insertPointageDatabase(
-                    Pointage(
-                        SystemClock.uptimeMillis().toString(), sharedPref.getString("userId", "")!!,
-                        date
-                    )
+            }
+            var np = async {
+                repository.postPointages(
+                    token.value!!,
+                    sharedPref.getString("userId", "")!!,
+                    date
                 )
             }
-            isTracking()
+            if (np.await().isSuccessful) {
+                repository.insertPointageDatabase(np.await().body()!!.data)
+            }
+        } else {
+            repository.insertPointageDatabase(
+                Pointage(
+                    SystemClock.uptimeMillis().toString(), sharedPref.getString("userId", "")!!,
+                    date
+                )
+            )
+        }
+        isTracking()
     }
 
-   fun isTracking() {
-       viewModelScope.launch(Dispatchers.IO) {
-           var list = async {repository.getAllPointageLocalDatabase()}
-           list.await()
-           list.await().filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
-           Log.i("info","state ${list.await().size % 2 != 0}")
-           if (list.await().size > 0) tracking.postValue(list.await().size % 2 != 0) else tracking.postValue(false)
-       }
+    fun isTracking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            var list = async { repository.getAllPointageLocalDatabase() }
+            list.await()
+            list.await().filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
+            Log.i("info", "state ${list.await().size % 2 != 0}")
+            if (list.await().size > 0) tracking.postValue(list.await().size % 2 != 0) else tracking.postValue(
+                false
+            )
+        }
     }
 
     fun toPointages(view: View) {
@@ -650,12 +663,22 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             check.await()
                                             if (check.isCompleted) {
                                                 var code =
-                                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
                                                 code.await()
                                                 //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                                 if (code.await().code() >= 400) {
                                                     Log.i("info", "photo à envoyer${it}")
-                                                    var s = async{ repositoryPhoto.sendPhoto(token, it, context) }
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            token,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
                                                     s.await()
                                                 }
                                             }
@@ -664,7 +687,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
                             }
                             if (ch.signatureClient !== null) {
-                                var test = async { repositoryPhoto.getURL(token, ch.signatureClient!!) }
+                                var test =
+                                    async { repositoryPhoto.getURL(token, ch.signatureClient!!) }
                                 test.await()
                                 if (test.isCompleted) {
                                     if (test.await().code().equals(200)) {
@@ -677,12 +701,25 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         check.await()
                                         if (check.isCompleted) {
                                             var code =
-                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                                async {
+                                                    repository.getPhoto(
+                                                        check.await().body()!!.url!!
+                                                    )
+                                                }
                                             code.await()
                                             //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                             if (code.await().code() >= 400) {
-                                                Log.i("info", "signature à envoyer${ch.signatureClient}")
-                                                var s = async{ repositoryPhoto.sendSignature(token, ch.signatureClient!!, context) }
+                                                Log.i(
+                                                    "info",
+                                                    "signature à envoyer${ch.signatureClient}"
+                                                )
+                                                var s = async {
+                                                    repositoryPhoto.sendSignature(
+                                                        token,
+                                                        ch.signatureClient!!,
+                                                        context
+                                                    )
+                                                }
                                                 s.await()
                                             }
                                         }
@@ -691,7 +728,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
 
                             }
                             if (ch.signatureTech !== null) {
-                                var test = async { repositoryPhoto.getURL(token, ch.signatureTech!!) }
+                                var test =
+                                    async { repositoryPhoto.getURL(token, ch.signatureTech!!) }
                                 test.await()
                                 if (test.isCompleted) {
                                     if (test.await().code().equals(200)) {
@@ -704,12 +742,25 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         check.await()
                                         if (check.isCompleted) {
                                             var code =
-                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                                async {
+                                                    repository.getPhoto(
+                                                        check.await().body()!!.url!!
+                                                    )
+                                                }
                                             code.await()
                                             //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                             if (code.await().code() >= 400) {
-                                                Log.i("info", "signature à envoyer${ch.signatureTech}")
-                                                var s = async{ repositoryPhoto.sendSignature(token!!, ch.signatureTech!!, context) }
+                                                Log.i(
+                                                    "info",
+                                                    "signature à envoyer${ch.signatureTech}"
+                                                )
+                                                var s = async {
+                                                    repositoryPhoto.sendSignature(
+                                                        token!!,
+                                                        ch.signatureTech!!,
+                                                        context
+                                                    )
+                                                }
                                                 s.await()
                                             }
                                         }
@@ -778,12 +829,22 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             check.await()
                                             if (check.isCompleted) {
                                                 var code =
-                                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
                                                 code.await()
                                                 //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                                 if (code.await().code() >= 400) {
                                                     Log.i("info", "photo à envoyer${it}")
-                                                    var s = async{ repositoryPhoto.sendPhoto(token, it, context) }
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            token,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
                                                     s.await()
                                                 }
                                             }
@@ -849,12 +910,22 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             check.await()
                                             if (check.isCompleted) {
                                                 var code =
-                                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
                                                 code.await()
                                                 //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                                 if (code.await().code() >= 400) {
                                                     Log.i("info", "photo à envoyer${it}")
-                                                    var s = async{ repositoryPhoto.sendPhoto(token, it, context) }
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            token,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
                                                     s.await()
                                                 }
                                             }
@@ -913,12 +984,22 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                             check.await()
                                             if (check.isCompleted) {
                                                 var code =
-                                                    async { repository.getPhoto(check.await().body()!!.url!!) }
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
                                                 code.await()
                                                 //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
                                                 if (code.await().code() >= 400) {
                                                     Log.i("info", "photo à envoyer${it}")
-                                                    var s = async{ repositoryPhoto.sendPhoto(token, it, context) }
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            token,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
                                                     s.await()
                                                 }
                                             }
