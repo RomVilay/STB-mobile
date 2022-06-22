@@ -163,22 +163,28 @@ class PhotoRepository(context: Context) {
             Log.i("info", "url  ${url.body()!!.url}")
             val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_signatures" ), photo)
             try {
-                var compress = async { Compressor.compress(context, file)  }
+                if (file.exists() && file.readBytes().isNotEmpty()){
+                var compress = async { Compressor.compress(context, file) }
                 compress.join()
                 if (compress.isCompleted) {
-                    var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
+                    var body =
+                        RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
                     var upload = async {
-                        servicePhoto().uploadPhoto2(url.body()!!.url!!, token , body)
+                        servicePhoto().uploadPhoto2(url.body()!!.url!!, token, body)
                     }
-                    withContext(Dispatchers.Main){
-                        return@withContext ServerResponse(upload.await().code(),upload.await().message())
+                    withContext(Dispatchers.Main) {
+                        return@withContext ServerResponse(
+                            upload.await().code(),
+                            upload.await().message()
+                        )
                     }
-                    Log.i("info","photo ${photo} uploaded ")
+                    Log.i("info", "photo ${photo} uploaded ")
                 } else {
-                    withContext(Dispatchers.Main){
-                        return@withContext ServerResponse(400,"Transfert échoué.")
+                    withContext(Dispatchers.Main) {
+                        return@withContext ServerResponse(400, "Transfert échoué.")
                     }
                 }
+            }
             } catch (e:Exception){
                 Log.e("error",e.message!!)
             }
