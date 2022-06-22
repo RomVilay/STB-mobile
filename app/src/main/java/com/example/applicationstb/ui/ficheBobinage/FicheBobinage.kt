@@ -2,10 +2,8 @@ package com.example.applicationstb.ui.ficheBobinage
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -26,11 +24,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +38,6 @@ import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
-import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -58,7 +53,8 @@ class FicheBobinage : Fragment() {
     private lateinit var schemas: RecyclerView
     private val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
-    val REQUEST_IMAGE_CAPTURE = 1
+    val CAMERA_CAPTURE = 1
+    val GALLERY_CAPTURE = 2
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -334,7 +330,7 @@ class FicheBobinage : Fragment() {
         var gal = layout.findViewById<Button>(R.id.extpct)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 6)
+            startActivityForResult(intent, GALLERY_CAPTURE)
         }
         addschema.setOnClickListener {
             runBlocking {
@@ -370,7 +366,7 @@ class FicheBobinage : Fragment() {
                                     it
                                 )
                                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                                startActivityForResult(cameraIntent, CAMERA_CAPTURE)
                             }
                         }
                     }
@@ -747,11 +743,16 @@ class FicheBobinage : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val dir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-        if (resultCode < 0 || resultCode > 0) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-               viewModel.addPhoto(currentPhotoPath)
+        if (requestCode == CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.addPhoto(currentPhotoPath)
             }
-            if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
+        }
+        if (requestCode == GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
                 var file = viewModel.getRealPathFromURI(data?.data!!)
                 CoroutineScope(Dispatchers.IO).launch {
                     var nfile = async { viewModel.sendExternalPicture(file!!) }
@@ -765,7 +766,9 @@ class FicheBobinage : Fragment() {
                         viewModel.quickSave()
                     }
                 }
-
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
             }
         }
     }

@@ -24,24 +24,17 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.model.Chantier
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FicheChantier : Fragment() {
 
@@ -50,10 +43,10 @@ class FicheChantier : Fragment() {
     }
 
     private val viewModel: FicheChantierViewModel by activityViewModels()
-    private val PHOTO_RESULT = 1888
+    private val DRAW_CAPTURE = 1888
     lateinit var currentPhotoPath: String
-    val REQUEST_IMAGE_CAPTURE = 1
-    //
+    val CAMERA_CAPTURE = 1
+    val GALLERY_CAPTURE= 2
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -103,16 +96,16 @@ class FicheChantier : Fragment() {
             var chantier = viewModel.listeChantiers.value!!.find { it.numFiche == spinner.selectedItem }
             viewModel.chantier.value = chantier
             viewModel.start.value = Date()
-            if (viewModel.chantier.value!!.materiel !== null) materiel.setText(viewModel.chantier.value!!.materiel)
-            if (viewModel.chantier.value!!.objet !== null) objet.setText(viewModel.chantier.value!!.objet)
-            if (viewModel.chantier.value!!.observations !== null) observation.setText(viewModel.chantier.value!!.observations)
+            if (viewModel.chantier.value!!.materiel !== null) materiel.setText(viewModel.chantier.value!!.materiel) else materiel.setText("")
+            if (viewModel.chantier.value!!.objet !== null) objet.setText(viewModel.chantier.value!!.objet) else objet.setText("")
+            if (viewModel.chantier.value!!.observations !== null) observation.setText(viewModel.chantier.value!!.observations) else observation.setText("")
             if (viewModel.chantier.value!!.client !== null) client.setText(viewModel.chantier.value!!.client!!.enterprise)
             if (viewModel.chantier.value!!.vehicule !== null) viewModel.getVehicule(
                 viewModel.chantier.value!!.vehicule!!,
                 vehicule
             )
             if (viewModel.chantier.value!!.contact !== null) contact.setText(viewModel.chantier.value!!.contact)
-            if (viewModel.chantier.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.chantier.value!!.dureeEssai)
+            if (viewModel.chantier.value!!.dureeEssai !== null) dureeEssai.setText(viewModel.chantier.value!!.dureeEssai) else dureeEssai.setText("")
             if (viewModel.chantier.value!!.telContact !== null) numero.setText(viewModel.chantier.value!!.telContact)
             if (viewModel.chantier.value!!.adresseChantier !== null) adresse.setText(viewModel.chantier.value!!.adresseChantier)
             if (viewModel.chantier.value!!.dateDebut !== null) dateDebut.setText(viewModel.chantier.value!!.dateDebut!!.toLocaleString())
@@ -218,7 +211,7 @@ class FicheChantier : Fragment() {
                                 it
                             )
                             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                            startActivityForResult(cameraIntent, CAMERA_CAPTURE)
                             //viewModel.addSchema(photoURI)
                         }
                     }
@@ -229,7 +222,7 @@ class FicheChantier : Fragment() {
         var gal = layout.findViewById<Button>(R.id.extPic)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 6)
+            startActivityForResult(intent, GALLERY_CAPTURE)
         }
         showDetails.setOnClickListener {
             if (visibility == View.GONE) {
@@ -369,24 +362,16 @@ class FicheChantier : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val dir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-        if (resultCode < 0 || resultCode > 0) {
-            if (requestCode == PHOTO_RESULT) {
-                val photo: Bitmap = data?.extras?.get("data") as Bitmap
-                val uri = context?.let { photo.saveImage(it.applicationContext) }
-                if (uri != null) {
-                    viewModel.galleryAddPic(uri.path)
-                    /*var picture = File(uri.path)
-                    try {
-                        viewModel.sendPhoto(data?.extras?.get("data") as File)
-                    } catch (e: java.lang.Exception) {
-                        Log.e("EXCEPTION",e.message!!)
-                    }*/
-                }
-            }
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+        if (requestCode == CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
                 viewModel.addPhoto(currentPhotoPath)
             }
-            if (resultCode == Activity.RESULT_OK && requestCode == 6) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
+        }
+        if (requestCode == GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
                 var file = viewModel.getRealPathFromURI(data?.data!!)
                 CoroutineScope(Dispatchers.IO).launch {
                     var nfile = async { viewModel.sendExternalPicture(file!!) }
@@ -400,7 +385,24 @@ class FicheChantier : Fragment() {
                         viewModel.quickSave()
                     }
                 }
-
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
+            }
+        }
+        if (resultCode < 0 || resultCode > 0) {
+            if (requestCode == DRAW_CAPTURE) {
+                val photo: Bitmap = data?.extras?.get("data") as Bitmap
+                val uri = context?.let { photo.saveImage(it.applicationContext) }
+                if (uri != null) {
+                    viewModel.galleryAddPic(uri.path)
+                    /*var picture = File(uri.path)
+                    try {
+                        viewModel.sendPhoto(data?.extras?.get("data") as File)
+                    } catch (e: java.lang.Exception) {
+                        Log.e("EXCEPTION",e.message!!)
+                    }*/
+                }
             }
         }
     }
@@ -411,7 +413,6 @@ class FicheChantier : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getLocalFiches()
         }
-        Log.i("info", "retour chantier")
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
