@@ -50,9 +50,9 @@ class InfoMoteurFragment : Fragment() {
             if (it.puissance !== null) puissance.setText(it.puissance.toString())
             if (it.bride !== null) bride.setText(it.bride.toString())
             if (it.vitesse !== null) vitesse.setText(it.vitesse.toString())
-            if (it.clavette !== null) clavette.setChecked(it.clavette!!)
-            if (it.arbreSortantEntrant !== null) arbre.setChecked(it.arbreSortantEntrant!!)
-            if (it.accouplement !== null) accouplement.setChecked(it.accouplement!!)
+            if (it.clavette !== null) clavette.setChecked(it.clavette!!) else it.clavette = false
+            if (it.arbreSortantEntrant !== null) arbre.setChecked(it.arbreSortantEntrant!!) else it.arbreSortantEntrant = false
+            if (it.accouplement !== null) accouplement.setChecked(it.accouplement!!) else it.accouplement = false
             if (it.coteAccouplement !== null) cote.setText(it.coteAccouplement.toString())
             if (it.aspect !== null) aspectExt.setSelection(it.aspect!!-1)
             if (it.aspectInterieur !== null) aspectBte.setSelection(it.aspectInterieur!!-1)

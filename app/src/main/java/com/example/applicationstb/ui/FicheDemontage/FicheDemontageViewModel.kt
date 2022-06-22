@@ -78,8 +78,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         fichemot!!.couplage = type
         selection.value = fichemot!!
     }
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
@@ -109,7 +107,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         }
     }
-
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(context, contentUri, proj, null, null, null)
@@ -120,22 +117,18 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         cursor.close()
         return result
     }
-
     fun setSchema(sch: String) {
         schema.value = sch
     }
-
     fun fullScreen(view: View, uri: String) {
         val action = FicheDemontageDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
     }
-
     fun retour(view: View) {
         Navigation.findNavController(view).popBackStack()
         /*var action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)*/
     }
-
     fun getTime() {
         var now = Date()
         if (selection.value!!.dureeTotale !== null) {
@@ -146,13 +139,12 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         start.value = now
     }
-
     fun localSave() {
+        if (selection.value?.clavette == null)
         viewModelScope.launch(Dispatchers.IO) {
             repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun sendExternalPicture(path: String): String? = runBlocking {
         if (isOnline(context)) {
@@ -222,7 +214,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
-
     fun connection(username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -244,7 +235,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         })
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFiche(view: View) = runBlocking {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
@@ -339,7 +329,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendFicheNoText() = runBlocking {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
@@ -427,7 +416,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
 
     }
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
         val connectivityManager =

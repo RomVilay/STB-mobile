@@ -91,7 +91,6 @@ class Accueil : Fragment() {
         val rm = layout.findViewById<TextView>(R.id.btnRemo)
         val rb = layout.findViewById<Button>(R.id.btnRebobinage)
         val token = arguments?.let { AccueilArgs.fromBundle(it).token }
-
         val loading = layout.findViewById<CardView>(R.id.loadingHome)
         val sharedPref = activity?.getSharedPreferences(
             "identifiants", Context.MODE_PRIVATE
@@ -380,7 +379,6 @@ class Accueil : Fragment() {
             }
             activity?.finish()
         }
-
         var suppr = layout.findViewById<Button>(R.id.buttonSuppr2)
         suppr.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -388,7 +386,6 @@ class Accueil : Fragment() {
             }
             Log.i("info", " token ${viewModel.token.value!!}")
         }
-
         return layout
     }
 

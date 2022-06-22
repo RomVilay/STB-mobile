@@ -389,8 +389,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 sharedPref.getString("userId", "")!!
             )
         }.await().body()!!.data!!.toMutableList()
-        var listPointageLocal =
-            async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
+        var listPointageLocal = async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
         var iter = listePointageDist.iterator()
         while (iter.hasNext()) {
             var pointage = iter.next()
@@ -447,18 +446,18 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             for (pointage in listPointageLocal) {
                 if (pointage.timestamp.isAfter(
                         ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)
-                    )
+                    ) && pointage.user == userId
                 ) {
                     var p = async {
                         repository.postPointages(
                             token.value!!,
-                            sharedPref.getString("userId", "")!!,
+                            pointage.user,
                             pointage.timestamp
                         )
                     }
                     if (p.await().isSuccessful) {
                         repository.deletePointageLocalDatabse(pointage)
-                        repository.insertPointageDatabase(p.await().body()!!.data)
+                       if (pointage.user == userId) repository.insertPointageDatabase(p.await().body()!!.data)
                     }
                 } else {
                     repository.deletePointageLocalDatabse(pointage)

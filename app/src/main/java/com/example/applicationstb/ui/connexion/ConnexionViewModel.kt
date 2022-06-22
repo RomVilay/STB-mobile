@@ -552,8 +552,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun sendPointage(token: String, userId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun sendPointage(token: String, userId: String) = runBlocking {
             var listePointageDist = async {
                 repository.getPointages2(
                     token!!,
@@ -572,23 +571,19 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                     listPointageLocal.removeAt(index)
                 }
             }
-            Log.i(
-                "info",
-                "pointages à ajouter en local ${listePointageDist.size} - pointages à ajouter en BDD ${listPointageLocal.size}"
-            )
             //envois des pointages locaux vers la bdd
             for (pointage in listPointageLocal) {
-                if (pointage.timestamp.isAfter(ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0))){
+                if (pointage.timestamp.isAfter(ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)) ){
                     var p = async {
                         repository.postPointages(
                             token,
-                            sharedPref.getString("userId", "")!!,
+                            pointage.user,
                             pointage.timestamp
                         )
                     }
                     if (p.await().isSuccessful) {
                         repository.deletePointageLocalDatabse(pointage)
-                        repository.insertPointageDatabase(p.await().body()!!.data)
+                       if (pointage.user == userId) repository.insertPointageDatabase(p.await().body()!!.data)
                     }
                 } else {
                     repository.deletePointageLocalDatabse(pointage)
@@ -598,8 +593,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             for (pointage in listePointageDist) {
                 repository.insertPointageDatabase(pointage.toPointage())
             }
-
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
