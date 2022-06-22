@@ -387,57 +387,88 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun updatePointages() {
-        repository.getPointages(
-            token.value!!,
-            sharedPref.getString("userId", "")!!,
-            object : Callback<PointagesResponse> {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onResponse(
-                    call: Call<PointagesResponse>,
-                    response: Response<PointagesResponse>
-                ) {
-                    if (response.code() == 200) {
-                        val resp = response.body()
-                        if (resp != null) {
-                            var list = mutableListOf<Pointage>()
-                            resp.data!!.forEach {
-                                list.add(it.toPointage())
-                                viewModelScope.launch(Dispatchers.IO) {
-                                    var test = repository.getByIdPointageDatabase(it._id)
-                                    if (test == null) repository.insertPointageDatabase(it.toPointage())
-                                }
-                            }
-                        }
+    suspend fun updatePointages() = runBlocking{
+            var listePointageDist = async{repository.getPointages2(token.value!!,sharedPref.getString("userId","")!!)}.await().body()!!.data!!.toMutableList()
+            var listPointageLocal = async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
+            var iter = listePointageDist.iterator()
+            while(iter.hasNext()){
+                var pointage = iter.next()
+                var index = listPointageLocal.indexOfFirst {  it._id == pointage._id }
+                if (index >= 0) {
+                    Log.i("info","pointage ${pointage.timestamp} et pointage ${listPointageLocal[index].timestamp} sont identiques")
+                    iter.remove()
+                    listPointageLocal.removeAt(index)
+                }
+                else Log.i("info","pointage ${pointage.timestamp} n'existe pas en bdd")
+                //var p1 = listPointageLocal.await().indexOf(pointage.toEntity().timestamp)
+            }
+            Log.i("info","pointages à ajouter en local ${listePointageDist.size} - pointages à ajouter en BDD ${listPointageLocal.size}")
+            //nettoyage des pointages locaux
+            for (pointage in listPointageLocal){
+                    var p = async{ repository.postPointages(token.value!!, sharedPref.getString("userId","")!!, pointage.timestamp)}
+                    if (p.await().isSuccessful){
+                        repository.deletePointageLocalDatabse(pointage)
                     }
-                }
-
-                override fun onFailure(call: Call<PointagesResponse>, t: Throwable) {
-                    Log.e("Error", "erreur ${t.message}")
-                }
-            })
-        viewModelScope.launch(Dispatchers.IO) {
+            }
+            //ajout des pointages distants vers la bdd locale
+            for (pointage in listePointageDist){
+                repository.insertPointageDatabase(pointage.toPointage())
+            }
             isTracking()
-        }
     }
 
-    fun Pointage() = runBlocking {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun sendPointage() = runBlocking {
             var date = ZonedDateTime.of(
                 LocalDateTime.now().minusSeconds(5),
                 ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
             ) //definition du fuseau horaire
             if (isOnline(context) && token.value !== "") {
-                var ptn = repository.postPointages(
-                    token.value!!,
-                    sharedPref.getString("userId", "")!!,
-                    date
-                )
-                repository.insertPointageDatabase(
-                    Pointage(
-                        ptn.body()!!.data!!._id, sharedPref.getString("userId", "")!!, date
+                var listePointageDist = async {
+                    repository.getPointages2(
+                        token.value!!,
+                        sharedPref.getString("userId", "")!!
                     )
-                )
+                }.await().body()!!.data!!.toMutableList()
+                var listPointageLocal =
+                    async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
+                //tri des pointages à partir de leurs ids
+                var iter = listePointageDist.iterator()
+                while (iter.hasNext()) {
+                    var pointage = iter.next()
+                    var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
+                    if (index >= 0 ) {
+                        iter.remove()
+                        listPointageLocal.removeAt(index)
+                    }
+                }
+                //envois des pointages locaux vers la bdd
+                for (pointage in listPointageLocal) {
+                    if (pointage.timestamp.isAfter(ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0))){
+                        var p = async {
+                            repository.postPointages(
+                                token.value!!,
+                                sharedPref.getString("userId", "")!!,
+                                pointage.timestamp
+                            )
+                        }
+                        if (p.await().isSuccessful) {
+                            repository.deletePointageLocalDatabse(pointage)
+                            repository.insertPointageDatabase(p.await().body()!!.data)
+                        }
+                    } else {
+                        repository.deletePointageLocalDatabse(pointage)
+                    }
+                }
+                var np = async {
+                    repository.postPointages(
+                        token.value!!,
+                        sharedPref.getString("userId", "")!!,
+                        date
+                    )
+                }
+                if (np.await().isSuccessful) {
+                    repository.insertPointageDatabase(np.await().body()!!.data)
+                }
             } else {
                 repository.insertPointageDatabase(
                     Pointage(
@@ -447,7 +478,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 )
             }
             isTracking()
-        }
     }
 
    fun isTracking() {
