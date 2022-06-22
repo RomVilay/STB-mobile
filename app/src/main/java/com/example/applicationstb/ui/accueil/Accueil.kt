@@ -48,10 +48,10 @@ class Accueil : Fragment() {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
         val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         viewModel.token.value = arguments?.get("Token") as? String
-        viewModel.username = arguments?.get("Username") as? String
+        viewModel.userId = arguments?.get("Username") as? String
         val reload = layout.findViewById<Button>(R.id.reload)
         val send = layout.findViewById<Button>(R.id.send)
-        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context) && viewModel.token.value !== "" && viewModel.fiches == null) {
+        if (viewModel.token !== null && viewModel.userId !== null && viewModel.isOnline(viewModel.context) && viewModel.token.value !== "" && viewModel.fiches == null) {
             runBlocking {
                 var job = launch {
                     var test = ActivityCompat.checkSelfPermission(
@@ -68,7 +68,7 @@ class Accueil : Fragment() {
                     }
                 }
                 var job2 = launch {
-                    viewModel.listeFiches(viewModel.token.value!!, viewModel.username.toString())
+                    viewModel.listeFiches(viewModel.token.value!!, viewModel.userId.toString())
                 }
                 delay(200)
                 job2.join()

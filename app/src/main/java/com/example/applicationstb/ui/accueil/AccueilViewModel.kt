@@ -54,7 +54,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     val sharedPref =
         getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var token = MutableLiveData<String>()
-    var username: String? = null
+    var userId: String? = null
     var fiches: Array<Fiche>? = null
     var context = getApplication<Application>().applicationContext
     var chantiers: MutableList<Chantier> = mutableListOf();
@@ -83,7 +83,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             }
         })
     }
-
     fun listeFiches(token: String, userid: String) {
         viewModelScope.launch(Dispatchers.IO) {
             for (i in chantiers) {
@@ -362,15 +361,12 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         })
 
     }
-
     suspend fun nbFichesDemontage(): Int {
         return repository.demontageRepository!!.demontageDao.getAll().size
     }
-
     suspend fun nbFichesRemontage(): Int {
         return repository.remontageRepository!!.remontageDao.getAll().size
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun listeFicheLocal() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -386,7 +382,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             isTracking()
         }
     }
-
     suspend fun updatePointages() = runBlocking {
         var listePointageDist = async {
             repository.getPointages2(
@@ -424,7 +419,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
         isTracking()
     }
-
     fun sendPointage() = runBlocking {
         var date = ZonedDateTime.of(
             LocalDateTime.now().minusSeconds(5),
@@ -490,7 +484,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
         isTracking()
     }
-
     fun isTracking() {
         viewModelScope.launch(Dispatchers.IO) {
             var list = async { repository.getAllPointageLocalDatabase() }
@@ -502,39 +495,32 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             )
         }
     }
-
     fun toPointages(view: View) {
         Navigation.findNavController(view)
             .navigate(AccueilDirections.actionAccueilToPointageFragment())
     }
-
     fun toChantier(view: View) {
         var action =
-            AccueilDirections.versFicheChantier(chantiers!!.toTypedArray(), token.value!!, username)
+            AccueilDirections.versFicheChantier(chantiers!!.toTypedArray(), token.value!!, userId)
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toFicheD(view: View) {
-        var action = AccueilDirections.versFicheD(token.value!!, username!!)
+        var action = AccueilDirections.versFicheD(token.value!!, userId!!)
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toFicheR(view: View) {
         var action =
-            AccueilDirections.versFicheRemontage(token.value!!, username!!)
+            AccueilDirections.versFicheRemontage(token.value!!, userId!!)
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toBobinage(view: View) {
         var action =
-            AccueilDirections.versFicheBobinage(bobinages!!.toTypedArray(), token.value!!, username)
+            AccueilDirections.versFicheBobinage(bobinages!!.toTypedArray(), token.value!!, userId)
         Navigation.findNavController(view).navigate(action)
     }
-
     fun toDeconnexion(view: View) {
         Navigation.findNavController(view).navigate(R.id.versConnexion)
     }
-
     fun getVehicule(id: String) {
         var vehicule =
             repository.getVehiculeById(token.value!!, id, object : Callback<VehiculesResponse> {
