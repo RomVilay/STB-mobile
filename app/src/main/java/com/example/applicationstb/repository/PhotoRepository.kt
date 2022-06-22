@@ -4,14 +4,18 @@ import android.app.Application
 import android.content.Context
 import android.content.CursorLoader
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Environment
 import android.os.Message
 import android.provider.MediaStore
+import android.util.AndroidRuntimeException
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.Moshi
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.decodeSampledBitmapFromFile
 import kotlinx.coroutines.*
 import okhttp3.ConnectionSpec
 import okhttp3.MediaType
@@ -24,6 +28,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.lang.Exception
+import java.nio.file.Files
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
@@ -121,27 +126,33 @@ class PhotoRepository(context: Context) {
     }
     suspend fun sendPhoto(token:String, photo:String, context: Context) {
        CoroutineScope(Dispatchers.IO).launch {
-                val url = getURL(token,photo)
-                Log.i("info", "url  ${url.body()!!.url}")
+                val url = async {getURL(token,photo)}
+                url.await()
                 try {
                     val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
-                    var compress = async { Compressor.compress(context, file)  }
-                    compress.join()
-                    if (compress.isCompleted) {
-                        var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
-                        var upload = async {
-                            servicePhoto().uploadPhoto2(url.body()!!.url!!, token , body)
-                        }
-                        withContext(Dispatchers.Main){
-                            return@withContext ServerResponse(upload.await().code(),upload.await().message())
-                        }
-                        Log.i("info","photo ${photo} uploaded ")
-                    } else {
-                        withContext(Dispatchers.Main){
-                            return@withContext ServerResponse(400,"Transfert échoué.")
+                    if (file.exists() && file.readBytes().isNotEmpty()){
+                        //Log.i("info", "is bitmap ${ImageDecoder.decodeBitmap(file.toURI())}")
+                        var compress = async { Compressor.compress(context, file)  }
+                        compress.await()
+                        if (compress.isCompleted) {
+                            var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
+                            var upload = async {
+                                servicePhoto().uploadPhoto2(url.await().body()!!.url!!, token , body)
+                            }
+                            withContext(Dispatchers.Main){
+                                return@withContext ServerResponse(upload.await().code(),upload.await().message())
+                            }
+                            Log.i("info","photo ${photo} uploaded ")
+                        } else {
+                            withContext(Dispatchers.Main){
+                                return@withContext ServerResponse(400,"Transfert échoué.")
+                            }
                         }
                     }
                 } catch (e:Exception){
+                    Log.e("error",e.message!!)
+                }
+                catch (e:AndroidRuntimeException){
                     Log.e("error",e.message!!)
                 }
         }

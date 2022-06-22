@@ -49,19 +49,16 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
     var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
         }
     }
-
     fun toAccueil(view: View) {
         //Log.i("INFO","click vers Accueil - ${user?.username}")
         var action = ConnexionDirections.versAccueil(user!!.token!!, user!!.username!!)
         Navigation.findNavController(view).navigate(action)
     }
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun login(username: String, psw: String, view: View, loading: CardView) = runBlocking {
         if (loading.visibility == View.GONE) loading.visibility = View.VISIBLE
@@ -142,7 +139,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             Navigation.findNavController(view).navigate(action)
         }
     }
-
     fun localGet() {
         viewModelScope.launch(Dispatchers.IO) {
             var list = repository.getAllChantierLocalDatabase()
@@ -151,7 +147,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun sendFiche() = runBlocking {
         if (isOnline(context) == true) {
@@ -574,7 +569,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
         return false
     }
-
     suspend fun getNameURI() = runBlocking {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val resp1 = repository.getURLToUploadPhoto(user?.token!!)
@@ -588,7 +582,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-
     suspend fun getNameURI2(callback: (URLPhotoResponse2?) -> Unit) {
         val resp1 = repository.getURLToUploadPhoto(user?.token!!)
         withContext(Dispatchers.Main) {
@@ -600,7 +593,6 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
 
     }
-
    /* fun sendPhoto(photo: File) {
         var s =
             imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
