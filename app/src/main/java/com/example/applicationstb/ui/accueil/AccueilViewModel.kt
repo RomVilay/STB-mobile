@@ -418,11 +418,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
     }
     fun isTracking() {
         viewModelScope.launch(Dispatchers.IO) {
-            var list = async { repository.getAllPointageLocalDatabase() }
-            list.await()
-            list.await().filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
-            Log.i("info", "state ${list.await().size % 2 != 0}")
-            if (list.await().size > 0) tracking.postValue(list.await().size % 2 != 0) else tracking.postValue(
+            var list = async { repository.getAllPointageLocalDatabase() }.await().filter { it.timestamp.dayOfMonth == LocalDate.now().dayOfMonth }
+            if (list.size > 0) tracking.postValue(list.size % 2 != 0) else tracking.postValue(
                 false
             )
         }
