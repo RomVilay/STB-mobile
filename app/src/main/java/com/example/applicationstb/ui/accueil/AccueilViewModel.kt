@@ -248,8 +248,19 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         )
                                                         Log.i(
                                                             "info",
-                                                            "fiche demontage: ${resp.data!!._id} ajout BDD"
+                                                            "fiche remontage: ${resp.data!!._id} ajout BDD"
                                                         )
+                                                    }
+                                                    var listeD = async { repository.demontageRepository!!.getFicheForRemontage(token, resp.data!!.numDevis!!) }.await()
+                                                    if (listeD.isSuccessful && listeD.body()!!.data!!.size > 0){
+                                                        for (fiche in listeD.body()!!.data!!) {
+                                                            Log.i("info"," fiche démontage ${fiche.numFiche} liée à la fiche ${resp.data!!._id}")
+                                                            if (repository.demontageRepository!!.getByIdDemontageLocalDatabse(fiche._id) !== null) {
+                                                               repository.demontageRepository!!.updateDemontageLocalDatabse(fiche.toEntity())
+                                                            } else {
+                                                                repository.demontageRepository!!.insertDemontageLocalDatabase(fiche)
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }

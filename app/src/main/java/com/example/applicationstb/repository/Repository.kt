@@ -310,6 +310,7 @@ class PointagesResponse(
 class FichesResponse(
     var data: Array<Fiche>?
 )
+class FichesRemontageResponse()
 
 class ChantierResponse(
     var data: Chantier?
@@ -322,11 +323,9 @@ class BobinageResponse(
 class VehiculesResponse(
     var data: Vehicule?
 )
-
 class ClientsResponse(
     var data: Client?
 )
-
 class CustomDateAdapter : JsonAdapter<Date>() {
     private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
@@ -355,7 +354,6 @@ class CustomDateAdapter : JsonAdapter<Date>() {
         const val SERVER_FORMAT = ("yyyy-MM-dd'T'HH:mm") // define your server format here
     }
 }
-
 class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -379,8 +377,6 @@ class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
 
     companion object {}
 }
-
-
 class PhotoResponse(
     var photo: File
 )
@@ -430,6 +426,7 @@ class Repository(var context: Context) {
         var fiches: Array<Fiche>? = null
         call.enqueue(callback)
     }
+    suspend fun getFichesDemontages(token: String,numDevis:String) = service.getFichesDemontages(token,numDevis)
 
 
     fun getChantier(token: String, ficheId: String, callback: Callback<ChantierResponse>) {

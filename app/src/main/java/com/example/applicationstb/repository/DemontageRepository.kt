@@ -368,11 +368,12 @@ class BodyFicheDemontage(
     }
 
 }
-
 class FicheDemontageResponse(
     var data: FicheDemontage?
 )
-
+class ListFicheDemontageResponse(
+    var data: Array<FicheDemontage>
+)
 class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
     var demontageDao = db!!.demontageDao()
 
@@ -380,6 +381,8 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
         val call = service.getFicheDemontage(token, ficheId)
         call.enqueue(callback)
     }
+
+    suspend fun getFicheForRemontage(token: String,numDevis:String) = service.getFichesDemontages(token,numDevis)
 
     fun patchFicheDemontage(token: String,
                             ficheId: String,
