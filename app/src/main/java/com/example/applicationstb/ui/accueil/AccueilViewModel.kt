@@ -390,7 +390,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         var date = ZonedDateTime.of(
             LocalDateTime.now().minusSeconds(5),
             ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
-        ) //definition du fuseau horaire
+        )
+        Log.i("info","date enregistrée ${date.toString()}")
+        //definition du fuseau horaire
         if (isOnline(context) && token.value !== "") {
             var update = async { repository.sendPointage(token.value!!,sharedPref.getString("userId", "")!!) }
             update.await()

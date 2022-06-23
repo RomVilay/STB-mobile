@@ -363,7 +363,7 @@ class CustomDateAdapter2 : JsonAdapter<ZonedDateTime>() {
     override fun fromJson(reader: JsonReader): ZonedDateTime? {
         return try {
             val dateAsString = reader.nextString()
-            ZonedDateTime.parse(dateAsString).withZoneSameLocal(ZoneOffset.of(SimpleDateFormat("Z").format(Date())))
+            ZonedDateTime.parse(dateAsString)
         } catch (e: Exception) {
             null
         }
