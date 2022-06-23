@@ -94,7 +94,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 )
                             }
                             CoroutineScope(Dispatchers.IO).launch {
-                                var p = async { sendPointage(resp.token!!, resp.user!!._id!!) }
+                                var p = async { repository.sendPointage(resp.token!!, resp.user!!._id!!) }
                                 p.await()
                                 var s = async { sendFiche(view) }
                                 s.await()
@@ -161,7 +161,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
             if (listCh.size > 0) {
                 for (fiche in listCh) {
-                    Snackbar.make(view,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                        .show()
                     var ch = fiche.toChantier()
                     if (ch.photos?.size!! > 0) {
                         var list = ch.photos?.toMutableList()!!
@@ -313,7 +314,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             Log.i("INFO", "nb de fiches bobinage: ${listb.size}")
             if (listb.size > 0) {
                 for (fiche in listb) {
-                    Snackbar.make(view,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                        .show()
                     var ch = fiche.toBobinage()
                     if (ch.photos?.size!! > 0) {
                         var list = ch.photos?.toMutableList()!!
@@ -397,7 +399,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             Log.i("INFO", "nb de fiches démontage: ${listD.size}")
             if (listD.size > 0) {
                 for (fiche in listD) {
-                    Snackbar.make(view,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                        .show()
                     var ficheD = fiche
                     if (ficheD.photos?.size!! > 0) {
                         var list = fiche.photos?.toMutableList()!!
@@ -475,7 +478,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             var listR = repository.remontageRepository!!.getAllRemontageLocalDatabase()
             if (listR.size > 0) {
                 for (fiche in listR) {
-                    Snackbar.make(view,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                        .show()
                     if (fiche.photos?.size!! > 0) {
                         var list = fiche.photos?.toMutableList()!!
                         list.removeAll { it == "" }
@@ -552,48 +556,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    suspend fun sendPointage(token: String, userId: String) = runBlocking {
-            var listePointageDist = async {
-                repository.getPointages2(
-                    token!!,
-                    sharedPref.getString("userId", "")!!
-                )
-            }.await().body()!!.data!!.toMutableList()
-            var listPointageLocal =
-                async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
-            //tri des pointages à partir de leurs ids
-            var iter = listePointageDist.iterator()
-            while (iter.hasNext()) {
-                var pointage = iter.next()
-                var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
-                if (index >= 0 ) {
-                    iter.remove()
-                    listPointageLocal.removeAt(index)
-                }
-            }
-            //envois des pointages locaux vers la bdd
-            for (pointage in listPointageLocal) {
-                if (pointage.timestamp.isAfter(ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)) ){
-                    var p = async {
-                        repository.postPointages(
-                            token,
-                            pointage.user,
-                            pointage.timestamp
-                        )
-                    }
-                    if (p.await().isSuccessful) {
-                        repository.deletePointageLocalDatabse(pointage)
-                       if (pointage.user == userId) repository.insertPointageDatabase(p.await().body()!!.data)
-                    }
-                } else {
-                    repository.deletePointageLocalDatabse(pointage)
-                }
-            }
-            //ajout des pointages distants vers la bdd locale
-            for (pointage in listePointageDist) {
-                repository.insertPointageDatabase(pointage.toPointage())
-            }
-    }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {

@@ -13,6 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -593,6 +594,58 @@ class Repository(var context: Context) {
 
     suspend fun postPointages(token: String, userid: String, dateTime: ZonedDateTime) =
         service.postPointages(token, BodyPointage(userid, dateTime.toString()))
+
+    suspend fun sendPointage(token: String, userId: String) = runBlocking {
+        var listePointageDist = async {
+            getPointages2(
+                token!!,
+                userId
+            )
+        }.await().body()!!.data!!.toMutableList()
+        var listPointageLocal =
+            async { getAllPointageLocalDatabase() }.await().toMutableList()
+        //tri des pointages à partir de leurs ids
+        var iter = listePointageDist.iterator()
+        while (iter.hasNext()) {
+            var pointage = iter.next()
+            var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
+            if (index >= 0) {
+                iter.remove()
+                listPointageLocal.removeAt(index)
+            }
+        }
+        //envois des pointages locaux vers la bdd
+        for (pointage in listPointageLocal) {
+            Log.i(
+                "info",
+                "pointage de l'utilisateur connecté ${pointage.user == userId} - user pointage ${pointage.user} / userId ${userId}"
+            )
+            if (pointage.timestamp.isAfter(
+                    ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)
+                ) && pointage._id.length < 24
+            ) {
+                var p = async {
+                    postPointages(
+                        token,
+                        pointage.user,
+                        pointage.timestamp
+                    )
+                }
+                if (p.await().isSuccessful) {
+                    deletePointageLocalDatabse(pointage)
+                    if (pointage.user == userId) insertPointageDatabase(
+                        p.await().body()!!.data
+                    )
+                }
+            } else {
+                deletePointageLocalDatabse(pointage)
+            }
+        }
+        //ajout des pointages distants vers la bdd locale
+        for (pointage in listePointageDist) {
+            insertPointageDatabase(pointage.toPointage())
+        }
+    }
 
     suspend fun getURLPhoto(token: String, photoName: String) =
         service.getURLPhoto(token, photoName)
