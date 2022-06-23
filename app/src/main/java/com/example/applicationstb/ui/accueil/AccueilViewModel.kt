@@ -383,39 +383,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
         }
     }
     suspend fun updatePointages() = runBlocking {
-        var listePointageDist = async {
-            repository.getPointages2(
-                token.value!!,
-                sharedPref.getString("userId", "")!!
-            )
-        }.await().body()!!.data!!.toMutableList()
-        var listPointageLocal = async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
-        var iter = listePointageDist.iterator()
-        while (iter.hasNext()) {
-            var pointage = iter.next()
-            var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
-            if (index >= 0) {
-                Log.i(
-                    "info",
-                    "pointage ${pointage.timestamp} et pointage ${listPointageLocal[index].timestamp} sont identiques"
-                )
-                iter.remove()
-                listPointageLocal.removeAt(index)
-            } else Log.i("info", "pointage ${pointage.timestamp} n'existe pas en bdd")
-            //var p1 = listPointageLocal.await().indexOf(pointage.toEntity().timestamp)
-        }
-        Log.i(
-            "info",
-            "pointages à ajouter en local ${listePointageDist.size} - pointages à ajouter en BDD ${listPointageLocal.size}"
-        )
-        //nettoyage des pointages locaux
-        for (pointage in listPointageLocal) {
-            repository.deletePointageLocalDatabse(pointage)
-        }
-        //ajout des pointages distants vers la bdd locale
-        for (pointage in listePointageDist) {
-            repository.insertPointageDatabase(pointage.toPointage())
-        }
+        repository.sendPointage(token.value!!, sharedPref.getString("userId", "")!!)
         isTracking()
     }
     fun sendPointage() = runBlocking {
@@ -424,45 +392,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
             ZoneOffset.of(SimpleDateFormat("Z").format(Date()))
         ) //definition du fuseau horaire
         if (isOnline(context) && token.value !== "") {
-            var listePointageDist = async {
-                repository.getPointages2(
-                    token.value!!,
-                    sharedPref.getString("userId", "")!!
-                )
-            }.await().body()!!.data!!.toMutableList()
-            var listPointageLocal =
-                async { repository.getAllPointageLocalDatabase() }.await().toMutableList()
-            //tri des pointages à partir de leurs ids
-            var iter = listePointageDist.iterator()
-            while (iter.hasNext()) {
-                var pointage = iter.next()
-                var index = listPointageLocal.indexOfFirst { it._id == pointage._id }
-                if (index >= 0) {
-                    iter.remove()
-                    listPointageLocal.removeAt(index)
-                }
-            }
-            //envois des pointages locaux vers la bdd
-            for (pointage in listPointageLocal) {
-                if (pointage.timestamp.isAfter(
-                        ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)
-                    ) && pointage.user == userId
-                ) {
-                    var p = async {
-                        repository.postPointages(
-                            token.value!!,
-                            pointage.user,
-                            pointage.timestamp
-                        )
-                    }
-                    if (p.await().isSuccessful) {
-                        repository.deletePointageLocalDatabse(pointage)
-                       if (pointage.user == userId) repository.insertPointageDatabase(p.await().body()!!.data)
-                    }
-                } else {
-                    repository.deletePointageLocalDatabse(pointage)
-                }
-            }
+            var update = async { repository.sendPointage(token.value!!,sharedPref.getString("userId", "")!!) }
+            update.await()
             var np = async {
                 repository.postPointages(
                     token.value!!,
