@@ -224,7 +224,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
 
     }
-
     fun connection(username: String, password: String) {
         val resp = repository.logUser(username, password, object : Callback<LoginResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -246,7 +245,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         })
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun sendExternalPicture(path: String): String? = runBlocking {
         if (isOnline(context)) {
@@ -373,7 +371,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
             }
         }
     }
-
     fun getTime(){
         Log.i("INFO","duree avant : ${chantier.value?.dureeTotale}")
         var now = Date()

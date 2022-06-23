@@ -651,6 +651,14 @@ class FicheBobinage : Fragment() {
                 layout.findViewById<CoordinatorLayout>(R.id.FicheBobinageLayout),
                 viewModel.token.value!!
             )
+            if (viewModel.listeBobinage.size > 1) {
+                scrollBobi.visibility = View.INVISIBLE
+                viewModel.listeBobinage.remove(viewModel.bobinage.value)
+                spinner.adapter = ArrayAdapter(
+                    requireActivity(),
+                    R.layout.support_simple_spinner_dropdown_item,
+                    viewModel.listeBobinage.map { it.numFiche })
+            }
             enrg.visibility = View.INVISIBLE
             /*val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)

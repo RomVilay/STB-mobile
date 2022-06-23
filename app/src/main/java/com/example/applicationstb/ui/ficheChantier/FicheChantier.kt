@@ -320,17 +320,9 @@ class FicheChantier : Fragment() {
         enregistrer.setOnClickListener {
             viewModel.getTime()
             viewModel.quickSave()
-            //if (viewModel.token.value == "") {
                 viewModel.save(
                     requireContext(),
                     layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout), viewModel.token.value!!)
-           /* } else {
-                viewModel.save(
-                    requireContext(),
-                    layout.findViewById<CoordinatorLayout>(R.id.FicheChantierLayout),
-                    viewModel.token.value!!
-                )
-            }*/
         }
         term.setOnClickListener {
             viewModel.chantier.value?.status = 3
