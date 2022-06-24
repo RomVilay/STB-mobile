@@ -51,7 +51,7 @@ class FicheDemontage : Fragment() {
             if (viewModel.selection.value !== null){
                 spinner.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
             }
-            if (viewModel.selection.value!!.status == 3L) {
+            /*if (viewModel.selection.value!!.status == 3L) {
                 if (viewModel.listeDemontages.value!!.size > 1 ) {
                     layout.findViewById<FrameLayout>(R.id.fragmentContainer).removeAllViews()
                     viewModel.listeDemontages.value?.remove(viewModel.selection.value!!)
@@ -62,7 +62,7 @@ class FicheDemontage : Fragment() {
                 } else {
                     viewModel.back(layout)
                 }
-            }
+            }*/
 
         }
         btnDemontage.setOnClickListener {

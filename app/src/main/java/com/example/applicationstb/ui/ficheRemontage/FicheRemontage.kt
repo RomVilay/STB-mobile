@@ -39,7 +39,7 @@ class FicheRemontage : Fragment() {
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
-        viewModel.listeRemontages.observe(viewLifecycleOwner){
+        viewModel.listeRemontages.observe(viewLifecycleOwner) {
             spinner.adapter = ArrayAdapter(
                 requireActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
@@ -155,9 +155,12 @@ class FicheRemontage : Fragment() {
             } else {
                 //btnFichesD.visibility = View.VISIBLE
                 viewModel.start.value = Date()
-                var demo = viewModel.listeRemontages.value!!.find { it.numFiche == spinner.selectedItem }.apply {
-                    this!!.status = 2L
-                }
+                var demo =
+                    viewModel.listeRemontages.value!!.find { it.numFiche == spinner.selectedItem }
+                        .apply {
+                            this!!.status = 2L
+                        }
+                viewModel.selection.value = demo
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                 if (demo != null) {
                     tmono.visibility = View.GONE
@@ -172,63 +175,72 @@ class FicheRemontage : Fragment() {
                     if (demo.remontageRoulement !== null) spinnerMnt.setSelection(demo.remontageRoulement!!)
                     if (demo.collageRoulementPorteeArbre !== null) spinnerCPA.setSelection(demo.collageRoulementPorteeArbre!!)
                     if (demo.collageRoulementFlasque !== null) spinnerCIF.setSelection(demo.collageRoulementFlasque!!)
-                    spinnerMnt.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                        }
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if ((position > 0) ) {
-                                demo.remontageRoulement = position
-                                viewModel.selection.value = demo
-                                viewModel.getTime()
-                                viewModel.quickSave()
+                    spinnerMnt.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
-                        }
-                    }
-                    spinnerCPA.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                        }
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if ((position > 0) ) {
-                                demo.collageRoulementPorteeArbre = position
-                                viewModel.selection.value = demo
-                                viewModel.getTime()
-                                viewModel.quickSave()
-                            }
-                        }
-                    }
-                    spinnerCIF.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                        }
 
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if ((position > 0) ) {
-                                demo.collageRoulementFlasque = position
-                                viewModel.selection.value = demo
-                                viewModel.getTime()
-                                viewModel.quickSave()
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if ((position > 0)) {
+                                    demo.remontageRoulement = position
+                                    viewModel.selection.value = demo
+                                    viewModel.getTime()
+                                    viewModel.quickSave()
+                                }
                             }
                         }
-                    }
+                    spinnerCPA.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                            }
+
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if ((position > 0)) {
+                                    demo.collageRoulementPorteeArbre = position
+                                    viewModel.selection.value = demo
+                                    viewModel.getTime()
+                                    viewModel.quickSave()
+                                }
+                            }
+                        }
+                    spinnerCIF.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                            }
+
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if ((position > 0)) {
+                                    demo.collageRoulementFlasque = position
+                                    viewModel.selection.value = demo
+                                    viewModel.getTime()
+                                    viewModel.quickSave()
+                                }
+                            }
+                        }
                     if (demo.observations !== null) obs.setText(demo.observations)
                     if (demo.subtype !== 1 || demo.subtype !== 8) {
                         tisoPhase.visibility = View.VISIBLE
-                        if (layout.findViewById<CardView>(R.id.essaisStatiques).visibility == View.GONE) layout.findViewById<CardView>(R.id.essaisStatiques).visibility = View.VISIBLE
-                        if (layout.findViewById<ConstraintLayout>(R.id.essaisDynamiques).visibility == View.GONE) layout.findViewById<ConstraintLayout>(R.id.essaisDynamiques).visibility = View.VISIBLE
+                        if (layout.findViewById<CardView>(R.id.essaisStatiques).visibility == View.GONE) layout.findViewById<CardView>(
+                            R.id.essaisStatiques
+                        ).visibility = View.VISIBLE
+                        if (layout.findViewById<ConstraintLayout>(R.id.essaisDynamiques).visibility == View.GONE) layout.findViewById<ConstraintLayout>(
+                            R.id.essaisDynamiques
+                        ).visibility = View.VISIBLE
                         if (demo.isolementPhaseMasseU !== null) isolementPhaseMasseU.setText(
                             demo.isolementPhaseMasseU!!
                         )
@@ -271,7 +283,7 @@ class FicheRemontage : Fragment() {
                         if (demo.isolementPhase !== null) isolementPhase.setText(
                             demo.isolementPhase
                         )
-                        if(demo!!.subtype == 2) {
+                        if (demo!!.subtype == 2) {
                             tmono.visibility = View.VISIBLE
                             if (demo.resistanceTravail !== null) resistanceTravail.setText(
                                 demo.resistanceTravail!!
@@ -281,7 +293,7 @@ class FicheRemontage : Fragment() {
                             )
                             tisoPhase.visibility = View.GONE
                         }
-                        if(demo!!.subtype == 3) {
+                        if (demo!!.subtype == 3) {
                             tAlterStat.visibility = View.VISIBLE
                             tAlterDyn.visibility = View.VISIBLE
 
@@ -319,17 +331,20 @@ class FicheRemontage : Fragment() {
                                 demo.intensiteExcitation!!
                             )
                         }
-                        if(demo!!.subtype == 5) {
+                        if (demo!!.subtype == 5) {
                             ccDyna.visibility = View.VISIBLE
                             ccStat.visibility = View.VISIBLE
                             tvf.visibility = View.VISIBLE
                             fixCouronne.visibility = View.VISIBLE
-                            if (demo.verificationFixationCouronne !== null) fixCouronne.setChecked(demo.verificationFixationCouronne!!)
+                            if (demo.verificationFixationCouronne !== null) fixCouronne.setChecked(
+                                demo.verificationFixationCouronne!!
+                            )
                             fixCouronne.setOnCheckedChangeListener { _, isChecked ->
-                                    demo.verificationFixationCouronne = isChecked//viewModel.selection.value!!.verificationFixationCouronne = isChecked
-                                    viewModel.selection.value = demo
-                                    viewModel.getTime()
-                                    viewModel.quickSave()
+                                demo.verificationFixationCouronne =
+                                    isChecked//viewModel.selection.value!!.verificationFixationCouronne = isChecked
+                                viewModel.selection.value = demo
+                                viewModel.getTime()
+                                viewModel.quickSave()
                             }
                             if (demo.isolementPorteBalais !== null) isolementPorteBalais.setText(
                                 demo.isolementPorteBalais!!
@@ -394,7 +409,7 @@ class FicheRemontage : Fragment() {
                             if (demo.intensiteInducteursW !== null) intensiteInducteursW.setText(
                                 demo.intensiteInducteursW!!
                             )
-                            if (demo.tensionInduitU!== null) tensionInduitU.setText(
+                            if (demo.tensionInduitU !== null) tensionInduitU.setText(
                                 demo.tensionInduitU!!
                             )
                             if (demo.tensionInduitV !== null) tensionInduitV.setText(
@@ -422,7 +437,7 @@ class FicheRemontage : Fragment() {
                                 demo.intensiteExcitation!!
                             )
                         }
-                        if(demo!!.subtype == 7 && demo!!.typeMotopompe == 2) {
+                        if (demo!!.subtype == 7 && demo!!.typeMotopompe == 2) {
                             tmono.visibility = View.VISIBLE
                             tisoPhase.visibility = View.GONE
                             if (demo.resistanceTravail !== null) resistanceTravail.setText(
@@ -432,7 +447,7 @@ class FicheRemontage : Fragment() {
                                 demo.resistanceDemarrage!!
                             )
                         }
-                        if(demo!!.subtype == 9 && demo!!.typeMotoreducteur == 2) {
+                        if (demo!!.subtype == 9 && demo!!.typeMotoreducteur == 2) {
                             tisoPhase.visibility = View.GONE
                             tmono.visibility = View.VISIBLE
                             if (demo.resistanceTravail !== null) resistanceTravail.setText(
@@ -692,7 +707,8 @@ class FicheRemontage : Fragment() {
                         }
                         isolementPhaseMasseRotorU.doAfterTextChanged {
                             if (isolementPhaseMasseRotorU.text.isNotEmpty() && isolementPhaseMasseRotorU.hasFocus()) {
-                                demo.isolementPhaseMasseRotorU = isolementPhaseMasseRotorU.text.toString()
+                                demo.isolementPhaseMasseRotorU =
+                                    isolementPhaseMasseRotorU.text.toString()
                                 viewModel.selection.value = demo
                                 viewModel.getTime()
                                 viewModel.quickSave()
@@ -700,7 +716,8 @@ class FicheRemontage : Fragment() {
                         }
                         isolementPhaseMasseRotorV.doAfterTextChanged {
                             if (isolementPhaseMasseRotorV.text.isNotEmpty() && isolementPhaseMasseRotorV.hasFocus()) {
-                                demo.isolementPhaseMasseRotorV = isolementPhaseMasseRotorV.text.toString()
+                                demo.isolementPhaseMasseRotorV =
+                                    isolementPhaseMasseRotorV.text.toString()
                                 viewModel.selection.value = demo
                                 viewModel.getTime()
                                 viewModel.quickSave()
@@ -708,7 +725,8 @@ class FicheRemontage : Fragment() {
                         }
                         isolementPhaseMasseRotorW.doAfterTextChanged {
                             if (isolementPhaseMasseRotorW.text.isNotEmpty() && isolementPhaseMasseRotorW.hasFocus()) {
-                                demo.isolementPhaseMasseRotorW = isolementPhaseMasseRotorW.text.toString()
+                                demo.isolementPhaseMasseRotorW =
+                                    isolementPhaseMasseRotorW.text.toString()
                                 viewModel.selection.value = demo
                                 viewModel.getTime()
                                 viewModel.quickSave()
@@ -819,7 +837,7 @@ class FicheRemontage : Fragment() {
                             }
                         }
                         tensionInducteursV.doAfterTextChanged {
-                            if (tensionInducteursV.text.isNotEmpty() && tensionInducteursV.hasFocus() ) {
+                            if (tensionInducteursV.text.isNotEmpty() && tensionInducteursV.hasFocus()) {
                                 demo.tensionInducteursV =
                                     tensionInducteursV.text.toString()
                                 viewModel.selection.value = demo
@@ -828,7 +846,7 @@ class FicheRemontage : Fragment() {
                             }
                         }
                         tensionInducteursW.doAfterTextChanged {
-                            if (tensionInducteursW.text.isNotEmpty() && tensionInducteursW.hasFocus() ) {
+                            if (tensionInducteursW.text.isNotEmpty() && tensionInducteursW.hasFocus()) {
                                 demo.tensionInducteursW =
                                     tensionInducteursW.text.toString()
                                 viewModel.selection.value = demo
@@ -988,45 +1006,39 @@ class FicheRemontage : Fragment() {
                 viewModel.getListeDemontage()
             }
         }*/
-         btnDemo.setOnClickListener {
-             // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
-             if (viewModel.isOnline(viewModel.context)) {
-                 lifecycleScope.launch(Dispatchers.IO) {
-                     var numFiches = async { viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase() }
-                 Log.i("info", "fiches correspondantes en bdd ${numFiches.await().filter { it.numDevis == viewModel.selection.value!!.numDevis }}")
-                 /*val alertDialog: AlertDialog? = activity?.let {
-                         val builder = AlertDialog.Builder(it)
-                         builder.setTitle("Sélectionnez une fiche de démontage")
-                             .setItems(
-                                 numFiches.toTypedArray(),
-                                 DialogInterface.OnClickListener { dialog, which ->
-                                     Log.i(
-                                         "INFO",
-                                         "fiches existantes: ${viewModel.listeDemo.value!!.size} fiche envoyée ${
-                                             viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!.numFiche
-                                         } index: ${which} - fiche: ${numFiches[which]}"
-                                     )
-                                     var fiche = viewModel.listeDemo.value!![which]
-                                     viewModel.toFicheDemo(
-                                         layout,
-                                         viewModel.listeDemo.value!!.find { it.numFiche == numFiches[which] }!!
-                                     )
-                                 })
-                         builder.create()
-                     }
-                     if (viewModel.listeDemo.value!!.size > 0) {
-                         alertDialog?.show()
-                     }*/
-                 }
-             } else {
-                 val mySnackbar = Snackbar.make(
-                     layout.findViewById<CoordinatorLayout>(R.id.RemontageLayout),
-                     "Vous devez être connecté à internet pour réccupérer les fiches de démontage",
-                     3600
-                 )
-                 mySnackbar.show()
-             }
-         }
+        btnDemo.setOnClickListener {
+            // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
+            if (viewModel.isOnline(viewModel.context)) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    var listFiches = async { viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase() }.await().filter { it.numDevis == viewModel.selection.value!!.numDevis }
+                    Log.i("info", "fiches disponibles ${viewModel.selection.value!!.numDevis}")
+                    val alertDialog: AlertDialog? = activity?.let {
+                        val builder = AlertDialog.Builder(it)
+                        builder.setTitle("Sélectionnez une fiche de démontage")
+                            .setItems(
+                                listFiches.map { it.numFiche }.toTypedArray(),
+                                DialogInterface.OnClickListener { dialog, which ->
+                                    var fiche = listFiches[which]
+                                    viewModel.toDemontage(
+                                        layout,
+                                        fiche.toFicheDemontage()
+                                    )
+                                })
+                        builder.create()
+                    }
+                    if (listFiches.size > 0) {
+                        alertDialog?.show()
+                    }
+                }
+            } else {
+                val mySnackbar = Snackbar.make(
+                    layout.findViewById<CoordinatorLayout>(R.id.RemontageLayout),
+                    "Vous devez être connecté à internet pour réccupérer les fiches de démontage",
+                    3600
+                )
+                mySnackbar.show()
+            }
+        }
 
 
         btnenregistrer.setOnClickListener {
@@ -1072,7 +1084,7 @@ class FicheRemontage : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             viewModel.getLocalFiches()
         }
     }
