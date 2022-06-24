@@ -1,15 +1,14 @@
 package com.example.applicationstb.repository
 
+import android.app.Application
 import android.content.Context
-import android.os.Build
-import android.os.Parcel
-import android.os.Parcelable
-import android.os.SystemClock
+import android.os.*
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.applicationstb.BuildConfig
 import com.example.applicationstb.localdatabase.*
 import com.example.applicationstb.model.*
 import com.squareup.moshi.*
@@ -29,7 +28,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var baseUrl = "https://back-end.stb.dev.alf-environnement.net/"
+var baseUrl = BuildConfig.BACK_URL
 
 class BodyLogin(var username: String?, var password: String?) : Parcelable {
     constructor(parcel: Parcel) : this(

@@ -643,7 +643,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
       job.join()
     }
-
     @RequiresApi(Build.VERSION_CODES.M)
     /*suspend fun sendExternalPicture(path: String?): String? {
         if (isOnline(context)) {
@@ -669,7 +668,6 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         }
 
     }*/
-
     /*fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()

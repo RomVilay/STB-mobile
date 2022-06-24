@@ -26,6 +26,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "version"
+    productFlavors {
+        development {
+            dimension "version"
+            buildConfigField("String","BACK_URL",'"https://back-end.qastb.dev.alf-environnement.net"')
+            buildConfigField("String","MINIO_URL",'"https://console.minio.qastb.dev.alf-environnement.net"')
+        }
+        production {
+            dimension "version"
+            buildConfigField("String","BACK_URL",'"https://back-end.stb.dev.alf-environnement.net"')
+            buildConfigField("String","MINIO_URL",'"https://console.minio.stb.dev.alf-environnement.net"')
+        }
+    }
     buildFeatures {
         dataBinding true
         viewBinding true

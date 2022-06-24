@@ -35,7 +35,6 @@ class FicheRemontage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //viewModel = ViewModelProvider(this).get(FicheRemontageViewModel::class.java)
         viewModel.token = arguments?.get("token") as String
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
@@ -989,16 +988,13 @@ class FicheRemontage : Fragment() {
                 viewModel.getListeDemontage()
             }
         }*/
-        /* btnDemo.setOnClickListener {
+         btnDemo.setOnClickListener {
              // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
              if (viewModel.isOnline(viewModel.context)) {
-                 runBlocking {
-                     viewModel.getListeDemontage()
-                     var numFiches = arrayListOf<String>()
-                     viewModel.listeDemo.value?.forEach {
-                         if (!numFiches.contains(it.numFiche!!)) numFiches.add(it.numFiche!!)
-                     }
-                     val alertDialog: AlertDialog? = activity?.let {
+                 lifecycleScope.launch(Dispatchers.IO) {
+                     var numFiches = async { viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase() }
+                 Log.i("info", "fiches correspondantes en bdd ${numFiches.await().filter { it.numDevis == viewModel.selection.value!!.numDevis }}")
+                 /*val alertDialog: AlertDialog? = activity?.let {
                          val builder = AlertDialog.Builder(it)
                          builder.setTitle("Sélectionnez une fiche de démontage")
                              .setItems(
@@ -1020,7 +1016,7 @@ class FicheRemontage : Fragment() {
                      }
                      if (viewModel.listeDemo.value!!.size > 0) {
                          alertDialog?.show()
-                     }
+                     }*/
                  }
              } else {
                  val mySnackbar = Snackbar.make(
@@ -1030,7 +1026,7 @@ class FicheRemontage : Fragment() {
                  )
                  mySnackbar.show()
              }
-         }*/
+         }
 
 
         btnenregistrer.setOnClickListener {
