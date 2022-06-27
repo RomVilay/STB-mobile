@@ -216,6 +216,31 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     fun toDemontage(view: View, fiche: String) {
         Navigation.findNavController(view).navigate(FicheRemontageDirections.actionFicheRemontageToFicheDemontage(token,sharedPref.getString("userId","")!!,fiche))
     }
+    fun getListeDemontage(view: View){
+        view.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.IO).launch {
+            var list = async { repository.demontageRepository!!.getFicheForRemontage(token!!,selection.value!!.numDevis!!) }.await()
+            for (fiche in list.body()!!.data){
+                var check  = repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it._id }.indexOf(fiche._id)
+                Log.i("info","position ${check}")
+                if (check < 0) {
+                    repository.demontageRepository!!.insertDemontageLocalDatabase(fiche)
+                } else {
+                    repository.demontageRepository!!.updateDemontageLocalDatabse(fiche.toEntity())
+                }
+            }
+            if (list.isSuccessful){
+                val mySnackbar =
+                    Snackbar.make(view, "liste des fiches mise à jour", 3600)
+                mySnackbar.show()
+            } else {
+                val mySnackbar =
+                    Snackbar.make(view, "erreur lors de la mise à jour des fiches", 3600)
+                mySnackbar.show()
+            }
+        }
+    }
+
     private fun saveImage(image: Bitmap, name: String): String? {
         Log.i("INFO", "start")
         var savedImagePath: String? = null

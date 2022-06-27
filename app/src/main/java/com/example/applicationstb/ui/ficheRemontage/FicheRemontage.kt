@@ -1001,11 +1001,11 @@ class FicheRemontage : Fragment() {
         btnquitter.setOnClickListener {
             viewModel.retour(layout)
         }
-        /*btnFichesD.setOnClickListener {
-            if (context?.let { it1 -> viewModel.isOnline(it1) } == true) {
-                viewModel.getListeDemontage()
+        btnFichesD.setOnClickListener {
+            if ( viewModel.isOnline(requireContext()) == true) {
+                viewModel.getListeDemontage(layout)
             }
-        }*/
+        }
         btnDemo.setOnClickListener {
             // Log.i("Info","nb fiche demo ${viewModel.listeDemo.value?.size}")
             if (viewModel.isOnline(viewModel.context)) {
