@@ -54,6 +54,10 @@
         <action
             android:id="@+id/action_ficheDemontage_to_ficheRemontage"
             app:destination="@id/ficheRemontage" />
+        <argument
+            android:name="ficheID"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/connexion"

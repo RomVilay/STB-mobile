@@ -37,6 +37,9 @@ class FicheDemontage : Fragment() {
         viewModel.token = arguments?.get("token") as String
         //viewModel.listeDemontages.value = viewModel.listeDemontages.value!!.filter { it.status!! < 3 }.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
+        if (arguments?.get("ficheID") !== null){
+            Log.i("info","sélection distante ${arguments?.get("ficheID")}")
+        }
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         var spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
 /*        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })

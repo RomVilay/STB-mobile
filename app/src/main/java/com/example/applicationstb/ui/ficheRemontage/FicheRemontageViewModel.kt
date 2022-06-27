@@ -213,8 +213,8 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         Log.i("INFO", "erreur enregistrement: ${throwable.localizedMessage}")
     }
 
-    fun toDemontage(view: View, fiche: FicheDemontage) {
-        Navigation.findNavController(view).navigate(FicheRemontageDirections.actionFicheRemontageToFicheDemontage(token,sharedPref.getString("userId","")!!))
+    fun toDemontage(view: View, fiche: String) {
+        Navigation.findNavController(view).navigate(FicheRemontageDirections.actionFicheRemontageToFicheDemontage(token,sharedPref.getString("userId","")!!,fiche))
     }
     private fun saveImage(image: Bitmap, name: String): String? {
         Log.i("INFO", "start")

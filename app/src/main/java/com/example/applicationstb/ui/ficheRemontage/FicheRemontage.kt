@@ -1011,7 +1011,6 @@ class FicheRemontage : Fragment() {
             if (viewModel.isOnline(viewModel.context)) {
                 lifecycleScope.launch(Dispatchers.IO) {
                     var listFiches = async { viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase() }.await().filter { it.numDevis == viewModel.selection.value!!.numDevis }
-                    Log.i("info", "fiches disponibles ${viewModel.selection.value!!.numDevis}")
                     val alertDialog: AlertDialog? = activity?.let {
                         val builder = AlertDialog.Builder(it)
                         builder.setTitle("Sélectionnez une fiche de démontage")
@@ -1021,13 +1020,17 @@ class FicheRemontage : Fragment() {
                                     var fiche = listFiches[which]
                                     viewModel.toDemontage(
                                         layout,
-                                        fiche.toFicheDemontage()
+                                        fiche.toFicheDemontage().numFiche!!
                                     )
                                 })
-                        builder.create()
+                        withContext(Dispatchers.Main){
+                            builder.create()
+                        }
                     }
                     if (listFiches.size > 0) {
-                        alertDialog?.show()
+                        withContext(Dispatchers.Main){
+                            alertDialog?.show()
+                        }
                     }
                 }
             } else {
