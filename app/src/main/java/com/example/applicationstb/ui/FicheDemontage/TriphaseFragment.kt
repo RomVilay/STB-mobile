@@ -260,6 +260,9 @@ class TriphaseFragment : Fragment() {
                                 mySnackbar.show()
                             }
                         })
+                    .setOnDismissListener {
+                        layout.findViewById<CardView>(R.id.loadTriD).visibility = View.GONE
+                    }
                 builder.create()
             }
             alertDialog?.show()
