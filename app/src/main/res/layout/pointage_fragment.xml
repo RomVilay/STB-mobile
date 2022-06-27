@@ -38,7 +38,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/tabHeures"
                 android:layout_width="649dp"
-                android:layout_height="800dp"
+                android:layout_height="600dp"
                 android:background="@drawable/round_form_background"
                 app:cardCornerRadius="20dp">
 
@@ -82,6 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHeight_max="500dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
@@ -93,8 +94,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/tabPointage"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintHeight_max="500dp" />
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </ScrollView>
 

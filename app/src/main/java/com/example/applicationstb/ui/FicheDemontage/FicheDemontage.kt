@@ -48,7 +48,7 @@ class FicheDemontage : Fragment() {
         }
         if (arguments?.get("ficheID") !== null ){
                 CoroutineScope(Dispatchers.IO).launch{
-                    var fiches = async {  viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase()}.await().map { it.toFicheDemontage() }.filter { it.status!! >= 3 }.toMutableList()
+                    var fiches = async {  viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase()}.await().map { it.toFicheDemontage() }.filter { it.status!! >= 2 }.toMutableList()
                         //var list = fiche.await().map { it.toFicheDemontage() }.filter { it.status!! >= 3 }.toMutableList()
                         withContext(Dispatchers.Main){
                             viewModel.listeDemontages.value = fiches
