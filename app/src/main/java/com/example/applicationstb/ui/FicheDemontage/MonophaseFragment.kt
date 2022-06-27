@@ -69,6 +69,7 @@ class MonophaseFragment : Fragment() {
         var enregistrer = layout.findViewById<Button>(R.id.enregistrerTRi)
         var terminer = layout.findViewById<Button>(R.id.termMo)
         var btnPhoto = layout.findViewById<Button>(R.id.photo2)
+        var gal = layout.findViewById<Button>(R.id.g3)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!!
@@ -133,11 +134,9 @@ class MonophaseFragment : Fragment() {
             enregistrer.visibility = View.GONE
             terminer.visibility = View.GONE
             btnPhoto.visibility = View.INVISIBLE
+            gal.visibility = View.INVISIBLE
         }
-
-
         //
-
         var couplage = layout.findViewById<Spinner>(R.id.spiCouplage)
 
         var partM = layout.findViewById<FrameLayout>(R.id.PartMeca)
@@ -231,7 +230,6 @@ class MonophaseFragment : Fragment() {
             alertDialog?.show()
         }
 
-        var gal = layout.findViewById<Button>(R.id.g3)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)

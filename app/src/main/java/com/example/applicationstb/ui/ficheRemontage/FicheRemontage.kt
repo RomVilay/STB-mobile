@@ -1020,7 +1020,7 @@ class FicheRemontage : Fragment() {
                                     var fiche = listFiches[which]
                                     viewModel.toDemontage(
                                         layout,
-                                        fiche.toFicheDemontage().numFiche!!
+                                        fiche.toFicheDemontage()._id
                                     )
                                 })
                         withContext(Dispatchers.Main){

@@ -85,6 +85,7 @@ class CCFragment : Fragment() {
         var ter = layout.findViewById<Button>(R.id.termCC)
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var observations = layout.findViewById<EditText>(R.id.observations)
+        var gal = layout.findViewById<Button>(R.id.g5)
         var retour = layout.findViewById<Button>(R.id.retourCC)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
@@ -232,13 +233,16 @@ class CCFragment : Fragment() {
             isopmPP.isEnabled = false
             isopmPA.isEnabled = false
             isopmPC.isEnabled = false
+            isopmPB.isEnabled = false
             rI.isEnabled = false
-            rPA.isEnabled = false
             rPP.isEnabled = false
+            rPA.isEnabled = false
             rPC.isEnabled = false
             tensionU.isEnabled = false
             tensionV.isEnabled = false
             tensionW.isEnabled = false
+            isoPM.isEnabled = false
+            gal.visibility = View.INVISIBLE
             observations.isEnabled = false
             enr.visibility = View.GONE
             ter.visibility = View.GONE
@@ -256,12 +260,10 @@ class CCFragment : Fragment() {
                 mySnackbar.show()
             }
         }
-        var gal = layout.findViewById<Button>(R.id.g5)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
         }
-
         ter.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
@@ -284,9 +286,6 @@ class CCFragment : Fragment() {
             }
                 alertDialog?.show()
         }
-
-
-
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->

@@ -15,9 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,9 +36,6 @@ class FicheDemontage : Fragment() {
         viewModel.token = arguments?.get("token") as String
         //viewModel.listeDemontages.value = viewModel.listeDemontages.value!!.filter { it.status!! < 3 }.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
-        if (arguments?.get("ficheID") !== null){
-            Log.i("info","sélection distante ${arguments?.get("ficheID")}")
-        }
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
         var spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
 /*        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
@@ -50,23 +46,25 @@ class FicheDemontage : Fragment() {
         viewModel.listeDemontages.observe(viewLifecycleOwner){
             spinner!!.adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
         }
+        if (arguments?.get("ficheID") !== null ){
+                CoroutineScope(Dispatchers.IO).launch{
+                    var fiches = async {  viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase()}.await().map { it.toFicheDemontage() }.filter { it.status!! >= 3 }.toMutableList()
+                        //var list = fiche.await().map { it.toFicheDemontage() }.filter { it.status!! >= 3 }.toMutableList()
+                        withContext(Dispatchers.Main){
+                            viewModel.listeDemontages.value = fiches
+                            spinner.setSelection(fiches.indexOfFirst { it._id == arguments?.get("ficheID") })
+                        }
+                }
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+               viewModel.getLocalFiches()
+            }
+        }
         viewModel.selection.observe(viewLifecycleOwner) {
             if (viewModel.selection.value !== null){
                 Log.i("info","position ${viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value)}")
-                //spinner.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
+                spinner.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
             }
-            /*if (viewModel.selection.value!!.status == 3L) {
-                if (viewModel.listeDemontages.value!!.size > 1 ) {
-                    layout.findViewById<FrameLayout>(R.id.fragmentContainer).removeAllViews()
-                    viewModel.listeDemontages.value?.remove(viewModel.selection.value!!)
-                    spinner.adapter = ArrayAdapter(
-                        requireActivity(),
-                        R.layout.support_simple_spinner_dropdown_item,
-                        viewModel.listeDemontages.value!!.map { it.numFiche })
-                } else {
-                    viewModel.back(layout)
-                }
-            }*/
 
         }
         btnDemontage.setOnClickListener {
@@ -74,7 +72,7 @@ class FicheDemontage : Fragment() {
             var demo = viewModel.listeDemontages.value!!.find { it.numFiche == spinner!!.selectedItem }
             viewModel.selection.value = demo
             viewModel.photos.value = demo!!.photos!!.toMutableList()
-            viewModel.selection.value!!.status = 2L
+            if (viewModel.selection.value!!.status ==  1L) viewModel.selection.value!!.status = 2L
             var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
             viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
             var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }

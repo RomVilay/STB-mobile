@@ -69,7 +69,6 @@ class TriphaseFragment : Fragment() {
         var RU = layout.findViewById<EditText>(R.id.rInduit)
         var RV = layout.findViewById<EditText>(R.id.rPP)
         var RW = layout.findViewById<EditText>(R.id.rW)
-        var VUI = layout.findViewById<EditText>(R.id.vUI)
         var tensionU = layout.findViewById<EditText>(R.id.u)
         var tensionV = layout.findViewById<EditText>(R.id.v)
         var tensionW = layout.findViewById<EditText>(R.id.w)
@@ -78,6 +77,7 @@ class TriphaseFragment : Fragment() {
         var enr = layout.findViewById<Button>(R.id.enregistrerTRi)
         var retour = layout.findViewById<Button>(R.id.retourTri)
         var ter = layout.findViewById<Button>(R.id.termTri)
+        var gal = layout.findViewById<Button>(R.id.gallerie)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var fiche = viewModel.selection.value!!
         if (fiche.isolementPhaseMasseStatorUM !== null) UM.setText(fiche.isolementPhaseMasseStatorUM!!.toString()) else 0
@@ -220,13 +220,13 @@ class TriphaseFragment : Fragment() {
             tensionU.isEnabled = false
             tensionV.isEnabled = false
             tensionW.isEnabled = false
-            VUI.isEnabled = false
+            isolementPhase.isEnabled = false
             obs.isEnabled = false
             enr.visibility = View.GONE
             ter.visibility = View.GONE
             btnPhoto.visibility = View.INVISIBLE
+            gal.visibility = View.INVISIBLE
         }
-
         enr.setOnClickListener {
             viewModel.getTime()
             fiche.status = 2L
@@ -270,7 +270,6 @@ class TriphaseFragment : Fragment() {
         retour.setOnClickListener {
             viewModel.retour(layout)
         }
-        var gal = layout.findViewById<Button>(R.id.gallerie)
         gal.setOnClickListener {
             openGalleryForImage()
         }

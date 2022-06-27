@@ -143,6 +143,7 @@ class MotopompeFragment : Fragment() {
         var tensionMU = layout.findViewById<EditText>(R.id.tensionV)
         var tensionMV = layout.findViewById<EditText>(R.id.tensionW)
         var tensionMW = layout.findViewById<EditText>(R.id.tW)
+        var gal = layout.findViewById<Button>(R.id.gallerie2)
         var fiche = viewModel.selection.value!!
         switchGarniture.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -595,6 +596,7 @@ class MotopompeFragment : Fragment() {
             RV.isEnabled = false
             RW.isEnabled = false
             obs.isEnabled = false
+            gal.visibility = View.INVISIBLE
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
         }
@@ -744,7 +746,6 @@ class MotopompeFragment : Fragment() {
                 }
             }
         }
-        var gal = layout.findViewById<Button>(R.id.gallerie2)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)

@@ -57,14 +57,13 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
-            getLocalFiches()
+            //getLocalFiches()
         }
     }
 
     suspend fun getLocalFiches() {
         listeDemontages.postValue(
-            repository.demontageRepository!!.getAllDemontageLocalDatabase()
-                .map { it.toFicheDemontage() }.toMutableList()
+            repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.filter { it.status!! < 3 }.toMutableList()
         )
     }
 

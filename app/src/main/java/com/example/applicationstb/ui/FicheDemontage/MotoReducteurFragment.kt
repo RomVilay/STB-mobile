@@ -121,6 +121,7 @@ class MotoReducteurFragment : Fragment() {
         var tensionMU = layout.findViewById<EditText>(R.id.tensionV)
         var tensionMV = layout.findViewById<EditText>(R.id.tensionW)
         var tensionMW = layout.findViewById<EditText>(R.id.tW)
+        var gal = layout.findViewById<Button>(R.id.g9)
         var fiche = viewModel.selection.value!!
         //roulements
         if (fiche.roulements !== null) roulements.value = fiche.roulements else roulements.value = mutableListOf<Roulement>()
@@ -451,9 +452,15 @@ class MotoReducteurFragment : Fragment() {
             RU.isEnabled = false
             RV.isEnabled = false
             RW.isEnabled = false
+            isolementPhase.isEnabled = false
+            tensionU.isEnabled = false
+            tensionV.isEnabled = false
+            tensionW.isEnabled = false
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
+            gal.visibility = View.INVISIBLE
+            termP.visibility = View.INVISIBLE
         }
 
         typeRoulementAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
@@ -538,7 +545,6 @@ class MotoReducteurFragment : Fragment() {
                 mySnackbar.show()
             }
         }
-        var gal = layout.findViewById<Button>(R.id.g9)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)

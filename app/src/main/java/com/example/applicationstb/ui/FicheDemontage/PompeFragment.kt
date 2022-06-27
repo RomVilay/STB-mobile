@@ -87,6 +87,7 @@ class PompeFragment : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termP)
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var gal = layout.findViewById<Button>(R.id.g6)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!!
@@ -267,8 +268,8 @@ class PompeFragment : Fragment() {
             fluide.isEnabled = false
             sensRotation.isEnabled = false
             typeRessort.isEnabled = false
-            matiere.isEnabled = false
             typeJoint.isEnabled = false
+            matiere.isEnabled = false
             diametreArbre.isEnabled = false
             diametreExtPF.isEnabled = false
             diametreExtPR.isEnabled = false
@@ -279,13 +280,12 @@ class PompeFragment : Fragment() {
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
+            gal.visibility = View.INVISIBLE
         }
-        var gal = layout.findViewById<Button>(R.id.g6)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
         }
-
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -319,7 +319,6 @@ class PompeFragment : Fragment() {
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
-
         diametreArbre.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d1)
@@ -327,7 +326,6 @@ class PompeFragment : Fragment() {
                 schema.setImageResource(R.drawable.detourage_pompe)
             }
         }
-
         diametreExtPR.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d3select)
@@ -364,7 +362,6 @@ class PompeFragment : Fragment() {
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
-
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -399,7 +396,6 @@ class PompeFragment : Fragment() {
                 }
             }
         }
-
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
@@ -726,8 +722,6 @@ class PompeFragment : Fragment() {
                 }
             }
         }
-
-
         retour.setOnClickListener {
             viewModel.retour(layout)
         }

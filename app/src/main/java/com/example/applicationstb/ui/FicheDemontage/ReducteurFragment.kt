@@ -98,6 +98,7 @@ class ReducteurFragment : Fragment() {
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var roulements = MutableLiveData<MutableList<Roulement>?>()
         var joints = MutableLiveData<MutableList<Joint>?>()
+        var gal = layout.findViewById<Button>(R.id.g7)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!!
@@ -217,6 +218,7 @@ class ReducteurFragment : Fragment() {
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
+            gal.visibility = View.INVISIBLE
         }
 
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
@@ -290,7 +292,6 @@ class ReducteurFragment : Fragment() {
                 mySnackbar.show()
             }
         }
-        var gal = layout.findViewById<Button>(R.id.g7)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)

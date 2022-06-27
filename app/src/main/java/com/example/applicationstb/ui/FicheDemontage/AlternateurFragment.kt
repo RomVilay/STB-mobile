@@ -71,6 +71,10 @@ class AlternateurFragment : Fragment() {
         var tensionW	 = layout.findViewById<EditText>(R.id.w)
         var isolementPhases = layout.findViewById<EditText>(R.id.isoP)
         var obs = layout.findViewById<EditText>(R.id.obs2)
+        var gal = layout.findViewById<Button>(R.id.g4)
+        var enregistrer = layout.findViewById<Button>(R.id.enregistrerAlt)
+        var term = layout.findViewById<Button>(R.id.termA)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var regexNombres = Regex("/[+-]?([0-9]*[.])?[0-9]+/")
         var regexInt = Regex("^\\d+")
         var fiche = viewModel.selection.value!!
@@ -223,21 +227,28 @@ class AlternateurFragment : Fragment() {
             isolementMasseStatorPrincipalU.isEnabled = false
             isolementMasseStatorPrincipalV.isEnabled = false
             isolementMasseStatorPrincipalW.isEnabled = false
-            isolementMasseStatorExcitation.isEnabled = false
             isolementMasseRotorPrincipal.isEnabled = false
+            isolementMasseStatorExcitation.isEnabled = false
             isolementMasseRotorExcitation.isEnabled = false
+            resistanceRotorPrincipal.isEnabled = false
+            resistanceRotorExcitation.isEnabled = false
+            resistanceStatorExcitation.isEnabled = false
             testDiode.isEnabled = false
             tensionU.isEnabled = false
             tensionV.isEnabled = false
             tensionW.isEnabled = false
+            isolementPhases.isEnabled = false
             obs.isEnabled = false
+            gal.visibility = View.INVISIBLE
+            btnPhoto.visibility = View.INVISIBLE
+            enregistrer.visibility = View.INVISIBLE
+            term.visibility = View.INVISIBLE
         }
 
-        var term = layout.findViewById<Button>(R.id.termA)
 
-        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+
         var retour = layout.findViewById<Button>(R.id.retourAlt)
-        var enregistrer = layout.findViewById<Button>(R.id.enregistrerAlt)
+
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
@@ -286,7 +297,6 @@ class AlternateurFragment : Fragment() {
                 }
             }
         }
-        var gal = layout.findViewById<Button>(R.id.g4)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
