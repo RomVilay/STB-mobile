@@ -140,7 +140,6 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         start.value = now
     }
     fun localSave() {
-        if (selection.value?.clavette == null)
         viewModelScope.launch(Dispatchers.IO) {
             repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
         }

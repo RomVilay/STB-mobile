@@ -275,6 +275,9 @@ class MotoReducteurFragment : Fragment() {
                 var liste = roulements.value!!
                 liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv.text.toString()}", "${typeRoulementAr.selectedItem} - ${refRoulementAr.text.toString()}"))
                 roulements.value = liste
+                viewModel.selection.value!!.roulements = liste
+                viewModel.getTime()
+                viewModel.localSave()
                 typeRoulementAv.setSelection(0)
                 typeRoulementAr.setSelection(0)
                 refRoulementAv.setText("")
@@ -284,6 +287,9 @@ class MotoReducteurFragment : Fragment() {
                 var liste = joints.value!!
                 liste.add(Joint("R${liste.size}","${typeJointAv.selectedItem} - ${refJointAv.text.toString()}", "${typeJointAr.selectedItem} - ${refJointAr.text.toString()}"))
                 joints.value = liste
+                viewModel.selection.value!!.joints = liste
+                viewModel.getTime()
+                viewModel.localSave()
                 typeJointAv.setSelection(0)
                 typeJointAr.setSelection(0)
                 refJointAv.setText("")

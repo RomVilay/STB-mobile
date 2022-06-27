@@ -251,8 +251,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             "fiche remontage: ${resp.data!!._id} ajout BDD"
                                                         )
                                                     }
-                                                    var listeD = async { repository.demontageRepository!!.getFicheForRemontage(token, resp.data!!.numDevis!!) }.await()
-                                                    if (listeD.isSuccessful && listeD.body()!!.data!!.size > 0){
+                                                  //  var listeD = async { repository.demontageRepository!!.getFicheForRemontage(token, resp.data!!.numDevis!!) }.await()
+                                                  /*  if (listeD.isSuccessful && listeD.body()!!.data!!.size > 0){
                                                         for (fiche in listeD.body()!!.data!!) {
                                                             Log.i("info"," fiche démontage ${fiche.numFiche} liée à la fiche ${resp.data!!._id}")
                                                             if (repository.demontageRepository!!.getByIdDemontageLocalDatabse(fiche._id) !== null) {
@@ -261,7 +261,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                                 repository.demontageRepository!!.insertDemontageLocalDatabase(fiche)
                                                             }
                                                         }
-                                                    }
+                                                    }*/
                                                 }
                                             }
                                         } else {
