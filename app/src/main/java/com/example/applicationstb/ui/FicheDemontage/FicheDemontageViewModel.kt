@@ -134,8 +134,10 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.dureeTotale !== null) {
             selection.value!!.dureeTotale =
                 (Date().time - start.value!!.time) + selection.value!!.dureeTotale!!
+            Log.i("info", " time ${(Date().time - start.value!!.time) + selection.value!!.dureeTotale!!}")
         } else {
             selection.value!!.dureeTotale = now.time - start.value!!.time
+            Log.i("info", " time ${now.time - start.value!!.time}")
         }
         start.value = now
     }

@@ -183,6 +183,7 @@ class ReducteurFragment : Fragment() {
                 var liste = roulements.value!!
                 liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv.text.toString()}", "${typeRoulementAr.selectedItem} - ${refRoulementAr.text.toString()}"))
                 roulements.value = liste
+                viewModel.selection.value!!.roulements = liste
                 typeRoulementAv.setSelection(0)
                 typeRoulementAr.setSelection(0)
                 refRoulementAv.setText("")
@@ -192,6 +193,7 @@ class ReducteurFragment : Fragment() {
                 var liste = joints.value!!
                 liste.add(Joint("R${liste.size}","${typeJointAv.selectedItem} - ${refJointAv.text.toString()}", "${typeJointAr.selectedItem} - ${refJointAr.text.toString()}"))
                 joints.value = liste
+                viewModel.selection.value!!.joints = liste
                 typeJointAv.setSelection(0)
                 typeJointAr.setSelection(0)
                 refJointAv.setText("")
@@ -278,6 +280,7 @@ class ReducteurFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
             if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))

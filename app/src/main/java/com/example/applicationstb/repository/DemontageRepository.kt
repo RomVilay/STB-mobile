@@ -12,6 +12,7 @@ import retrofit2.Callback
 class BodyFicheDemontage(
                           var status: Int?,
                           var subtype: Int,
+                          var dureeTotale : Long?,
                           var observations: String?,
                           var photos: Array<String>?,
                           var marque: String?,
@@ -127,6 +128,7 @@ class BodyFicheDemontage(
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readLong(),
         parcel.readString(),
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
@@ -242,6 +244,7 @@ class BodyFicheDemontage(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(status!!)
         parcel.writeInt(subtype)
+        parcel.writeLong(dureeTotale!!)
         parcel.writeString(observations)
         arrayOf<String>().apply {
             parcel.readArray(String::class.java.classLoader)
@@ -391,6 +394,7 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
         var body = BodyFicheDemontage(
             demontage.status!!.toInt(),
             demontage.subtype,
+            demontage.dureeTotale,
             demontage.observations,
             demontage.photos,
             demontage.marque,
