@@ -123,12 +123,7 @@ class FicheDemontage : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        var spi = requireActivity().findViewById<Spinner>(R.id.spinnerDemontage)
-        Log.i("info","selection ${spi.selectedItem}")
-        if (viewModel.selection.value !== null) spi!!.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
-        /*lifecycleScope.launch(Dispatchers.IO){
-            viewModel.getLocalFiches()
-        }*/
+
 
     }
    /* private fun chargerFiche(){
