@@ -251,7 +251,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                             "fiche remontage: ${resp.data!!._id} ajout BDD"
                                                         )
                                                     }
-                                                    var list = async { repository.demontageRepository!!.getFicheForRemontage(token!!,resp.data!!.numDevis!!) }.await()
+                                                    /*var list = async { repository.demontageRepository!!.getFicheForRemontage(token!!,resp.data!!.numDevis!!) }.await()
                                                     for (fiche in list.body()!!.data){
                                                         var check  = repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it._id }.indexOf(fiche._id)
                                                         if (check < 0) {
@@ -259,7 +259,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                                         } else {
                                                             repository.demontageRepository!!.updateDemontageLocalDatabse(fiche.toEntity())
                                                         }
-                                                    }
+                                                    } */
                                                 }
                                             }
                                         } else {
