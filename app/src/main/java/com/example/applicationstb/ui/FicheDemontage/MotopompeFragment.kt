@@ -214,6 +214,11 @@ class MotopompeFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                if (typemotopompe.selectedItemPosition == 0){
+                    typemotopompe.setBackgroundResource(R.drawable.dropdown_background_type)
+                } else {
+                    typemotopompe.setBackgroundResource(R.drawable.dropdown_background)
+                }
                 if (typemotopompe.selectedItem.toString() == "Triphasé") {
                     partMeca.visibility = View.VISIBLE
                     partMono.visibility = View.GONE
