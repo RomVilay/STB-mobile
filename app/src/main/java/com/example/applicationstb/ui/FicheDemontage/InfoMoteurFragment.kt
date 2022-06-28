@@ -92,7 +92,7 @@ class InfoMoteurFragment : Fragment() {
                 viewModel.localSave()
             }
             bride.doAfterTextChanged {
-                if (bride.text.isNotEmpty() && bride.text.matches(regexNombres) && bride.hasFocus()) viewModel.selection.value!!.bride =
+                if (bride.text.isNotEmpty() && bride.hasFocus()) viewModel.selection.value!!.bride =
                     bride.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()

@@ -77,7 +77,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
             }
-
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("Error", "erreur ${t.message}")
             }
