@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -164,6 +165,11 @@ class MotoReducteurFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                if (typemotoreducteur.selectedItemPosition == 0){
+                    typemotoreducteur.setBackgroundResource(R.drawable.dropdown_background_type)
+                } else {
+                    typemotoreducteur.setBackgroundResource(R.drawable.dropdown_background)
+                }
                 if (typemotoreducteur.selectedItem.toString() == "Triphasé") {
                     partMeca.visibility = View.VISIBLE
                     partMono.visibility = View.GONE
