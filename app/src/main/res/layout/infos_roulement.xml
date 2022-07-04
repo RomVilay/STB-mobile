@@ -7,10 +7,11 @@
         android:layout_height="wrap_content"
         android:padding="5dp">
 
-    <TextView
+    <EditText
         android:id="@+id/typeR"
         android:layout_width="200dp"
         android:layout_height="match_parent"
+        android:background="@drawable/cell"
         android:gravity="center"
         android:textColor="@color/gray_400"
         android:textSize="20sp"
@@ -18,21 +19,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+
+    <EditText
         android:id="@+id/refR"
         android:layout_width="200dp"
         android:layout_height="match_parent"
+        android:background="@drawable/cell"
         android:gravity="center"
         android:textColor="@color/gray_400"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="205dp"
         tools:layout_editor_absoluteY="26dp" />
 
-    <TextView
+    <EditText
         android:id="@+id/poseR"
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/cell"
         android:gravity="center"
         android:textColor="@color/gray_400"
         android:textSize="20sp" />
