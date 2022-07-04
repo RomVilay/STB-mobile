@@ -72,12 +72,11 @@ class FicheDemontage : Fragment() {
             var demo = viewModel.listeDemontages.value!!.find { it.numFiche == spinner!!.selectedItem }
             viewModel.selection.value = demo
             viewModel.photos.value = demo!!.photos!!.toMutableList()
+            viewModel.refRoulements.value = mutableListOf<String>()
+            viewModel.posRoulement.value = mutableListOf<String>()
+            viewModel.typeRoulements.value = mutableListOf<String>()
+            viewModel.setRoulements(demo.refRoulementArriere!!,demo.typeRoulementArriere!!,demo.refRoulementAvant!!,demo.typeRoulementAvant!!)
             if (viewModel.selection.value!!.status ==  1L) viewModel.selection.value!!.status = 2L
-            var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
-            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-            var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
-            viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()
-
             when (viewModel.selection.value!!.subtype){
                 1 -> fragmentManager.commit {
                     replace<PompeFragment>(R.id.fragmentContainer)

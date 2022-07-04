@@ -396,6 +396,7 @@ class PompeFragment : Fragment() {
                 }
             }
         }
+        /*
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
@@ -637,6 +638,7 @@ class PompeFragment : Fragment() {
                 }
             }
         }
+        */
         //joints
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))

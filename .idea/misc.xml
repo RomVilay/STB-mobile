@@ -19,7 +19,7 @@
         <entry key="app/src/main/res/layout/fragment_essais_stat_c_c.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_essais_stat_tri.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_info_moteur.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_meca.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_meca.xml" value="0.55" />
         <entry key="app/src/main/res/layout/fragment_monophase.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_motopompe.xml" value="0.3680555555555556" />
         <entry key="app/src/main/res/layout/fragment_motoreducteur.xml" value="0.297008547008547" />
@@ -27,7 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_reducteur.xml" value="0.3213429256594724" />
         <entry key="app/src/main/res/layout/fragment_rotor_bobine.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_triphase.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/infos_roulement.xml" value="0.1528846153846154" />
+        <entry key="app/src/main/res/layout/infos_roulement.xml" value="0.375" />
         <entry key="app/src/main/res/layout/pointage_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/row.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rowPointage.xml" value="0.45" />

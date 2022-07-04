@@ -35,7 +35,6 @@ import com.example.applicationstb.model.FicheDemontage
 import id.zelory.compressor.Compressor
 import java.io.*
 
-
 class FicheDemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
     var token: String? = null;
@@ -53,6 +52,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
     var GALLERY_CAPTURE = 2
     var CAMERA_CAPTURE = 1
+    var typeRoulements = MutableLiveData<MutableList<String>>();
+    var refRoulements = MutableLiveData<MutableList<String>>();
+    var posRoulement = MutableLiveData<MutableList<String>>();
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -60,13 +62,83 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             //getLocalFiches()
         }
     }
+    fun setRoulements (refsAr :Array<String>,typeAr :Array<String>, refsAv :Array<String>, typeAv :Array<String>){
+        if ( refsAr.size > 0){
+            for (r in 0..refsAr.size-1){
+                if (refsAr[r].length > 0) {
+                    if (typeRoulements.value == null) typeRoulements.value = mutableListOf(typeAr[r])  else typeRoulements.value!!.add(typeAr[r])
+                    if (refRoulements.value == null) refRoulements.value = mutableListOf(refsAr[r]) else refRoulements.value!!.add(refsAr[r])
+                    if (posRoulement.value == null)  posRoulement.value = mutableListOf("arrière") else  posRoulement.value!!.add("arrière")
+                }
+            }
+        }
+        if ( refsAv.size > 0 ){
+            for (r in 0..refsAv.size-1){
+                if (refsAv[r].length > 0) {
+                    if (typeRoulements.value == null) typeRoulements.value = mutableListOf(typeAv[r])  else typeRoulements.value!!.add(typeAv[r])
+                    if (refRoulements.value == null) refRoulements.value = mutableListOf(refsAv[r]) else refRoulements.value!!.add(refsAv[r])
+                    if (posRoulement.value == null)  posRoulement.value = mutableListOf("avant") else  posRoulement.value!!.add("avant")
+                }
+            }
+        }
+    }
+    fun insertRoulements (ref:String,type:String,position:String)= runBlocking{
+       if (typeRoulements.value == null) typeRoulements.value = mutableListOf(type)  else typeRoulements.value!!.add(type)
+        if (refRoulements.value == null) refRoulements.value = mutableListOf(ref) else refRoulements.value!!.add(ref)
+        if (posRoulement.value == null)  posRoulement.value = mutableListOf(position) else  posRoulement.value!!.add(position)
+        if (position == "avant"){
+            var copy = selection.value!!.refRoulementAvant!!.toMutableList()
+            copy.add(ref)
+            selection.value!!.refRoulementAvant = copy.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
+            copy2.add(type)
+            selection.value!!.typeRoulementAvant = copy2.toTypedArray()
+        }
+        if (position == "arrière"){
+            var copy = selection.value!!.refRoulementArriere!!.toMutableList()
+            copy.filter { it.isNotBlank() }
+            copy.add(ref)
+            selection.value!!.refRoulementArriere = copy.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
+            copy2.filter { it.isNotBlank() }
+            copy2.add(type)
+            selection.value!!.typeRoulementArriere = copy2.toTypedArray()
+        }
+        getTime()
+        localSave()
+    }
+    fun removeRoulements (position: Int){
+        var roul = arrayOf(refRoulements.value!![position],typeRoulements.value!![position],posRoulement.value!![position])
 
+        if (roul[2] == "avant" ){
+            var copy = selection.value!!.refRoulementAvant!!.toMutableList()
+            var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
+            Log.i("info","infos roulement ${copy.indexOf(roul[0])} - ${copy2.indexOf(roul[1])} ")
+            copy.removeAt(copy.indexOf(roul[0]))
+            selection.value!!.refRoulementAvant = copy.toTypedArray()
+            copy2.removeAt(copy2.indexOf(roul[1]))
+            selection.value!!.typeRoulementAvant = copy2.toTypedArray()
+
+        }
+        if (roul[2] == "arrière"){
+            var copy = selection.value!!.refRoulementArriere!!.toMutableList()
+            copy.removeAt(copy.indexOf(roul[0]))
+            selection.value!!.refRoulementArriere = copy.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
+            copy2.removeAt(copy2.indexOf(roul[1]))
+            selection.value!!.typeRoulementArriere = copy2.toTypedArray()
+        }
+        refRoulements.value!!.removeAt(position)
+        typeRoulements.value!!.removeAt(position)
+        posRoulement.value!!.removeAt(position)
+        getTime()
+        localSave()
+    }
     suspend fun getLocalFiches() {
         listeDemontages.postValue(
             repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.filter { it.status!! < 3 }.toMutableList()
         )
     }
-
     fun back(view: View) {
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)

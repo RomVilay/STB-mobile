@@ -14,8 +14,10 @@ import com.example.applicationstb.R
 import android.util.Log
 import android.widget.*
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.model.Roulement
 
 
 class MecaFragment : Fragment() {
@@ -25,8 +27,10 @@ class MecaFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
 
         var layout = inflater.inflate(R.layout.fragment_meca, container, false)
@@ -41,15 +45,39 @@ class MecaFragment : Fragment() {
             couplage.isEnabled = false
             txtclp.isEnabled = false
         }
-        if (fiche.couplage !== null && arrayOf<String>("","Y","Δ","Autre").indexOf(fiche.couplage) == -1) txtclp.setText(fiche.couplage)
+        if (fiche.couplage !== null && arrayOf<String>(
+                "",
+                "Y",
+                "Δ",
+                "Autre"
+            ).indexOf(fiche.couplage) == -1
+        ) txtclp.setText(fiche.couplage)
         txtclp.doAfterTextChanged {
-           if(txtclp.text.isNotEmpty()) viewModel.selection.value!!.couplage = txtclp.text.toString()
+            if (txtclp.text.isNotEmpty()) viewModel.selection.value!!.couplage =
+                txtclp.text.toString()
         }
-        couplage.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Y","Δ","Autre"))
-        if (fiche.couplage !== null) couplage.setSelection(if (arrayOf<String>("","Y","Δ","Autre").indexOf(fiche.couplage) >=0 ) arrayOf<String>("","Y","Δ","Autre").indexOf(fiche.couplage) else 0)
+        couplage.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "Y", "Δ", "Autre")
+        )
+        if (fiche.couplage !== null) couplage.setSelection(
+            if (arrayOf<String>(
+                    "",
+                    "Y",
+                    "Δ",
+                    "Autre"
+                ).indexOf(fiche.couplage) >= 0
+            ) arrayOf<String>("", "Y", "Δ", "Autre").indexOf(fiche.couplage) else 0
+        )
         couplage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 var selection = couplage.selectedItem.toString()
                 if (couplage.selectedItem.toString() == "Autre") {
                     txtclp.visibility = View.VISIBLE
@@ -64,24 +92,37 @@ class MecaFragment : Fragment() {
         }
         //etats flasque
         var etatFlasqueAvant = layout.findViewById<Spinner>(R.id.spiFA)
-        etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","OK","A contrôler","A rebaguer"))
+        etatFlasqueAvant.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "OK", "A contrôler", "A rebaguer")
+        )
         if (fiche.flasqueAvant !== null) etatFlasqueAvant.setSelection(fiche.flasqueAvant!!)
         if (fiche.status == 3L) {
             etatFlasqueAvant.isEnabled = false
         }
         etatFlasqueAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position > 0 ) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (position > 0) {
                     viewModel.selection.value!!.flasqueAvant = position
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
         }
-        etatFlasqueAvant.setOnFocusChangeListener{ view, hasFocus ->
+        etatFlasqueAvant.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                etatFlasqueAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","OK","A contrôler","A rebaguer"))
+                etatFlasqueAvant.adapter = ArrayAdapter<String>(
+                    requireContext(),
+                    R.layout.support_simple_spinner_dropdown_item,
+                    arrayOf<String>("", "OK", "A contrôler", "A rebaguer")
+                )
             } else {
 
             }
@@ -90,11 +131,20 @@ class MecaFragment : Fragment() {
         if (fiche.status == 3L) {
             etatFlasqueArrière.isEnabled = false
         }
-        etatFlasqueArrière.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","OK","A contrôler","A rebaguer"))
+        etatFlasqueArrière.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "OK", "A contrôler", "A rebaguer")
+        )
         if (fiche.flasqueArriere !== null) etatFlasqueArrière.setSelection(fiche.flasqueArriere!!)
         etatFlasqueArrière.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 if (position > 0) {
                     viewModel.selection.value!!.flasqueArriere = position
                     viewModel.getTime()
@@ -105,35 +155,55 @@ class MecaFragment : Fragment() {
         // portée roulements
         var roulementAvant = layout.findViewById<Spinner>(R.id.spiRAv)
         if (fiche.status == 3L) {
-           roulementAvant.isEnabled = false
+            roulementAvant.isEnabled = false
         }
-        roulementAvant.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","OK","A contrôler","A rebaguer"))
+        roulementAvant.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "OK", "A contrôler", "A rebaguer")
+        )
         if (fiche.porteeRAvant !== null) roulementAvant.setSelection(fiche.porteeRAvant!!)
         roulementAvant.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 var selection = roulementAvant.selectedItem.toString()
                 if (position > 0) {
                     viewModel.selection.value!!.porteeRAvant = position
                     viewModel.getTime()
                     viewModel.localSave()
                 }
-                    //Log.i("INFO", "roulement arrière:"+)
+                //Log.i("INFO", "roulement arrière:"+)
             }
         }
         var roulementArriere = layout.findViewById<Spinner>(R.id.spiRAr)
         if (fiche.status == 3L) {
             roulementArriere.isEnabled = false
         }
-        roulementArriere.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","OK","A contrôler","A rebaguer"))
-        if (fiche.porteeRArriere!== null) roulementArriere.setSelection(fiche.porteeRArriere!!)
+        roulementArriere.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "OK", "A contrôler", "A rebaguer")
+        )
+        if (fiche.porteeRArriere !== null) roulementArriere.setSelection(fiche.porteeRArriere!!)
         roulementArriere.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 var selection = roulementArriere.selectedItem.toString()
                 if (position > 0) {
                     viewModel.selection.value!!.porteeRArriere = position
@@ -149,293 +219,102 @@ class MecaFragment : Fragment() {
         if (fiche.status == 3L) {
             etatBA.isEnabled = false
         }
-        if(fiche.boutArbre !== null) etatBA.setChecked(fiche.boutArbre!!)
+        if (fiche.boutArbre !== null) etatBA.setChecked(fiche.boutArbre!!)
         etatBA.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.selection.value!!.boutArbre = isChecked
-                viewModel.getTime()
-                viewModel.localSave()
+            viewModel.selection.value!!.boutArbre = isChecked
+            viewModel.getTime()
+            viewModel.localSave()
         }
         //rondelle élastique
         var PRE = layout.findViewById<Switch>(R.id.switchPRE)
         if (fiche.status == 3L) {
             PRE.isEnabled = false
         }
-        if(fiche.rondelleElastique !== null) PRE.setChecked(fiche.rondelleElastique!!)
+        if (fiche.rondelleElastique !== null) PRE.setChecked(fiche.rondelleElastique!!)
         PRE.setOnCheckedChangeListener { _, isChecked ->
             viewModel.selection.value!!.rondelleElastique = isChecked
             viewModel.getTime()
             viewModel.localSave()
         }
         //roulements
-        var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
-        typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M","C4"))
-        var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
-        var refRoul = layout.findViewById<EditText>(R.id.refRoullement)
-        var specsRoul = layout.findViewById<RecyclerView>(R.id.specsRoul)
-        if (fiche.typeRoulementAvant !== null && fiche.typeRoulementAvant!!.size > 0) {
-            typeRoulement.setSelection(arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M","C4").indexOf(fiche.typeRoulementAvant!![0]))
+        var tabroul = layout.findViewById<RecyclerView>(R.id.tabRoul)
+        var typeRoulement = layout.findViewById<Spinner>(R.id.spiType)
+        typeRoulement.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("Sélectionnez un type", "2Z/ECJ", "2RS/ECP", "C3", "M", "C4", "autre")
+        )
+        var refRoul = layout.findViewById<EditText>(R.id.refRoulement)
+        var posRoulement = layout.findViewById<Spinner>(R.id.spiPosition)
+        posRoulement.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("Sélectionnez une position", "avant", "arrière")
+        )
+        var adapterRoulement = roulementAdapter(
+            viewModel.typeRoulements.value!!.toTypedArray(),
+            viewModel.refRoulements.value!!.toTypedArray(),
+            viewModel.posRoulement.value!!.toTypedArray(),
+            { position ->
+                viewModel.removeRoulements(position)
+            }
+        )
+        tabroul.adapter = adapterRoulement
+        tabroul.layoutManager = GridLayoutManager(context, 1)
+        var ajtRoul = layout.findViewById<Button>(R.id.ajtRoul)
+        ajtRoul.setOnClickListener {
+            //Log.i("info","ref: ${refRoul.text} - type ${typeRoulement.selectedItem} - ${posRoulement.selectedItem} ")
+            viewModel.insertRoulements(refRoul.text.toString(), typeRoulement.selectedItem as String, posRoulement.selectedItem as String)
+            adapterRoulement.update(viewModel.typeRoulements.value!!.toTypedArray(), viewModel.refRoulements.value!!.toTypedArray(),viewModel.posRoulement.value!!.toTypedArray() )
+            refRoul.setText("")
+            posRoulement.setSelection(0)
+            typeRoulement.setSelection(0)
+
         }
-        if (fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
-            refRoul.setText(fiche.refRoulementAvant!![0])
-        }
+        viewModel.refRoulements.observe(viewLifecycleOwner) {
+            Log.i("info","update")
+          if (viewModel.refRoulements.value !== null && viewModel.typeRoulements.value !== null && viewModel.posRoulement.value !== null){
+             adapterRoulement.update(viewModel.typeRoulements.value!!.toTypedArray(), viewModel.refRoulements.value!!.toTypedArray(),viewModel.posRoulement.value!!.toTypedArray() )
+          }
+      }
         if (fiche.status == 3L) {
             refRoul.isEnabled = false
-            specsRoul.isEnabled = false
+            posRoulement.isEnabled = false
             typeRoulement.isEnabled = false
-        }
-        specsRoul.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false )
-        var adapter = roulementAdapter( viewModel.selection.value!!.typeRoulementArriere!!,viewModel.selection.value!!.refRoulementArriere!!) { item ->
-            viewModel.selection.value!!.typeRoulementArriere =
-                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-            viewModel.getTime()
-            viewModel.localSave()
-        }
-        specsRoul.adapter = adapter
-        viewModel.selection.observe(viewLifecycleOwner,{
-            if (switchRoullements.isChecked) {
-                adapter.update(
-                    viewModel.selection.value!!.typeRoulementArriere!!,
-                    viewModel.selection.value!!.refRoulementArriere!!,
-                )
-            } else {
-                adapter.update(
-                    viewModel.selection.value!!.typeRoulementAvant!!,
-                    viewModel.selection.value!!.refRoulementAvant!!,
-                )
-            }
-        })
-        if (switchRoullements.isChecked && fiche.refRoulementArriere !== null && fiche.refRoulementArriere!!.size > 0){
-            refRoul.setText(fiche.refRoulementArriere!![0])
-        } else if( fiche.refRoulementAvant !== null && fiche.refRoulementAvant!!.size > 0) {
-                refRoul.setText(fiche.refRoulementAvant!![0])}
-        switchRoullements.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                if (viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size > 0) {
-                    var type =
-                        if (viewModel.selection.value!!.typeRoulementArriere == null) 0 else arrayOf<String>(
-                            "2Z/ECJ",
-                            "2RS/ECP",
-                            "C3",
-                            "M"
-                        ).indexOf(viewModel.selection.value!!.typeRoulementArriere!![0])
-                    typeRoulement.setSelection(type)
-                    refRoul.setText(viewModel.selection.value!!.refRoulementArriere!![0])
-                    specsRoul.adapter = roulementAdapter(
-                        viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
-                        viewModel.selection.value!!.refRoulementArriere!!
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
-                    typeRoulement.setSelection(0)
-                    refRoul.setText("")
-                    specsRoul.adapter = roulementAdapter(
-                        arrayOf(),
-                        arrayOf()
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            } else {
-                if (viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.size > 0) {
-                    var type =
-                        if (viewModel.selection.value!!.typeRoulementAvant == null) 0 else arrayOf<String>(
-                            "2Z/ECJ",
-                            "2RS/ECP",
-                            "C3",
-                            "M"
-                        ).indexOf(viewModel.selection.value!!.typeRoulementAvant!![0])
-                    typeRoulement.setSelection(type)
-                    refRoul.setText(viewModel.selection.value!!.refRoulementAvant!![0])
-                    specsRoul.adapter = roulementAdapter(
-                        viewModel.selection.value!!.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
-                        viewModel.selection.value!!.refRoulementAvant!!
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                        viewModel.selection.value!!.refRoulementAvant =
-                            removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    Log.i("INFO", " length ${viewModel.selection.value!!.typeRoulementArriere!!.filter{it !== ""}.size}")
-                    typeRoulement.setSelection(0)
-                    refRoul.setText("")
-                    specsRoul.adapter = roulementAdapter(
-                        arrayOf(),
-                        arrayOf()
-                    ) { item ->
-                        viewModel.selection.value!!.typeRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                        viewModel.selection.value!!.refRoulementArriere =
-                            removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
-        }
-        typeRoulement.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var selection = typeRoulement.selectedItem.toString()
-                Log.i("info", "roulement sélec ${selection}")
-                if (position > 0 && selection !== "Sélectionnez un type") {
-                    if (switchRoullements.isChecked) {
-                        if (viewModel.selection.value!!.typeRoulementArriere!!.indexOf(selection) == -1) {
-                            var tab =
-                                viewModel.selection.value!!.typeRoulementArriere!!.toMutableList()
-                            tab.add(selection)
-                            viewModel.selection.value!!.typeRoulementArriere = tab.toTypedArray()
-                            var tab2 =
-                                viewModel.selection.value!!.refRoulementArriere!!.toMutableList()
-                            tab2.add("")
-                            viewModel.selection.value!!.refRoulementArriere = tab2.toTypedArray()
-                            refRoul.setText("")
-                        } else {
-                            refRoul.setText(
-                                viewModel.selection.value!!.refRoulementArriere!![viewModel.selection.value!!.typeRoulementArriere!!.indexOf(
-                                    selection
-                                )]
-                            )
-                        }
-                        specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementArriere!!.filter{it !== ""}.toTypedArray(),
-                            fiche.refRoulementArriere!!
-                        ) { item ->
-                            viewModel.selection.value!!.typeRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                            viewModel.selection.value!!.refRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    } else {
-                        if (viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection) == -1) {
-                            var tab =
-                                viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                            tab.add(selection)
-                            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                            var tab2 =
-                                viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                            tab2.add("")
-                            viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                            refRoul.setText("")
-                        } else {
-                            refRoul.setText(
-                                viewModel.selection.value!!.refRoulementAvant!![viewModel.selection.value!!.typeRoulementAvant!!.indexOf(
-                                    selection
-                                )]
-                            )
-                        }
-                        /* else {
-                        var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList()
-                        var tab2 = viewModel.selection.value!!.refRoulementAvant!!.toMutableList()
-                        tab.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
-                        tab2.removeAt(viewModel.selection.value!!.typeRoulementAvant!!.indexOf(selection))
-                        viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-                        viewModel.selection.value!!.refRoulementAvant = tab2.toTypedArray()
-                    }*/
-                        specsRoul.adapter = roulementAdapter(
-                            fiche.typeRoulementAvant!!.filter{it !== ""}.toTypedArray(),
-                            fiche.refRoulementAvant!!
-                        ) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                            viewModel.selection.value!!.refRoulementAvant =
-                                removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
-
-        }
-        refRoul.doAfterTextChanged {
-            var index = 0
-            if (switchRoullements.isChecked) {
-                 index =   viewModel.selection.value!!.typeRoulementArriere!!.indexOf(typeRoulement.selectedItem)
-            } else {
-                index = viewModel.selection.value!!.typeRoulementAvant!!.indexOf(typeRoulement.selectedItem)
-            }
-            if (index !== -1) {
-                if (switchRoullements.isChecked) {
-                    if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementArriere!![index] = refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementArriere!!,fiche.refRoulementArriere!!) { item ->
-                            viewModel.selection.value!!.typeRoulementArriere =
-                                removeRef(item, viewModel.selection.value!!.typeRoulementArriere!!)
-                            viewModel.selection.value!!.refRoulementArriere = removeRef(item, viewModel.selection.value!!.refRoulementArriere!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                } else {
-                    if (refRoul.text.isNotEmpty()) {
-                        viewModel.selection.value!!.refRoulementAvant!![index] =
-                            refRoul.text.toString()
-                        specsRoul.adapter = roulementAdapter( fiche.typeRoulementAvant!!,fiche.refRoulementAvant!!) { item ->
-                            viewModel.selection.value!!.typeRoulementAvant = removeRef(item, viewModel.selection.value!!.typeRoulementAvant!!)
-                            viewModel.selection.value!!.refRoulementAvant = removeRef(item, viewModel.selection.value!!.refRoulementAvant!!)
-                            viewModel.getTime()
-                            viewModel.localSave()
-                        }
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                }
-            }
         }
         //joints
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
-        typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
+        typeJoints.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "simple lèvre", "double lèvre")
+        )
         var switchJoints = layout.findViewById<Switch>(R.id.switchJoints)
         var refJoints = layout.findViewById<EditText>(R.id.refJoints)
         if (fiche.status == 3L) {
             refJoints.isEnabled = false
             typeJoints.isEnabled = false
         }
-        if (switchJoints.isChecked && fiche.typeJointArriere !== null){
+        if (switchJoints.isChecked && fiche.typeJointArriere !== null) {
             if (fiche.typeJointArriere!!) typeJoints.setSelection(1) else typeJoints.setSelection(2)
             refJoints.setText(fiche.refJointArriere)
         }
         if (fiche.typeJointAvant !== null) {
             typeJoints.setSelection(1)
             if (fiche.refJointAvant !== null) refJoints.setText(fiche.refJointAvant)
-           // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
-           // refJoints.setText(fiche.refJointAvant)
+            // if (fiche.typeJointAvant!!) typeJoints.setSelection(2) else typeJoints.setSelection(1)
+            // refJoints.setText(fiche.refJointAvant)
         }
         switchJoints.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 var type = if (viewModel.selection.value!!.typeJointArriere == null) {
                     typeJoints.setSelection(0)
-                } else { if (viewModel.selection.value!!.typeJointArriere!!) {
-                    typeJoints.setSelection(2)
+                } else {
+                    if (viewModel.selection.value!!.typeJointArriere!!) {
+                        typeJoints.setSelection(2)
                     } else {
-                    typeJoints.setSelection(1)
-                 }
+                        typeJoints.setSelection(1)
+                    }
                 }
                 refJoints.setText(viewModel.selection.value!!.refJointArriere)
             } else {
@@ -449,36 +328,49 @@ class MecaFragment : Fragment() {
                         typeJoints.setSelection(1)
                     }
                 }
-                Log.i("INFO","position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}")
+                Log.i(
+                    "INFO",
+                    "position av ${typeJoints.selectedItemPosition.toString()} - type ${viewModel.selection.value!!.typeJointAvant}"
+                )
                 refJoints.setText(viewModel.selection.value!!.refJointAvant)
             }
         }
-        if( viewModel.selection.value!!.status!! !== 3L) {
-        typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var selection = typeJoints.selectedItem.toString()
-                if (switchJoints.isChecked) {
-                    if (position == 2 ) {
-                        viewModel.selection.value!!.typeJointArriere = true
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-                    if (position == 1){
-                        viewModel.selection.value!!.typeJointArriere = false
-                        viewModel.getTime()
-                        viewModel.localSave()
-                    }
-
-                } else {
-                    if (position == 2 ) {viewModel.selection.value!!.typeJointAvant = true }
-                    if (position == 1) { viewModel.selection.value!!.typeJointAvant = false}
+        if (viewModel.selection.value!!.status!! !== 3L) {
+            typeJoints.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
 
                 }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    var selection = typeJoints.selectedItem.toString()
+                    if (switchJoints.isChecked) {
+                        if (position == 2) {
+                            viewModel.selection.value!!.typeJointArriere = true
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+                        if (position == 1) {
+                            viewModel.selection.value!!.typeJointArriere = false
+                            viewModel.getTime()
+                            viewModel.localSave()
+                        }
+
+                    } else {
+                        if (position == 2) {
+                            viewModel.selection.value!!.typeJointAvant = true
+                        }
+                        if (position == 1) {
+                            viewModel.selection.value!!.typeJointAvant = false
+                        }
+
+                    }
+                }
             }
-        }
 
             refJoints.doAfterTextChanged {
                 if (switchJoints.isChecked) {
@@ -495,21 +387,33 @@ class MecaFragment : Fragment() {
         }
         //capot ventilateur
         var cvent = layout.findViewById<Spinner>(R.id.spiCapot)
-        cvent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","Cassé","Absent"))
-           //if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
-        if (fiche.capotV !== null) cvent.setSelection(arrayOf<String>("","Bon état","Cassé","Absent").indexOf(fiche.capotV.toString()))
+        cvent.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "Bon état", "Cassé", "Absent")
+        )
+        //if(viewModel.selection.value!!.capotV !== null)  cvent.setSelection(viewModel.selection.value!!.capotV!!)
+        if (fiche.capotV !== null) cvent.setSelection(
+            arrayOf<String>(
+                "",
+                "Bon état",
+                "Cassé",
+                "Absent"
+            ).indexOf(fiche.capotV.toString())
+        )
         if (fiche.status!! == 3L) cvent.isEnabled = false
         if (fiche.status!! !== 3L) {
             cvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
+
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     view: View?,
                     position: Int,
                     id: Long
                 ) {
-                    if ( position > 0) {
+                    if (position > 0) {
                         viewModel.selection.value!!.capotV = position
                         viewModel.getTime()
                         viewModel.localSave()
@@ -518,9 +422,20 @@ class MecaFragment : Fragment() {
             }
         }
         var vent = layout.findViewById<Spinner>(R.id.spiVentilateur)
-        vent.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","A changer","Absent"))
+        vent.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "Bon état", "A changer", "Absent")
+        )
         if (fiche.status!! == 3L) vent.isEnabled = false
-        if (fiche.ventilateur !== null) vent.setSelection(arrayOf<String>("","Bon état","Cassé","Absent").indexOf(fiche.ventilateur.toString()))
+        if (fiche.ventilateur !== null) vent.setSelection(
+            arrayOf<String>(
+                "",
+                "Bon état",
+                "Cassé",
+                "Absent"
+            ).indexOf(fiche.ventilateur.toString())
+        )
         if (fiche.status!! < 3L) {
             vent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -542,10 +457,14 @@ class MecaFragment : Fragment() {
 
             }
         }
-        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!! )
-            var socle = layout.findViewById<Spinner>(R.id.spiSocle)
-        socle.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","Cassé","Absent"))
-        if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!! )
+        if (viewModel.selection.value!!.ventilateur !== null) vent.setSelection(viewModel.selection.value!!.ventilateur!!)
+        var socle = layout.findViewById<Spinner>(R.id.spiSocle)
+        socle.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "Bon état", "Cassé", "Absent")
+        )
+        if (viewModel.selection.value!!.socleBoiteABorne !== null) socle.setSelection(viewModel.selection.value!!.socleBoiteABorne!!)
         if (fiche.status!! == 3L) socle.isEnabled = false
         if (fiche.status!! < 3L) {
             socle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -568,7 +487,11 @@ class MecaFragment : Fragment() {
             }
         }
         var capot = layout.findViewById<Spinner>(R.id.spiCap)
-        capot.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","Cassé","Absent"))
+        capot.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "Bon état", "Cassé", "Absent")
+        )
         if (viewModel.selection.value!!.capotBoiteABorne !== null) capot.setSelection(viewModel.selection.value!!.capotBoiteABorne!!)
         if (fiche.status!! == 3L) capot.isEnabled = false
         if (fiche.status!! < 3L) {
@@ -591,9 +514,13 @@ class MecaFragment : Fragment() {
 
             }
         }
-            var plaque = layout.findViewById<Spinner>(R.id.spiPla!!)
-        plaque.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","Bon état","A changer","Sortie par câbles"))
-        if (viewModel.selection.value!!.plaqueABorne !== null ) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!!)
+        var plaque = layout.findViewById<Spinner>(R.id.spiPla!!)
+        plaque.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("", "Bon état", "A changer", "Sortie par câbles")
+        )
+        if (viewModel.selection.value!!.plaqueABorne !== null) plaque.setSelection(viewModel.selection.value!!.plaqueABorne!!)
         if (fiche.status!! == 3L) plaque.isEnabled = false
         if (fiche.status!! !== 3L) {
             plaque.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -616,10 +543,9 @@ class MecaFragment : Fragment() {
             }
         }
         var sondes = layout.findViewById<Switch>(R.id.switchSondes)
-        if (viewModel.selection.value!!.presenceSondes !== null && viewModel.selection.value!!.presenceSondes!!)
-        {
-           sondes.setChecked(true)
-        }  else {
+        if (viewModel.selection.value!!.presenceSondes !== null && viewModel.selection.value!!.presenceSondes!!) {
+            sondes.setChecked(true)
+        } else {
             sondes.setChecked(false)
         }
         if (fiche.status!! == 3L) sondes.isEnabled = false
@@ -663,7 +589,7 @@ class MecaFragment : Fragment() {
         return layout
     }
 
-    fun removeRef(i:Int, list:Array<String>):Array<String>{
+    fun removeRef(i: Int, list: Array<String>): Array<String> {
         var tab = list.toMutableList()
         tab.removeAt(i)
         return tab.toTypedArray()

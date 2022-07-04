@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
 import java.util.*
 
-class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array<String>, var callback: (Int)->Unit):
+class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array<String>,var posRoulement: Array<String>, var callback: (Int)->Unit):
     RecyclerView.Adapter<roulementAdapter.ViewHolder>(){
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val type: TextView
             val ref: TextView
             val suppr: Button
+            val position: TextView
             init {
                 type = view.findViewById<TextView>(R.id.typeR)
                 ref = view.findViewById<TextView>(R.id.refR)
+                position = view.findViewById<TextView>(R.id.poseR)
                 suppr = view.findViewById<Button>(R.id.supp)
             }
         }
@@ -33,14 +35,17 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
             holder.type.text = typeRoulement[position]
             if (refRoulement[position].length > 0 && refRoulement[position] !== "") holder.ref.text =
                 refRoulement[position] else holder.ref.text = "N/A"
+            holder.position.text = posRoulement[position]
             holder.suppr.setOnClickListener {
                 var tab = typeRoulement.toMutableList()
                 var tab2 = refRoulement.toMutableList()
+                var tab3 = posRoulement.toMutableList()
                 tab.removeAt(position)
                 tab2.removeAt(position)
+                tab3.removeAt(position)
                 callback(position)
                 notifyItemRemoved(position)
-                update(tab.toTypedArray(), tab2.toTypedArray())
+                update(tab.toTypedArray(), tab2.toTypedArray(), tab3.toTypedArray())
             }
         }
     }
@@ -48,9 +53,10 @@ class roulementAdapter(var typeRoulement: Array<String>, var refRoulement: Array
     override fun getItemCount(): Int {
         return typeRoulement.size
     }
-    fun update(types:Array<String>,refs:Array<String>){
+    fun update(types:Array<String>,refs:Array<String>,pos:Array<String>){
         this.typeRoulement = types
         this.refRoulement = refs
+        this.posRoulement = pos
         notifyDataSetChanged()
     }
 }
