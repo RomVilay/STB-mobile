@@ -257,6 +257,8 @@ class MecaFragment : Fragment() {
             viewModel.posRoulement.value!!.toTypedArray(),
             { position ->
                 viewModel.removeRoulements(position)
+            },{ ref,type, index ->
+                viewModel.updateRoulements(ref,type,index)
             }
         )
         tabroul.adapter = adapterRoulement

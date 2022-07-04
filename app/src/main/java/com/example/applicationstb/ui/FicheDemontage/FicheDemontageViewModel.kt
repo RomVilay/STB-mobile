@@ -107,13 +107,35 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         getTime()
         localSave()
     }
+    fun updateRoulements (ref:String,type:String,index: Int,){
+        var roul = arrayOf(refRoulements.value!![index],typeRoulements.value!![index],posRoulement.value!![index])
+        if (roul[2] == "avant" ){
+            var copy = selection.value!!.refRoulementAvant!!.toMutableList()
+            var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
+            copy[copy.indexOf(roul[0])] = ref
+            selection.value!!.refRoulementAvant = copy.toTypedArray()
+            copy2[copy2.indexOf(roul[1])] = type
+            selection.value!!.typeRoulementAvant = copy2.toTypedArray()
+        }
+        if (roul[2] == "arrière"){
+            var copy = selection.value!!.refRoulementArriere!!.toMutableList()
+            copy[copy.indexOf(roul[0])] = ref
+            selection.value!!.refRoulementArriere = copy.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
+            copy2[copy2.indexOf(roul[1])] = type
+            selection.value!!.typeRoulementArriere = copy2.toTypedArray()
+        }
+        refRoulements.value!![index] = ref
+        typeRoulements.value!![index] = type
+        getTime()
+        localSave()
+    }
     fun removeRoulements (position: Int){
         var roul = arrayOf(refRoulements.value!![position],typeRoulements.value!![position],posRoulement.value!![position])
 
         if (roul[2] == "avant" ){
             var copy = selection.value!!.refRoulementAvant!!.toMutableList()
             var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
-            Log.i("info","infos roulement ${copy.indexOf(roul[0])} - ${copy2.indexOf(roul[1])} ")
             copy.removeAt(copy.indexOf(roul[0]))
             selection.value!!.refRoulementAvant = copy.toTypedArray()
             copy2.removeAt(copy2.indexOf(roul[1]))
