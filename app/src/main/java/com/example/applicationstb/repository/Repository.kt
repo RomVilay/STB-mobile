@@ -428,11 +428,8 @@ class Repository(var context: Context) {
     suspend fun getFichesDemontages(token: String,numDevis:String) = service.getFichesDemontages(token,numDevis)
 
 
-    fun getChantier(token: String, ficheId: String, callback: Callback<ChantierResponse>) {
-        var call = service.getChantier(token, ficheId)
-        var fiche: Chantier? = null
-        call.enqueue(callback)
-    }
+    suspend fun getChantier(token: String, ficheId: String)  = service.getChantier(token, ficheId)
+
 
     fun getAllChantier(token: String, username: String, callback: Callback<ChantierResponse>) {
         var call = service.getAllChantier(token, username)

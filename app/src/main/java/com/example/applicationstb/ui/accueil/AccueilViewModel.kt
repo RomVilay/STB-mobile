@@ -116,62 +116,85 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                     }
                     for (fiche in resp!!.data!!) {
                         if (fiche.type == 1L) {
-                            val resp = repository.getChantier(
-                                token,
-                                fiche._id,
-                                object : Callback<ChantierResponse> {
-                                    @RequiresApi(Build.VERSION_CODES.O)
-                                    override fun onResponse(
-                                        call: Call<ChantierResponse>,
-                                        response: Response<ChantierResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                            val resp = response.body()
-                                            if (resp != null) {
-                                                viewModelScope.launch(Dispatchers.IO) {
-                                                    /* var photos =
-                                                         resp.data?.photos?.toMutableList()
-                                                     var iter = photos?.listIterator()
-                                                     while (iter?.hasNext() == true) {
-                                                         getPhotoFile(iter.next().toString())
-                                                     }
-                                                     resp.data?.photos = photos?.toTypedArray()*/
-                                                    var ch =
-                                                        repository.getByIdChantierLocalDatabse(
-                                                            resp.data!!._id
-                                                        )
-                                                    if (ch == null) {
-                                                        repository.insertChantierLocalDatabase(
-                                                            resp!!.data!!
-                                                        )
-                                                        if (resp!!.data!!.vehicule !== null) getVehicule(
-                                                            resp!!.data!!.vehicule!!
-                                                        )
-                                                        if (chantiers.indexOf(resp.data!!) == -1) chantiers!!.add(
-                                                            resp!!.data!!
-                                                        )
-                                                        Log.i("INFO", "ajout en bdd locale")
-                                                    } else {
-                                                        //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var fiche  = async { repository.getChantier(token, fiche._id) }
+                                if (fiche.isCompleted && fiche.await().isSuccessful) {
+                                    var ch =
+                                        repository.getByIdChantierLocalDatabse(
+                                            fiche.await().body()?.data?._id!!
+                                        )
+                                    if (ch == null) {
+                                        repository.insertChantierLocalDatabase(
+                                            fiche.await().body()?.data!!
+                                        )
+                                        if (fiche.await().body()?.data?.vehicule !== null) getVehicule(
+                                            fiche.await().body()?.data?.vehicule!!
+                                        )
+                                        if (chantiers.indexOf(fiche.await().body()?.data!!) == -1) chantiers!!.add(
+                                            fiche.await().body()?.data!!
+                                        )
+                                        Log.i("INFO", "ajout en bdd locale")
+                                    } else {
+                                        //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
+                                    }
+                                }
+                               /* val resp = repository.getChantier(
+                                    token,
+                                    fiche._id,
+                                    object : Callback<ChantierResponse> {
+                                        @RequiresApi(Build.VERSION_CODES.O)
+                                        override fun onResponse(
+                                            call: Call<ChantierResponse>,
+                                            response: Response<ChantierResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                val resp = response.body()
+                                                if (resp != null) {
+                                                    viewModelScope.launch(Dispatchers.IO) {
+                                                        /* var photos =
+                                                             resp.data?.photos?.toMutableList()
+                                                         var iter = photos?.listIterator()
+                                                         while (iter?.hasNext() == true) {
+                                                             getPhotoFile(iter.next().toString())
+                                                         }
+                                                         resp.data?.photos = photos?.toTypedArray()*/
+                                                        var ch =
+                                                            repository.getByIdChantierLocalDatabse(
+                                                                resp.data!!._id
+                                                            )
+                                                        if (ch == null) {
+                                                            repository.insertChantierLocalDatabase(
+                                                                resp!!.data!!
+                                                            )
+                                                            if (resp!!.data!!.vehicule !== null) getVehicule(
+                                                                resp!!.data!!.vehicule!!
+                                                            )
+                                                            if (chantiers.indexOf(resp.data!!) == -1) chantiers!!.add(
+                                                                resp!!.data!!
+                                                            )
+                                                            Log.i("INFO", "ajout en bdd locale")
+                                                        } else {
+                                                            //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
+                                                        }
+                                                        //Log.i("INFO","data chantier :${ch!!._id} - matériel : ${ch!!.materiel}")
                                                     }
-                                                    //Log.i("INFO","data chantier :${ch!!._id} - matériel : ${ch!!.materiel}")
                                                 }
+                                            } else {
+                                                Log.i(
+                                                    "INFO",
+                                                    "code : ${response.code()} - erreur : ${response.message()}"
+                                                )
                                             }
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()}"
-                                            )
                                         }
-                                    }
 
-                                    override fun onFailure(
-                                        call: Call<ChantierResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
+                                        override fun onFailure(
+                                            call: Call<ChantierResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    })*/
+                            }
                         }
                         if (fiche.type == 2L) {
                             repository.demontageRepository!!.getFicheDemontage(

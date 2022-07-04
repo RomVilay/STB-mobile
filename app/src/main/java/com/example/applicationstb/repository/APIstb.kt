@@ -24,7 +24,7 @@ interface APIstb  {
     @GET("fiches?type=1")
     fun getAllChantier(@Header("auth-token") token:String, @Path("filter") username:String ): Call<ChantierResponse>
     @GET("fiches/{ficheId}")
-    fun getChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<ChantierResponse>
+    suspend fun getChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Response <ChantierResponse>
     @PATCH("fiches/{ficheId}")
     fun patchChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyChantier ): Call<ChantierResponse>
     @GET("fiches/{ficheId}")

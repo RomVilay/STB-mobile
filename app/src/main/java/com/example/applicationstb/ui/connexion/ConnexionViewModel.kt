@@ -161,152 +161,157 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             Log.i("INFO", "nb de fiches chantier: ${listCh.size}")
             if (listCh.size > 0) {
                 for (fiche in listCh) {
-                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
-                        .show()
-                    var ch = fiche.toChantier()
-                    if (ch.photos?.size!! > 0) {
-                        var list = ch.photos?.toMutableList()!!
-                        list.removeAll { it == "" }
-                        list.forEach {
-                            var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
-                            test.await()
-                            if (test.isCompleted) {
-                                if (test.await().code().equals(200)) {
-                                    var check = async {
-                                        repositoryPhoto.getURLPhoto(
-                                            user!!.token!!,
-                                            test.await().body()?.name!!
-                                        )
-                                    }
-                                    check.await()
-                                    if (check.isCompleted) {
-                                        var code =
-                                            async {
-                                                repository.getPhoto(
-                                                    check.await().body()!!.url!!
-                                                )
-                                            }
-                                        code.await()
-                                        //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
-                                        if (code.await().code() >= 400) {
-                                            Log.i("info", "photo à envoyer${it}")
-                                            var s = async {
-                                                repositoryPhoto.sendPhoto(
+                    viewModelScope.launch(Dispatchers.IO){
+                        var f1 = async {repository.getChantier(user!!.token!!, fiche._id)}
+                        if (f1.await().isSuccessful && f1.await().body()!!.data!!.status!! < 3) {
+                            Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                                .show()
+                            var ch = fiche.toChantier()
+                            if (ch.photos?.size!! > 0) {
+                                var list = ch.photos?.toMutableList()!!
+                                list.removeAll { it == "" }
+                                list.forEach {
+                                    var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                    test.await()
+                                    if (test.isCompleted) {
+                                        if (test.await().code().equals(200)) {
+                                            var check = async {
+                                                repositoryPhoto.getURLPhoto(
                                                     user!!.token!!,
-                                                    it,
-                                                    context
+                                                    test.await().body()?.name!!
                                                 )
                                             }
-                                            s.await()
+                                            check.await()
+                                            if (check.isCompleted) {
+                                                var code =
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
+                                                code.await()
+                                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                                if (code.await().code() >= 400) {
+                                                    Log.i("info", "photo à envoyer${it}")
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            user!!.token!!,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
+                                                    s.await()
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-                    if (ch.signatureClient !== null) {
-                        var test =
-                            async { repositoryPhoto.getURL(user!!.token!!, ch.signatureClient!!) }
-                        test.await()
-                        if (test.isCompleted) {
-                            if (test.await().code().equals(200)) {
-                                var check = async {
-                                    repositoryPhoto.getURLPhoto(
-                                        user!!.token!!,
-                                        test.await().body()?.name!!
-                                    )
-                                }
-                                check.await()
-                                if (check.isCompleted) {
-                                    var code =
-                                        async { repository.getPhoto(check.await().body()!!.url!!) }
-                                    code.await()
-                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
-                                    if (code.await().code() >= 400) {
-                                        Log.i("info", "signature à envoyer${ch.signatureClient}")
-                                        var s = async {
-                                            repositoryPhoto.sendSignature(
+                            if (ch.signatureClient !== null) {
+                                var test =
+                                    async { repositoryPhoto.getURL(user!!.token!!, ch.signatureClient!!) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
                                                 user!!.token!!,
-                                                ch.signatureClient!!,
-                                                context
+                                                test.await().body()?.name!!
                                             )
                                         }
-                                        s.await()
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "signature à envoyer${ch.signatureClient}")
+                                                var s = async {
+                                                    repositoryPhoto.sendSignature(
+                                                        user!!.token!!,
+                                                        ch.signatureClient!!,
+                                                        context
+                                                    )
+                                                }
+                                                s.await()
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
 
-                    }
-                    if (ch.signatureTech !== null) {
-                        var test =
-                            async { repositoryPhoto.getURL(user!!.token!!, ch.signatureTech!!) }
-                        test.await()
-                        if (test.isCompleted) {
-                            if (test.await().code().equals(200)) {
-                                var check = async {
-                                    repositoryPhoto.getURLPhoto(
-                                        user!!.token!!,
-                                        test.await().body()?.name!!
-                                    )
-                                }
-                                check.await()
-                                if (check.isCompleted) {
-                                    var code =
-                                        async { repository.getPhoto(check.await().body()!!.url!!) }
-                                    code.await()
-                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
-                                    if (code.await().code() >= 400) {
-                                        Log.i("info", "signature à envoyer${ch.signatureTech}")
-                                        var s = async {
-                                            repositoryPhoto.sendSignature(
+                            }
+                            if (ch.signatureTech !== null) {
+                                var test =
+                                    async { repositoryPhoto.getURL(user!!.token!!, ch.signatureTech!!) }
+                                test.await()
+                                if (test.isCompleted) {
+                                    if (test.await().code().equals(200)) {
+                                        var check = async {
+                                            repositoryPhoto.getURLPhoto(
                                                 user!!.token!!,
-                                                ch.signatureTech!!,
-                                                context
+                                                test.await().body()?.name!!
                                             )
                                         }
-                                        s.await()
+                                        check.await()
+                                        if (check.isCompleted) {
+                                            var code =
+                                                async { repository.getPhoto(check.await().body()!!.url!!) }
+                                            code.await()
+                                            //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                            if (code.await().code() >= 400) {
+                                                Log.i("info", "signature à envoyer${ch.signatureTech}")
+                                                var s = async {
+                                                    repositoryPhoto.sendSignature(
+                                                        user!!.token!!,
+                                                        ch.signatureTech!!,
+                                                        context
+                                                    )
+                                                }
+                                                s.await()
+                                            }
+                                        }
                                     }
                                 }
+
                             }
+                            val resp = repository.patchChantier(
+                                user!!.token!!,
+                                ch._id,
+                                ch,
+                                object : Callback<ChantierResponse> {
+                                    override fun onResponse(
+                                        call: Call<ChantierResponse>,
+                                        response: Response<ChantierResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()
+                                            if (resp != null) {
+                                                Log.i("INFO", "fiche enregistrée")
+                                            }
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                repository.deleteChantierLocalDatabse(
+                                                    fiche
+                                                )
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<ChantierResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
                         }
-
                     }
-                    val resp = repository.patchChantier(
-                        user!!.token!!,
-                        ch._id,
-                        ch,
-                        object : Callback<ChantierResponse> {
-                            override fun onResponse(
-                                call: Call<ChantierResponse>,
-                                response: Response<ChantierResponse>
-                            ) {
-                                if (response.code() == 200) {
-                                    val resp = response.body()
-                                    if (resp != null) {
-                                        Log.i("INFO", "fiche enregistrée")
-                                    }
-                                    viewModelScope.launch(Dispatchers.IO) {
-                                        repository.deleteChantierLocalDatabse(
-                                            fiche
-                                        )
-                                    }
-                                } else {
-                                    Log.i(
-                                        "INFO",
-                                        "code : ${response.code()} - erreur : ${response.message()}"
-                                    )
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<ChantierResponse>,
-                                t: Throwable
-                            ) {
-                                Log.e("Error", "${t.stackTraceToString()}")
-                                Log.e("Error", "erreur ${t.message}")
-                            }
-                        })
                 }
             }
             var listb: List<BobinageEntity> =

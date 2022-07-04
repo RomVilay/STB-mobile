@@ -317,7 +317,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
         val action = FicheChantierDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
     }
-    fun selectChantier(token: String,id: String){
+    /*fun selectChantier(token: String,id: String){
         val resp = repository.getChantier(token, id, object: Callback<ChantierResponse> {
             override fun onResponse(call: Call<ChantierResponse>, response: Response<ChantierResponse>) {
                 if ( response.code() == 200 ) {
@@ -333,7 +333,7 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 Log.e("Error","erreur ${t.message}")
             }
         })
-    }
+    }*/
     fun getVehicule(id:String, textView: TextView) : String? {
         var nom : String? = null;
         viewModelScope.launch(Dispatchers.IO){
