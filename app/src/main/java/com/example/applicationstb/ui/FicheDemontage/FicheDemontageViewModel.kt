@@ -89,20 +89,20 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         if (position == "avant"){
             var copy = selection.value!!.refRoulementAvant!!.toMutableList()
             copy.add(ref)
-            selection.value!!.refRoulementAvant = copy.toTypedArray()
+            selection.value!!.refRoulementAvant = copy.filter { it.length > 0 }.toTypedArray()
             var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
             copy2.add(type)
-            selection.value!!.typeRoulementAvant = copy2.toTypedArray()
+            selection.value!!.typeRoulementAvant = copy2.filter { it.length > 0 }.toTypedArray()
         }
         if (position == "arrière"){
             var copy = selection.value!!.refRoulementArriere!!.toMutableList()
             copy.filter { it.isNotBlank() }
             copy.add(ref)
-            selection.value!!.refRoulementArriere = copy.toTypedArray()
+            selection.value!!.refRoulementArriere = copy.filter { it.length > 0 }.toTypedArray()
             var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
             copy2.filter { it.isNotBlank() }
             copy2.add(type)
-            selection.value!!.typeRoulementArriere = copy2.toTypedArray()
+            selection.value!!.typeRoulementArriere = copy2.filter { it.length > 0 }.toTypedArray()
         }
         getTime()
         localSave()
