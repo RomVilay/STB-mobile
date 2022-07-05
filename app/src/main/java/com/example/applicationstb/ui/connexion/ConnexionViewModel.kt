@@ -320,242 +320,257 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             Log.i("INFO", "nb de fiches bobinage: ${listb.size}")
             if (listb.size > 0) {
                 for (fiche in listb) {
-                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
-                        .show()
-                    var ch = fiche.toBobinage()
-                    if (ch.photos?.size!! > 0) {
-                        var list = ch.photos?.toMutableList()!!
-                        list.removeAll { it == "" }
-                        ch.photos = list.toTypedArray()
-                        list.forEach {
-                            var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
-                            test.await()
-                            if (test.isCompleted) {
-                                if (test.await().code().equals(200)) {
-                                    var check = async {
-                                        repositoryPhoto.getURLPhoto(
-                                            user!!.token!!,
-                                            test.await().body()?.name!!
-                                        )
-                                    }
-                                    check.await()
-                                    if (check.isCompleted) {
-                                        var code =
-                                            async {
-                                                repository.getPhoto(
-                                                    check.await().body()!!.url!!
-                                                )
-                                            }
-                                        code.await()
-                                        //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
-                                        if (code.await().code() >= 400) {
-                                            Log.i("info", "photo à envoyer${it}")
-                                            var s = async {
-                                                repositoryPhoto.sendPhoto(
+                    viewModelScope.launch(Dispatchers.IO) {
+                        var f1 = async { repository.getBobinage(user?.token!!,fiche._id) }
+                        if (f1.await().body()?.data?.status!! < fiche.status!!) {
+                            Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                                .show()
+                            var ch = fiche.toBobinage()
+                            if (ch.photos?.size!! > 0) {
+                                var list = ch.photos?.toMutableList()!!
+                                list.removeAll { it == "" }
+                                ch.photos = list.toTypedArray()
+                                list.forEach {
+                                    var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                    test.await()
+                                    if (test.isCompleted) {
+                                        if (test.await().code().equals(200)) {
+                                            var check = async {
+                                                repositoryPhoto.getURLPhoto(
                                                     user!!.token!!,
-                                                    it,
-                                                    context
+                                                    test.await().body()?.name!!
                                                 )
                                             }
-                                            s.await()
+                                            check.await()
+                                            if (check.isCompleted) {
+                                                var code =
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
+                                                code.await()
+                                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                                if (code.await().code() >= 400) {
+                                                    Log.i("info", "photo à envoyer${it}")
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            user!!.token!!,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
+                                                    s.await()
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+                            val resp = repository.patchBobinage(
+                                user!!.token!!,
+                                ch._id,
+                                ch,
+                                object : Callback<BobinageResponse> {
+                                    override fun onResponse(
+                                        call: Call<BobinageResponse>,
+                                        response: Response<BobinageResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            val resp = response.body()
+                                            if (resp != null) {
+                                                Log.i("INFO", "fiche enregistrée")
+                                            }
+                                            viewModelScope.launch(Dispatchers.IO) {
+                                                repository.deleteBobinageLocalDatabse(
+                                                    fiche
+                                                )
+                                            }
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<BobinageResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
                         }
                     }
-                    val resp = repository.patchBobinage(
-                        user!!.token!!,
-                        ch._id,
-                        ch,
-                        object : Callback<BobinageResponse> {
-                            override fun onResponse(
-                                call: Call<BobinageResponse>,
-                                response: Response<BobinageResponse>
-                            ) {
-                                if (response.code() == 200) {
-                                    val resp = response.body()
-                                    if (resp != null) {
-                                        Log.i("INFO", "fiche enregistrée")
-                                    }
-                                    viewModelScope.launch(Dispatchers.IO) {
-                                        repository.deleteBobinageLocalDatabse(
-                                            fiche
-                                        )
-                                    }
-                                } else {
-                                    Log.i(
-                                        "INFO",
-                                        "code : ${response.code()} - erreur : ${response.message()}"
-                                    )
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<BobinageResponse>,
-                                t: Throwable
-                            ) {
-                                Log.e("Error", "${t.stackTraceToString()}")
-                                Log.e("Error", "erreur ${t.message}")
-                            }
-                        })
                 }
             }
             var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
             Log.i("INFO", "nb de fiches démontage: ${listD.size}")
             if (listD.size > 0) {
                 for (fiche in listD) {
-                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
-                        .show()
-                    var ficheD = fiche
-                    if (ficheD.photos?.size!! > 0) {
-                        var list = fiche.photos?.toMutableList()!!
-                        list.removeAll { it == "" }
-                        ficheD.photos = list.toTypedArray()
-                        list.forEach {
-                            Log.i("info", "photo à envoyer${it}")
-                            //Snackbar.make(it,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
-                            var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
-                            test.await()
-                            if (test.isCompleted) {
-                                if (test.await().code().equals(200)) {
-                                    var check = async {
-                                        repositoryPhoto.getURLPhoto(
-                                            user!!.token!!,
-                                            test.await().body()?.name!!
-                                        )
-                                    }
-                                    check.await()
-                                    if (check.isCompleted) {
-                                        var code =
-                                            async {
-                                                repository.getPhoto(
-                                                    check.await().body()!!.url!!
-                                                )
-                                            }
-                                        code.await()
-                                        //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
-                                        if (code.await().code() >= 400) {
-                                            Log.i("info", "photo à envoyer${it}")
-                                            var s = async {
-                                                repositoryPhoto.sendPhoto(
+                    viewModelScope.launch(Dispatchers.IO) {
+                        var f1 = async { repository.demontageRepository?.getFicheDemontage(user?.token!!, fiche._id) }
+                        if (f1.await()?.body()?.data?.status!! < fiche.statut!!) {
+                            Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                                .show()
+                            var ficheD = fiche
+                            if (ficheD.photos?.size!! > 0) {
+                                var list = fiche.photos?.toMutableList()!!
+                                list.removeAll { it == "" }
+                                ficheD.photos = list.toTypedArray()
+                                list.forEach {
+                                    Log.i("info", "photo à envoyer${it}")
+                                    //Snackbar.make(it,"upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG).show()
+                                    var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                    test.await()
+                                    if (test.isCompleted) {
+                                        if (test.await().code().equals(200)) {
+                                            var check = async {
+                                                repositoryPhoto.getURLPhoto(
                                                     user!!.token!!,
-                                                    it,
-                                                    context
+                                                    test.await().body()?.name!!
                                                 )
                                             }
-                                            s.await()
+                                            check.await()
+                                            if (check.isCompleted) {
+                                                var code =
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
+                                                code.await()
+                                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                                if (code.await().code() >= 400) {
+                                                    Log.i("info", "photo à envoyer${it}")
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            user!!.token!!,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
+                                                    s.await()
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+                            repository.demontageRepository!!.patchFicheDemontage(
+                                user!!.token!!,
+                                ficheD._id,
+                                ficheD.toFicheDemontage(),
+                                object : Callback<FicheDemontageResponse> {
+                                    override fun onResponse(
+                                        call: Call<FicheDemontageResponse>,
+                                        response: Response<FicheDemontageResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                                    response.errorBody()!!.charStream().readText()
+                                                }"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<FicheDemontageResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
                         }
                     }
-                    repository.demontageRepository!!.patchFicheDemontage(
-                        user!!.token!!,
-                        ficheD._id,
-                        ficheD.toFicheDemontage(),
-                        object : Callback<FicheDemontageResponse> {
-                            override fun onResponse(
-                                call: Call<FicheDemontageResponse>,
-                                response: Response<FicheDemontageResponse>
-                            ) {
-                                if (response.code() == 200) {
-                                } else {
-                                    Log.i(
-                                        "INFO",
-                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                            response.errorBody()!!.charStream().readText()
-                                        }"
-                                    )
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<FicheDemontageResponse>,
-                                t: Throwable
-                            ) {
-                                Log.e("Error", "${t.stackTraceToString()}")
-                                Log.e("Error", "erreur ${t.message}")
-                            }
-                        })
                 }
             }
             var listR = repository.remontageRepository!!.getAllRemontageLocalDatabase()
             if (listR.size > 0) {
                 for (fiche in listR) {
-                    Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
-                        .show()
-                    if (fiche.photos?.size!! > 0) {
-                        var list = fiche.photos?.toMutableList()!!
-                        list.removeAll { it == "" }
-                        fiche.photos = list.toTypedArray()
-                        list.forEach {
-                            var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
-                            test.await()
-                            if (test.isCompleted) {
-                                if (test.await().code().equals(200)) {
-                                    var check = async {
-                                        repositoryPhoto.getURLPhoto(
-                                            user!!.token!!,
-                                            test.await().body()?.name!!
-                                        )
-                                    }
-                                    check.await()
-                                    if (check.isCompleted) {
-                                        var code =
-                                            async {
-                                                repository.getPhoto(
-                                                    check.await().body()!!.url!!
-                                                )
-                                            }
-                                        code.await()
-                                        //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
-                                        if (code.await().code() >= 400) {
-                                            Log.i("info", "photo à envoyer${it}")
-                                            var s = async {
-                                                repositoryPhoto.sendPhoto(
+                    viewModelScope.launch(Dispatchers.IO) {
+                        var f1 = async { repository.demontageRepository?.getFicheDemontage(user?.token!!, fiche._id) }
+                        if (f1.await()?.body()?.data?.status!! < fiche.statut!!) {
+                            Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
+                                .show()
+                            if (fiche.photos?.size!! > 0) {
+                                var list = fiche.photos?.toMutableList()!!
+                                list.removeAll { it == "" }
+                                fiche.photos = list.toTypedArray()
+                                list.forEach {
+                                    var test = async { repositoryPhoto.getURL(user!!.token!!, it) }
+                                    test.await()
+                                    if (test.isCompleted) {
+                                        if (test.await().code().equals(200)) {
+                                            var check = async {
+                                                repositoryPhoto.getURLPhoto(
                                                     user!!.token!!,
-                                                    it,
-                                                    context
+                                                    test.await().body()?.name!!
                                                 )
                                             }
-                                            s.await()
+                                            check.await()
+                                            if (check.isCompleted) {
+                                                var code =
+                                                    async {
+                                                        repository.getPhoto(
+                                                            check.await().body()!!.url!!
+                                                        )
+                                                    }
+                                                code.await()
+                                                //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                                if (code.await().code() >= 400) {
+                                                    Log.i("info", "photo à envoyer${it}")
+                                                    var s = async {
+                                                        repositoryPhoto.sendPhoto(
+                                                            user!!.token!!,
+                                                            it,
+                                                            context
+                                                        )
+                                                    }
+                                                    s.await()
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+                            repository.remontageRepository!!.patchRemontage(
+                                user?.token!!,
+                                fiche._id,
+                                fiche.toFicheRemo(),
+                                object : Callback<RemontageResponse> {
+                                    override fun onResponse(
+                                        call: Call<RemontageResponse>,
+                                        response: Response<RemontageResponse>
+                                    ) {
+                                        if (response.code() == 200) {
+                                            Log.i("info", "fiche remontage ${fiche._id} updated")
+                                        } else {
+                                            Log.i(
+                                                "INFO",
+                                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                                    response.errorBody()!!.charStream().readText()
+                                                }"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(
+                                        call: Call<RemontageResponse>,
+                                        t: Throwable
+                                    ) {
+                                        Log.e("Error", "${t.stackTraceToString()}")
+                                        Log.e("Error", "erreur ${t.message}")
+                                    }
+                                })
                         }
                     }
-                    repository.remontageRepository!!.patchRemontage(
-                        user?.token!!,
-                        fiche._id,
-                        fiche.toFicheRemo(),
-                        object : Callback<RemontageResponse> {
-                            override fun onResponse(
-                                call: Call<RemontageResponse>,
-                                response: Response<RemontageResponse>
-                            ) {
-                                if (response.code() == 200) {
-                                    Log.i("info", "fiche remontage ${fiche._id} updated")
-                                } else {
-                                    Log.i(
-                                        "INFO",
-                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                            response.errorBody()!!.charStream().readText()
-                                        }"
-                                    )
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<RemontageResponse>,
-                                t: Throwable
-                            ) {
-                                Log.e("Error", "${t.stackTraceToString()}")
-                                Log.e("Error", "erreur ${t.message}")
-                            }
-                        })
                 }
             }
 

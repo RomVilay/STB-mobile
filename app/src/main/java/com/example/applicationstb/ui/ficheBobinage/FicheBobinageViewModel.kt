@@ -58,7 +58,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun selectBobinage(id: String) {
+    /*fun selectBobinage(id: String) {
         if (isOnline(context)) {
             val resp =
                 repository.getBobinage(token.value!!, id, object : Callback<BobinageResponse> {
@@ -89,7 +89,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         } else {
 
         }
-    }
+    }*/
 
     fun addSection(nbBrins: Long, diametre: Double) {
         var list = sections.value
@@ -100,6 +100,7 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
         //Log.i("INFO","current sections : ${listeBobinage[0].sectionsFils.toString()}")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addPhoto(photo: String) {
         Log.i("INFO", "add photo")
         var list = bobinage?.value?.photos?.toMutableList()

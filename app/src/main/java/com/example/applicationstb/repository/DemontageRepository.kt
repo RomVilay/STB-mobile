@@ -380,10 +380,8 @@ class ListFicheDemontageResponse(
 class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
     var demontageDao = db!!.demontageDao()
 
-    fun getFicheDemontage(token: String, ficheId: String, callback: Callback<FicheDemontageResponse>) {
-        val call = service.getFicheDemontage(token, ficheId)
-        call.enqueue(callback)
-    }
+    suspend fun getFicheDemontage(token: String, ficheId: String) = service.getFicheDemontage(token, ficheId)
+
 
     suspend fun getFicheForRemontage(token: String,numDevis:String) = service.getFichesDemontages(token,numDevis)
 

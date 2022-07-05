@@ -437,11 +437,8 @@ class Repository(var context: Context) {
         call.enqueue(callback)
     }
 
-    fun getBobinage(token: String, ficheId: String, callback: Callback<BobinageResponse>) {
-        var call = service.getBobinage(token, ficheId)
-        var fiche: Bobinage? = null
-        call.enqueue(callback)
-    }
+    suspend fun getBobinage(token: String, ficheId: String) = service.getBobinage(token, ficheId)
+
 
 
 

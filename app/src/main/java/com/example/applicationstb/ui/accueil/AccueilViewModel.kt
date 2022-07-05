@@ -199,7 +199,31 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             }
                         }
                         if (fiche.type == 2L) {
-                            repository.demontageRepository!!.getFicheDemontage(
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var fiche = async { repository.demontageRepository?.getFicheDemontage(token!!,fiche._id) }
+                                fiche.await()
+                                if (fiche.isCompleted){
+                                    var index =
+                                        repository.demontageRepository!!.getByIdDemontageLocalDatabse(
+                                            fiche.await()?.body()?.data!!._id
+                                        )
+                                    if (index !== null) {
+                                        repository.demontageRepository!!.updateDemontageLocalDatabse(
+                                            fiche.await()!!.body()?.data!!.toEntity()
+                                        )
+                                    } else {
+                                        repository.demontageRepository!!.insertDemontageLocalDatabase(
+                                            fiche.await()!!.body()?.data!!
+                                        )
+                                        Log.i(
+                                            "info",
+                                            "fiche demontage: ${fiche.await()!!.body()?.data?._id} ajout BDD"
+                                        )
+                                    }
+                                }
+                            }
+
+                            /*repository.demontageRepository!!.getFicheDemontage(
                                 token,
                                 fiche._id,
                                 object : Callback<FicheDemontageResponse> {
@@ -242,11 +266,34 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     ) {
                                         Log.e("Error", "erreur ${t.message}")
                                     }
-                                })
+                                })*/
                         }
                         if (fiche.type == 3L) {
                             Log.i("INFO", "fiche remontage ${fiche.numFiche} ")
-                            var remo = repository.remontageRepository!!.getRemontage(
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var fiche = async { repository.remontageRepository?.getRemontage (token!!,fiche._id) }
+                                fiche.await()
+                                if (fiche.isCompleted){
+                                    var index =
+                                        repository.remontageRepository!!.getByIdRemoLocalDatabse(
+                                            fiche.await()?.body()?.data?._id!!
+                                        )
+                                    if (index !== null) {
+                                        repository.remontageRepository!!.updateRemoLocalDatabse(
+                                            fiche.await()?.body()?.data?.toEntity()!!
+                                        )
+                                    } else {
+                                        repository.remontageRepository!!.insertRemoLocalDatabase(
+                                            fiche.await()?.body()?.data!!
+                                        )
+                                        Log.i(
+                                            "info",
+                                            "fiche remontage: ${fiche.await()?.body()?.data?._id} ajout BDD"
+                                        )
+                                    }
+
+                                }                                }
+                           /* var remo = repository.remontageRepository!!.getRemontage(
                                 token,
                                 fiche._id,
                                 object : Callback<RemontageResponse> {
@@ -300,10 +347,34 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     ) {
                                         Log.e("Error", "erreur ${t.message}")
                                     }
-                                })
+                                })*/
                         }
                         if (fiche.type == 4L) {
-                            val resp = repository.getBobinage(
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var fiche = async { repository.getBobinage(token!!,fiche._id) }
+                                fiche.await()
+                                if (fiche.isCompleted){
+                                    var b =
+                                        repository.getByIdBobinageLocalDatabse(
+                                            fiche.await().body()?.data!!._id
+                                        )
+                                    Log.i(
+                                        "INFO",
+                                        "présence bdd : " + (b == null).toString()
+                                    )
+                                    if (b == null) {
+                                        repository.insertBobinageLocalDatabase(
+                                            fiche.await().body()?.data!!
+                                        )
+                                        if (bobinages.indexOf(fiche.await().body()?.data!!) == -1) bobinages!!.add(
+                                            fiche.await().body()?.data!!
+                                        )
+                                        Log.i("INFO", "ajout en bdd locale")
+                                    }
+                                }
+
+                            }
+                            /*val resp = repository.getBobinage(
                                 token,
                                 fiche._id,
                                 object : Callback<BobinageResponse> {
@@ -362,7 +433,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     ) {
                                         Log.e("Error", "erreur ${t.message}")
                                     }
-                                })
+                                })*/
                         }
                         var photos = fiche.photos
                         viewModelScope.launch(Dispatchers.IO) {

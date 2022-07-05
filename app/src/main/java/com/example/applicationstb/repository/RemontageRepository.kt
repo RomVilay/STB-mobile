@@ -256,11 +256,8 @@ class RemontageResponse(
 class RemontageRepository(var service: APIstb, var db: LocalDatabase) {
     var remontageDao = db!!.remontageDao()
 
-    fun getRemontage(token: String, ficheId: String, callback: Callback<RemontageResponse>) {
-        val call = service.getRemontage(token, ficheId)
-        var fiche: Remontage? = null
-        call.enqueue(callback)
-    }
+    suspend fun getRemontage(token: String, ficheId: String)  = service.getRemontage(token, ficheId)
+
 
     fun patchRemontage(
         token: String,

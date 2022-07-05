@@ -28,17 +28,17 @@ interface APIstb  {
     @PATCH("fiches/{ficheId}")
     fun patchChantier(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyChantier ): Call<ChantierResponse>
     @GET("fiches/{ficheId}")
-    fun getBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<BobinageResponse>
+    suspend fun getBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Response<BobinageResponse>
     @PATCH("fiches/{ficheId}")
     fun patchBobinage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyBobinage ): Call<BobinageResponse>
     @GET("fiches/{ficheId}")
-    fun getFicheDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<FicheDemontageResponse>
+    suspend fun getFicheDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Response<FicheDemontageResponse>
     @PATCH("fiches/{ficheId}")
     fun patchFicheDemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyFicheDemontage ): Call<FicheDemontageResponse>
     @PATCH("fiches/{ficheId}")
     fun patchRemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String, @Body fiche: BodyRemontage ): Call<RemontageResponse>
     @GET("fiches/{ficheId}")
-    fun getRemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Call<RemontageResponse>
+    suspend fun getRemontage(@Header("auth-token") token:String, @Path("ficheId") ficheId:String ): Response<RemontageResponse>
     @GET("vehicles")
     fun getAllVehicules(@Header("auth-token") token:String): Call<VehiculesResponse>
     @GET("vehicles/{id}")
