@@ -162,9 +162,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             if (listCh.size > 0) {
                 for (fiche in listCh) {
                     viewModelScope.launch(Dispatchers.IO){
-                        var f1 = async {repository.getChantier(user!!.token!!, fiche._id)}
+                        //var f1 = async {repository.getChantier(user!!.token!!, fiche._id)}
                         //if (f1.await().body()?.data?.status!! < fiche.status!! ) Log.i("info", "fiche ${fiche._id} à upload") else Log.i("info", "fiche ${fiche._id} périmée")
-                        if (f1.await().body()?.data?.status!! < fiche.status!!) {
+                       // if (f1.await().body()?.data?.status!! < fiche.status!! && f1.await()!!.body()?.data !== null) {
                             Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
                                 .show()
                             var ch = fiche.toChantier()
@@ -311,7 +311,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
-                        }
+                        //}
                     }
                 }
             }
@@ -322,7 +322,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 for (fiche in listb) {
                     viewModelScope.launch(Dispatchers.IO) {
                         var f1 = async { repository.getBobinage(user?.token!!,fiche._id) }
-                        if (f1.await().body()?.data?.status!! < fiche.status!!) {
+                        f1.await()
+                        //if (f1.await().body()?.data?.status!! < fiche.status!! ) {
                             Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
                                 .show()
                             var ch = fiche.toBobinage()
@@ -402,7 +403,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
-                        }
+                        //}
                     }
                 }
             }
@@ -411,8 +412,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             if (listD.size > 0) {
                 for (fiche in listD) {
                     viewModelScope.launch(Dispatchers.IO) {
-                        var f1 = async { repository.demontageRepository?.getFicheDemontage(user?.token!!, fiche._id) }
-                        if (f1.await()?.body()?.data?.status!! < fiche.statut!!) {
+                        //var f1 = async { repository.demontageRepository?.getFicheDemontage(user?.token!!, fiche._id) }
+                       // if (f1.await()?.body()?.data?.status!! < fiche.statut!! && f1.await()!!.body()?.data !== null) {
                             Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
                                 .show()
                             var ficheD = fiche
@@ -487,7 +488,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
-                        }
+                        //}
                     }
                 }
             }
@@ -495,8 +496,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
             if (listR.size > 0) {
                 for (fiche in listR) {
                     viewModelScope.launch(Dispatchers.IO) {
-                        var f1 = async { repository.demontageRepository?.getFicheDemontage(user?.token!!, fiche._id) }
-                        if (f1.await()?.body()?.data?.status!! < fiche.statut!!) {
+                        //var f1 = async { repository.demontageRepository?.getFicheDemontage(user?.token!!, fiche._id) }
+                        //if (f1.await()?.body()?.data?.status!! < fiche.statut!! && f1.await()!!.body()?.data !== null) {
                             Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
                                 .show()
                             if (fiche.photos?.size!! > 0) {
@@ -569,7 +570,7 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
-                        }
+                        //}
                     }
                 }
             }
