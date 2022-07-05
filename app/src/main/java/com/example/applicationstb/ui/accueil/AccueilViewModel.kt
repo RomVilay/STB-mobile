@@ -118,7 +118,8 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                         if (fiche.type == 1L) {
                             viewModelScope.launch(Dispatchers.IO) {
                                 var fiche  = async { repository.getChantier(token, fiche._id) }
-                                if (fiche.isCompleted && fiche.await().isSuccessful) {
+                                fiche.await()
+                                if (fiche.isCompleted) {
                                     var ch =
                                         repository.getByIdChantierLocalDatabse(
                                             fiche.await().body()?.data?._id!!
@@ -138,6 +139,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
                                     }
                                 }
+
                                /* val resp = repository.getChantier(
                                     token,
                                     fiche._id,

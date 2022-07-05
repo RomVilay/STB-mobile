@@ -163,7 +163,8 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                 for (fiche in listCh) {
                     viewModelScope.launch(Dispatchers.IO){
                         var f1 = async {repository.getChantier(user!!.token!!, fiche._id)}
-                        if (f1.await().isSuccessful && f1.await().body()!!.data!!.status!! < 3) {
+                        //if (f1.await().body()?.data?.status!! < fiche.status!! ) Log.i("info", "fiche ${fiche._id} à upload") else Log.i("info", "fiche ${fiche._id} périmée")
+                        if (f1.await().body()?.data?.status!! < fiche.status!!) {
                             Snackbar.make(view, "upload fiche ${fiche.numFiche}", Snackbar.LENGTH_LONG)
                                 .show()
                             var ch = fiche.toChantier()
