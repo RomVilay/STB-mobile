@@ -33,6 +33,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
 import com.example.applicationstb.model.FicheRemontage
+import kotlin.reflect.typeOf
 
 class FicheRemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
@@ -222,12 +223,47 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             var list = async { repository.demontageRepository!!.getFicheForRemontage(token!!,selection.value!!.numDevis!!) }.await()
             for (fiche in list.body()!!.data){
                 var check  = repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it._id }.indexOf(fiche._id)
-                Log.i("info","position ${check}")
-                if (check < 0) {
+                 repository.demontageRepository!!.getFicheDemontage(token!!,fiche._id, object : Callback<FicheDemontageResponse>{
+                    override fun onResponse(
+                        call: Call<FicheDemontageResponse>,
+                        response: Response<FicheDemontageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            if (resp != null) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    var f = resp.data!!
+                                    var check =
+                                        repository.demontageRepository!!.getAllDemontageLocalDatabase()
+                                            .map { it._id }.indexOf(f._id)
+                                    if (check < 0) {
+                                        repository.demontageRepository!!.insertDemontageLocalDatabase(
+                                            f
+                                        )
+                                    } else {
+                                        repository.demontageRepository!!.updateDemontageLocalDatabse(
+                                            f.toEntity()
+                                        )
+                                    }
+                                }
+                            }
+                        } else {
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<FicheDemontageResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Error", "${t.stackTraceToString()}")
+                        Log.e("Error", "erreur ${t.message}")
+                    }})
+                Log.i("info","fiche ")
+                /*if (check < 0) {
                     repository.demontageRepository!!.insertDemontageLocalDatabase(fiche)
                 } else {
                     repository.demontageRepository!!.updateDemontageLocalDatabse(fiche.toEntity())
-                }
+                }*/
             }
             if (list.isSuccessful){
                 val mySnackbar =
