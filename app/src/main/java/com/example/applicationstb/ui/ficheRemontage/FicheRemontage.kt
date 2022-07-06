@@ -18,6 +18,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.*
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import java.util.*
@@ -69,6 +70,7 @@ class FicheRemontage : Fragment() {
             arrayOf<String>(" ", "avant", "arrière", "aucun")
         )
         var dureeEssai = layout.findViewById<EditText>(R.id.dureeEssai)
+        var spinnerType = layout.findViewById<Spinner>(R.id.spinnerType)
         //tout sauf reducteur et pompe
         var isolementPhaseMasseU = layout.findViewById<EditText>(R.id.isoPMU)
         var isolementPhaseMasseV = layout.findViewById<EditText>(R.id.isoPMV)
@@ -144,6 +146,11 @@ class FicheRemontage : Fragment() {
         var btnFichesD = layout.findViewById<Button>(R.id.btnFichesD)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
 
+        spinnerType.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>(" Selectionner un type de moteur", "Triphasé", "Monophasé")
+        )
         btnRemontage.setOnClickListener {
             if (spinner.selectedItem == null) {
                 val mySnackbar = Snackbar.make(
@@ -163,6 +170,7 @@ class FicheRemontage : Fragment() {
                 viewModel.selection.value = demo
                 layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
                 if (demo != null) {
+                    spinnerType.visibility = View.GONE
                     tmono.visibility = View.GONE
                     tisoPhase.visibility = View.GONE
                     tAlterStat.visibility = View.GONE
@@ -171,10 +179,47 @@ class FicheRemontage : Fragment() {
                     ccStat.visibility = View.GONE
                     tvf.visibility = View.GONE
                     fixCouronne.visibility = View.GONE
+                    if (demo.subtype == 7 || demo.subtype == 9) spinnerType.visibility = View.VISIBLE
                     if (demo.dureeEssai !== null) dureeEssai.setText(demo.dureeEssai!!.toString())
                     if (demo.remontageRoulement !== null) spinnerMnt.setSelection(demo.remontageRoulement!!)
                     if (demo.collageRoulementPorteeArbre !== null) spinnerCPA.setSelection(demo.collageRoulementPorteeArbre!!)
                     if (demo.collageRoulementFlasque !== null) spinnerCIF.setSelection(demo.collageRoulementFlasque!!)
+                    spinnerType.onItemSelectedListener=  object : AdapterView.OnItemSelectedListener {
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            if (spinnerType.selectedItemPosition == 0){
+                                spinnerType.setBackgroundResource(R.drawable.dropdown_background_type)
+                            } else {
+                                spinnerType.setBackgroundResource(R.drawable.dropdown_background)
+                            }
+                            if ((position > 0)) {
+                                if (demo.subtype == 7) {
+                                    demo.typeMotopompe = position
+                                }
+                                if (demo.subtype == 9) {
+                                    demo.typeMotoreducteur = position
+                                }
+                                if (position == 1){
+                                    tisoPhase.visibility = View.VISIBLE
+                                    tmono.visibility = View.INVISIBLE
+                                }
+                                if (position == 2){
+                                    tisoPhase.visibility = View.INVISIBLE
+                                    tmono.visibility = View.VISIBLE
+                                }
+                                viewModel.selection.value = demo
+                                viewModel.getTime()
+                                viewModel.quickSave()
+                            }
+                        } }
                     spinnerMnt.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -438,7 +483,6 @@ class FicheRemontage : Fragment() {
                             )
                         }
                         if (demo!!.subtype == 7 && demo!!.typeMotopompe == 2) {
-                            tmono.visibility = View.VISIBLE
                             tisoPhase.visibility = View.GONE
                             if (demo.resistanceTravail !== null) resistanceTravail.setText(
                                 demo.resistanceTravail!!
