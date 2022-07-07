@@ -1,9 +1,17 @@
 package com.example.applicationstb.ui.ficheRemontage
 
+import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.SystemClock
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +23,19 @@ import com.example.applicationstb.model.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.*
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class FicheRemontage : Fragment() {
@@ -30,6 +45,7 @@ class FicheRemontage : Fragment() {
     }
 
     private val viewModel: FicheRemontageViewModel by activityViewModels()
+    lateinit var currentPhotoPath: String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -144,6 +160,10 @@ class FicheRemontage : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.observations)
         var term = layout.findViewById<Button>(R.id.termRemo)
         var btnFichesD = layout.findViewById<Button>(R.id.btnFichesD)
+        var btnquitter = layout.findViewById<Button>(R.id.quit)
+        var btnenregistrer = layout.findViewById<Button>(R.id.enregistrer)
+        var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var gal = layout.findViewById<Button>(R.id.g4)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
 
         spinnerType.adapter = ArrayAdapter<String>(
@@ -1031,17 +1051,67 @@ class FicheRemontage : Fragment() {
                     layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
 
                     layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
-                    layout.findViewById<LinearLayout>(R.id.btns).visibility = View.VISIBLE
+                    layout.findViewById<CardView>(R.id.btns).visibility = View.VISIBLE
+
+                    var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
+                    photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
+                        viewModel.photo.value = item
+                        viewModel.fullScreen(
+                            layout,
+                            "/storage/emulated/0/Pictures/test_pictures/" + item.toString()
+                        )
+                    })
+                    photos.adapter = sAdapter
+                    viewModel.photos.observe(viewLifecycleOwner, {
+                        sAdapter.update(it)
+                    })
+                    if (demo.photos !== null) sAdapter.update(viewModel.photos.value!!)
+                    btnPhoto.setOnClickListener {
+                        var test = ActivityCompat.checkSelfPermission(requireContext(),
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        if (test == false) {
+                            requestPermissions(arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                        }
+                        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { cameraIntent ->
+                            // Ensure that there's a camera activity to handle the intent
+                            cameraIntent.resolveActivity(requireActivity().packageManager).also {
+                                // Create the File where the photo should go
+                                val photoFile: File? = try {
+                                    createImageFile()
+                                } catch (ex: IOException) {
+                                    // Error occurred while creating the File
+                                    Log.i("INFO","error while creating file")
+                                    null
+                                }
+                                // Continue only if the File was successfully created
+                                photoFile?.also {
+                                    val photoURI: Uri = FileProvider.getUriForFile(
+                                        requireContext(),
+                                        "com.example.applicationstb.fileprovider",
+                                        it
+                                    )
+                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                                    startActivityForResult(cameraIntent, viewModel.CAMERA_CAPTURE)
+                                    //viewModel.addSchema(photoURI)
+                                }
+                            }
+                        }
+                    }
+                    gal.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
+                    }
                     //infoMoteur.visibility = View.VISIBLE
                     //essaisDynamiques.visibility = View.VISIBLE
                 }
             }
         }
-
         titre.setOnClickListener {
         }
-        var btnquitter = layout.findViewById<Button>(R.id.quit)
-        var btnenregistrer = layout.findViewById<Button>(R.id.enregistrer)
         btnquitter.setOnClickListener {
             viewModel.retour(layout)
         }
@@ -1086,8 +1156,6 @@ class FicheRemontage : Fragment() {
                 mySnackbar.show()
             }
         }
-
-
         btnenregistrer.setOnClickListener {
             var fiche = viewModel.selection.value!!
             if (fiche.dureeTotale !== null) {
@@ -1129,6 +1197,39 @@ class FicheRemontage : Fragment() {
         return layout
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == viewModel.CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.addPhoto(currentPhotoPath)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
+        }
+        if (requestCode == viewModel.GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    var nfile = async { viewModel.sendExternalPicture(file!!) }
+                    nfile.await()
+                    if (nfile.isCompleted) {
+                        var list = viewModel.selection.value?.photos?.toMutableList()
+                        list!!.removeAll { it == "" }
+                        list.add(nfile.await()!!)
+                        viewModel.selection.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                        viewModel.quickSave()
+                    }
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch(Dispatchers.IO) {
@@ -1140,5 +1241,35 @@ class FicheRemontage : Fragment() {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
     }
-
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        if (storageDir.exists()) {
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        } else {
+            makeFolder()
+            return File.createTempFile(
+                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
+            }
+        }
+    }
+    fun makeFolder(){
+        val storageDir: File = Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES+"/test_pictures")
+        storageDir.mkdir()
+    }
 }
