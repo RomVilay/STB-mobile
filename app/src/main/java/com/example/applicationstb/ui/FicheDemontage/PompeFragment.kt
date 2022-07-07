@@ -32,11 +32,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.applicationstb.model.DemontagePompe
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -47,10 +47,7 @@ import java.util.*
 
 class PompeFragment : Fragment() {
     private val viewModel: FicheDemontageViewModel by activityViewModels()
-    private lateinit var photos: RecyclerView
-    private  val PHOTO_RESULT = 1888
     lateinit var currentPhotoPath: String
-    val REQUEST_IMAGE_CAPTURE = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,9 +87,10 @@ class PompeFragment : Fragment() {
         var obs = layout.findViewById<EditText>(R.id.obs2)
         var termP = layout.findViewById<Button>(R.id.termP)
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
+        var gal = layout.findViewById<Button>(R.id.g6)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
-        var fiche = viewModel.selection.value!! as DemontagePompe
+        var fiche = viewModel.selection.value!!
         if (fiche.numSerie !== null) numSerie.setText(fiche.numSerie!!.toString()) else 0
         if (fiche.marque !== null) marque.setText(fiche.marque!!.toString())
         if (fiche.fluide !== null) fluide.setText(fiche.fluide!!.toString())
@@ -270,8 +268,8 @@ class PompeFragment : Fragment() {
             fluide.isEnabled = false
             sensRotation.isEnabled = false
             typeRessort.isEnabled = false
-            matiere.isEnabled = false
             typeJoint.isEnabled = false
+            matiere.isEnabled = false
             diametreArbre.isEnabled = false
             diametreExtPF.isEnabled = false
             diametreExtPR.isEnabled = false
@@ -282,13 +280,12 @@ class PompeFragment : Fragment() {
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
+            gal.visibility = View.INVISIBLE
         }
-        var gal = layout.findViewById<Button>(R.id.g6)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 6)
+            startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
         }
-
         var schema = layout.findViewById<ImageView>(R.id.schemaPompe)
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -322,7 +319,6 @@ class PompeFragment : Fragment() {
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
-
         diametreArbre.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d1)
@@ -330,7 +326,6 @@ class PompeFragment : Fragment() {
                 schema.setImageResource(R.drawable.detourage_pompe)
             }
         }
-
         diametreExtPR.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
                 schema.setImageResource(R.drawable.detourage_pompe_d3select)
@@ -367,7 +362,6 @@ class PompeFragment : Fragment() {
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInputFromWindow(activity?.currentFocus!!.windowToken, InputMethodManager.SHOW_FORCED, 0)
         }
-
         btnPhoto.setOnClickListener {
             var test = ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -396,13 +390,13 @@ class PompeFragment : Fragment() {
                             it
                         )
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        startActivityForResult(cameraIntent, viewModel.CAMERA_CAPTURE)
                         //viewModel.addSchema(photoURI)
                     }
                 }
             }
         }
-
+        /*
         var typeRoulement = layout.findViewById<Spinner>(R.id.spiRoul)
         typeRoulement.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M"))
         var switchRoullements = layout.findViewById<Switch>(R.id.switchRoullements)
@@ -644,6 +638,7 @@ class PompeFragment : Fragment() {
                 }
             }
         }
+        */
         //joints
         var typeJoints = layout.findViewById<Spinner>(R.id.spiJoints)
         typeJoints.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
@@ -729,8 +724,6 @@ class PompeFragment : Fragment() {
                 }
             }
         }
-
-
         retour.setOnClickListener {
             viewModel.retour(layout)
         }
@@ -740,9 +733,6 @@ class PompeFragment : Fragment() {
             viewModel.selection.value = fiche
             viewModel.localSave()
             if (viewModel.isOnline(requireContext())) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getNameURI()
-                }
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
@@ -762,9 +752,6 @@ class PompeFragment : Fragment() {
                             viewModel.selection.value = fiche
                             viewModel.localSave()
                             if (viewModel.isOnline(requireContext())) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    viewModel.getNameURI()
-                                }
                                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
@@ -784,26 +771,33 @@ class PompeFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(currentPhotoPath)
+        if (requestCode == viewModel.CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.addPhoto(currentPhotoPath)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
-            var file = viewModel.getRealPathFromURI(data?.data!!)
-            CoroutineScope(Dispatchers.IO).launch {
-                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
-                var nfile = viewModel.sendExternalPicture(file!!)
-                if (nfile !== null) {
-                    var list = viewModel.selection.value?.photos?.toMutableList()
-                    if (list != null) {
-                        list.add(nfile)
+        if (requestCode == viewModel.GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    var nfile = async { viewModel.sendExternalPicture(file!!) }
+                    nfile.await()
+                    if (nfile.isCompleted) {
+                        var list = viewModel.selection.value?.photos?.toMutableList()
+                        list!!.removeAll { it == "" }
+                        list.add(nfile.await()!!)
+                        viewModel.selection.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                        viewModel.localSave()
                     }
-                    viewModel.selection.value?.photos = list?.toTypedArray()
-                    viewModel.photos.postValue(list!!)
                 }
             }
-
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
+            }
         }
     }
 

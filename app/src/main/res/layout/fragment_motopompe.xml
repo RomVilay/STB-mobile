@@ -75,7 +75,7 @@
                         android:id="@+id/typeFluide"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="10dp"
                         android:ems="10"
                         android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/txtV"
@@ -89,6 +89,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="67dp"
                         android:text="Fluide : "
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titrePomp" />
 
@@ -99,6 +100,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="40dp"
                         android:text="Sens de Rotation :"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtV" />
 
@@ -108,6 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="Gauche"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@+id/textView8"
                         app:layout_constraintStart_toEndOf="@+id/textView8"
                         app:layout_constraintTop_toTopOf="@+id/textView8" />
@@ -117,6 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Droite"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@+id/sensRotation"
                         app:layout_constraintStart_toEndOf="@+id/sensRotation"
                         app:layout_constraintTop_toTopOf="@+id/sensRotation" />
@@ -127,6 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="Type mobile:"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@+id/typePompe"
                         app:layout_constraintStart_toEndOf="@+id/typeFluide"
                         app:layout_constraintTop_toTopOf="@+id/typePompe" />
@@ -135,18 +140,20 @@
                         android:id="@+id/typePompe"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginStart="52dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="67dp"
+                        android:background="@drawable/dropdown_background"
                         app:layout_constraintStart_toEndOf="@+id/textView48"
                         app:layout_constraintTop_toBottomOf="@+id/titrePomp" />
 
                     <TextView
                         android:id="@+id/textView49"
-                        android:layout_width="87dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="24dp"
                         android:text="Type de Joint"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -154,7 +161,7 @@
                         android:id="@+id/tjoint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="10dp"
                         android:completionThreshold="0"
                         android:ems="10"
                         android:inputType="text"
@@ -167,8 +174,9 @@
                         android:id="@+id/textView50"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
+                        android:layout_marginStart="20dp"
                         android:text="Matière Joint"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@+id/matJoint"
                         app:layout_constraintStart_toEndOf="@+id/tjoint"
                         app:layout_constraintTop_toTopOf="@+id/matJoint"
@@ -179,7 +187,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/dropdown_background"
                         app:layout_constraintStart_toEndOf="@+id/textView50"
                         app:layout_constraintTop_toBottomOf="@+id/sensRotation" />
 
@@ -189,6 +198,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
                         android:text="Diamètre Arbre(d1)"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/textView53"
                         app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
@@ -219,7 +229,7 @@
                         android:id="@+id/dEPR"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="10dp"
                         android:ems="10"
                         android:inputType="text"
                         app:layout_constraintBottom_toBottomOf="@+id/textView52"
@@ -245,6 +255,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="30dp"
                         android:text="Diamètre Extérieur Partie Rotative(d3)"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
@@ -254,6 +265,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
                         android:text="Longueur Partie Rotative Non Comprimée"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/PRTi3"
                         app:layout_constraintTop_toBottomOf="@+id/PRTi3" />
 
@@ -263,6 +275,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
                         android:text="Longueur Partie Rotative Comprimée"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/textView52"
                         app:layout_constraintTop_toBottomOf="@+id/textView52" />
 
@@ -272,6 +285,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="Longueur Partie Rotative en Travail(I3)"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/textView57"
                         app:layout_constraintTop_toBottomOf="@+id/textView57" />
 
@@ -293,6 +307,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
                         android:text="Diamètre Extérieur(d7)"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/textView54"
                         app:layout_constraintTop_toBottomOf="@+id/textView54" />
 
@@ -314,6 +329,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
                         android:text="Epaisseur Partie Fixe(I4)"
+                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/DEd7"
                         app:layout_constraintTop_toBottomOf="@+id/DEd7" />
 
@@ -547,27 +563,6 @@
                             app:layout_constraintTop_toBottomOf="@+id/essaistatiquesmono">
 
                             <TextView
-                                android:id="@+id/isopme"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="isolement phase/masse" />
-
-                            <EditText
-                                android:id="@+id/isopmUe"
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/round_textview"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:inputType="numberSigned|number|text"
-                                android:padding="5dp" />
-
-                            <TextView
                                 android:id="@+id/reste"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -597,7 +592,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Essais Dynamiques"
+                            android:text="Essais Dynamique : Tensions"
                             android:textSize="24sp"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
                             tools:layout_editor_absoluteX="4dp" />
@@ -619,19 +614,20 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="Intensité:" />
+                                android:text="U"
+                                android:textSize="20sp" />
 
                             <EditText
-                                android:id="@+id/vVe"
+                                android:id="@+id/tensionV"
                                 android:layout_width="20dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
                                 android:layout_marginLeft="20dp"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:background="@drawable/round_textview"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:hint="I"
+                                android:hint="U"
                                 android:inputType="numberSigned|number|text"
                                 android:padding="5dp" />
 
@@ -643,21 +639,46 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="Tension:" />
+                                android:text="V"
+                                android:textSize="20sp" />
 
                             <EditText
-                                android:id="@+id/vWe"
+                                android:id="@+id/tensionW"
                                 android:layout_width="20dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:background="@drawable/round_textview"
                                 android:ems="10"
                                 android:gravity="center"
-                                android:hint="U"
+                                android:hint="V"
                                 android:inputType="numberSigned|number|text"
                                 android:padding="5dp" />
+
+                            <TextView
+                                android:id="@+id/textView86"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:text="W"
+                                android:textAlignment="center"
+                                android:textSize="20sp" />
+
+                            <EditText
+                                android:id="@+id/tW"
+                                android:layout_width="20dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:background="@drawable/round_textview"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:hint="W"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp" />
+
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -725,7 +746,7 @@
                     <LinearLayout
                         android:id="@+id/linearRes"
                         android:layout_width="446dp"
-                        android:layout_height="32dp"
+                        android:layout_height="50dp"
                         android:layout_margin="16dp"
                         android:layout_marginStart="101dp"
                         android:layout_marginTop="15dp"
@@ -740,10 +761,12 @@
                             android:layout_width="37dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="U:" />
+                            android:text="U:"
+                            android:textAlignment="center"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/rU"
+                            android:id="@+id/rInduit"
                             android:layout_width="85dp"
                             android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
@@ -763,13 +786,14 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="V:" />
+                            android:text="V:"
+                            android:textAlignment="center"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/rV"
+                            android:id="@+id/rPP"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -787,7 +811,9 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:text="W:" />
+                            android:text="W:"
+                            android:textAlignment="center"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/rW"
@@ -807,7 +833,7 @@
                     <LinearLayout
                         android:id="@+id/linearPP"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_margin="16dp"
                         android:layout_marginStart="98dp"
                         android:layout_marginTop="15dp"
@@ -819,15 +845,16 @@
 
                         <TextView
                             android:id="@+id/UV"
-                            android:layout_width="37dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="U/V :" />
+                            android:text="U/V :"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/isoppU"
+                            android:id="@+id/isoppPC"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -836,7 +863,8 @@
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/UW"
@@ -845,13 +873,13 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="U/W :" />
+                            android:text="U/W :"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/isoppV"
+                            android:id="@+id/isoppPB"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -860,7 +888,8 @@
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/VW"
@@ -869,12 +898,13 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:text="V/W:" />
+                            android:text="V/W:"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/isoppW"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -883,7 +913,8 @@
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <TextView
@@ -902,7 +933,7 @@
                     <LinearLayout
                         android:id="@+id/linearLayout"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_margin="16dp"
                         android:layout_marginStart="97dp"
                         android:layout_marginTop="15dp"
@@ -914,15 +945,16 @@
 
                         <TextView
                             android:id="@+id/ttreInd"
-                            android:layout_width="37dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="U/M :" />
+                            android:text="U/M :"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/isopmU"
+                            android:id="@+id/isopmPA"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -931,7 +963,8 @@
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/rest"
@@ -940,13 +973,13 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="V/M :" />
+                            android:text="V/M :"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/isopmV"
+                            android:id="@+id/isopmPP"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -955,7 +988,8 @@
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/WM"
@@ -964,12 +998,13 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:text="W/M:" />
+                            android:text="W/M:"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/isopmW"
+                            android:id="@+id/isopmI"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -978,7 +1013,8 @@
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            android:padding="5dp"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <TextView
@@ -1003,17 +1039,17 @@
                         android:gravity="center"
                         android:text="Essais Dynamiques"
                         android:textSize="24sp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@+id/linearRes"
                         tools:layout_editor_absoluteX="0dp" />
 
                     <LinearLayout
                         android:id="@+id/tensionsTri"
-                        android:layout_width="400dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1024,17 +1060,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="U" />
+                            android:text="U"
+                            android:textSize="18sp" />
 
                         <EditText
-                            android:id="@+id/vU"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/tensionU"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:background="@drawable/round_textview"
-                            android:ems="10"
+                            android:ems="5"
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
@@ -1044,19 +1081,21 @@
                             android:id="@+id/VTtri"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="V:" />
+                            android:text="V:"
+                            android:textAlignment="textStart"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/vVtri"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:background="@drawable/round_textview"
-                            android:ems="10"
+                            android:ems="5"
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
@@ -1070,17 +1109,18 @@
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="W:" />
+                            android:text="W:"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/vWtri"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:background="@drawable/round_textview"
-                            android:ems="10"
+                            android:ems="5"
                             android:gravity="center"
                             android:hint="val"
                             android:inputType="numberSigned|number|text"
@@ -1088,27 +1128,28 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/intensité"
-                        android:layout_width="400dp"
+                        android:id="@+id/isoPhasetitre"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tensionsTri">
 
                         <TextView
-                            android:id="@+id/UI"
+                            android:id="@+id/isoPhase"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="U" />
+                            android:text="isolement Phase"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/vUI"
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -1120,51 +1161,6 @@
                             android:inputType="numberSigned|number|text"
                             android:padding="5dp" />
 
-                        <TextView
-                            android:id="@+id/VI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="V:" />
-
-                        <EditText
-                            android:id="@+id/vVI"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/WI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="W:" />
-
-                        <EditText
-                            android:id="@+id/vWI"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
                     </LinearLayout>
 
 

@@ -11,8 +11,13 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Spinner
 import androidx.fragment.app.*
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import com.example.applicationstb.R
 import com.example.applicationstb.model.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import okhttp3.Dispatcher
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -28,79 +33,81 @@ class FicheDemontage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var list = arguments?.get("listDemontages") as Array<DemontageMoteur>
         viewModel.token = arguments?.get("token") as String
-        viewModel.listeDemontages = list.toCollection(ArrayList())
-        viewModel.listeDemontages = viewModel.listeDemontages.filter { it.status!! < 3 }.toCollection(ArrayList())
+        //viewModel.listeDemontages.value = viewModel.listeDemontages.value!!.filter { it.status!! < 3 }.toCollection(ArrayList())
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_demontage_fragment, container, false)
-        val spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
-        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.map { it.numFiche  })
-        spinner.adapter = adapterDemontages
+        var spinner = layout.findViewById<Spinner>(R.id.spinnerDemontage)
+/*        val adapterDemontages = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
+        spinner.adapter = adapterDemontages*/
         var btnDemontage = layout.findViewById<Button>(R.id.selectDemontage)
         val cfragment = layout.findViewById<FrameLayout>(R.id.fragmentContainer)
         val fragmentManager = childFragmentManager
-        viewModel.selection.observe(viewLifecycleOwner) {
-           /* if (viewModel.selection.value!!.status == 3L) {
-                if (viewModel.listeDemontages.size > 1 ) {
-                    layout.findViewById<FrameLayout>(R.id.fragmentContainer).removeAllViews()
-                    viewModel.listeDemontages.remove(viewModel.selection.value!!)
-                    spinner.adapter = ArrayAdapter(
-                        requireActivity(),
-                        R.layout.support_simple_spinner_dropdown_item,
-                        viewModel.listeDemontages.map { it.numFiche })
-                } else {
-                    viewModel.back(layout)
+        viewModel.listeDemontages.observe(viewLifecycleOwner){
+            spinner!!.adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
+        }
+        if (arguments?.get("ficheID") !== null ){
+                CoroutineScope(Dispatchers.IO).launch{
+                    var fiches = async {  viewModel.repository.demontageRepository!!.getAllDemontageLocalDatabase()}.await().map { it.toFicheDemontage() }.filter { it.status!! >= 2 }.toMutableList()
+                        //var list = fiche.await().map { it.toFicheDemontage() }.filter { it.status!! >= 3 }.toMutableList()
+                        withContext(Dispatchers.Main){
+                            viewModel.listeDemontages.value = fiches
+                            spinner.setSelection(fiches.indexOfFirst { it._id == arguments?.get("ficheID") })
+                        }
                 }
-            }*/
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+               viewModel.getLocalFiches()
+            }
+        }
+        viewModel.selection.observe(viewLifecycleOwner) {
+            if (viewModel.selection.value !== null){
+                Log.i("info","position ${viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value)}")
+                spinner.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
+            }
 
         }
         btnDemontage.setOnClickListener {
             viewModel.start.value = Date()
-            var demo = viewModel.listeDemontages.find { it.numFiche == spinner.selectedItem }
+            var demo = viewModel.listeDemontages.value!!.find { it.numFiche == spinner!!.selectedItem }
             viewModel.selection.value = demo
-            viewModel.selection.value!!.status = 2L
-            /*var tab = viewModel.selection.value!!.typeRoulementAvant!!.toMutableList().filter { it == "" }
-            viewModel.selection.value!!.typeRoulementAvant = tab.toTypedArray()
-            var tab2 = viewModel.selection.value!!.typeRoulementArriere!!.toMutableList().filter { it == "" }
-            viewModel.selection.value!!.typeRoulementArriere = tab2.toTypedArray()*/
-
-            when (viewModel.selection.value){
-                is CourantContinu -> fragmentManager.commit {
-                    replace<CCFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-                is Triphase -> fragmentManager.commit {
-                    replace<TriphaseFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-                is DemontagePompe -> fragmentManager.commit {
+            viewModel.photos.value = demo!!.photos!!.toMutableList()
+            viewModel.refRoulements.value = mutableListOf<String>()
+            viewModel.posRoulement.value = mutableListOf<String>()
+            viewModel.typeRoulements.value = mutableListOf<String>()
+            viewModel.setRoulements(demo.refRoulementArriere!!,demo.typeRoulementArriere!!,demo.refRoulementAvant!!,demo.typeRoulementAvant!!)
+            if (viewModel.selection.value!!.status ==  1L) viewModel.selection.value!!.status = 2L
+            when (viewModel.selection.value!!.subtype){
+                1 -> fragmentManager.commit {
                     replace<PompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageMonophase -> fragmentManager.commit {
+                2 -> fragmentManager.commit {
                     replace<MonophaseFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-               is DemontageRotorBobine -> fragmentManager.commit {
-                    replace<RotorBobineFragment>(R.id.fragmentContainer)
-                    setReorderingAllowed(true)
-                }
-
-                is DemontageAlternateur ->fragmentManager.commit {
+                3 ->fragmentManager.commit {
                     replace<AlternateurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageMotoreducteur ->fragmentManager.commit {
-                    replace<MotoReducteurFragment>(R.id.fragmentContainer)
+                5 -> fragmentManager.commit {
+                    replace<CCFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageMotopompe ->fragmentManager.commit {
+                6 -> fragmentManager.commit {
+                    replace<TriphaseFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                7 ->fragmentManager.commit {
                     replace<MotopompeFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
-                is DemontageReducteur ->fragmentManager.commit {
+                8 ->fragmentManager.commit {
                     replace<ReducteurFragment>(R.id.fragmentContainer)
+                    setReorderingAllowed(true)
+                }
+                9 ->fragmentManager.commit {
+                    replace<MotoReducteurFragment>(R.id.fragmentContainer)
                     setReorderingAllowed(true)
                 }
             }
@@ -111,6 +118,13 @@ class FicheDemontage : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+
     }
    /* private fun chargerFiche(){
         var selection: Fragment = FicheMonophase();

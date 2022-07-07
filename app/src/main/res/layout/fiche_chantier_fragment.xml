@@ -196,6 +196,18 @@
                     android:gravity="center"
                     android:hint="matériel nécessaire" />
 
+                <EditText
+                    android:id="@+id/dureeEch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/round_textview"
+                    android:ems="10"
+                    android:hint="Durée Essai"
+                    android:inputType="time"
+                    android:textAlignment="center" />
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="649dp"
                     android:layout_height="match_parent">

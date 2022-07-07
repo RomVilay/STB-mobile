@@ -20,15 +20,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.findNavController
 import com.example.applicationstb.R
-import com.example.applicationstb.localdatabase.DemontageMotopompeEntity
-import com.example.applicationstb.model.DemontageMotopompe
-import com.example.applicationstb.ui.ficheChantier.DawingView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -51,10 +48,10 @@ class Accueil : Fragment() {
         viewModel = ViewModelProvider(this).get(AccueilViewModel::class.java)
         val layout = inflater.inflate(R.layout.accueil_fragment, container, false)
         viewModel.token.value = arguments?.get("Token") as? String
-        viewModel.username = arguments?.get("Username") as? String
+        viewModel.userId = arguments?.get("Username") as? String
         val reload = layout.findViewById<Button>(R.id.reload)
         val send = layout.findViewById<Button>(R.id.send)
-        if (viewModel.token !== null && viewModel.username !== null && viewModel.isOnline(viewModel.context) && viewModel.token.value !== "" && viewModel.fiches == null) {
+        if (viewModel.token !== null && viewModel.userId !== null && viewModel.isOnline(viewModel.context) && viewModel.token.value !== "" && viewModel.fiches == null) {
             runBlocking {
                 var job = launch {
                     var test = ActivityCompat.checkSelfPermission(
@@ -71,7 +68,7 @@ class Accueil : Fragment() {
                     }
                 }
                 var job2 = launch {
-                    viewModel.listeFiches(viewModel.token.value!!, viewModel.username.toString())
+                    viewModel.listeFiches(viewModel.token.value!!, viewModel.userId.toString())
                 }
                 delay(200)
                 job2.join()
@@ -94,7 +91,6 @@ class Accueil : Fragment() {
         val rm = layout.findViewById<TextView>(R.id.btnRemo)
         val rb = layout.findViewById<Button>(R.id.btnRebobinage)
         val token = arguments?.let { AccueilArgs.fromBundle(it).token }
-
         val loading = layout.findViewById<CardView>(R.id.loadingHome)
         val sharedPref = activity?.getSharedPreferences(
             "identifiants", Context.MODE_PRIVATE
@@ -108,11 +104,23 @@ class Accueil : Fragment() {
             btnPtn.setChecked(viewModel.tracking.value!!)
         })
         btnPtn.setOnClickListener {
-            viewModel.Pointage()
+            lifecycleScope.launch(Dispatchers.IO){
+                viewModel.sendPointage()
+            }
         }
         listePointage.setOnClickListener {
-            viewModel.updatePointages()
-            viewModel.toPointages(layout)
+            if (viewModel.isOnline(requireContext())){
+                loading.visibility = View.VISIBLE
+                lifecycleScope.launch(Dispatchers.IO) {
+                    async {  viewModel.updatePointages()}.await()
+                    withContext(Dispatchers.Main){
+                        loading.visibility = View.GONE
+                        viewModel.toPointages(layout)
+                    }
+                }
+            } else {
+                viewModel.toPointages(layout)
+            }
         }
         deco.setOnClickListener {
             val alertDialogBuilder: AlertDialog? = activity?.let {
@@ -298,18 +306,24 @@ class Accueil : Fragment() {
             }
         }
         dm.setOnClickListener {
-            if (viewModel.demontages.size > 0) {
-                viewModel.toFicheD(layout)
-            } else {
-                val mySnackbar = Snackbar.make(
-                    layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                    "Vous n'avez pas de Demontages attribués",
-                    3600
-                )
-                mySnackbar.show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                var index = viewModel.nbFichesDemontage()
+                    if (index > 0) {
+                        withContext(Dispatchers.Main) {
+                            viewModel.toFicheD(layout)
+                        }
+                    } else {
+                        val mySnackbar = Snackbar.make(
+                            layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                            "Vous n'avez pas de Demontages attribués",
+                            3600
+                        )
+                        mySnackbar.show()
+                    }
             }
         }
         cht.setOnClickListener {
+            Log.i("info", viewModel.chantiers.size.toString())
             if (viewModel.chantiers.size > 0) {
                 viewModel.toChantier(layout)
             } else {
@@ -322,15 +336,20 @@ class Accueil : Fragment() {
             }
         }
         rm.setOnClickListener {
-            if (viewModel.remontages.size > 0) {
-                viewModel.toFicheR(layout)
-            } else {
-                val mySnackbar = Snackbar.make(
-                    layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                    "Vous n'avez pas de Remontages attribués",
-                    3600
-                )
-                mySnackbar.show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                var index = viewModel.nbFichesRemontage()
+                if (index > 0) {
+                    withContext(Dispatchers.Main) {
+                        viewModel.toFicheR(layout)
+                    }
+                } else {
+                    val mySnackbar = Snackbar.make(
+                        layout.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
+                        "Vous n'avez pas de Demontages attribués",
+                        3600
+                    )
+                    mySnackbar.show()
+                }
             }
         }
         rb.setOnClickListener {
@@ -360,12 +379,13 @@ class Accueil : Fragment() {
             }
             activity?.finish()
         }
-
         var suppr = layout.findViewById<Button>(R.id.buttonSuppr2)
         suppr.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+               viewModel.repository.deleteAllPointages("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNDM1ZTFhMjI3MzI1MGZlZDI1OTg1NyIsImlhdCI6MTY1MjE3Njc5NX0.8zszEqomoauOKPB8QSlGQaMPH-DAbn-YOsqbZYIApCU",viewModel.sharedPref.getString("userId","")!!)
+            }
             Log.i("info", " token ${viewModel.token.value!!}")
         }
-
         return layout
     }
 

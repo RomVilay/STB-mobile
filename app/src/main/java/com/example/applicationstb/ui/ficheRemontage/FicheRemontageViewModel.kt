@@ -32,29 +32,31 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.util.*
+import com.example.applicationstb.model.FicheRemontage
+import kotlin.reflect.typeOf
 
 class FicheRemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
     var token: String? = null;
     var username: String? = null;
     var repository = Repository(context)
-    var listeRemontages = arrayListOf<Remontage>()
+    var listeRemontages = MutableLiveData<MutableList<FicheRemontage>>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
-    val selection = MutableLiveData<Remontage>()
+    val selection = MutableLiveData<FicheRemontage>()
     var start = MutableLiveData<Date>()
-    var listeDemo = MutableLiveData<Array<DemontageMoteur>?>(arrayOf())
     val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
-    var ficheDemo = MutableLiveData<DemontageMoteur>()
-    fun getListeDemo() : Array<DemontageMoteur> { return listeDemo.value!! }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
+            getLocalFiches()
         }
     }
-
+    suspend fun getLocalFiches(){
+        listeRemontages.postValue(repository.remontageRepository!!.getAllRemontageLocalDatabase().map {it.toFicheRemo()}.toMutableList())
+    }
     fun select(i: Int) {
-        selection.value = listeRemontages[i]
+        selection.value = listeRemontages.value!![i]
         //selection.value?.let { afficherFiche(it) }
     }
 
@@ -76,14 +78,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         Navigation.findNavController(view).navigate(action)
     }
 
-    fun toFicheDemo(view: View, fiche: DemontageMoteur) {
-        val action = FicheRemontageDirections.actionFicheRemontageToFicheDemontage(
-            token!!, username!!,
-            arrayOf(fiche)
-        )
-        Navigation.findNavController(view).navigate(action)
-    }
-
     fun getTime() {
         //Log.i("INFO", "duree avant : ${selection.value?.dureeTotale}")
         var now = Date()
@@ -100,34 +94,7 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         Log.i("INFO", "quick save")
         getTime()
         viewModelScope.launch(Dispatchers.IO) {
-            if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9) {
-                var fiche = selection.value!! as RemontageTriphase
-                var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
-                if (tri !== null) {
-                    repository.updateRemoTriLocalDatabse(fiche.toEntity())
-                } else {
-                    repository.insertRemoTriLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheRemontage == 5) {
-                var fiche = selection.value!! as RemontageCourantC
-                var remo = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
-                //Log.i("INFO","${ch}")
-                if (remo !== null) {
-                    repository.updateRemoCCLocalDatabse(fiche.toEntity())
-                } else {
-                    repository.insertRemoCCLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2 || selection.value!!.typeFicheRemontage == 8) {
-                var fiche = selection.value!!
-                var remo = repository.getByIdRemoLocalDatabse(fiche._id)
-                if (remo !== null) {
-                    repository.updateRemoLocalDatabse(fiche.toRemoEntity())
-                } else {
-                    repository.insertRemoLocalDatabase(fiche)
-                }
-            }
+            repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
         }
     }
 
@@ -138,528 +105,58 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
             }
             delay(200)
-        }
-        if (selection.value!!.typeFicheRemontage == 6 || selection.value!!.typeFicheRemontage == 7 || selection.value!!.typeFicheRemontage == 9 ) {
-            var t = selection.value!! as RemontageTriphase
-            if (isOnline(context) && token !== "") {
-                val resp = repository.patchRemontageTriphase(
-                    token!!,
-                    selection.value!!._id,
-                    t,
-                    object : Callback<RemontageTriphaseResponse> {
-                        override fun onResponse(
-                            call: Call<RemontageTriphaseResponse>,
-                            response: Response<RemontageTriphaseResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                val resp = response.body()
-                                if (resp != null) {
-                                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                    mySnackbar.show()
-                                }
-                            } else {
+            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                repository.remontageRepository!!.patchRemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<RemontageResponse>{
+                    override fun onResponse(
+                        call: Call<RemontageResponse>,
+                        response: Response<RemontageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                            if (resp != null) {
                                 val mySnackbar =
-                                    Snackbar.make(view, "erreur d'enregistrement", 3600)
+                                    Snackbar.make(view, "fiche enregistrée", 3600)
                                 mySnackbar.show()
-                                Log.i(
-                                    "INFO",
-                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                        response.errorBody()!!.charStream().readText()
-                                    }"
-                                )
-                            }
-                        }
+                                Log.i("INFO", "enregistré")
 
-                        override fun onFailure(
-                            call: Call<RemontageTriphaseResponse>,
-                            t: Throwable
-                        ) {
-                            val mySnackbar = Snackbar.make(
-                                view.findViewById<CoordinatorLayout>(R.id.AccueilLayout),
-                                "erreur d'enregistrement",
-                                3600
-                            )
+                            }
+                        } else {
+                            val mySnackbar =
+                                Snackbar.make(view, "erreur d'enregistrement", 3600)
                             mySnackbar.show()
-                            Log.e(
-                                "Error", "erreur ${t.message} - body request ${
-                                    call.request().body().toString()
-                                }\""
+                            viewModelScope.launch(Dispatchers.IO){
+                                repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
+                            }
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                    response.errorBody()!!.charStream().readText()
+                                }"
                             )
                         }
-                    })
-            } else {
-                viewModelScope.launch(Dispatchers.IO) {
-                    var tri = repository.getByIdRemoTriLocalDatabse(selection.value!!._id)
-                    if (tri !== null) {
-                        repository.updateRemoTriLocalDatabse(t.toEntity())
-                        val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
-                    } else {
-                        repository.insertRemoTriLocalDatabase(t)
-                        val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                        mySnackbar.show()
                     }
-                }
-            }
-        }
-        if (selection.value!!.typeFicheRemontage == 5) {
-            var c = selection.value!! as RemontageCourantC
-            if (isOnline(context) && token !== "") {
-                val resp = repository.patchRemontageCC(
-                    token!!,
-                    selection.value!!._id,
-                    c,
-                    object : Callback<RemontageCCResponse> {
-                        override fun onResponse(
-                            call: Call<RemontageCCResponse>,
-                            response: Response<RemontageCCResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                val resp = response.body()
-                                if (resp != null) {
-                                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                    mySnackbar.show()
-                                }
-                            } else {
-                                val mySnackbar =
-                                    Snackbar.make(view, "erreur d'enregistrement", 3600)
-                                mySnackbar.show()
-                                Log.i(
-                                    "INFO",
-                                    "code : ${response.code()} - erreur : ${
-                                        response.errorBody()!!.charStream().readText()
-                                    }"
-                                )
-                            }
-                        }
 
-                        override fun onFailure(call: Call<RemontageCCResponse>, t: Throwable) {
-                            Log.e("Error", "erreur ${t.message}")
-                            val mySnackbar = Snackbar.make(view, "erreur d'enregistrement", 3600)
-                            mySnackbar.show()
-                        }
-                    })
-            } else {
-                viewModelScope.launch(Dispatchers.IO) {
-                    var tri = repository.getByIdRemoCCLocalDatabse(selection.value!!._id)
-                    if (tri !== null) {
-                        repository.updateRemoCCLocalDatabse(c.toEntity())
-                    } else {
-                        repository.insertRemoCCLocalDatabase(c)
-                    }
-                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                    mySnackbar.show()
-                }
+                    override fun onFailure(
+                        call: Call<RemontageResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Error", "${t.stackTraceToString()}")
+                        Log.e("Error", "erreur ${t.message}")
+                    }})
             }
-        }
-        if (selection.value!!.typeFicheRemontage == 3 || selection.value!!.typeFicheRemontage == 4 || selection.value!!.typeFicheRemontage == 1 || selection.value!!.typeFicheRemontage == 2) {
-            var c = selection.value!!
-            if (isOnline(context) && token !== "") {
-                val resp = repository.patchRemontage(
-                    token!!,
-                    selection.value!!._id,
-                    c,
-                    object : Callback<RemontageResponse> {
-                        override fun onResponse(
-                            call: Call<RemontageResponse>,
-                            response: Response<RemontageResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                val resp = response.body()
-                                if (resp != null) {
-                                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                    mySnackbar.show()
-                                }
-                            } else {
-                                val mySnackbar =
-                                    Snackbar.make(view, "erreur d'enregistrement", 3600)
-                                mySnackbar.show()
-                                Log.i(
-                                    "INFO",
-                                    "code : ${response.code()} - erreur : ${
-                                        response.errorBody()!!.charStream().readText()
-                                    }"
-                                )
-                            }
-                        }
+        } else {
+            viewModelScope.launch(Dispatchers.IO){
+                repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
+            }
+            val mySnackbar =
+                Snackbar.make(view, "fiche enregistrée", 3600)
+            mySnackbar.show()
 
-                        override fun onFailure(call: Call<RemontageResponse>, t: Throwable) {
-                            Log.e("Error", "erreur ${t.message}")
-                            val mySnackbar = Snackbar.make(view, "erreur d'enregistrement", 3600)
-                            mySnackbar.show()
-                        }
-                    })
-            } else {
-                viewModelScope.launch(Dispatchers.IO) {
-                    var tri = repository.getByIdRemoLocalDatabse(selection.value!!._id)
-                    if (tri !== null) {
-                        repository.updateRemoLocalDatabse(c.toRemoEntity())
-                    } else {
-                        repository.insertRemoLocalDatabase(c)
-                    }
-                    val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                    mySnackbar.show()
-                }
-            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getListeDemontage(): Array<DemontageMoteur> = runBlocking{
-        var liste = mutableListOf<DemontageMoteur>()
-            if (isOnline(context) && sharedPref.getBoolean("connected",false)) {
-                var job = viewModelScope.async {
-                    repository.getFichesForRemontage(
-                        token!!,
-                        selection.value!!.numDevis!!,
-                        object : Callback<DemontagesResponse> {
-                            override fun onResponse(
-                                call: Call<DemontagesResponse>,
-                                response: Response<DemontagesResponse>
-                            ) {
-                                var l = response.body()!!.data!!
-                                for (f in l) {
-                                    Log.i("INFO","add fiche")
-                                    getFichesDemontage(f._id)
-                                    liste.add(f)
-                                }
-                            }
 
-                            override fun onFailure(call: Call<DemontagesResponse>, t: Throwable) {
-                                Log.e("Error", "erreur ${t.message}")
-                            }
-                        })
-                }
-                Log.i("INFO", "fiches ${liste.size}")
-               return@runBlocking liste.toTypedArray()
-            } else {
-                Log.i("info","fiche sélectionnée de type ${selection.value?.typeFicheRemontage}")
-                /*if (selection.value!!.typeFicheRemontage == 1) {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        var list = repository.getAllDemontagePompeLocalDatabase()
-                        var t = mutableListOf<DemontageMoteur>()
-                        for (i in list) {
-                            if (i.numDevis == selection.value!!.numDevis) {
-                                t.add(i.toDemoPompe())
-                            }
-                        }
-                        listeDemo.postValue(t.toTypedArray())
-                    }
-                }
-                if (selection.value!!.typeFicheRemontage == 2) {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        var list = repository.getAllDemontageMonoLocalDatabase()
-                        var t = mutableListOf<DemontageMoteur>()
-                        for (i in list) {
-                            if (i.numDevis == selection.value!!.numDevis) {
-                                t.add(i.toMonophase())
-                            }
-                        }
-                        listeDemo.postValue(t.toTypedArray())
-                    }
-
-                }
-                if (selection.value!!.typeFicheRemontage == 3) {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        var list = repository.getAllDemontageAlterLocalDatabase()
-                        var t = mutableListOf<DemontageMoteur>()
-                        for (i in list) {
-                            if (i.numDevis == selection.value!!.numDevis) {
-                                t.add(i.toDemontageAlternateur())
-                            }
-                        }
-                        listeDemo.postValue(t.toTypedArray())
-                    }
-
-                }
-                if (selection.value!!.typeFicheRemontage == 4) {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        var list = repository.getAllDemontageRBLocalDatabase()
-                        var t = mutableListOf<DemontageMoteur>()
-                        for (i in list) {
-                            if (i.numDevis == selection.value!!.numDevis) {
-                                t.add(i.toDemoRotorB())
-                            }
-                        }
-                        listeDemo.postValue(t.toTypedArray())
-                    }
-                }
-                if (selection.value!!.typeFicheRemontage == 5) {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        var list = repository.getAllDemontageCCLocalDatabase()
-                        var t = mutableListOf<DemontageMoteur>()
-                        for (i in list) {
-                            if (i.numDevis == selection.value!!.numDevis) {
-                                t.add(i.toCContinu())
-                            }
-                        }
-                        listeDemo.postValue(t.toTypedArray())
-                    }
-                }
-                if (selection.value!!.typeFicheRemontage == 6) {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        var list = repository.getAllDemontageTriLocalDatabase()
-                        var t = mutableListOf<DemontageMoteur>()
-                        for (i in list) {
-                            if (i.numDevis == selection.value!!.numDevis) {
-                                t.add(i.toTriphase())
-                            }
-                        }
-                        listeDemo.postValue(t.toTypedArray())
-                        listeDemo?.value?.get(0)?.numFiche?.let { Log.i("INFO", it) }
-                    }
-                }
-                else{}*/
-            }
-        return@runBlocking liste.toTypedArray()
-    }
-
-    fun getFichesDemontage(id: String) : DemontageMoteur? {
-        var demo = MutableLiveData<DemontageMoteur>()
-        runBlocking {
-            repository.getDemontage(token!!, id, object: Callback<DemontageResponse> {
-                override fun onResponse(
-                    call: Call<DemontageResponse>,
-                    response: Response<DemontageResponse>
-                ) {
-                    runBlocking {
-                        var fiche = response.body()?.data
-                        if (fiche !== null) {
-                            Log.i("INFO", (fiche.typeFicheDemontage == selection.value?.typeFicheRemontage).toString())
-                            if (fiche.typeFicheDemontage == 1 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var pompe = viewModelScope.async {repository.getDemontagePompe(
-                                    token!!,
-                                    fiche._id,
-                                    object : Callback<DemontagePompeResponse> {
-                                        override fun onResponse(
-                                            call: Call<DemontagePompeResponse>,
-                                            response: Response<DemontagePompeResponse>
-                                        ) {
-                                            if (response.code() == 200) {
-                                                fiche
-                                                var copy = listeDemo.value?.toMutableList()
-                                                if (copy != null) {
-                                                    demo.value = response.body()!!.data!!
-                                                    viewModelScope.launch(Dispatchers.IO) {
-                                                        var photos =
-                                                            demo.value!!.photos?.toMutableList()
-                                                        var iter = photos?.listIterator()
-                                                        while (iter?.hasNext() == true) {
-                                                            getPhotoFile(iter.next().toString())
-                                                        }
-                                                        demo.value!!.photos = photos?.toTypedArray()
-                                                    }
-                                                    if (!copy.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
-                                                    listeDemo.value = copy.toTypedArray()
-
-                                                }
-                                            }
-                                        }
-
-                                        override fun onFailure(
-                                            call: Call<DemontagePompeResponse>,
-                                            t: Throwable
-                                        ) {
-                                            Log.e("Error", "erreur ${t.message}")
-                                        }
-                                    })}
-                                pompe.await()
-                                return@runBlocking demo.value
-                            }
-                            if (fiche.typeFicheDemontage == 2 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                Log.i("INFO", "mono")
-                                var mono =  viewModelScope.async {
-                                    repository.getDemontageMono(
-                                        token!!,
-                                        fiche._id,
-                                        object : Callback<DemontageMonophaseResponse> {
-                                            override fun onResponse(
-                                                call: Call<DemontageMonophaseResponse>,
-                                                response: Response<DemontageMonophaseResponse>
-                                            ) {
-                                                if (response.code() == 200) {
-                                                    demo.value = response.body()!!.data!!
-                                                    viewModelScope.launch(Dispatchers.IO) {
-                                                        var photos =
-                                                            demo.value!!.photos?.toMutableList()
-                                                        var iter = photos?.listIterator()
-                                                        while (iter?.hasNext() == true) {
-                                                            getPhotoFile(iter.next().toString())
-                                                        }
-                                                        demo.value!!.photos = photos?.toTypedArray()
-                                                    }
-                                                    var copy = listeDemo.value?.toMutableList()
-                                                    if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
-                                                    listeDemo.value = copy?.toTypedArray()
-                                                }
-                                            }
-
-                                            override fun onFailure(
-                                                call: Call<DemontageMonophaseResponse>,
-                                                t: Throwable
-                                            ) {
-                                                Log.e("Error", "erreur ${t.message}")
-                                            }
-                                        })
-                                }
-                                mono.await()
-                                return@runBlocking demo.value
-                            }
-                            if (fiche.typeFicheDemontage == 3 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var alter = viewModelScope.async { repository.getDemontageAlternateur(
-                                    token!!,
-                                    fiche._id,
-                                    object : Callback<DemontageAlternateurResponse> {
-                                        override fun onResponse(
-                                            call: Call<DemontageAlternateurResponse>,
-                                            response: Response<DemontageAlternateurResponse>
-                                        ) {
-                                            if (response.code() == 200) {
-                                                demo.value = response.body()!!.data!!
-                                                var copy = listeDemo.value?.toMutableList()
-                                                if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
-                                                viewModelScope.launch(Dispatchers.IO) {
-                                                    var photos =
-                                                        demo.value!!.photos?.toMutableList()
-                                                    var iter = photos?.listIterator()
-                                                    while (iter?.hasNext() == true) {
-                                                        getPhotoFile(iter.next().toString())
-                                                    }
-                                                    demo.value!!.photos = photos?.toTypedArray()
-                                                }
-                                                listeDemo.value = copy?.toTypedArray()
-                                            }
-                                        }
-
-                                        override fun onFailure(
-                                            call: Call<DemontageAlternateurResponse>,
-                                            t: Throwable
-                                        ) {
-                                            Log.e("Error", "erreur ${t.message}")
-                                        }
-                                    }) }
-                                return@runBlocking demo
-                            }
-                            if (fiche.typeFicheDemontage == 4 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                Log.i("INFO", "rotor")
-                                var RB = repository.getDemontageRB(
-                                    token!!,
-                                    fiche._id,
-                                    object : Callback<DemontageRotorBobineResponse> {
-                                        override fun onResponse(
-                                            call: Call<DemontageRotorBobineResponse>,
-                                            response: Response<DemontageRotorBobineResponse>
-                                        ) {
-                                            if (response.code() == 200) {
-                                                Log.i(
-                                                    "INFO",
-                                                    "type fiche ${response.body()?.data?.javaClass}"
-                                                )
-                                                demo.value = response.body()!!.data!!
-                                                viewModelScope.launch(Dispatchers.IO) {
-                                                    var photos =
-                                                        demo.value!!.photos?.toMutableList()
-                                                    var iter = photos?.listIterator()
-                                                    while (iter?.hasNext() == true) {
-                                                        getPhotoFile(iter.next().toString())
-                                                    }
-                                                    demo.value!!.photos = photos?.toTypedArray()
-                                                }
-                                                var copy = listeDemo.value?.toMutableList()
-                                                if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
-                                                listeDemo.value = copy?.toTypedArray()
-                                            }
-                                        }
-
-                                        override fun onFailure(
-                                            call: Call<DemontageRotorBobineResponse>,
-                                            t: Throwable
-                                        ) {
-                                            Log.e("Error", "erreur ${t.message}")
-                                        }
-                                    })
-                            }
-                            if (fiche.typeFicheDemontage == 5 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var CC =
-                                    repository.getDemontageCC(
-                                        token!!,
-                                        fiche._id,
-                                        object : Callback<DemontageCCResponse> {
-                                            override fun onResponse(
-                                                call: Call<DemontageCCResponse>,
-                                                response: Response<DemontageCCResponse>
-                                            ) {
-                                                if (response.code() == 200) {
-                                                    demo.value = response.body()!!.data!!
-                                                    viewModelScope.launch(Dispatchers.IO) {
-                                                        var photos =
-                                                            demo.value!!.photos?.toMutableList()
-                                                        var iter = photos?.listIterator()
-                                                        while (iter?.hasNext() == true) {
-                                                            getPhotoFile(iter.next().toString())
-                                                        }
-                                                        demo.value!!.photos = photos?.toTypedArray()
-                                                    }
-                                                    var copy = listeDemo.value?.toMutableList()
-                                                    if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
-                                                    listeDemo.value = copy?.toTypedArray()
-                                                }
-                                            }
-
-                                            override fun onFailure(
-                                                call: Call<DemontageCCResponse>,
-                                                t: Throwable
-                                            ) {
-                                                Log.e("Error", "erreur ${t.message}")
-                                            }
-                                        })
-                            }
-                            if (fiche.typeFicheDemontage == 6 && fiche.typeFicheDemontage == selection.value?.typeFicheRemontage) {
-                                var tri = repository.getDemontageTriphase(
-                                    token!!,
-                                    fiche._id,
-                                    object : Callback<DemontageTriphaseResponse> {
-                                        override fun onResponse(
-                                            call: Call<DemontageTriphaseResponse>,
-                                            response: Response<DemontageTriphaseResponse>
-                                        ) {
-                                            if (response.code() == 200) {
-                                                demo.value = response.body()!!.data!!
-                                                viewModelScope.launch(Dispatchers.IO) {
-                                                    var photos =
-                                                        demo.value!!.photos?.toMutableList()
-                                                    var iter = photos?.listIterator()
-                                                    while (iter?.hasNext() == true) {
-                                                        getPhotoFile(iter.next().toString())
-                                                    }
-                                                   demo.value!!.photos = photos?.toTypedArray()
-                                                }
-                                                var copy = listeDemo.value?.toMutableList()
-                                                if (!copy!!.contains(response.body()!!.data!!)) copy.add(response.body()!!.data!!)
-                                                listeDemo.value = copy?.toTypedArray()
-                                            }
-                                        }
-
-                                        override fun onFailure(
-                                            call: Call<DemontageTriphaseResponse>,
-                                            t: Throwable
-                                        ) {
-                                            Log.e("Error", "erreur ${t.message}")
-                                        }
-                                    })
-                            }
-                            else{}
-                    } else {}
-                    }
-                }
-
-                override fun onFailure(call: Call<DemontageResponse>, t: Throwable) {
-                    Log.e("Error", "erreur ${t.message}")
-                }
-            })
-        }
-        return demo.value
-    }
     suspend fun getPhotoFile(photoName: String): String? = runBlocking {
         var file = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
@@ -700,22 +197,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
             job.join()
-            /*var job2 = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            var resp2 = repository.getPhoto(file!!)
-            withContext(Dispatchers.Main){
-                if( resp2.isSuccessful) {
-                    saveImage(Glide.with(this@withContext)
-                        .asBitmap()
-                        .load(resp2.))
-                   // var p = saveFile(resp2.body(), Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES).absolutePath+"/test_pictures/"+photoName)
-                   // photos?.value!!.add(p)
-                   // Log.i("INFO", "chemin:"+p)
-                } else{
-                    exceptionHandler
-                }
-            }
-        }
-        job2.join()*/
         } else {
             if (file.exists()) {
                 path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
@@ -731,6 +212,33 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     }
     val exceptionHandler2 = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "erreur enregistrement: ${throwable.localizedMessage}")
+    }
+
+    fun toDemontage(view: View, fiche: String) {
+        Navigation.findNavController(view).navigate(FicheRemontageDirections.actionFicheRemontageToFicheDemontage(token,sharedPref.getString("userId","")!!,fiche))
+    }
+    fun getListeDemontage(view: View){
+        view.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.IO).launch {
+            var list = async { repository.demontageRepository!!.getFicheForRemontage(token!!,selection.value!!.numDevis!!) }.await()
+            for (fiche in list.body()!!.data){
+                var check  = repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it._id }.indexOf(fiche._id)
+                if (check < 0) {
+                    repository.demontageRepository!!.insertDemontageLocalDatabase(fiche)
+                } else {
+                    repository.demontageRepository!!.updateDemontageLocalDatabse(fiche.toEntity())
+                }
+            }
+            if (list.isSuccessful){
+                val mySnackbar =
+                    Snackbar.make(view, "liste des fiches mise à jour", 3600)
+                mySnackbar.show()
+            } else {
+                val mySnackbar =
+                    Snackbar.make(view, "erreur lors de la mise à jour des fiches", 3600)
+                mySnackbar.show()
+            }
+        }
     }
 
     private fun saveImage(image: Bitmap, name: String): String? {

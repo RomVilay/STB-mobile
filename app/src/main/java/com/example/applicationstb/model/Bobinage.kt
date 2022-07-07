@@ -26,11 +26,11 @@ class Bobinage(idFiche:String,
                client: Client?,
                contact: String?,
                telContact: String?,
-               techniciens: Array<User>?,
+               techniciens: Array<String>?,
                resp: User?,
                dateDebut: Date?,
                dureeTotale:Long?,
-               observation: String?,
+               observations: String?,
                photos:Array<String>?,
                var marqueMoteur:String?,
                var typeBobinage:String?,
@@ -59,7 +59,7 @@ class Bobinage(idFiche:String,
                var pasPolaire:String?,
                var branchement:String?,
                var nbEncoches:Long?
-                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observation, photos ){
+                ) : Fiche(idFiche, numDevis, numFiche, type, statut, client, resp,contact, telContact, dateDebut, dureeTotale, observations, photos, techniciens  ){
 
                     @RequiresApi(Build.VERSION_CODES.O)
                 fun addSection(nbBrins: Long, diametre: Double){

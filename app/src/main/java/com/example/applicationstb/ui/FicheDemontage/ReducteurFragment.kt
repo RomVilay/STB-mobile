@@ -36,14 +36,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.applicationstb.model.DemontagePompe
-import com.example.applicationstb.model.DemontageReducteur
 import com.example.applicationstb.model.Joint
 import com.example.applicationstb.model.Roulement
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -99,9 +98,10 @@ class ReducteurFragment : Fragment() {
         var btnPhoto = layout.findViewById<Button>(R.id.photo5)
         var roulements = MutableLiveData<MutableList<Roulement>?>()
         var joints = MutableLiveData<MutableList<Joint>?>()
+        var gal = layout.findViewById<Button>(R.id.g7)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
-        var fiche = viewModel.selection.value!! as DemontageReducteur
+        var fiche = viewModel.selection.value!!
         //roulements
         if (fiche.roulements !== null) roulements.value = fiche.roulements else roulements.value = mutableListOf<Roulement>()
         var adapterRoulement = RoulementRedAdapter(mutableListOf<Roulement>(),{typeAv,refAv,typeAr,refAr,position ->
@@ -151,7 +151,7 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
             trMin.doAfterTextChanged {
-                if(trMin.hasFocus() && trMin.text.isNotEmpty() && trMin.text.matches(regexNombres)) fiche.trMinute = trMin.text.toString().toFloat()
+                if(trMin.hasFocus() && trMin.text.isNotEmpty() ) fiche.trMinute = trMin.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -175,7 +175,7 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
             quantiteHuile.doAfterTextChanged {
-                if(quantiteHuile.hasFocus() && quantiteHuile.text.isNotEmpty() && quantiteHuile.text.matches(regexNombres)) fiche.quantiteHuile = quantiteHuile.text.toString().toFloat()
+                if(quantiteHuile.hasFocus() && quantiteHuile.text.isNotEmpty()) fiche.quantiteHuile = quantiteHuile.text.toString()
                 viewModel.selection.value = fiche
                 viewModel.getTime()
                 viewModel.localSave()
@@ -184,6 +184,7 @@ class ReducteurFragment : Fragment() {
                 var liste = roulements.value!!
                 liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv.text.toString()}", "${typeRoulementAr.selectedItem} - ${refRoulementAr.text.toString()}"))
                 roulements.value = liste
+                viewModel.selection.value!!.roulements = liste
                 typeRoulementAv.setSelection(0)
                 typeRoulementAr.setSelection(0)
                 refRoulementAv.setText("")
@@ -193,6 +194,7 @@ class ReducteurFragment : Fragment() {
                 var liste = joints.value!!
                 liste.add(Joint("R${liste.size}","${typeJointAv.selectedItem} - ${refJointAv.text.toString()}", "${typeJointAr.selectedItem} - ${refJointAr.text.toString()}"))
                 joints.value = liste
+                viewModel.selection.value!!.joints = liste
                 typeJointAv.setSelection(0)
                 typeJointAr.setSelection(0)
                 refJointAv.setText("")
@@ -216,6 +218,7 @@ class ReducteurFragment : Fragment() {
             obs.isEnabled = false
             btnPhoto.visibility = View.INVISIBLE
             enregistrer.visibility = View.GONE
+            gal.visibility = View.INVISIBLE
         }
 
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
@@ -260,7 +263,7 @@ class ReducteurFragment : Fragment() {
                             it
                         )
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        startActivityForResult(cameraIntent, viewModel.CAMERA_CAPTURE)
                         //viewModel.addSchema(photoURI)
                     }
                 }
@@ -279,11 +282,9 @@ class ReducteurFragment : Fragment() {
             viewModel.getTime()
             fiche.status = 2L
             viewModel.selection.value = fiche
+            viewModel.getTime()
             viewModel.localSave()
-            if (viewModel.isOnline(requireContext())) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getNameURI()
-                }
+            if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
@@ -291,10 +292,9 @@ class ReducteurFragment : Fragment() {
                 mySnackbar.show()
             }
         }
-        var gal = layout.findViewById<Button>(R.id.g7)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 6)
+            startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
         }
 
         termP.setOnClickListener {
@@ -308,10 +308,7 @@ class ReducteurFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.localSave()
-                            if (viewModel.isOnline(requireContext())) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    viewModel.getNameURI()
-                                }
+                            if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
                                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
@@ -329,29 +326,36 @@ class ReducteurFragment : Fragment() {
         return layout
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(currentPhotoPath)
+        if (requestCode == viewModel.CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.addPhoto(currentPhotoPath)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
-            var file = viewModel.getRealPathFromURI(data?.data!!)
-            CoroutineScope(Dispatchers.IO).launch {
-                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
-                var nfile = viewModel.sendExternalPicture(file!!)
-                if (nfile !== null) {
-                    var list = viewModel.selection.value?.photos?.toMutableList()
-                    if (list != null) {
-                        list.add(nfile)
+        if (requestCode == viewModel.GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    var nfile = async { viewModel.sendExternalPicture(file!!) }
+                    nfile.await()
+                    if (nfile.isCompleted) {
+                        var list = viewModel.selection.value?.photos?.toMutableList()
+                        list!!.removeAll { it == "" }
+                        list.add(nfile.await()!!)
+                        viewModel.selection.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                        viewModel.localSave()
                     }
-                    viewModel.selection.value?.photos = list?.toTypedArray()
-                    viewModel.photos.postValue(list!!)
                 }
             }
-
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
+            }
         }
     }
 

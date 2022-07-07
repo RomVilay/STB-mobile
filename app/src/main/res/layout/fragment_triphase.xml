@@ -10,6 +10,23 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/loadTriD"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,9 +103,9 @@
                             android:text="U/M :" />
 
                         <EditText
-                            android:id="@+id/isopmU"
+                            android:id="@+id/isopmPA"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -96,7 +113,7 @@
                             android:ems="10"
                             android:gravity="center"
                             android:hint="val"
-                            android:inputType="numberSigned|number|text"
+                            android:inputType="number|text"
                             android:padding="5dp" />
 
                         <TextView
@@ -110,9 +127,9 @@
                             android:text="V/M :" />
 
                         <EditText
-                            android:id="@+id/isopmV"
+                            android:id="@+id/isopmPP"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -133,9 +150,9 @@
                             android:text="W/M:" />
 
                         <EditText
-                            android:id="@+id/isopmW"
+                            android:id="@+id/isopmI"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -187,9 +204,9 @@
                             android:text="U/V :" />
 
                         <EditText
-                            android:id="@+id/isoppU"
+                            android:id="@+id/isoppPC"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -211,9 +228,9 @@
                             android:text="U/W :" />
 
                         <EditText
-                            android:id="@+id/isoppV"
+                            android:id="@+id/isoppPB"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -236,7 +253,7 @@
                         <EditText
                             android:id="@+id/isoppW"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -248,22 +265,10 @@
                             android:padding="5dp" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/titreDyna"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="Essais Dynamiques"
-                        android:textSize="24sp"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@+id/linearRes"
-                        tools:layout_editor_absoluteX="0dp" />
-
                     <LinearLayout
                         android:id="@+id/linearRes"
                         android:layout_width="446dp"
-                        android:layout_height="32dp"
+                        android:layout_height="50dp"
                         android:layout_margin="16dp"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -278,9 +283,9 @@
                             android:text="U:" />
 
                         <EditText
-                            android:id="@+id/rU"
+                            android:id="@+id/rInduit"
                             android:layout_width="85dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -302,9 +307,9 @@
                             android:text="V:" />
 
                         <EditText
-                            android:id="@+id/rV"
+                            android:id="@+id/rPP"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -327,7 +332,7 @@
                         <EditText
                             android:id="@+id/rW"
                             android:layout_width="81dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
@@ -339,165 +344,17 @@
                             android:padding="5dp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/tensions"
-                        android:layout_width="400dp"
+                    <TextView
+                        android:id="@+id/essaistatiques3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Essais Dynamiques"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreDyna">
-
-                        <TextView
-                            android:id="@+id/UT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="U" />
-
-                        <EditText
-                            android:id="@+id/vU"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/VT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="V:" />
-
-                        <EditText
-                            android:id="@+id/vV"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/WT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="W:" />
-
-                        <EditText
-                            android:id="@+id/vW"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/intensité"
-                        android:layout_width="400dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tensions">
-
-                        <TextView
-                            android:id="@+id/UI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="U" />
-
-                        <EditText
-                            android:id="@+id/vUI"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/VI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="V:" />
-
-                        <EditText
-                            android:id="@+id/vVI"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/WI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="W:" />
-
-                        <EditText
-                            android:id="@+id/vWI"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-                    </LinearLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/linearRes" />
 
                     <TextView
                         android:id="@+id/isopm"
@@ -511,23 +368,6 @@
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/essaistatiques" />
-
-                    <EditText
-                        android:id="@+id/tpse"
-                        android:layout_width="83dp"
-                        android:layout_height="33dp"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/round_textview"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:hint="val"
-                        android:inputType="number"
-                        android:padding="5dp"
-                        android:visibility="gone"
-                        app:layout_constraintStart_toEndOf="@+id/essaistitre"
-                        app:layout_constraintTop_toBottomOf="@+id/intensité" />
 
                     <TextView
                         android:id="@+id/phasephase"
@@ -554,15 +394,87 @@
                         app:layout_constraintTop_toBottomOf="@+id/linearPP" />
 
                     <TextView
-                        android:id="@+id/essaistitre"
+                        android:id="@+id/titrePP3"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="150dp"
+                        android:background="#B5B5B5"
+                        android:gravity="center"
+                        android:text=" Tensions U/V/W"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/essaistatiques3" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="208dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Durée essais:"
-                        android:visibility="gone"
+                        android:layout_marginStart="50dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/intensité" />
+                        app:layout_constraintTop_toBottomOf="@+id/titrePP3">
+
+                        <EditText
+                            android:id="@+id/u"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="U"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/v"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="V"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/w"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="W"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/isoPM"
+                            android:layout_width="200dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView89"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:background="#B5B5B5"
+                        android:gravity="center"
+                        android:text="isolement phase"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/titrePP3"
+                        app:layout_constraintTop_toTopOf="@+id/titrePP3" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -607,7 +519,8 @@
                         android:ems="10"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
-                        android:minLines="1"
+                        android:minLines="5"
+                        android:scrollbars="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titre4" />
 

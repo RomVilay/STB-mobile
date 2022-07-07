@@ -57,85 +57,291 @@
                     android:layout_gravity="center"
                     android:paddingBottom="10dp">
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout"
+                    <TableLayout
+                        android:id="@+id/tableIsoMasse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal"
+                        android:layout_marginTop="1dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/isopm">
+                        app:layout_constraintTop_toBottomOf="@+id/essaistatiques">
 
-                        <TextView
-                            android:id="@+id/ttreInd"
-                            android:layout_width="37dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Induit :" />
+                        <TableRow
+                            android:id="@+id/titreIsoPM"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                        <EditText
-                            android:id="@+id/isopmU"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                            <TextView
+                                android:id="@+id/isopm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_span="3"
+                                android:layout_weight="1"
+                                android:background="@drawable/round_top_full_grey"
+                                android:gravity="center"
+                                android:text="isolement phase/masse"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
 
-                        <TextView
-                            android:id="@+id/rest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="Pôle Principal" />
+                        </TableRow>
 
-                        <EditText
-                            android:id="@+id/isopmV"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
+                        <TableRow
+                            android:id="@+id/titrel1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/WM"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:text="Pôle Auxilliaire" />
+                            <TextView
+                                android:id="@+id/rest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="#B5B5B5"
+                                android:gravity="center"
+                                android:text="Pôle Principal"
+                                android:textSize="18sp" />
 
-                        <EditText
-                            android:id="@+id/isopmW"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/WM"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="#B5B5B5"
+                                android:text="Pôle Auxilliaire"
+                                android:textAlignment="center"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/ttreInd"
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:background="#B5B5B5"
+                                android:text="Induit "
+                                android:textAlignment="center"
+                                android:textSize="18sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/valRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:id="@+id/isopmPP"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/isopmPA"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/isopmI"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:textSize="18sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/titrel2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/UW"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5"
+                                android:background="#B5B5B5"
+                                android:gravity="center"
+                                android:text="Porte Balais "
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/UV"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.5"
+                                android:background="#B5B5B5"
+                                android:text="Pôle Compensatoire"
+                                android:textAlignment="center"
+                                android:textSize="18sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/val2Row"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:id="@+id/isoppPB"
+                                android:layout_width="100dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1.5"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/isoppPC"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_weight="1.5"
+                                android:background="@drawable/cell"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp"
+                                android:textSize="18sp" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:id="@+id/tableResistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tableIsoMasse">
+
+                        <TableRow
+                            android:id="@+id/tableTitreR"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/round_top_full_grey">
+
+                            <TextView
+                                android:id="@+id/titreResistance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_span="2"
+                                android:text="resistance"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/titreV1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/U"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#B5B5B5"
+                                android:text="Induit "
+                                android:textAlignment="center"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/V"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#B5B5B5"
+                                android:text="Pôle Principal"
+                                android:textAlignment="center"
+                                android:textSize="20sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/valL1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:id="@+id/rInduit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/rPP"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp"
+                                android:textSize="18sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/titreV2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/respp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#B5B5B5"
+                                android:text="Pôle Complémentaire"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/resindy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#B5B5B5"
+                                android:text="Pôle Auxilliaire"
+                                android:textAlignment="center"
+                                android:textSize="20sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/valV2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:id="@+id/rPC"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/rPA"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cell"
+                                android:gravity="center"
+                                android:inputType="numberSigned|number|text"
+                                android:padding="5dp"
+                                android:textSize="18sp" />
+                        </TableRow>
+                    </TableLayout>
 
                     <TextView
                         android:id="@+id/titre2"
@@ -159,999 +365,98 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/titre2" />
 
-                    <LinearLayout
-                        android:id="@+id/linearPP"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-                        <TextView
-                            android:id="@+id/UV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Pôle Compensatoire" />
-
-                        <EditText
-                            android:id="@+id/isoppU"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/UW"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="Porte Balais :" />
-
-                        <EditText
-                            android:id="@+id/isoppV"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                    </LinearLayout>
-
                     <TextView
-                        android:id="@+id/titreDyna"
+                        android:id="@+id/essaistatiques2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:gravity="center"
                         android:text="Essais Dynamiques"
                         android:textSize="24sp"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@+id/resI"
-                        tools:layout_editor_absoluteX="0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/linearRes"
-                        android:layout_width="424dp"
-                        android:layout_height="32dp"
-                        android:layout_margin="16dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreResistance">
-
-                        <TextView
-                            android:id="@+id/U"
-                            android:layout_width="58dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Induit :" />
-
-                        <EditText
-                            android:id="@+id/rU"
-                            android:layout_width="85dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/V"
-                            android:layout_width="123dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_weight="1"
-                            android:text="Pôle Principal:" />
-
-                        <EditText
-                            android:id="@+id/rV"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/resI"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.425"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearRes">
-
-                        <TextView
-                            android:id="@+id/resindy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Pôle Auxilliaire:" />
-
-                        <EditText
-                            android:id="@+id/RI"
-                            android:layout_width="85dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/respp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:text="Pôle Complémentaire:" />
-
-                        <EditText
-                            android:id="@+id/RPP"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tensions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titreDyna">
-
-                        <TextView
-                            android:id="@+id/UT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Tension Induit:" />
-
-                        <EditText
-                            android:id="@+id/vU"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/VT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Tension Excitation:" />
-
-                        <EditText
-                            android:id="@+id/vV"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                    </LinearLayout>
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_begin="228dp" />
-
-                    <LinearLayout
-                        android:id="@+id/intensité"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tensions">
-
-                        <TextView
-                            android:id="@+id/UI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Intensité Induit:" />
-
-                        <EditText
-                            android:id="@+id/vUI"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                        <TextView
-                            android:id="@+id/VI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Intensité Excitation:" />
-
-                        <EditText
-                            android:id="@+id/vVI"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:gravity="center"
-                            android:hint="val"
-                            android:inputType="numberSigned|number|text"
-                            android:padding="5dp" />
-
-                    </LinearLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/tableResistance" />
 
                     <TextView
-                        android:id="@+id/isopm"
-                        android:layout_width="359dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="144dp"
-                        android:layout_marginLeft="144dp"
-                        android:layout_weight="1"
+                        android:id="@+id/titrePP2"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="250dp"
+                        android:background="#B5B5B5"
                         android:gravity="center"
-                        android:text="isolement phase/masse"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/essaistatiques" />
-
-                    <TextView
-                        android:id="@+id/titreResistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="292dp"
-                        android:layout_marginLeft="292dp"
-                        android:layout_marginTop="12dp"
-                        android:text="resistance"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearPP" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="649dp"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout3"
-                        android:layout_width="599dp"
-                        android:layout_height="78dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="24dp"
-                        android:background="@drawable/round_textview"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
-                        <TextView
-                            android:id="@+id/textView20"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Etats des Flasques"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView21"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginLeft="80dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Flasque Avant"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-                        <Spinner
-                            android:id="@+id/spiFAr"
-                            android:layout_width="118dp"
-                            android:layout_height="32dp"
-                            android:layout_marginEnd="28dp"
-                            android:layout_marginRight="28dp"
-                            android:layout_marginBottom="16dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView22"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginEnd="19dp"
-                            android:layout_marginRight="19dp"
-                            android:layout_marginBottom="24dp"
-                            android:text="Flasque Arrière:"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/spiFAr"
-                            app:layout_constraintStart_toEndOf="@+id/spiFA" />
-
-                        <Spinner
-                            android:id="@+id/spiFA"
-                            android:layout_width="88dp"
-                            android:layout_height="29dp"
-                            android:layout_marginStart="28dp"
-                            android:layout_marginLeft="28dp"
-                            android:layout_marginBottom="16dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textView20" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/titre3"
-                        android:layout_width="647dp"
-                        android:layout_height="66dp"
-                        android:background="#164081"
-                        android:gravity="center"
-                        android:text="Partie Mecanique"
-                        android:textColor="#FAF9F9"
-                        android:textSize="30sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout4"
-                        android:layout_width="599dp"
-                        android:layout_height="78dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/round_textview"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
-
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Portée des roulements"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView16"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="80dp"
-                            android:layout_marginLeft="80dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Roulement Avant"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-                        <Spinner
-                            android:id="@+id/spiRAv"
-                            android:layout_width="118dp"
-                            android:layout_height="32dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="12dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textView16" />
-
-                        <TextView
-                            android:id="@+id/textView17"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginBottom="16dp"
-                            android:text="Roulement Arrière:"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/spiRAv" />
-
-                        <Spinner
-                            android:id="@+id/spiRAr"
-                            android:layout_width="88dp"
-                            android:layout_height="29dp"
-                            android:layout_marginStart="28dp"
-                            android:layout_marginLeft="28dp"
-                            android:layout_marginBottom="16dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textView17" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp"
-                        android:text="Etat Bout d'arbre"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
-
-                    <Switch
-                        android:id="@+id/switchBA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="21dp"
-                        android:text="bon état"
-                        app:layout_constraintStart_toEndOf="@+id/textView24"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
-
-                    <TextView
-                        android:id="@+id/textView25"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="20dp"
-                        android:text="mauvais état"
-                        app:layout_constraintStart_toEndOf="@+id/switchBA"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
-
-                    <TextView
-                        android:id="@+id/textView26"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:text="Position Rondelle élastique"
-                        app:layout_constraintStart_toEndOf="@+id/textView25"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
-
-                    <Switch
-                        android:id="@+id/switchPRE"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="21dp"
-                        android:text="Arrière"
-                        app:layout_constraintStart_toEndOf="@+id/textView26"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/typeroulements"
-                        android:layout_width="598dp"
-                        android:layout_height="96dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="48dp"
-                        android:background="@drawable/round_textview"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
-
-                        <TextView
-                            android:id="@+id/textView23"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Roulements"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Spinner
-                            android:id="@+id/spiRoul"
-                            android:layout_width="181dp"
-                            android:layout_height="31dp"
-                            android:layout_marginStart="56dp"
-                            android:layout_marginLeft="56dp"
-                            android:layout_marginTop="32dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Switch
-                            android:id="@+id/switchRoullements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="240dp"
-                            android:layout_marginLeft="240dp"
-                            android:text="Avant"
-                            app:layout_constraintStart_toEndOf="@+id/textView23"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/refRoullement"
-                            android:layout_width="183dp"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="4dp"
-                            android:ems="10"
-                            android:hint="référence"
-                            android:inputType="textShortMessage"
-                            app:layout_constraintStart_toEndOf="@+id/textView27"
-                            app:layout_constraintTop_toBottomOf="@+id/textView28" />
-
-                        <TextView
-                            android:id="@+id/textView27"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="112dp"
-                            android:layout_marginLeft="112dp"
-                            android:layout_marginTop="12dp"
-                            android:text="ref :"
-                            app:layout_constraintStart_toEndOf="@+id/spiRoul"
-                            app:layout_constraintTop_toBottomOf="@+id/switchRoullements" />
-
-                        <TextView
-                            android:id="@+id/textView28"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="1dp"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Arrière"
-                            android:textColor="@color/black"
-                            app:layout_constraintStart_toEndOf="@+id/switchRoullements"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/typejoints"
-                        android:layout_width="598dp"
-                        android:layout_height="96dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="32dp"
-                        android:background="@drawable/round_textview"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/typeroulements">
-
-                        <TextView
-                            android:id="@+id/textView29"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:text="Types de Joints"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Spinner
-                            android:id="@+id/spiJoints"
-                            android:layout_width="181dp"
-                            android:layout_height="31dp"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginLeft="48dp"
-                            android:layout_marginTop="32dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Switch
-                            android:id="@+id/switchJoints"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="192dp"
-                            android:layout_marginLeft="192dp"
-                            android:text="Avant"
-                            app:layout_constraintStart_toEndOf="@+id/textView29"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/refJoints"
-                            android:layout_width="183dp"
-                            android:layout_height="30dp"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginTop="12dp"
-                            android:ems="10"
-                            android:hint="référence"
-                            android:inputType="textPersonName"
-                            app:layout_constraintStart_toEndOf="@+id/textView30"
-                            app:layout_constraintTop_toBottomOf="@+id/textView31" />
-
-                        <TextView
-                            android:id="@+id/textView30"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="104dp"
-                            android:layout_marginLeft="104dp"
-                            android:layout_marginTop="12dp"
-                            android:text="ref :"
-                            app:layout_constraintStart_toEndOf="@+id/spiJoints"
-                            app:layout_constraintTop_toBottomOf="@+id/switchJoints" />
-
-                        <TextView
-                            android:id="@+id/textView31"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginTop="4dp"
-                            android:text="Arrière"
-                            android:textColor="@color/black"
-                            app:layout_constraintStart_toEndOf="@+id/switchJoints"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout2"
-                        android:layout_width="599dp"
-                        android:layout_height="67dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/round_textview"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titre3">
-
-                        <TextView
-                            android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="Type de Couplage"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Spinner
-                            android:id="@+id/spiCouplage"
-                            android:layout_width="122dp"
-                            android:layout_height="35dp"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginTop="16dp"
-                            app:layout_constraintStart_toEndOf="@+id/textView5"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView7"
-                            android:layout_width="53dp"
-                            android:layout_height="25dp"
-                            android:layout_marginStart="28dp"
-                            android:layout_marginLeft="28dp"
-                            android:layout_marginTop="20dp"
-                            android:text="autre:"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toEndOf="@+id/spiCouplage"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/autreCpl"
-                            android:layout_width="115dp"
-                            android:layout_height="43dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/round_textview"
-                            android:ems="10"
-                            android:hint="autre type"
-                            android:inputType="textShortMessage"
-                            android:padding="5dp"
-                            app:layout_constraintStart_toEndOf="@+id/textView7"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView32"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Etat du capot ventilateur:"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/typejoints" />
-
-                    <Spinner
-                        android:id="@+id/spiCapot"
-                        android:layout_width="89dp"
-                        android:layout_height="23dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintStart_toEndOf="@+id/textView32"
-                        app:layout_constraintTop_toBottomOf="@+id/typejoints" />
-
-                    <Spinner
-                        android:id="@+id/spiVentilateur"
-                        android:layout_width="92dp"
-                        android:layout_height="25dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintStart_toEndOf="@+id/textView33"
-                        app:layout_constraintTop_toBottomOf="@+id/typejoints" />
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="64dp"
-                        android:layout_marginLeft="64dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Etat Ventilateur:"
-                        app:layout_constraintStart_toEndOf="@+id/spiCapot"
-                        app:layout_constraintTop_toBottomOf="@+id/typejoints" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout5"
-                        android:layout_width="308dp"
-                        android:layout_height="96dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/round_textview"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView32">
-
-                        <TextView
-                            android:id="@+id/textView34"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="36dp"
-                            android:layout_marginLeft="36dp"
-                            android:layout_marginTop="36dp"
-                            android:text="socle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView36"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="12dp"
-                            android:text="Etat de la Boite à Bornes"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView35"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="36dp"
-                            android:layout_marginLeft="36dp"
-                            android:layout_marginTop="8dp"
-                            android:text="capot"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView34" />
-
-                        <Spinner
-                            android:id="@+id/spiSocle"
-                            android:layout_width="151dp"
-                            android:layout_height="20dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="36dp"
-                            app:layout_constraintStart_toEndOf="@+id/textView34"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Spinner
-                            android:id="@+id/spiCap"
-                            android:layout_width="150dp"
-                            android:layout_height="21dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="4dp"
-                            app:layout_constraintStart_toEndOf="@+id/textView35"
-                            app:layout_constraintTop_toBottomOf="@+id/spiSocle" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView37"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="24dp"
-                        android:text="Etat Plaque à bornes"
-                        app:layout_constraintStart_toEndOf="@+id/constraintLayout5"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
-
-                    <Spinner
-                        android:id="@+id/spiPla"
-                        android:layout_width="85dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintStart_toEndOf="@+id/textView37"
-                        app:layout_constraintTop_toBottomOf="@+id/spiVentilateur" />
-
-                    <TextView
-                        android:id="@+id/textView38"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Présence de sondes"
-                        app:layout_constraintStart_toEndOf="@+id/constraintLayout5"
-                        app:layout_constraintTop_toBottomOf="@+id/textView37" />
-
-                    <Switch
-                        android:id="@+id/switchSondes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintStart_toEndOf="@+id/textView38"
-                        app:layout_constraintTop_toBottomOf="@+id/spiPla" />
-
-                    <EditText
-                        android:id="@+id/typeSonde"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="348dp"
-                        android:layout_marginLeft="348dp"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint=" type sonde"
-                        android:inputType="textShortMessage"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/switchSondes" />
-
-                    <TextView
-                        android:id="@+id/textView39"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="40dp"
-                        android:text="Equilibrage"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
-
-                    <TextView
-                        android:id="@+id/textView40"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginBottom="36dp"
-                        android:text="Peinture"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/swEqui" />
-
-                    <Switch
-                        android:id="@+id/swPeinture"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginBottom="32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView40" />
-
-                    <EditText
-                        android:id="@+id/ral"
-                        android:layout_width="83dp"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:ems="10"
-                        android:hint="ral"
-                        android:inputType="textShortMessage"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/swPeinture" />
-
-                    <EditText
-                        android:id="@+id/coul"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:ems="10"
-                        android:hint="couleur"
-                        android:inputType="textShortMessage"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:text=" Tensions U/V/W"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/typeSonde"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/essaistatiques2" />
 
-                    <Switch
-                        android:id="@+id/swEqui"
+                    <LinearLayout
+                        android:id="@+id/linearLayout5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginBottom="32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView39" />
+                        android:layout_marginEnd="50dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titrePP2">
+
+                        <EditText
+                            android:id="@+id/u"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="U"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/v"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="V"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/w"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="W"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/isoPM"
+                            android:layout_width="200dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cell"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:inputType="numberSigned|number|text"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView58"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:background="#B5B5B5"
+                        android:gravity="center"
+                        android:text="isolement phase"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toEndOf="@+id/titrePP2"
+                        app:layout_constraintTop_toTopOf="@+id/titrePP2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
