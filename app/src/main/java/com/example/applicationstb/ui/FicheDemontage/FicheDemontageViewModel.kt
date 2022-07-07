@@ -31,9 +31,9 @@ import retrofit2.Response
 import java.util.*
 import android.graphics.Bitmap.CompressFormat
 import android.os.SystemClock
+import com.example.applicationstb.model.FicheDemontage
 import id.zelory.compressor.Compressor
 import java.io.*
-
 
 class FicheDemontageViewModel(application: Application) : AndroidViewModel(application) {
     var context = getApplication<Application>().applicationContext
@@ -41,58 +41,165 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     var username: String? = null;
     var repository = Repository(context)
     var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
-    var listeDemontages = arrayListOf<DemontageMoteur>()
+    var listeDemontages = MutableLiveData<MutableList<FicheDemontage>>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
     var schema = MutableLiveData<String>()
-    var selection = MutableLiveData<DemontageMoteur>()
+    var selection = MutableLiveData<FicheDemontage>()
     var start = MutableLiveData<Date>()
     var image = MutableLiveData<File>()
     var imageName = MutableLiveData<URLPhotoResponse2>()
     val sharedPref =
         getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
+    var GALLERY_CAPTURE = 2
+    var CAMERA_CAPTURE = 1
+    var typeRoulements = MutableLiveData<MutableList<String>>();
+    var refRoulements = MutableLiveData<MutableList<String>>();
+    var posRoulement = MutableLiveData<MutableList<String>>();
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createDb()
+            //getLocalFiches()
         }
     }
+    fun setRoulements (refsAr :Array<String>,typeAr :Array<String>, refsAv :Array<String>, typeAv :Array<String>){
+        if ( refsAr.size > 0){
+            for (r in 0..refsAr.size-1){
+                if (refsAr[r].length > 0) {
+                    if (typeRoulements.value == null) typeRoulements.value = mutableListOf(typeAr[r])  else typeRoulements.value!!.add(typeAr[r])
+                    if (refRoulements.value == null) refRoulements.value = mutableListOf(refsAr[r]) else refRoulements.value!!.add(refsAr[r])
+                    if (posRoulement.value == null)  posRoulement.value = mutableListOf("arrière") else  posRoulement.value!!.add("arrière")
+                }
+            }
+        }
+        if ( refsAv.size > 0 ){
+            for (r in 0..refsAv.size-1){
+                if (refsAv[r].length > 0) {
+                    if (typeRoulements.value == null) typeRoulements.value = mutableListOf(typeAv[r])  else typeRoulements.value!!.add(typeAv[r])
+                    if (refRoulements.value == null) refRoulements.value = mutableListOf(refsAv[r]) else refRoulements.value!!.add(refsAv[r])
+                    if (posRoulement.value == null)  posRoulement.value = mutableListOf("avant") else  posRoulement.value!!.add("avant")
+                }
+            }
+        }
+    }
+    fun insertRoulements (ref:String,type:String,position:String)= runBlocking{
+       if (typeRoulements.value == null) typeRoulements.value = mutableListOf(type)  else typeRoulements.value!!.add(type)
+        if (refRoulements.value == null) refRoulements.value = mutableListOf(ref) else refRoulements.value!!.add(ref)
+        if (posRoulement.value == null)  posRoulement.value = mutableListOf(position) else  posRoulement.value!!.add(position)
+        if (position == "avant"){
+            var copy = selection.value!!.refRoulementAvant!!.toMutableList()
+            copy.add(ref)
+            selection.value!!.refRoulementAvant = copy.filter { it.length > 0 }.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
+            copy2.add(type)
+            selection.value!!.typeRoulementAvant = copy2.filter { it.length > 0 }.toTypedArray()
+        }
+        if (position == "arrière"){
+            var copy = selection.value!!.refRoulementArriere!!.toMutableList()
+            copy.filter { it.isNotBlank() }
+            copy.add(ref)
+            selection.value!!.refRoulementArriere = copy.filter { it.length > 0 }.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
+            copy2.filter { it.isNotBlank() }
+            copy2.add(type)
+            selection.value!!.typeRoulementArriere = copy2.filter { it.length > 0 }.toTypedArray()
+        }
+        getTime()
+        localSave()
+    }
+    fun updateRoulements (ref:String,type:String,index: Int,){
+        var roul = arrayOf(refRoulements.value!![index],typeRoulements.value!![index],posRoulement.value!![index])
+        if (roul[2] == "avant" ){
+            var copy = selection.value!!.refRoulementAvant!!.toMutableList()
+            var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
+            copy[copy.indexOf(roul[0])] = ref
+            selection.value!!.refRoulementAvant = copy.toTypedArray()
+            copy2[copy2.indexOf(roul[1])] = type
+            selection.value!!.typeRoulementAvant = copy2.toTypedArray()
+        }
+        if (roul[2] == "arrière"){
+            var copy = selection.value!!.refRoulementArriere!!.toMutableList()
+            copy[copy.indexOf(roul[0])] = ref
+            selection.value!!.refRoulementArriere = copy.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
+            copy2[copy2.indexOf(roul[1])] = type
+            selection.value!!.typeRoulementArriere = copy2.toTypedArray()
+        }
+        refRoulements.value!![index] = ref
+        typeRoulements.value!![index] = type
+        getTime()
+        localSave()
+    }
+    fun removeRoulements (position: Int){
+        var roul = arrayOf(refRoulements.value!![position],typeRoulements.value!![position],posRoulement.value!![position])
 
+        if (roul[2] == "avant" ){
+            var copy = selection.value!!.refRoulementAvant!!.toMutableList()
+            var copy2 = selection.value!!.typeRoulementAvant!!.toMutableList()
+            copy.removeAt(copy.indexOf(roul[0]))
+            selection.value!!.refRoulementAvant = copy.toTypedArray()
+            copy2.removeAt(copy2.indexOf(roul[1]))
+            selection.value!!.typeRoulementAvant = copy2.toTypedArray()
+
+        }
+        if (roul[2] == "arrière"){
+            var copy = selection.value!!.refRoulementArriere!!.toMutableList()
+            copy.removeAt(copy.indexOf(roul[0]))
+            selection.value!!.refRoulementArriere = copy.toTypedArray()
+            var copy2 = selection.value!!.typeRoulementArriere!!.toMutableList()
+            copy2.removeAt(copy2.indexOf(roul[1]))
+            selection.value!!.typeRoulementArriere = copy2.toTypedArray()
+        }
+        refRoulements.value!!.removeAt(position)
+        typeRoulements.value!!.removeAt(position)
+        posRoulement.value!!.removeAt(position)
+        getTime()
+        localSave()
+    }
+    suspend fun getLocalFiches() {
+        listeDemontages.postValue(
+            repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.filter { it.status!! < 3 }.toMutableList()
+        )
+    }
     fun back(view: View) {
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)
     }
 
-    fun afficherFiche(fiche: Fiche) {
-        when (fiche) {
-            is CourantContinu -> Log.i("INFO", "Type Courant Continu")
-            is Triphase -> Log.i("Info", "Type triphasé")
-            /*is RotorBobine -> Log.i("INFO","Type Rotor Bobine")
-            is Monophase -> Log.i("Info","Type monophasé")
-            is Alternateur -> Log.i("INFO","type alternateur")
-            is DemontagePompe -> Log.i("Info", "type pompe")*/
-        }
-    }
-
     fun setCouplage(type: String) {
-        var fichemot = selection.value as DemontageMoteur
-        fichemot.couplage = type
-        selection.value = fichemot
+        var fichemot = selection.value
+        fichemot!!.couplage = type
+        selection.value = fichemot!!
     }
-
-
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
+        list!!.removeAll { it == "" }
         if (list != null) {
             list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+        } else {
+            selection.value?.photos =
+                arrayOf(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
         selection.value?.photos = list?.toTypedArray()
         photos.value = list!!
         galleryAddPic(photo)
         localSave()
+        if (isOnline(context)) {
+            viewModelScope.launch {
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token!!.filterNot { it.isWhitespace() },
+                        File(photo).name,
+                        context
+                    )
+                }
+                s.await()
+                var s2 = async { sendFicheNoText() }
+                s2.await()
+            }
+        }
     }
-
-
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(context, contentUri, proj, null, null, null)
@@ -103,11 +210,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         cursor.close()
         return result
     }
-
     fun setSchema(sch: String) {
         schema.value = sch
     }
-
     fun fullScreen(view: View, uri: String) {
         val action = FicheDemontageDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
@@ -122,183 +227,84 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         if (selection.value!!.dureeTotale !== null) {
             selection.value!!.dureeTotale =
                 (Date().time - start.value!!.time) + selection.value!!.dureeTotale!!
+            Log.i("info", " time ${(Date().time - start.value!!.time) + selection.value!!.dureeTotale!!}")
         } else {
             selection.value!!.dureeTotale = now.time - start.value!!.time
+            Log.i("info", " time ${now.time - start.value!!.time}")
         }
         start.value = now
     }
     fun localSave() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (selection.value!!.typeFicheDemontage == 1) {
-                var fiche = selection.value!! as DemontagePompe
-                if (fiche.sensRotation == null) fiche.sensRotation = false
-                var f = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoPompeLocalDatabse(fiche.toEntity())
-                } else {
-                    repository.insertDemoPompeLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 2) {
-                var fiche = selection.value!! as DemontageMonophase
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoMonoLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoMonoLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 3) {
-                var fiche = selection.value!! as DemontageAlternateur
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoAlterLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoAlterLocalDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 4) {
-                var fiche = selection.value!! as DemontageRotorBobine
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoRBLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoRBLocalDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 5) {
-                var fiche = selection.value!! as CourantContinu
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoCCLocalDatabse(fiche.toEntity())
-
-                } else {
-                    try {
-                        repository.deleteDemontageCCLocalDatabse(fiche.toEntity())
-                    } catch (e: Exception) {
-
-                    }
-                    repository.insertDemoCCLocalDatabase(fiche)
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 6) {
-
-                var fiche = selection.value!! as Triphase
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoTriLocalDatabse(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoTriLocalDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 7) {
-
-                var fiche = selection.value!! as DemontageMotopompe
-                if (fiche.sensRotation == null) fiche.sensRotation = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                var f = repository.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoMotoPompeLocalDatabase(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoMotopompeDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 8) {
-
-                var fiche = selection.value!! as DemontageReducteur
-                /*if (fiche.sensRotation == null) fiche.sensRotation = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false*/
-                var f = repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoReducteurLocalDatabase(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoReducteurDatabase(fiche)
-
-                }
-            }
-            if (selection.value!!.typeFicheDemontage == 9) {
-
-                var fiche = selection.value!! as DemontageMotoreducteur
-                /*if (fiche.sensRotation == null) fiche.sensRotation = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false
-                if (fiche.arbreSortantEntrant == null) fiche.arbreSortantEntrant = false
-                if (fiche.accouplement == null) fiche.accouplement = false
-                if (fiche.clavette == null) fiche.clavette = false*/
-                var f = repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
-                if (f !== null) {
-                    repository.updateDemoMotoreducteurLocalDatabase(fiche.toEntity())
-
-                } else {
-                    repository.insertDemoMotoreducteurDatabase(fiche)
-
-                }
-            }
-
+            repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
         }
     }
-    @RequiresApi(Build.VERSION_CODES.M)
-    suspend fun sendExternalPicture(path: String?): String? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun sendExternalPicture(path: String): String? = runBlocking {
         if (isOnline(context)) {
-            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                    "login",
+                    ""
+                ) !== "" && sharedPref?.getString("password", "") !== "")
+            ) {
+                connection(
+                    sharedPref?.getString("login", "")!!,
+                    sharedPref?.getString("password", "")!!
+                )
             }
-            delay(200)
-            getNameURI()
             try {
                 val dir =
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-                val file = File(dir, imageName.value!!.name!!)
-                File(path).copyTo(file)
-                delay(100)
-                sendPhoto(file)
-                return imageName.value!!.name!!
+                Log.i("info", "size ${selection.value?.photos?.size} is empty ${selection.value?.photos?.isEmpty()}")
+                var file = if (selection.value?.photos?.size!! == 1 && selection.value?.photos!![0] == "") File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!+1}.jpg"
+                )
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token!!.filterNot { it.isWhitespace() },
+                        file.name,
+                        context
+                    )
+                }
+                s.join()
+                /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
+                     file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
+                     Log.i("info","photo nom send ext ${file}")
+                 }*/
+                var s2 = async { sendFicheNoText() }
+                s2.await()
+                return@runBlocking file.name
             } catch (e: java.lang.Exception) {
                 Log.e("EXCEPTION", e.message!!, e.cause)
-                return null
+                return@runBlocking null
             }
         } else {
-            val dir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
-            val file = File(dir, selection.value?.numFiche + "_" + SystemClock.uptimeMillis()+".jpg")
-            File(path).copyTo(file)
-            return file.name
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                Log.i("info", "size ${selection.value?.photos?.size}  first ${selection.value?.photos!![0]} ")
+                var file = if (selection.value?.photos?.size!! == 1 && selection.value?.photos!![0] == "") File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!+1}.jpg"
+                )
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                return@runBlocking file.name
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return@runBlocking null
+            }
         }
 
     }
@@ -313,7 +319,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     val resp = response.body()
                     if (resp != null) {
                         token = resp.token
-                        Log.i("info","new token ${resp.token}")
+                        Log.i("info", "new token ${resp.token}")
                     }
                 }
             }
@@ -324,1037 +330,181 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         })
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendFiche(view: View) = runBlocking{
+    fun sendFiche(view: View) = runBlocking {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             if (isOnline(context) == true) {
-                if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
-                    connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+                if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                        "login",
+                        ""
+                    ) !== "" && sharedPref?.getString("password", "") !== "")
+                ) {
+                    connection(
+                        sharedPref?.getString("login", "")!!,
+                        sharedPref?.getString("password", "")!!
+                    )
                 }
-                delay(200)
-                getNameURI()
+                if (selection.value?.photos?.size!! > 0) {
+                    selection.value?.photos?.forEach {
+                        var test = async { repositoryPhoto.getURL(token!!, it) }
+                        test.await()
+                        if (test.isCompleted) {
+                            if (test.await().code().equals(200)) {
+                                var check = async {
+                                    repositoryPhoto.getURLPhoto(
+                                        token!!,
+                                        test.await().body()?.name!!
+                                    )
+                                }
+                                check.await()
+                                if (check.isCompleted) {
+                                    var code =
+                                        async { repository.getPhoto(check.await().body()!!.url!!) }
+                                    code.await()
+                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                    if (code.await().code() >= 400) {
+                                        Log.i("info", "photo à envoyer${it}")
+                                        var s = async {
+                                            repositoryPhoto.sendPhoto(
+                                                token!!,
+                                                it,
+                                                context
+                                            )
+                                        }
+                                        s.await()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                repository.demontageRepository!!.patchFicheDemontage(
+                    token!!,
+                    selection.value!!._id,
+                    selection.value!!,
+                    object : Callback<FicheDemontageResponse> {
+                        override fun onResponse(
+                            call: Call<FicheDemontageResponse>,
+                            response: Response<FicheDemontageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    val mySnackbar =
+                                        Snackbar.make(view, "fiche enregistrée", 3600)
+                                    mySnackbar.show()
+                                    Log.i("INFO", "enregistré")
+
+                                }
+                            } else {
+                                val mySnackbar =
+                                    Snackbar.make(view, "erreur d'enregistrement", 3600)
+                                mySnackbar.show()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                        response.errorBody()!!.charStream().readText()
+                                    }"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<FicheDemontageResponse>,
+                            t: Throwable
+                        ) {
+                            Log.e("Error", "${t.stackTraceToString()}")
+                            Log.e("Error", "erreur ${t.message}")
+                        }
+                    })
+            } else {
+                repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
             }
-            when (selection.value!!.typeFicheDemontage) {
-                1 -> {
-                    var fiche =
-                        repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)!!
-                    if (isOnline(context)) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            getNameURI()
-                        }
-                        var listPhotos = fiche.photos?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(fiche.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        Log.i("INFO", "new name: ${imageName.value!!.name}")
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                        delay(200)
-                                    }
+
+        }
+
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendFicheNoText() = runBlocking {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            if (isOnline(context) == true) {
+                if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                        "login",
+                        ""
+                    ) !== "" && sharedPref?.getString("password", "") !== "")
+                ) {
+                    connection(
+                        sharedPref?.getString("login", "")!!,
+                        sharedPref?.getString("password", "")!!
+                    )
+                }
+                if (selection.value?.photos?.size!! > 0) {
+                    selection.value?.photos?.forEach {
+                        var test = async { repositoryPhoto.getURL(token!!, it) }
+                        test.await()
+                        if (test.isCompleted) {
+                            if (test.await().code().equals(200)) {
+                                var check = async {
+                                    repositoryPhoto.getURLPhoto(
+                                        token!!,
+                                        test.await().body()?.name!!
+                                    )
                                 }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        fiche.photos = listPhotos?.toTypedArray()
-                        selection.postValue(fiche)
-                        photos.postValue(listPhotos!!)
-                        repository.updateDemoPompeLocalDatabse(fiche.toEntity())
-
-                        val resp = repository.patchDemontagePompe(
-                            token!!,
-                            fiche._id,
-                            fiche,
-                            object : Callback<DemontagePompeResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontagePompeResponse>,
-                                    response: Response<DemontagePompeResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            /*if (fiche.status!! == 3L){
-                                                CoroutineScope(Dispatchers.IO).launch {
-                                                    repository.deleteDemontagePompeLocalDatabse(fiche.toEntity())
-                                                    delay(100)
-                                                    listeDemontages.remove(selection.value!!)
-                                                    selection.postValue(null)
-                                                }
-                                            }*/
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "enregistré")
-
+                                check.await()
+                                if (check.isCompleted) {
+                                    var code =
+                                        async { repository.getPhoto(check.await().body()!!.url!!) }
+                                    code.await()
+                                    //var isUploaded = async { repositoryPhoto.photoCheck(token!!,it)}
+                                    if (code.await().code() >= 400) {
+                                        var s = async {
+                                            repositoryPhoto.sendPhoto(
+                                                token!!,
+                                                it,
+                                                context
+                                            )
                                         }
-                                    } else {
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur d'enregistrement", 3600)
-                                        mySnackbar.show()
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                                response.errorBody()!!.charStream().readText()
-                                            }"
-                                        )
+                                        s.await()
                                     }
                                 }
-
-                                override fun onFailure(
-                                    call: Call<DemontagePompeResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var p = selection.value as DemontagePompe
-                            var pmp = repository.getByIdDemoPompeLocalDatabse(selection.value!!._id)
-                            if (pmp !== null) {
-                                repository.updateDemoPompeLocalDatabse(p.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-
-                            } else {
-                                repository.insertDemoPompeLocalDatabase(p)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-
                             }
                         }
                     }
                 }
-                2 -> {
-                    var fiche = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)!!
-                    if (isOnline(context)) {
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(fiche.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        fiche.photos = listPhotos?.toTypedArray()
-                        selection.postValue(fiche)
-                        photos.postValue(listPhotos)
-                        repository.updateDemoMonoLocalDatabse(fiche.toEntity())
-                        val resp = repository.patchDemontageMono(
-                            token!!,
-                            fiche._id,
-                            fiche,
-                            object : Callback<DemontageMonophaseResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMonophaseResponse>,
-                                    response: Response<DemontageMonophaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "enregistré")
-                                        }
-                                    } else {
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur d'enregistrement", 3600)
-                                        mySnackbar.show()
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                                response.errorBody()!!.charStream().readText()
-                                            }"
-                                        )
-                                    }
-                                }
+                repository.demontageRepository!!.patchFicheDemontage(
+                    token!!,
+                    selection.value!!._id,
+                    selection.value!!,
+                    object : Callback<FicheDemontageResponse> {
+                        override fun onResponse(
+                            call: Call<FicheDemontageResponse>,
+                            response: Response<FicheDemontageResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                val resp = response.body()
+                                if (resp != null) {
+                                    Log.i("INFO", "enregistré")
 
-                                override fun onFailure(
-                                    call: Call<DemontageMonophaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
                                 }
-                            })
-                    } else {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            getNameURI()
-                        }
-                        var m = selection.value!! as DemontageMonophase
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var mono = repository.getByIdDemoMonoLocalDatabse(selection.value!!._id)
-                            if (mono !== null) {
-                                repository.updateDemoMonoLocalDatabse(m.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
                             } else {
-                                repository.insertDemoMonoLocalDatabase(m)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
-                        }
-                    }
-
-                }
-                3 -> {
-                    var fiche = repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)!!
-                    if (isOnline(context)) {
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            getNameURI()
-                        }
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(fiche.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        fiche.photos = listPhotos?.toTypedArray()
-                        selection.postValue(fiche)
-                        photos.postValue(listPhotos!!)
-                        repository.updateDemoAlterLocalDatabse(fiche.toEntity())
-                        val resp = repository.patchDemontageAlter(
-                            token!!,
-                            fiche._id,
-                            fiche,
-                            object : Callback<DemontageAlternateurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageAlternateurResponse>,
-                                    response: Response<DemontageAlternateurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "enregistré")
-                                        }
-                                    } else {
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur d'enregistrement", 3600)
-                                        mySnackbar.show()
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                                response.errorBody()!!.charStream().readText()
-                                            }"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageAlternateurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        var a = selection.value!! as DemontageAlternateur
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var alter =
-                                repository.getByIdDemoAlterLocalDatabse(selection.value!!._id)
-                            if (alter !== null) {
-                                repository.updateDemoAlterLocalDatabse(a.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
-                            } else {
-                                repository.insertDemoAlterLocalDatabase(a)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
-                        }
-                    }
-
-                }
-                4 -> {
-                    var fiche = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)!!
-                    var rb = selection.value!! as DemontageRotorBobine
-                    if (isOnline(context)) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            getNameURI()
-                        }
-                        var listPhotos = fiche.photos?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(fiche.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
+                                Log.i(
+                                    "INFO",
+                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                        response.errorBody()!!.charStream().readText()
+                                    }"
+                                )
                             }
                         }
 
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        fiche.photos = listPhotos?.toTypedArray()
-                        selection.postValue(fiche)
-                        photos.postValue(listPhotos!!)
-                        repository.updateDemoRBLocalDatabse(fiche.toEntity())
-                        val resp = repository.patchDemontageRotor(
-                            token!!,
-                            fiche._id,
-                            fiche,
-                            object : Callback<DemontageRotorBobineResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageRotorBobineResponse>,
-                                    response: Response<DemontageRotorBobineResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "enregistré")
-                                        }
-                                    } else {
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur d'enregistrement", 3600)
-                                        mySnackbar.show()
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                                response.errorBody()!!.charStream().readText()
-                                            }"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageRotorBobineResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var rotor = repository.getByIdDemoRBLocalDatabse(selection.value!!._id)
-                            if (rotor !== null) {
-                                repository.updateDemoRBLocalDatabse(rb.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
-                            } else {
-                                repository.insertDemoRBLocalDatabase(rb)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
+                        override fun onFailure(
+                            call: Call<FicheDemontageResponse>,
+                            t: Throwable
+                        ) {
+                            Log.e("Error", "${t.stackTraceToString()}")
+                            Log.e("Error", "erreur ${t.message}")
                         }
-                    }
-
-                }
-                5 -> {
-                    if (isOnline(context)) {
-                        Log.i("info", "fiche id: ${selection.value!!._id}")
-                        var dcc = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)!!
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                //Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dcc.numFiche!!)) {
-                                        Log.i("INFO", "fichier à upload : ${name}")
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        dcc.photos = listPhotos?.toTypedArray()
-                        selection.postValue(dcc)
-                        photos.postValue(listPhotos)
-                        repository.updateDemoCCLocalDatabse(dcc.toEntity())
-                        val resp = repository.patchDemontageCC(
-                            token!!,
-                            dcc._id,
-                            dcc,
-                            object : Callback<DemontageCCResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageCCResponse>,
-                                    response: Response<DemontageCCResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            Log.i("INFO", "fiche enregistrée")
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                        }
-                                    } else {
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur enregistrement", 3600)
-                                        mySnackbar.show()
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageCCResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        var c = selection.value!! as CourantContinu
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var tri = repository.getByIdDemoCCLocalDatabse(selection.value!!._id)
-                            if (tri !== null) {
-                                repository.updateDemoCCLocalDatabse(c.toEntity())
-                            } else {
-                                repository.insertDemoCCLocalDatabase(c)
-                            }
-                            val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                            mySnackbar.show()
-                        }
-                    }
-                }
-                6 -> {
-                    if (isOnline(context) == true) {
-                        var dt = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)!!
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            Log.i("INFO", "fichier original : ${name}")
-                            if (name !== "") {
-                                // Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dt.numFiche!!)) {
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dt.photos = listPhotos?.toTypedArray()
-                        Log.i(
-                            "info",
-                            "list photo selection size 2 ${selection.value?.photos?.size} - liste photos ${photos.value?.size}"
-                        )
-                        repository.updateDemoTriLocalDatabse(dt.toEntity())
-                        selection.postValue(dt)
-                        photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageTriphase(
-                            token!!,
-                            dt._id,
-                            dt,
-                            object : Callback<DemontageTriphaseResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    response: Response<DemontageTriphaseResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur enregistrement", 3600)
-                                        mySnackbar.show()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageTriphaseResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        var t = selection.value!! as Triphase
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var tri = repository.getByIdDemoTriLocalDatabse(selection.value!!._id)
-                            if (tri !== null) {
-                                repository.updateDemoTriLocalDatabse(t.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
-                            } else {
-                                repository.insertDemoTriLocalDatabase(t)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
-                        }
-                    }
-                }
-                7 -> {
-                    if (isOnline(context) == true) {
-                        Log.i("info", "marque viewmodel ${selection.value?.marque}")
-                        var dt =
-                            repository.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)!!
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            if (name !== "") {
-                                runBlocking {
-                                    if (name.contains(dt.numFiche!!)) {
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dt.photos = listPhotos?.toTypedArray()
-                        repository.updateDemoMotoPompeLocalDatabase(dt.toEntity())
-                        selection.postValue(dt)
-                        photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageMotopompe(
-                            token!!,
-                            dt._id,
-                            dt,
-                            object : Callback<DemontageMotopompeResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMotopompeResponse>,
-                                    response: Response<DemontageMotopompeResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur enregistrement", 3600)
-                                        mySnackbar.show()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMotopompeResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        var t = selection.value!! as DemontageMotopompe
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var tri =
-                                repository.getByIdDemoMotopompeLocalDatabase(selection.value!!._id)
-                            if (tri !== null) {
-                                repository.updateDemoMotoPompeLocalDatabase(t.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
-                            } else {
-                                repository.insertDemoMotopompeDatabase(t)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
-                        }
-                    }
-                }
-                8 -> {
-                    if (isOnline(context) == true) {
-                        var dt =
-                            repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)!!
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            Log.i("INFO", "fichier original : ${name}")
-                            if (name !== "") {
-                                // Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dt.numFiche!!)) {
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dt.photos = listPhotos?.toTypedArray()
-                        repository.updateDemoReducteurLocalDatabase(dt.toEntity())
-                        selection.postValue(dt)
-                        photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageReducteur(
-                            token!!,
-                            dt._id,
-                            dt,
-                            object : Callback<DemontageReducteurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageReducteurResponse>,
-                                    response: Response<DemontageReducteurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur enregistrement", 3600)
-                                        mySnackbar.show()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageReducteurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        var t = selection.value!! as DemontageReducteur
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var tri =
-                                repository.getByIdDemoReducteurLocalDatabase(selection.value!!._id)
-                            if (tri !== null) {
-                                repository.updateDemoReducteurLocalDatabase(t.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
-                            } else {
-                                repository.insertDemoReducteurDatabase(t)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
-                        }
-                    }
-                }
-                9 -> {
-                    if (isOnline(context) == true) {
-                        var dt =
-                            repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)!!
-                        var listPhotos = photos.value?.toMutableList()
-                        var iter = listPhotos?.listIterator()
-                        while (iter?.hasNext() == true) {
-                            var name = iter.next()
-                            Log.i("INFO", "fichier original : ${name}")
-                            if (name !== "") {
-                                // Log.i("INFO", name.contains(dt.numFiche!!).toString()+"nom fichier ${name} - nom fiche ${dt.numFiche}")
-                                runBlocking {
-                                    if (name.contains(dt.numFiche!!)) {
-                                        //var test = getPhotoFile(name)
-                                        var job =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                getNameURI()
-                                            }
-                                        job.join()
-                                        var job2 =
-                                            CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                                try {
-                                                    val dir =
-                                                        Environment.getExternalStoragePublicDirectory(
-                                                            Environment.DIRECTORY_PICTURES + "/test_pictures"
-                                                        )
-                                                    val from = File(
-                                                        dir,
-                                                        name
-                                                    )
-                                                    val to = File(dir, imageName.value!!.name!!)
-                                                    Log.i(
-                                                        "INFO",
-                                                        from.exists()
-                                                            .toString() + " - path ${from.absolutePath} - new name ${imageName.value!!.name!!}"
-                                                    )
-                                                    if (from.exists()) from.renameTo(to)
-                                                    sendPhoto(to)
-                                                    iter.set(imageName.value!!.name!!)
-                                                } catch (e: java.lang.Exception) {
-                                                    Log.e("EXCEPTION", e.message!!)
-                                                }
-                                            }
-                                        job2.join()
-                                    }
-                                }
-                            }
-                            if (name == "") {
-                                iter.remove()
-                            }
-                        }
-                        //Log.i("INFO",photos?.filter { it !== "" }?.size.toString())
-                        dt.photos = listPhotos?.toTypedArray()
-                        repository.updateDemoMotoreducteurLocalDatabase(dt.toEntity())
-                        selection.postValue(dt)
-                        photos.postValue(listPhotos!!)
-                        val resp = repository.patchDemontageMotoreducteur(
-                            token!!,
-                            dt._id,
-                            dt,
-                            object : Callback<DemontageMotoreducteurResponse> {
-                                override fun onResponse(
-                                    call: Call<DemontageMotoreducteurResponse>,
-                                    response: Response<DemontageMotoreducteurResponse>
-                                ) {
-                                    if (response.code() == 200) {
-                                        val resp = response.body()
-                                        if (resp != null) {
-                                            val mySnackbar =
-                                                Snackbar.make(view, "fiche enregistrée", 3600)
-                                            mySnackbar.show()
-                                            Log.i("INFO", "fiche enregistrée")
-                                        }
-                                    } else {
-                                        Log.i(
-                                            "INFO",
-                                            "code : ${response.code()} - erreur : ${response.message()}"
-                                        )
-                                        val mySnackbar =
-                                            Snackbar.make(view, "erreur enregistrement", 3600)
-                                        mySnackbar.show()
-                                    }
-                                }
-
-                                override fun onFailure(
-                                    call: Call<DemontageMotoreducteurResponse>,
-                                    t: Throwable
-                                ) {
-                                    Log.e("Error", "${t.stackTraceToString()}")
-                                    Log.e("Error", "erreur ${t.message}")
-                                }
-                            })
-                    } else {
-                        var t = selection.value!! as DemontageMotoreducteur
-                        viewModelScope.launch(Dispatchers.IO) {
-                            var tri =
-                                repository.getByIdDemoMotoreducteurLocalDatabase(selection.value!!._id)
-                            if (tri !== null) {
-                                repository.updateDemoMotoreducteurLocalDatabase(t.toEntity())
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "patch local")
-                            } else {
-                                repository.insertDemoMotoreducteurDatabase(t)
-                                val mySnackbar = Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré local")
-                            }
-                        }
-                    }
-                }
+                    })
+            } else {
+                repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
             }
 
         }
@@ -1382,6 +532,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         }
         return false
     }
+
     fun galleryAddPic(imagePath: String?) {
         imagePath?.let { path ->
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
@@ -1391,18 +542,20 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             context.sendBroadcast(mediaScanIntent)
         }
     }
-    suspend fun getNameURI()  {
-            val resp1 = repository.getURLToUploadPhoto(token!!)
-            withContext(Dispatchers.Main) {
-                if (resp1.isSuccessful) {
-                    imageName.postValue(resp1.body())
-                    Log.i("INFO", resp1.body()?.name!!)
-                } else {
-                    exceptionHandler
-                }
+
+    suspend fun getNameURI() {
+        val resp1 = repository.getURLToUploadPhoto(token!!)
+        withContext(Dispatchers.Main) {
+            if (resp1.isSuccessful) {
+                imageName.postValue(resp1.body())
+                Log.i("INFO", resp1.body()?.name!!)
+            } else {
+                exceptionHandler
             }
+        }
     }
-    fun sendPhoto(photo:File)= runBlocking{
+
+    /*fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")
         var tab = s.split("&").toMutableList()
         tab[1] = tab[1].replace("%2F","/")
@@ -1430,7 +583,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                     }
                 })
         }
-    }
+    }*/
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.i("INFO", "Exception handled: ${throwable.localizedMessage}")
     }

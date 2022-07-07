@@ -18,23 +18,24 @@ class Chantier(
     type:Long?,
     statut: Long?,
     client: Client?,
+    resp: User?,
     contact: String?,
     telContact: String?,
-    techniciens: Array<User>?,
-    resp: User?,
     dateDebut: Date?,
     dureeTotale:Long?,
     observations: String?,
     photos:Array<String>?,
-    var vehicule: String?,
+    techniciens: Array<String>?,
     var adresseChantier:String?,
+    var vehicule: String?,
     var objet:String?,
     var materiel:String?,
     var diagnostic:String?,
     var signatureTech:String?,
-    var signatureClient:String?
+    var signatureClient:String?,
+    var dureeEssai:String?
 
-) : Fiche(idFiche, numDevis, numFiche, type, statut, client, contact, telContact, techniciens, resp, dateDebut, dureeTotale, observations, photos ) {
+) : Fiche(idFiche, numDevis, numFiche, type, statut, client, resp,contact, telContact, dateDebut, dureeTotale, observations, photos, techniciens ) {
     fun toEntity() : ChantierEntity {
         return ChantierEntity(
             _id,
@@ -54,7 +55,8 @@ class Chantier(
             materiel,
             diagnostic,
             signatureTech,
-            signatureClient
+            signatureClient,
+            dureeEssai
         )
     }
 }

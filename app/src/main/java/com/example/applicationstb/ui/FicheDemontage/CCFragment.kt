@@ -19,25 +19,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.R
-import com.example.applicationstb.databinding.ActivityMainBinding
-import com.example.applicationstb.model.CourantContinu
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -69,154 +66,155 @@ class CCFragment : Fragment() {
         // Inflate the layout for this fragment
         var layout = inflater.inflate(R.layout.fragment_c_c, container, false)
         //isolement phase/masse
-        var isopmu = layout.findViewById<EditText>(R.id.isopmU) //induit
-        var isopmv = layout.findViewById<EditText>(R.id.isopmV) //pole principal
-        var isopmw = layout.findViewById<EditText>(R.id.isopmW) //pole auxilliare
-        var isoppU = layout.findViewById<EditText>(R.id.isoppU)// pôle compensatoire
-        var isoppV = layout.findViewById<EditText>(R.id.isoppV)// pôle porte balais
+        var isopmI = layout.findViewById<EditText>(R.id.isopmI) //induit
+        var isopmPP = layout.findViewById<EditText>(R.id.isopmPP) //pole principal
+        var isopmPA = layout.findViewById<EditText>(R.id.isopmPA) //pole auxilliare
+        var isopmPC = layout.findViewById<EditText>(R.id.isoppPC)// pôle compensatoire
+        var isopmPB = layout.findViewById<EditText>(R.id.isoppPB)// pôle porte balais
         //resistances
-        var rU = layout.findViewById<EditText>(R.id.rU)     //résistance Induit
-        var rV =  layout.findViewById<EditText>(R.id.rV)    // résistance pôle principal
-        var rI = layout.findViewById<EditText>(R.id.RI)     //resistance pôle auxilliaire
-        var rPP = layout.findViewById<EditText>(R.id.RPP)   // resistance pôle compensatoire
+        var rI = layout.findViewById<EditText>(R.id.rInduit)     //résistance Induit
+        var rPP =  layout.findViewById<EditText>(R.id.rPP)    // résistance pôle principal
+        var rPA = layout.findViewById<EditText>(R.id.rPA)     //resistance pôle auxilliaire
+        var rPC = layout.findViewById<EditText>(R.id.rPC)   // resistance pôle compensatoire
         // essais dynamiques
-        var vU = layout.findViewById<EditText>(R.id.vU)     //tension induit
-        var vV = layout.findViewById<EditText>(R.id.vV)     //tension excitation
-        var vUI = layout.findViewById<EditText>(R.id.vUI)   //intensité induit
-        var vVI = layout.findViewById<EditText>(R.id.vVI)   //intensité excitation
+        var tensionU = layout.findViewById<EditText>(R.id.u)     //tension u
+        var tensionV = layout.findViewById<EditText>(R.id.v)     //tension V
+        var tensionW = layout.findViewById<EditText>(R.id.w)   //tension W
+        var isoPM = layout.findViewById<EditText>(R.id.isoPM)   // isolement phase masse
         var enr = layout.findViewById<Button>(R.id.enregistrerCC)
         var ter = layout.findViewById<Button>(R.id.termCC)
         var btnPhoto = layout.findViewById<Button>(R.id.photo4)
         var observations = layout.findViewById<EditText>(R.id.observations)
+        var gal = layout.findViewById<Button>(R.id.g5)
         var retour = layout.findViewById<Button>(R.id.retourCC)
         var regexNombres = Regex("^\\d*\\.?\\d*\$")
         var regexInt = Regex("^\\d+")
         retour.setOnClickListener {
             viewModel.retour(layout)
         }
-        var fiche = viewModel.selection.value!! as CourantContinu
-            if(fiche.isolementMasseInduit !== null )isopmu.setText(fiche.isolementMasseInduit.toString())
-            if(fiche.isolementMassePolesPrincipaux !== null ) isopmv.setText(fiche.isolementMassePolesPrincipaux.toString())  //pole principal
-            if(fiche.isolementMassePolesAuxilliaires !== null ) isopmw.setText(fiche.isolementMassePolesAuxilliaires.toString())  //pole auxilliare
-            if(fiche.isolementMassePolesCompensatoires !==null) isoppU.setText(fiche.isolementMassePolesCompensatoires.toString()) // pôle compensatoire
-            if(fiche.isolementMassePorteBalais !== null) isoppV.setText(fiche.isolementMassePorteBalais.toString()) // pôle porte balais
+        var fiche = viewModel.selection.value!!
+            if(fiche.isolementMasseInduit !== null )isopmI.setText(fiche.isolementMasseInduit.toString())
+            if(fiche.isolementMassePolesPrincipaux !== null ) isopmPP.setText(fiche.isolementMassePolesPrincipaux.toString())  //pole principal
+            if(fiche.isolementMassePolesAuxilliaires !== null ) isopmPA.setText(fiche.isolementMassePolesAuxilliaires.toString())  //pole auxilliare
+            if(fiche.isolementMassePolesCompensatoires !==null) isopmPC.setText(fiche.isolementMassePolesCompensatoires.toString()) // pôle compensatoire
+            if(fiche.isolementMassePorteBalais !== null) isopmPB.setText(fiche.isolementMassePorteBalais.toString()) // pôle porte balais
             //resistances
-             if (fiche.resistanceInduit !== null) rU.setText(fiche.resistanceInduit.toString())    //résistance Induit
-             if (fiche.resistancePP !== null) rV.setText(fiche.resistancePP.toString())    // résistance pôle principal
-             if (fiche.resistancePA !== null) rI.setText(fiche.resistancePA.toString())    //resistance pôle auxilliaire
-             if (fiche.resistancePC !== null) rPP.setText(fiche.resistancePC.toString())   // resistance pôle compensatoire
+             if (fiche.resistanceInduit !== null) rI.setText(fiche.resistanceInduit.toString())    //résistance Induit
+             if (fiche.resistancePP !== null) rPP.setText(fiche.resistancePP.toString())    // résistance pôle principal
+             if (fiche.resistancePA !== null) rPA.setText(fiche.resistancePA.toString())    //resistance pôle auxilliaire
+             if (fiche.resistancePC !== null) rPC.setText(fiche.resistancePC.toString())   // resistance pôle compensatoire
+             if (fiche.tensionU !== null ) tensionU.setText(fiche.tensionU)
+             if (fiche.tensionV !== null ) tensionV.setText(fiche.tensionV)
+             if (fiche.tensionW !== null ) tensionW.setText(fiche.tensionW)
             // essais dynamiques
-             if (fiche.tensionInduit !== null) vU.setText(fiche.tensionInduit.toString())    //tension induit
-             if (fiche.tensionExcitation !== null) vV.setText(fiche.tensionExcitation.toString())   //tension excitation
-             if (fiche.intensiteInduit !== null ) vUI.setText(fiche.intensiteInduit.toString())   //intensité induit
-             if (fiche.intensiteExcitation !== null )vVI.setText(fiche.intensiteExcitation.toString())
+            if (fiche.isolementPhase !== null) isoPM.setText(fiche.isolementPhase)
             if (fiche.observations !== null) observations.setText(fiche.observations.toString())
         viewModel.photos.value = fiche.photos!!.toMutableList()
         if (fiche.status!! < 3L) {
-            isopmu.doAfterTextChanged {
-                if (isopmu.text.isNotEmpty() && isopmu.hasFocus() && isopmu.text.matches(regexNombres)) {
+            isopmI.doAfterTextChanged {
+                if (isopmI.text.isNotEmpty() && isopmI.hasFocus()) {
                     fiche.isolementMasseInduit =
-                        isopmu.text.toString().toFloat()
+                        isopmI.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            isopmv.doAfterTextChanged {
-                if (isopmv.text.isNotEmpty() && isopmv.hasFocus() && isopmv.text.matches(regexNombres)) {
+            isopmPP.doAfterTextChanged {
+                if (isopmPP.text.isNotEmpty() && isopmPP.hasFocus() ) {
                     fiche.isolementMassePolesPrincipaux =
-                        isopmv.text.toString().toFloat()
+                        isopmPP.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            isopmw.doAfterTextChanged {
-                if (isopmw.text.isNotEmpty() && isopmw.hasFocus() && isopmw.text.matches(regexNombres)) {
+            isopmPA.doAfterTextChanged {
+                if (isopmPA.text.isNotEmpty() && isopmPA.hasFocus() ) {
                     fiche.isolementMassePolesAuxilliaires =
-                        isopmw.text.toString().toFloat()
+                        isopmPA.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            isoppU.doAfterTextChanged {
-                if (isoppU.text.isNotEmpty() && isoppU.hasFocus() && isoppU.text.matches(regexNombres)) {
+            isopmPC.doAfterTextChanged {
+                if (isopmPC.text.isNotEmpty() && isopmPC.hasFocus() ) {
                     fiche.isolementMassePolesCompensatoires =
-                        isoppU.text.toString().toFloat()
+                        isopmPC.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            isoppV.doAfterTextChanged {
-                if (isoppV.text.isNotEmpty() && isoppV.hasFocus() && isoppV.text.matches(regexNombres)) {
+            isopmPB.doAfterTextChanged {
+                if (isopmPB.text.isNotEmpty() && isopmPB.hasFocus() ) {
                     fiche.isolementMassePorteBalais =
-                        isoppV.text.toString().toFloat()
-                    viewModel.selection.value = fiche
-                    viewModel.getTime()
-                    viewModel.localSave()
-                }
-            }
-            rU.doAfterTextChanged {
-                if (rU.text.isNotEmpty() && rU.hasFocus() && rU.text.matches(regexNombres)) {
-                    fiche.resistanceInduit = rU.text.toString().toFloat()
+                        isopmPB.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
             rI.doAfterTextChanged {
-                if (rI.text.isNotEmpty() && rI.hasFocus() && rI.text.matches(regexNombres)) {
-                    fiche.resistancePA = rI.text.toString().toFloat()
+                if (rI.text.isNotEmpty() && rI.hasFocus()) {
+                    fiche.resistanceInduit = rI.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            rV.doAfterTextChanged {
-                if (rV.text.isNotEmpty() && rV.hasFocus() && rV.text.matches(regexNombres)) {
-                    fiche.resistancePP = rV.text.toString().toFloat()
+            rPA.doAfterTextChanged {
+                if (rPA.text.isNotEmpty() && rPA.hasFocus()) {
+                    fiche.resistancePA = rPA.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
             rPP.doAfterTextChanged {
-                if (rPP.text.isNotEmpty() && rPP.hasFocus() && rPP.text.matches(regexNombres)) {
-                    fiche.resistancePC = rPP.text.toString().toFloat()
+                if (rPP.text.isNotEmpty() && rPP.hasFocus() ) {
+                    fiche.resistancePP = rPP.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            vU.doAfterTextChanged {
-                if (vU.text.isNotEmpty() && vU.hasFocus() && vU.text.matches(regexNombres)) {
-                    fiche.tensionInduit = vU.text.toString().toFloat()
+            rPC.doAfterTextChanged {
+                if (rPC.text.isNotEmpty() && rPC.hasFocus() ) {
+                    fiche.resistancePC = rPC.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            vV.doAfterTextChanged {
-                if (vV.text.isNotEmpty() && vV.hasFocus() && vV.text.matches(regexNombres)) {
-                    fiche.tensionExcitation = vV.text.toString().toFloat()
+            isoPM.doAfterTextChanged {
+                if (isoPM.text.isNotEmpty() && isoPM.hasFocus() ) {
+                    fiche.isolementPhase = isoPM.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            vUI.doAfterTextChanged {
-                if (vUI.text.isNotEmpty() && vUI.hasFocus() && vUI.text.matches(regexNombres)) {
-                    fiche.intensiteInduit = vUI.text.toString().toFloat()
+            tensionU.doAfterTextChanged {
+                if (tensionU.hasFocus()) {
+                    fiche.tensionU = tensionU.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
                 }
             }
-            vVI.doAfterTextChanged {
-                if (vVI.text.isNotEmpty() && vVI.hasFocus() && vVI.text.matches(regexNombres)) {
-                    fiche.intensiteExcitation = vVI.text.toString().toFloat()
+            tensionV.doAfterTextChanged {
+                if (tensionV.hasFocus()) {
+                    fiche.tensionV = tensionV.text.toString()
+                    viewModel.selection.value = fiche
+                    viewModel.getTime()
+                    viewModel.localSave()
+                }
+            }
+            tensionW.doAfterTextChanged {
+                if (tensionW.hasFocus()) {
+                    fiche.tensionW = tensionW.text.toString()
                     viewModel.selection.value = fiche
                     viewModel.getTime()
                     viewModel.localSave()
@@ -231,18 +229,20 @@ class CCFragment : Fragment() {
                 }
             }
         } else {
-            isopmu.isEnabled = false
-            isopmv.isEnabled = false
-            isopmw.isEnabled = false
-            isoppU.isEnabled = false
-            rU.isEnabled = false
+            isopmI.isEnabled = false
+            isopmPP.isEnabled = false
+            isopmPA.isEnabled = false
+            isopmPC.isEnabled = false
+            isopmPB.isEnabled = false
             rI.isEnabled = false
-            rV.isEnabled = false
             rPP.isEnabled = false
-            vU.isEnabled = false
-            vV.isEnabled = false
-            vUI.isEnabled = false
-            vVI.isEnabled = false
+            rPA.isEnabled = false
+            rPC.isEnabled = false
+            tensionU.isEnabled = false
+            tensionV.isEnabled = false
+            tensionW.isEnabled = false
+            isoPM.isEnabled = false
+            gal.visibility = View.INVISIBLE
             observations.isEnabled = false
             enr.visibility = View.GONE
             ter.visibility = View.GONE
@@ -252,10 +252,7 @@ class CCFragment : Fragment() {
             viewModel.getTime()
             viewModel.selection.value!!.status = 2L
             viewModel.localSave()
-            if (viewModel.isOnline(requireContext())) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getNameURI()
-                }
+            if (viewModel.isOnline(requireContext()) && viewModel.token !== "") {
                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
             } else {
                 val mySnackbar =
@@ -263,12 +260,10 @@ class CCFragment : Fragment() {
                 mySnackbar.show()
             }
         }
-        var gal = layout.findViewById<Button>(R.id.g5)
         gal.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 6)
+            startActivityForResult(intent, viewModel.GALLERY_CAPTURE)
         }
-
         ter.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
@@ -280,9 +275,6 @@ class CCFragment : Fragment() {
                             viewModel.selection.value!!.status = 3L
                             viewModel.localSave()
                             if (viewModel.isOnline(requireContext())) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    viewModel.getNameURI()
-                                }
                                 viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                             } else {
                                 val mySnackbar =
@@ -294,9 +286,6 @@ class CCFragment : Fragment() {
             }
                 alertDialog?.show()
         }
-
-
-
         var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto3)
         photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val sAdapter = schemaAdapter(viewModel.photos.value!!.toList() ,{ item ->
@@ -342,7 +331,7 @@ class CCFragment : Fragment() {
                             it
                         )
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
+                        startActivityForResult(cameraIntent,viewModel.CAMERA_CAPTURE)
                         //viewModel.addSchema(photoURI)
                     }
                 }
@@ -359,29 +348,36 @@ class CCFragment : Fragment() {
         }
         return layout
     }
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            //val photo: Bitmap = data?.extras?.get("data") as Bitmap
-            //imageView.setImageBitmap(photo)
-            viewModel.addPhoto(currentPhotoPath)
+        if (requestCode == viewModel.CAMERA_CAPTURE){
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.addPhoto(currentPhotoPath)
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                File(currentPhotoPath).delete()
+            }
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == 6) {
-            var file = viewModel.getRealPathFromURI(data?.data!!)
-            CoroutineScope(Dispatchers.IO).launch {
-                if (viewModel.isOnline(requireContext())) viewModel.getNameURI()
-                var nfile = viewModel.sendExternalPicture(file!!)
-                if (nfile !== null) {
-                    var list = viewModel.selection.value?.photos?.toMutableList()
-                    if (list != null) {
-                        list.add(nfile)
+        if (requestCode == viewModel.GALLERY_CAPTURE) {
+            if (resultCode == Activity.RESULT_OK ) {
+                var file = viewModel.getRealPathFromURI(data?.data!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    var nfile = async { viewModel.sendExternalPicture(file!!) }
+                    nfile.await()
+                    if (nfile.isCompleted) {
+                        var list = viewModel.selection.value?.photos?.toMutableList()
+                        list!!.removeAll { it == "" }
+                        list.add(nfile.await()!!)
+                        viewModel.selection.value?.photos = list?.toTypedArray()
+                        viewModel.photos.postValue(list!!)
+                        viewModel.localSave()
                     }
-                    viewModel.selection.value?.photos = list?.toTypedArray()
-                    viewModel.photos.postValue(list!!)
                 }
             }
-
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("info", "data: ${data}")
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.applicationstb.localdatabase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.applicationstb.model.Client
+import com.example.applicationstb.model.FicheRemontage
 import com.example.applicationstb.model.Remontage
 
 @Entity(tableName = "remontage")
@@ -18,13 +19,79 @@ data class RemontageEntity (
     var dureeTotale: Long?,
     var observation: String?,
     var photos:Array<String>?,
-    var typeFicheRemontage: Int?,
+    var subtype: Int?,
     var remontageRoulement: Int?,
     var collageRoulementPorteeArbre: Int?,
-    var collageRoulementPorteeFlasque: Int?
+    var collageRoulementFlasque: Int?,
+    var dureeEssai:Int?,
+    //fiches 2/3/5/6/7/9
+    var isolementPhaseMasseU: String?,
+    var isolementPhaseMasseV: String?,
+    var isolementPhaseMasseW: String?,
+    var isolementPhasePhaseU: String?,
+    var isolementPhasePhaseV: String?,
+    var isolementPhasePhaseW: String?,
+    var resistanceStatorU: String?,
+    var resistanceStatorV: String?,
+    var resistanceStatorW: String?,
+    var tension:String?,
+    var intensiteU:String?,
+    var intensiteV:String?,
+    var intensiteW:String?,
+    // fiches 3/5/6/8/9
+    var isolementPhase: String?,
+    //fiches 2
+    var resistanceTravail:String?,
+    var resistanceDemarrage:String?,
+    //fiches 3
+    var isolementMasseStatorPrincipalU:String?,
+    var isolementMasseStatorPrincipalV:String?,
+    var isolementMasseStatorPrincipalW:String?,
+    var isolementMasseRotorPrincipal:String?,
+    var isolementMasseStatorExcitation:String?,
+    var isolementMasseRotorExcitation:String?,
+    var resistanceRotorPrincipal:String?,
+    var resistanceStatorExcitation:String?,
+    var resistanceRotorExcitation:String?,
+    //fiches 5
+    var verificationFixationCouronne: Boolean?,
+    var isolementPorteBalais: String?,
+    var isolementPhaseMasseRotorU: String?,
+    var isolementPhaseMasseRotorV: String?,
+    var isolementPhaseMasseRotorW: String?,
+    var isolementPhaseRotorUV: String?,
+    var isolementPhaseRotorVW: String?,
+    var isolementPhaseRotorUW: String?,
+    var isolementInduit: String?,
+    var isolementPolePrincipal: String?,
+    var isolementPoleAuxilliaire:String?,
+    var isolementPoleCompensatoire:String?,
+    var resistanceInduit:String?,
+    var resistancePolePrincipal:String?,
+    var resistancePoleAuxilliaire:String?,
+    var resistancePoleCompensatoire:String?,
+    var tensionInducteursU:String?,
+    var tensionInducteursV:String?,
+    var tensionInducteursW:String?,
+    var intensitéInducteursU:String?,
+    var intensitéInducteursV:String?,
+    var intensitéInducteursW:String?,
+    var tensionInduitU : String?,
+    var tensionInduitV : String?,
+    var tensionInduitW : String?,
+    var intensiteInduit:String?,
+    var tensionRotorU : String?,
+    var tensionRotorV : String?,
+    var tensionRotorW : String?,
+    var tensionExcitation : String?,
+    var intensiteExcitation : String?,
+    //fiches 7
+    var typeMotopompe: Int?,
+    //fiches 9
+    var typeMotoreducteur: Int?
 ){
-    fun toRemo(): Remontage{
-        return Remontage(
+    fun toFicheRemo(): FicheRemontage {
+        return FicheRemontage(
             _id,
             numDevis!!,
             numFiche!!,
@@ -39,10 +106,76 @@ data class RemontageEntity (
             dureeTotale,
             observation,
             photos,
-            typeFicheRemontage,
-            remontageRoulement,
-            collageRoulementPorteeArbre,
-            collageRoulementPorteeFlasque
+            subtype,
+        remontageRoulement,
+        collageRoulementPorteeArbre,
+        collageRoulementFlasque,
+        dureeEssai,
+        //fiches 2/3/5/6/7/9
+        isolementPhaseMasseU,
+        isolementPhaseMasseV,
+        isolementPhaseMasseW,
+        isolementPhasePhaseU,
+        isolementPhasePhaseV,
+        isolementPhasePhaseW,
+        resistanceStatorU,
+        resistanceStatorV,
+        resistanceStatorW,
+        tension,
+        intensiteU,
+        intensiteV,
+        intensiteW,
+        // fiches 3/5/6/8/9
+        isolementPhase,
+        //fiches 2
+        resistanceTravail,
+        resistanceDemarrage,
+        //fiches 3
+        isolementMasseStatorPrincipalU,
+        isolementMasseStatorPrincipalV,
+        isolementMasseStatorPrincipalW,
+        isolementMasseRotorPrincipal,
+        isolementMasseStatorExcitation,
+        isolementMasseRotorExcitation,
+        resistanceRotorPrincipal,
+        resistanceStatorExcitation,
+        resistanceRotorExcitation,
+        //fiches 5
+        verificationFixationCouronne,
+        isolementPorteBalais,
+        isolementPhaseMasseRotorU,
+        isolementPhaseMasseRotorV,
+        isolementPhaseMasseRotorW,
+        isolementPhaseRotorUV,
+        isolementPhaseRotorVW,
+        isolementPhaseRotorUW,
+        isolementInduit,
+        isolementPolePrincipal,
+        isolementPoleAuxilliaire,
+        isolementPoleCompensatoire,
+        resistanceInduit,
+        resistancePolePrincipal,
+        resistancePoleAuxilliaire,
+        resistancePoleCompensatoire,
+        tensionInducteursU,
+        tensionInducteursV,
+        tensionInducteursW,
+        intensitéInducteursU,
+        intensitéInducteursV,
+        intensitéInducteursW,
+        tensionInduitU,
+        tensionInduitV,
+        tensionInduitW,
+        intensiteInduit,
+        tensionRotorU,
+        tensionRotorV,
+        tensionRotorW,
+        tensionExcitation,
+        intensiteExcitation,
+        //fiches 7
+        typeMotopompe,
+        //fiches 9
+        typeMotoreducteur
         )
     }
 }

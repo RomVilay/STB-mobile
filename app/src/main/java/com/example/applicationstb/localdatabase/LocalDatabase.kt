@@ -15,46 +15,22 @@ import com.example.applicationstb.model.*
     entities = arrayOf(
         ChantierEntity::class,
         BobinageEntity::class,
-        DemontageTriphaseEntity::class,
-        DemontageCCEntity::class,
-        RemontageTriphaseEntity::class,
-        RemontageCCEntity::class,
-        DemontageMotopompeEntity::class,
-        RemontageMotopompeEntity::class,
-        DemontageMotoreducteurEntity::class,
-        RemontageMotoreducteurEntity::class,
-        DemontageReducteurEntity::class,
-        DemoPompeEntity::class,
-        DemontageAlternateurEntity::class,
-        DemontageRotorBEntity::class,
-        DemontageMonophaseEntity::class,
         ClientEntity::class,
         VehiculeEntity::class,
         RemontageEntity::class,
-        PointageEntity::class
-    ), version = 30
+        PointageEntity::class,
+        DemontageEntity::class
+    ), version = 36
 )
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun chantierDao(): ChantierDao
     abstract fun bobinageDao(): BobinageDao
-    abstract fun demontageTriphaseDao(): DemontageTriphaseDao
-    abstract fun demontageCCDao(): DemontageCCDao
-    abstract fun demontagePDao(): DemontagePDao
-    abstract fun demontageAlternateurDao(): DemontageAlternateurDao
-    abstract fun demontageMonophaseDao(): DemontageMonophaseDao
-    abstract fun demontageRotorBobineDao(): DemontageRotorBobineDao
-    abstract fun demontageMotopompeDao(): DemontageMotopompeDao
-    abstract fun demontageMotoreducteurDao(): DemontageMotoreducteurDao
-    abstract fun demontageReducteurDao(): DemontageReducteurDao
-    abstract fun remontageTriphaseDao(): RemontageTriphaseDao
-    abstract fun remontageCCDao(): RemontageCCDao
-    abstract fun remontageMotoreducteurDao(): RemontageMotoreducteurDao
-    abstract fun remontageMotopompeDao(): RemontageMotopompeDao
     abstract fun remontageDao(): RemontageDao
     abstract fun vehiculesDao(): VehiculeDao
     abstract fun clientDao(): ClientsDao
     abstract fun pointageDao(): PointageDao
+    abstract fun demontageDao(): DemontageDao
 
     @Volatile
     private var INSTANCE: LocalDatabase? = null

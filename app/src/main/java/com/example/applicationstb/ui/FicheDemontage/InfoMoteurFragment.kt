@@ -50,9 +50,9 @@ class InfoMoteurFragment : Fragment() {
             if (it.puissance !== null) puissance.setText(it.puissance.toString())
             if (it.bride !== null) bride.setText(it.bride.toString())
             if (it.vitesse !== null) vitesse.setText(it.vitesse.toString())
-            if (it.clavette !== null) clavette.setChecked(it.clavette!!)
-            if (it.arbreSortantEntrant !== null) arbre.setChecked(it.arbreSortantEntrant!!)
-            if (it.accouplement !== null) accouplement.setChecked(it.accouplement!!)
+            if (it.clavette !== null) clavette.setChecked(it.clavette!!) else it.clavette = false
+            if (it.arbreSortantEntrant !== null) arbre.setChecked(it.arbreSortantEntrant!!) else it.arbreSortantEntrant = false
+            if (it.accouplement !== null) accouplement.setChecked(it.accouplement!!) else it.accouplement = false
             if (it.coteAccouplement !== null) cote.setText(it.coteAccouplement.toString())
             if (it.aspect !== null) aspectExt.setSelection(it.aspect!!-1)
             if (it.aspectInterieur !== null) aspectBte.setSelection(it.aspectInterieur!!-1)
@@ -87,19 +87,19 @@ class InfoMoteurFragment : Fragment() {
             }
             puissance.doAfterTextChanged {
                 if (puissance.text.isNotEmpty() && puissance.text.matches(regexNombres) && puissance.hasFocus()) viewModel.selection.value!!.puissance =
-                    puissance.text.toString().toFloat()
+                    puissance.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }
             bride.doAfterTextChanged {
-                if (bride.text.isNotEmpty() && bride.text.matches(regexNombres) && bride.hasFocus()) viewModel.selection.value!!.bride =
-                    bride.text.toString().toFloat()
+                if (bride.text.isNotEmpty() && bride.hasFocus()) viewModel.selection.value!!.bride =
+                    bride.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }
             vitesse.doAfterTextChanged {
                 if (vitesse.text.isNotEmpty() && vitesse.text.matches(regexNombres) && vitesse.hasFocus()) viewModel.selection.value!!.vitesse =
-                    vitesse.text.toString().toFloat()
+                    vitesse.text.toString()
                 viewModel.getTime()
                 viewModel.localSave()
             }

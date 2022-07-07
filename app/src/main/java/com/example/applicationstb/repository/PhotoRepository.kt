@@ -1,17 +1,37 @@
 package com.example.applicationstb.repository
 
+import android.app.Application
 import android.content.Context
+import android.content.CursorLoader
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Environment
+import android.os.Message
+import android.provider.MediaStore
+import android.util.AndroidRuntimeException
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.Moshi
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.decodeSampledBitmapFromFile
+import kotlinx.coroutines.*
 import okhttp3.ConnectionSpec
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
+import java.lang.Exception
+import java.nio.file.Files
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.system.measureTimeMillis
 
 class URLPhotoResponse(
     var url: String?
@@ -20,6 +40,10 @@ class URLPhotoResponse(
 class URLPhotoResponse2(
     var url: String?,
     var name: String?
+)
+class ServerResponse(
+    var code:Int,
+    var message: String
 )
 
 class PhotoRepository(context: Context) {
@@ -33,22 +57,22 @@ class PhotoRepository(context: Context) {
         .build()
     fun servicePhoto(): APIstb {
         return Retrofit.Builder()
-            .baseUrl(minioUrl)
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshiBuilder.build()))
             .build()
             .create(APIstb::class.java)
     }
-
-    fun uploadPhoto(
+    suspend fun getURLPhoto(token: String, photoName: String) = servicePhoto().getURLPhoto(token, photoName)
+    suspend fun getPhoto(address: String) = servicePhoto().getPhoto(address)
+    suspend fun uploadPhoto(
         token: String,
         name: String,
         address: List<String>,
-        photo: File,
-        param: Callback<URLPhotoResponse>
-    ) {
+        photo: File
+    ) : Response<URLPhotoResponse> {
         var body = RequestBody.create(MediaType.parse("image/jpeg"), photo)
-        var call = servicePhoto().uploadPhoto(
+        return servicePhoto().uploadPhoto(
             token,
             name,
             address[0],
@@ -59,7 +83,142 @@ class PhotoRepository(context: Context) {
             address[5].removePrefix("X-Amz-Signature="),
             body
         )
-        var photo: String? = null
-        call.enqueue(param)
     }
+    suspend fun getURL(token: String,name:String) = servicePhoto().getURLToUploadPhoto(token,name)
+    // list composé uniquement de photos présentes dans test_picture
+    suspend fun sendPhotos(token:String, list:MutableList<String>, context: Context) : MutableList<String> {
+        var photos = list.filterNot { it == "" }.toMutableList()
+        var job = CoroutineScope(Dispatchers.IO).launch {
+            var iter = photos.iterator()
+            while ( iter.hasNext() ) {
+                var photo = iter.next()
+                val url = getURL(token,photo)
+                Log.i("info", "url  ${url.body()!!.url}")
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
+                try {
+                    var compress = async { Compressor.compress(context, file)  }
+                    compress.join()
+                    if (compress.isCompleted) {
+                        var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
+                            var upload = async {
+                                servicePhoto().uploadPhoto2(url.body()!!.url!!, token , body)
+                                /*servicePhoto().uploadPhoto(
+                                token,
+                                photo,
+                                tab[0],
+                                tab[1].removePrefix("X-Amz-Credential="),
+                                tab[2].removePrefix("X-Amz-Date="),
+                                tab[3].removePrefix("X-Amz-Expires="),
+                                tab[4].removePrefix("X-Amz-SignedHeaders="),
+                                tab[5].removePrefix("X-Amz-Signature="),
+                                body
+                            )*/ }
+                            upload.await()
+                        Log.i("info","photo ${photo} uploaded ")
+                    }
+                } catch (e:Exception){
+                    Log.e("error",e.message!!)
+                }
+            }
+        }
+        job.join()
+        return photos
+    }
+    suspend fun sendPhoto(token:String, photo:String, context: Context) {
+       CoroutineScope(Dispatchers.IO).launch {
+                val url = async {getURL(token,photo)}
+                url.await()
+                try {
+                    val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
+                    if (file.exists() && file.readBytes().isNotEmpty()){
+                        //Log.i("info", "is bitmap ${ImageDecoder.decodeBitmap(file.toURI())}")
+                        var compress = async { Compressor.compress(context, file)  }
+                        compress.await()
+                        if (compress.isCompleted) {
+                            var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
+                            var upload = async {
+                                servicePhoto().uploadPhoto2(url.await().body()!!.url!!, token , body)
+                            }
+                            withContext(Dispatchers.Main){
+                                return@withContext ServerResponse(upload.await().code(),upload.await().message())
+                            }
+                            Log.i("info","photo ${photo} uploaded ")
+                        } else {
+                            withContext(Dispatchers.Main){
+                                return@withContext ServerResponse(400,"Transfert échoué.")
+                            }
+                        }
+                    }
+                } catch (e:Exception){
+                    Log.e("error",e.message!!)
+                }
+                catch (e:AndroidRuntimeException){
+                    Log.e("error",e.message!!)
+                }
+        }
+    }
+    suspend fun sendSignature(token:String, photo:String, context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val url = getURL(token,photo)
+            Log.i("info", "url  ${url.body()!!.url}")
+            val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_signatures" ), photo)
+            try {
+                if (file.exists() && file.readBytes().isNotEmpty()){
+                var compress = async { Compressor.compress(context, file) }
+                compress.join()
+                if (compress.isCompleted) {
+                    var body =
+                        RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
+                    var upload = async {
+                        servicePhoto().uploadPhoto2(url.body()!!.url!!, token, body)
+                    }
+                    withContext(Dispatchers.Main) {
+                        return@withContext ServerResponse(
+                            upload.await().code(),
+                            upload.await().message()
+                        )
+                    }
+                    Log.i("info", "photo ${photo} uploaded ")
+                } else {
+                    withContext(Dispatchers.Main) {
+                        return@withContext ServerResponse(400, "Transfert échoué.")
+                    }
+                }
+            }
+            } catch (e:Exception){
+                Log.e("error",e.message!!)
+            }
+        }
+    }
+    suspend fun photoCheck(token:String,photoName:String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var test = async { getURL(token!!, photoName) }
+            test.await()
+            if (test.isCompleted) {
+                if (test.await().code().equals(200)) {
+                    var check = async { getURLPhoto(token!!, test.await().body()?.name!!) }
+                    check.await()
+                    if (check.isCompleted) {
+                        var code = async { getPhoto(check.await().body()!!.url!!) }
+                        code.await()
+                        withContext(Dispatchers.Main) {
+                            return@withContext code.await().code() == 400
+                        }
+                        Log.i(
+                            "info",
+                            "url : ${check.await().body()!!.url} - code photo ${
+                                code.await().code()
+                            } "
+                        )
+                    }
+
+                    /*if(!check.code().equals(200)){
+                        Log.i("info","photo à envoyer${it}")
+                        repositoryPhoto.sendPhoto(token!!,it,context)
+                    }*/
+                }
+            }
+        }
+    }
+
 }

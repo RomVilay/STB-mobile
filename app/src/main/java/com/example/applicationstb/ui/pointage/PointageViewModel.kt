@@ -14,6 +14,7 @@ import com.example.applicationstb.model.Pointage
 import com.example.applicationstb.repository.Repository
 import com.example.applicationstb.ui.accueil.AccueilDirections
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
@@ -35,26 +36,26 @@ class PointageViewModel(application: Application) : AndroidViewModel(application
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getListePointages() = viewModelScope.launch(Dispatchers.IO) {
-        var list = repository.getAllPointageLocalDatabase()
-        var list2 = mutableListOf<Pointage>()
+        var list = async {repository.getAllPointageLocalDatabase()}.await().map { it.toPointage() }.toMutableList()
         var t = 0L
-        list.forEach {
-            list2.add(it.toPointage())
-        }
-        var l = list.size % 2
-        if (l == 0) {
-            for (i in 0..list.size-1 step 2) {
-                if (list[i].timestamp.dayOfMonth == list[i + 1].timestamp.dayOfMonth)
-               t = t + Duration.between(list[i].timestamp, list[i + 1].timestamp).toHours()
-            }
-        } else {
-            for (i in 0..list.size-2 step 2) {
-                if (list[i].timestamp.dayOfMonth == list[i + 1].timestamp.dayOfMonth)
-                t = t + Duration.between(list[i].timestamp, list[i + 1].timestamp).toHours()
+        for (i in 1..31) {
+            if (list.filter { it.timestamp.dayOfMonth == i }.size > 1) {
+                var daylist = list.filter { it.timestamp.dayOfMonth == i }
+                if ( daylist.size % 2 == 0) {
+                    for (j in 0..daylist.size-1 step 2){
+                        t = t + Duration.between(daylist[j].timestamp!!,daylist[j+1].timestamp!!).toHours()
+                    }
+                } else {
+                    for (j in 0..daylist.size-2 step 2){
+                         t = t + Duration.between(daylist[j].timestamp!!,daylist[j+1].timestamp!!).toHours()
+                    }
+                }
+
             }
         }
         total.postValue(t)
-        pointages.postValue(list2)
+        list.sortBy { it.timestamp }
+        pointages.postValue(list)
     }
 
     fun toAccueil(view: View) {
