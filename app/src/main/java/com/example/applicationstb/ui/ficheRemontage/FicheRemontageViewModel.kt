@@ -2,13 +2,16 @@ package com.example.applicationstb.ui.ficheRemontage
 
 import android.app.Application
 import android.content.Context
+import android.content.CursorLoader
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -40,11 +43,15 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
     var token: String? = null;
     var username: String? = null;
     var repository = Repository(context)
+    var repositoryPhoto = PhotoRepository(getApplication<Application>().applicationContext);
     var listeRemontages = MutableLiveData<MutableList<FicheRemontage>>()
     var photos = MutableLiveData<MutableList<String>>(mutableListOf())
+    var photo = MutableLiveData<String>()
     val selection = MutableLiveData<FicheRemontage>()
     var start = MutableLiveData<Date>()
     val sharedPref = getApplication<Application>().getSharedPreferences("identifiants", Context.MODE_PRIVATE)
+    var GALLERY_CAPTURE = 2
+    var CAMERA_CAPTURE = 1
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -60,13 +67,34 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
         //selection.value?.let { afficherFiche(it) }
     }
 
-    fun addPhoto(index: Int, photo: Uri) {
-        var list = selection?.value?.photos?.toMutableList()
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun addPhoto(photo: String) {
+        var list = selection.value?.photos?.toMutableList()
+        list!!.removeAll { it == "" }
         if (list != null) {
-            list.add(photo.toString())
+            list.add(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
+        } else {
+            selection.value?.photos =
+                arrayOf(photo.removePrefix("/storage/emulated/0/Pictures/test_pictures/"))
         }
-        selection?.value?.photos = list?.toTypedArray()
+        selection.value?.photos = list?.toTypedArray()
         photos.value = list!!
+        galleryAddPic(photo)
+        quickSave()
+        if (isOnline(context)) {
+            viewModelScope.launch {
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token!!.filterNot { it.isWhitespace() },
+                        File(photo).name,
+                        context
+                    )
+                }
+                s.await()
+                var s2 = async { enregistrerSansMessage() }
+                s2.await()
+            }
+        }
     }
 
     fun retour(view: View) {
@@ -92,7 +120,6 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
 
     fun quickSave() {
         Log.i("INFO", "quick save")
-        getTime()
         viewModelScope.launch(Dispatchers.IO) {
             repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
         }
@@ -154,6 +181,118 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
 
         }
     }
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun enregistrerSansMessage() = runBlocking {
+        if (isOnline(getApplication<Application>().baseContext)) {
+            if (!sharedPref.getBoolean("connected",false) && (sharedPref?.getString("login", "") !== "" && sharedPref?.getString("password", "") !== "" )){
+                connection(sharedPref?.getString("login", "")!!,sharedPref?.getString("password", "")!!)
+            }
+            delay(200)
+            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                repository.remontageRepository!!.patchRemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<RemontageResponse>{
+                    override fun onResponse(
+                        call: Call<RemontageResponse>,
+                        response: Response<RemontageResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            val resp = response.body()
+                        } else {
+                            viewModelScope.launch(Dispatchers.IO){
+                                repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
+                            }
+                            Log.i(
+                                "INFO",
+                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                    response.errorBody()!!.charStream().readText()
+                                }"
+                            )
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<RemontageResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Error", "${t.stackTraceToString()}")
+                        Log.e("Error", "erreur ${t.message}")
+                    }})
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO){
+                repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun sendExternalPicture(path: String): String? = runBlocking {
+        if (isOnline(context)) {
+            if (!sharedPref.getBoolean("connected", false) && (sharedPref?.getString(
+                    "login",
+                    ""
+                ) !== "" && sharedPref?.getString("password", "") !== "")
+            ) {
+                connection(
+                    sharedPref?.getString("login", "")!!,
+                    sharedPref?.getString("password", "")!!
+                )
+            }
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                Log.i("info", "size ${selection.value?.photos?.size} is empty ${selection.value?.photos?.isEmpty()}")
+                var file = if (selection.value?.photos?.size!! == 1 && selection.value?.photos!![0] == "") File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!+1}.jpg"
+                )
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                var s = async {
+                    repositoryPhoto.sendPhoto(
+                        token!!.filterNot { it.isWhitespace() },
+                        file.name,
+                        context
+                    )
+                }
+                s.join()
+                /* while(File(dir,"${selection.value?.numFiche}_${selection.value?.photos?.size}.jpg").exists()){
+                     file = File(dir, "${selection.value?.numFiche}_${file.name.substringAfter("_").substringBefore(".").toInt()+1}.jpg")
+                     Log.i("info","photo nom send ext ${file}")
+                 }*/
+                var s2 = async { enregistrerSansMessage() }
+                s2.await()
+                return@runBlocking file.name
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return@runBlocking null
+            }
+        } else {
+            try {
+                val dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+                Log.i("info", "size ${selection.value?.photos?.size}  first ${selection.value?.photos!![0]} ")
+                var file = if (selection.value?.photos?.size!! == 1 && selection.value?.photos!![0] == "") File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!}.jpg"
+                ) else File(
+                    dir,
+                    "${selection.value?.numFiche}_${selection.value?.photos?.size!!+1}.jpg"
+                )
+                galleryAddPic(file.absolutePath)
+                var old = File(path)
+                old.copyTo(file, true)
+                return@runBlocking file.name
+            } catch (e: java.lang.Exception) {
+                Log.e("EXCEPTION", e.message!!, e.cause)
+                return@runBlocking null
+            }
+        }
+
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
 
@@ -239,6 +378,16 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
                 mySnackbar.show()
             }
         }
+    }
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(context, contentUri, proj, null, null, null)
+        val cursor: Cursor = loader.loadInBackground()
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val result = cursor.getString(column_index)
+        cursor.close()
+        return result
     }
 
     private fun saveImage(image: Bitmap, name: String): String? {
