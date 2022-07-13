@@ -1066,7 +1066,7 @@ class FicheRemontage : Fragment() {
                     viewModel.photos.observe(viewLifecycleOwner, {
                         sAdapter.update(it)
                     })
-                    if (demo.photos !== null) sAdapter.update(viewModel.photos.value!!)
+                    if (demo.photos !== null) sAdapter.update(demo.photos!!.toMutableList())
                     btnPhoto.setOnClickListener {
                         var test = ActivityCompat.checkSelfPermission(requireContext(),
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -1145,6 +1145,13 @@ class FicheRemontage : Fragment() {
                         withContext(Dispatchers.Main){
                             alertDialog?.show()
                         }
+                    } else {
+                        val mySnackbar = Snackbar.make(
+                            layout.findViewById<CoordinatorLayout>(R.id.RemontageLayout),
+                            "Pas de fiches démontages liées à ce remontage. Essayez de recharger la liste.",
+                            3600
+                        )
+                        mySnackbar.show()
                     }
                 }
             } else {
