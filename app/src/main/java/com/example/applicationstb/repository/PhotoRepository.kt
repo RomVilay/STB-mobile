@@ -7,14 +7,17 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.os.Message
 import android.provider.MediaStore
 import android.util.AndroidRuntimeException
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.Moshi
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.*
 import id.zelory.compressor.decodeSampledBitmapFromFile
 import kotlinx.coroutines.*
 import okhttp3.ConnectionSpec
@@ -28,9 +31,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.lang.Exception
+import java.lang.Long.min
 import java.nio.file.Files
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.typeOf
 import kotlin.system.measureTimeMillis
 
 class URLPhotoResponse(
@@ -55,6 +60,7 @@ class PhotoRepository(context: Context) {
         .writeTimeout(2, TimeUnit.MINUTES)
         .connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
         .build()
+    // definition du repository photo
     fun servicePhoto(): APIstb {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -63,67 +69,13 @@ class PhotoRepository(context: Context) {
             .build()
             .create(APIstb::class.java)
     }
+    // url des photos pour l'upload
     suspend fun getURLPhoto(token: String, photoName: String) = servicePhoto().getURLPhoto(token, photoName)
+    // url d'affichage des photos
     suspend fun getPhoto(address: String) = servicePhoto().getPhoto(address)
-    suspend fun uploadPhoto(
-        token: String,
-        name: String,
-        address: List<String>,
-        photo: File
-    ) : Response<URLPhotoResponse> {
-        var body = RequestBody.create(MediaType.parse("image/jpeg"), photo)
-        return servicePhoto().uploadPhoto(
-            token,
-            name,
-            address[0],
-            address[1].removePrefix("X-Amz-Credential="),
-            address[2].removePrefix("X-Amz-Date="),
-            address[3].removePrefix("X-Amz-Expires="),
-            address[4].removePrefix("X-Amz-SignedHeaders="),
-            address[5].removePrefix("X-Amz-Signature="),
-            body
-        )
-    }
     suspend fun getURL(token: String,name:String) = servicePhoto().getURLToUploadPhoto(token,name)
-    // list composé uniquement de photos présentes dans test_picture
-    suspend fun sendPhotos(token:String, list:MutableList<String>, context: Context) : MutableList<String> {
-        var photos = list.filterNot { it == "" }.toMutableList()
-        var job = CoroutineScope(Dispatchers.IO).launch {
-            var iter = photos.iterator()
-            while ( iter.hasNext() ) {
-                var photo = iter.next()
-                val url = getURL(token,photo)
-                Log.i("info", "url  ${url.body()!!.url}")
-                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
-                try {
-                    var compress = async { Compressor.compress(context, file)  }
-                    compress.join()
-                    if (compress.isCompleted) {
-                        var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
-                            var upload = async {
-                                servicePhoto().uploadPhoto2(url.body()!!.url!!, token , body)
-                                /*servicePhoto().uploadPhoto(
-                                token,
-                                photo,
-                                tab[0],
-                                tab[1].removePrefix("X-Amz-Credential="),
-                                tab[2].removePrefix("X-Amz-Date="),
-                                tab[3].removePrefix("X-Amz-Expires="),
-                                tab[4].removePrefix("X-Amz-SignedHeaders="),
-                                tab[5].removePrefix("X-Amz-Signature="),
-                                body
-                            )*/ }
-                            upload.await()
-                        Log.i("info","photo ${photo} uploaded ")
-                    }
-                } catch (e:Exception){
-                    Log.e("error",e.message!!)
-                }
-            }
-        }
-        job.join()
-        return photos
-    }
+    // upload des photos
+    @RequiresApi(Build.VERSION_CODES.N)
     suspend fun sendPhoto(token:String, photo:String, context: Context) {
        CoroutineScope(Dispatchers.IO).launch {
                 val url = async {getURL(token,photo)}
@@ -131,8 +83,16 @@ class PhotoRepository(context: Context) {
                 try {
                     val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/test_pictures" ), photo)
                     if (file.exists() && file.readBytes().isNotEmpty()){
-                        //Log.i("info", "is bitmap ${ImageDecoder.decodeBitmap(file.toURI())}")
-                        var compress = async { Compressor.compress(context, file)  }
+                        // compression pour une taille de fichier inférieure à 1mb = 1048576
+                        val targetQuality = (1048576.toFloat() / file.length() * 100)+5 // maximum de compression à 95%
+                        val minQuality = min(targetQuality.toLong(), 80L)
+                        var compress = async { Compressor.compress(context, file) {
+                           // resolution(1280,720)
+                            //quality( 80)
+                            //size(1048576)
+                            quality(minQuality.toInt())
+                            format(Bitmap.CompressFormat.JPEG)
+                        } }
                         compress.await()
                         if (compress.isCompleted) {
                             var body = RequestBody.create(MediaType.parse("image/jpeg"), compress.getCompleted())
@@ -157,6 +117,7 @@ class PhotoRepository(context: Context) {
                 }
         }
     }
+    // upload des signatures
     suspend fun sendSignature(token:String, photo:String, context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             val url = getURL(token,photo)
@@ -187,36 +148,6 @@ class PhotoRepository(context: Context) {
             }
             } catch (e:Exception){
                 Log.e("error",e.message!!)
-            }
-        }
-    }
-    suspend fun photoCheck(token:String,photoName:String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            var test = async { getURL(token!!, photoName) }
-            test.await()
-            if (test.isCompleted) {
-                if (test.await().code().equals(200)) {
-                    var check = async { getURLPhoto(token!!, test.await().body()?.name!!) }
-                    check.await()
-                    if (check.isCompleted) {
-                        var code = async { getPhoto(check.await().body()!!.url!!) }
-                        code.await()
-                        withContext(Dispatchers.Main) {
-                            return@withContext code.await().code() == 400
-                        }
-                        Log.i(
-                            "info",
-                            "url : ${check.await().body()!!.url} - code photo ${
-                                code.await().code()
-                            } "
-                        )
-                    }
-
-                    /*if(!check.code().equals(200)){
-                        Log.i("info","photo à envoyer${it}")
-                        repositoryPhoto.sendPhoto(token!!,it,context)
-                    }*/
-                }
             }
         }
     }

@@ -379,12 +379,11 @@ class ListFicheDemontageResponse(
 )
 class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
     var demontageDao = db!!.demontageDao()
-
+    // get des fiches démontage
     suspend fun getFicheDemontage(token: String, ficheId: String) = service.getFicheDemontage(token, ficheId)
-
-
+    // get des fiches avec un même numéro de dossier
     suspend fun getFicheForRemontage(token: String,numDevis:String) = service.getFichesDemontages(token,numDevis)
-
+    // patch des fiches
     fun patchFicheDemontage(token: String,
                             ficheId: String,
                             demontage: FicheDemontage,
@@ -501,7 +500,7 @@ class DemontageRepository(var service: APIstb, var db: LocalDatabase) {
         call.enqueue(callback)
     }
 
-    //dao demontage
+    //dao demontage local
     suspend fun insertDemontageLocalDatabase(demo: FicheDemontage) {
         demontageDao!!.insertAll(demo.toEntity())
     }

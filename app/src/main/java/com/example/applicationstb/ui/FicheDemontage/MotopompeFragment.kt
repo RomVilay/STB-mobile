@@ -843,10 +843,10 @@ class MotopompeFragment : Fragment() {
         var num = if (viewModel.selection.value?.photos?.size!! == 1 && viewModel.selection.value?.photos!![0] == "")
             "${viewModel.selection.value?.numFiche}_${viewModel.selection.value?.photos?.size!!}"
         else
-            "${viewModel.selection.value?.numFiche}_${viewModel.selection.value?.photos?.size!!+1}.jpg"
+            "${viewModel.selection.value?.numFiche}_${viewModel.selection.value?.photos?.size!!+1}"
         if (storageDir.exists()) {
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + num,/* prefix */
+                num,/* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
