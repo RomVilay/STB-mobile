@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
@@ -394,6 +395,49 @@ class PompeFragment : Fragment() {
                         //viewModel.addSchema(photoURI)
                     }
                 }
+            }
+        }
+        //roulements
+        var tabroul = layout.findViewById<RecyclerView>(R.id.tabRoul)
+        var typeRoulement = layout.findViewById<Spinner>(R.id.spiType)
+        typeRoulement.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("Sélectionnez un type", "2Z/ECJ", "2RS/ECP", "C3", "M", "C4", "autre")
+        )
+        var refRoul = layout.findViewById<EditText>(R.id.refRoulement)
+        var posRoulement = layout.findViewById<Spinner>(R.id.spiPosition)
+        posRoulement.adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            arrayOf<String>("Sélectionnez une position", "avant", "arrière")
+        )
+        var adapterRoulement = roulementAdapter(
+            viewModel.typeRoulements.value!!.toTypedArray(),
+            viewModel.refRoulements.value!!.toTypedArray(),
+            viewModel.posRoulement.value!!.toTypedArray(),
+            { position ->
+                viewModel.removeRoulements(position)
+            },{ ref,type, index ->
+                viewModel.updateRoulements(ref,type,index)
+            }
+        )
+        tabroul.adapter = adapterRoulement
+        tabroul.layoutManager = GridLayoutManager(context, 1)
+        var ajtRoul = layout.findViewById<Button>(R.id.ajtRoul)
+        ajtRoul.setOnClickListener {
+            //Log.i("info","ref: ${refRoul.text} - type ${typeRoulement.selectedItem} - ${posRoulement.selectedItem} ")
+            viewModel.insertRoulements(refRoul.text.toString(), typeRoulement.selectedItem as String, posRoulement.selectedItem as String)
+            adapterRoulement.update(viewModel.typeRoulements.value!!.toTypedArray(), viewModel.refRoulements.value!!.toTypedArray(),viewModel.posRoulement.value!!.toTypedArray() )
+            refRoul.setText("")
+            posRoulement.setSelection(0)
+            typeRoulement.setSelection(0)
+
+        }
+        viewModel.refRoulements.observe(viewLifecycleOwner) {
+            Log.i("info","update")
+            if (viewModel.refRoulements.value !== null && viewModel.typeRoulements.value !== null && viewModel.posRoulement.value !== null){
+                adapterRoulement.update(viewModel.typeRoulements.value!!.toTypedArray(), viewModel.refRoulements.value!!.toTypedArray(),viewModel.posRoulement.value!!.toTypedArray() )
             }
         }
         /*

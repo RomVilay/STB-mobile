@@ -62,6 +62,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             //getLocalFiches()
         }
     }
+    //gestion des roulements
     fun setRoulements (refsAr :Array<String>,typeAr :Array<String>, refsAv :Array<String>, typeAv :Array<String>){
         if ( refsAr.size > 0){
             for (r in 0..refsAr.size-1){
@@ -156,21 +157,39 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         getTime()
         localSave()
     }
+    //get fiches en bdd locale
     suspend fun getLocalFiches() {
         listeDemontages.postValue(
             repository.demontageRepository!!.getAllDemontageLocalDatabase().map { it.toFicheDemontage() }.filter { it.status!! < 3 }.toMutableList()
         )
     }
-    fun back(view: View) {
+    /*fun back(view: View) {
         val action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
         Navigation.findNavController(view).navigate(action)
+    }*/
+    //ajout des photos à la gallerie
+    fun galleryAddPic(imagePath: String?) {
+        imagePath?.let { path ->
+            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            val f = File(path)
+            val contentUri: Uri = Uri.fromFile(f)
+            mediaScanIntent.data = contentUri
+            context.sendBroadcast(mediaScanIntent)
+        }
     }
-
-    fun setCouplage(type: String) {
-        var fichemot = selection.value
-        fichemot!!.couplage = type
-        selection.value = fichemot!!
+    // résolution des fichiers avec leur URI
+    suspend fun getNameURI() {
+        val resp1 = repository.getURLToUploadPhoto(token!!)
+        withContext(Dispatchers.Main) {
+            if (resp1.isSuccessful) {
+                imageName.postValue(resp1.body())
+                Log.i("INFO", resp1.body()?.name!!)
+            } else {
+                exceptionHandler
+            }
+        }
     }
+    //ajout d'une photo à une fiche
     @RequiresApi(Build.VERSION_CODES.O)
     fun addPhoto(photo: String) {
         var list = selection.value?.photos?.toMutableList()
@@ -200,6 +219,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         }
     }
+    // résolution du chemin des fichiers
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(context, contentUri, proj, null, null, null)
@@ -210,13 +230,16 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         cursor.close()
         return result
     }
+    // image à afficher en plein écran
     fun setSchema(sch: String) {
         schema.value = sch
     }
+    // vers plein écran
     fun fullScreen(view: View, uri: String) {
         val action = FicheDemontageDirections.versFullScreen(uri.toString())
         Navigation.findNavController(view).navigate(action)
     }
+    // retour à l'accueil
     fun retour(view: View) {
         Navigation.findNavController(view).popBackStack()
         /*var action = FicheDemontageDirections.deDemontageversAccueil(token!!, username!!)
@@ -533,27 +556,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
         return false
     }
 
-    fun galleryAddPic(imagePath: String?) {
-        imagePath?.let { path ->
-            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-            val f = File(path)
-            val contentUri: Uri = Uri.fromFile(f)
-            mediaScanIntent.data = contentUri
-            context.sendBroadcast(mediaScanIntent)
-        }
-    }
 
-    suspend fun getNameURI() {
-        val resp1 = repository.getURLToUploadPhoto(token!!)
-        withContext(Dispatchers.Main) {
-            if (resp1.isSuccessful) {
-                imageName.postValue(resp1.body())
-                Log.i("INFO", resp1.body()?.name!!)
-            } else {
-                exceptionHandler
-            }
-        }
-    }
 
     /*fun sendPhoto(photo:File)= runBlocking{
         var s = imageName.value!!.url!!.removePrefix("https://minio.stb.dev.alf-environnement.net/images/${imageName.value!!.name!!}?X-Amz-Algorithm=")

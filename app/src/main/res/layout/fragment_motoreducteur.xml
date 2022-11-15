@@ -223,7 +223,7 @@
                                     android:id="@+id/textView93"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Roullements"
+                                    android:text="Roulements"
                                     android:textColor="@color/white"
                                     android:textSize="20dp" />
                             </LinearLayout>
@@ -249,7 +249,7 @@
                                     android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
-                                    android:text="Roullement avant"
+                                    android:text="Roulement avant"
                                     android:textColor="@color/white"
                                     android:textSize="20dp" />
 
@@ -259,7 +259,7 @@
                                     android:layout_height="wrap_content"
                                     android:background="@color/gray_400"
                                     android:gravity="center"
-                                    android:text="Roullement arrière"
+                                    android:text="Roulement arrière"
                                     android:textColor="@color/white"
                                     android:textSize="20dp" />
 
