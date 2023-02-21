@@ -324,6 +324,9 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                 bob?.status = bobinage.value?.status
                 bob?.toEntity()?.let { repository.updateBobinageLocalDatabse(it) }
                 bobinage.postValue(bob!!)
+                var ficheDist = async { repository.getBobinage(token.value!!,bobinage.value!!._id) }
+                ficheDist.await()
+                if (ficheDist.await().body()?.data?.status!! < 4L ) {
                 val resp = repository.patchBobinage(
                     t,
                     bobinage.value!!._id,
@@ -357,7 +360,13 @@ class FicheBobinageViewModel(application: Application) : AndroidViewModel(applic
                             mySnackbar.show()
                             Log.e("Error", "erreur ${t.message}")
                         }
-                    })
+                    })}  else {
+                    listeBobinage.remove(bobinage.value)
+                    repository.deleteBobinageLocalDatabse(bobinage.value!!.toEntity())
+                    val mySnackbar =
+                        Snackbar.make(view, "fiche déjà terminée", 3600)
+                    mySnackbar.show()
+                }
             }
         } else {
             localSave(view)

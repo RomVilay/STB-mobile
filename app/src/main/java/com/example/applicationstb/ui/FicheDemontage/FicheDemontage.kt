@@ -45,6 +45,7 @@ class FicheDemontage : Fragment() {
         val fragmentManager = childFragmentManager
         viewModel.listeDemontages.observe(viewLifecycleOwner){
             spinner!!.adapter = ArrayAdapter(requireActivity(),R.layout.support_simple_spinner_dropdown_item,viewModel.listeDemontages.value!!.map { it.numFiche  })
+            cfragment.visibility = View.INVISIBLE
         }
         if (arguments?.get("ficheID") !== null ){
                 CoroutineScope(Dispatchers.IO).launch{
@@ -59,13 +60,6 @@ class FicheDemontage : Fragment() {
             CoroutineScope(Dispatchers.IO).launch {
                viewModel.getLocalFiches()
             }
-        }
-        viewModel.selection.observe(viewLifecycleOwner) {
-            if (viewModel.selection.value !== null){
-                Log.i("info","position ${viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value)}")
-                spinner.setSelection(viewModel.listeDemontages.value!!.indexOf(viewModel.selection.value))
-            }
-
         }
         btnDemontage.setOnClickListener {
             viewModel.start.value = Date()
@@ -111,6 +105,7 @@ class FicheDemontage : Fragment() {
                     setReorderingAllowed(true)
                 }
             }
+            cfragment.visibility = View.VISIBLE
         }
         return layout
     }

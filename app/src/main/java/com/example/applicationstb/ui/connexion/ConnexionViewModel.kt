@@ -276,6 +276,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                 }
 
                             }
+                        var ficheDist = async { repository.getChantier(user?.token!!,fiche._id) }
+                        ficheDist.await()
+                        if (ficheDist.await().body()?.data?.status!! < 4L ) {
                             val resp = repository.patchChantier(
                                 user!!.token!!,
                                 ch._id,
@@ -311,6 +314,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
+                        }  else {
+                            repository.deleteChantierLocalDatabse(fiche)
+                        }
                         //}
                     }
                 }
@@ -368,6 +374,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
+                        var ficheDist = async { repository.getBobinage(user?.token!!,fiche._id) }
+                        ficheDist.await()
+                        if (ficheDist.await().body()?.data?.status!! < 4L ) {
                             val resp = repository.patchBobinage(
                                 user!!.token!!,
                                 ch._id,
@@ -403,6 +412,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
+                    }  else {
+                        repository.deleteBobinageLocalDatabse(fiche)
+                    }
                         //}
                     }
                 }
@@ -460,34 +472,43 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
-                            repository.demontageRepository!!.patchFicheDemontage(
-                                user!!.token!!,
-                                ficheD._id,
-                                ficheD.toFicheDemontage(),
-                                object : Callback<FicheDemontageResponse> {
-                                    override fun onResponse(
-                                        call: Call<FicheDemontageResponse>,
-                                        response: Response<FicheDemontageResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                                    response.errorBody()!!.charStream().readText()
-                                                }"
-                                            )
+                            var ficheDist = async { repository.demontageRepository!!.getFicheDemontage(user?.token!!,fiche._id) }
+                            ficheDist.await()
+                            if (ficheDist.await().body()?.data?.status!! < 4L ) {
+                                repository.demontageRepository!!.patchFicheDemontage(
+                                    user!!.token!!,
+                                    ficheD._id,
+                                    ficheD.toFicheDemontage(),
+                                    object : Callback<FicheDemontageResponse> {
+                                        override fun onResponse(
+                                            call: Call<FicheDemontageResponse>,
+                                            response: Response<FicheDemontageResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                launch(Dispatchers.IO) {
+                                                    repository.demontageRepository!!.deleteDemontageLocalDatabse(fiche)
+                                                }
+                                            } else {
+                                                Log.i(
+                                                    "INFO",
+                                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                                        response.errorBody()!!.charStream().readText()
+                                                    }"
+                                                )
+                                            }
                                         }
-                                    }
 
-                                    override fun onFailure(
-                                        call: Call<FicheDemontageResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "${t.stackTraceToString()}")
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
+                                        override fun onFailure(
+                                            call: Call<FicheDemontageResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "${t.stackTraceToString()}")
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    })
+                            }  else {
+                                repository.demontageRepository!!.deleteDemontageLocalDatabse(fiche)
+                            }
                         //}
                     }
                 }
@@ -541,6 +562,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     }
                                 }
                             }
+                            var ficheDist = async { repository.remontageRepository!!.getRemontage(user?.token!!,fiche._id) }
+                            ficheDist.await()
+                            if (ficheDist.await().body()?.data?.status!! < 4L ) {
                             repository.remontageRepository!!.patchRemontage(
                                 user?.token!!,
                                 fiche._id,
@@ -552,6 +576,11 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                     ) {
                                         if (response.code() == 200) {
                                             Log.i("info", "fiche remontage ${fiche._id} updated")
+                                            if (fiche.statut == 3L) {
+                                                launch(Dispatchers.IO) {
+                                                    repository.remontageRepository!!.deleteRemontageLocalDatabse(fiche)
+                                                }
+                                            }
                                         } else {
                                             Log.i(
                                                 "INFO",
@@ -570,6 +599,9 @@ class ConnexionViewModel(application: Application) : AndroidViewModel(applicatio
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
+                    }  else {
+                        repository.remontageRepository!!.deleteRemontageLocalDatabse(fiche)
+                    }
                         //}
                     }
                 }

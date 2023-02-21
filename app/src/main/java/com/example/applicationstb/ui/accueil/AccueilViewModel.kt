@@ -107,7 +107,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                 call: Call<FichesResponse>,
                 response: Response<FichesResponse>
             ) {
-                Log.i("INFO", "liste fiche")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp != null) {
@@ -134,7 +133,6 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         if (chantiers.indexOf(fiche.await().body()?.data!!) == -1) chantiers!!.add(
                                             fiche.await().body()?.data!!
                                         )
-                                        Log.i("INFO", "ajout en bdd locale")
                                     } else {
                                         //  if (!chantiers!!.contains(ch)) chantiers!!.add(ch)
                                     }
@@ -450,10 +448,7 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                             }
                         }
                     }
-                    Log.i(
-                        "INFO",
-                        " nb de chantier :${resp.data?.filter { it.type == 1L }!!.size} - nb bobinages : ${resp.data?.filter { it.type == 4L }!!.size}"
-                    )
+
                 } else {
                     Log.i("INFO", "code : ${response.code()} - erreur : ${response.message()}")
                 }
@@ -787,6 +782,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                 }
 
                             }
+                            var ficheDist = async { repository.getChantier(token,fiche._id) }
+                            ficheDist.await()
+                            if (ficheDist.await().body()?.data?.status!! < 4L ) {
                             val resp = repository.patchChantier(
                                 token,
                                 ch._id,
@@ -822,6 +820,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
+                            }  else {
+                                repository.deleteChantierLocalDatabse(fiche)
+                            }
                         }
                     }
                     var listb: List<BobinageEntity> =
@@ -871,6 +872,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
+                            var ficheDist = async { repository.getBobinage(token!!,fiche._id) }
+                            ficheDist.await()
+                            if (ficheDist.await().body()?.data?.status!! < 4L ) {
                             val resp = repository.patchBobinage(
                                 token,
                                 ch._id,
@@ -906,6 +910,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
+                            }  else {
+                                repository.deleteBobinageLocalDatabse(fiche)
+                            }
                         }
                     }
                     var listD = repository.demontageRepository!!.getAllDemontageLocalDatabase()
@@ -952,34 +959,45 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
-                            repository.demontageRepository!!.patchFicheDemontage(
-                                token!!,
-                                fiche._id,
-                                fiche.toFicheDemontage(),
-                                object : Callback<FicheDemontageResponse> {
-                                    override fun onResponse(
-                                        call: Call<FicheDemontageResponse>,
-                                        response: Response<FicheDemontageResponse>
-                                    ) {
-                                        if (response.code() == 200) {
-                                        } else {
-                                            Log.i(
-                                                "INFO",
-                                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                                    response.errorBody()!!.charStream().readText()
-                                                }"
-                                            )
+                            var ficheDist = async { repository.demontageRepository!!.getFicheDemontage(token,fiche._id) }
+                            ficheDist.await()
+                            if (ficheDist.await().body()?.data?.status!! < 4L ) {
+                                repository.demontageRepository!!.patchFicheDemontage(
+                                    token!!,
+                                    fiche._id,
+                                    fiche.toFicheDemontage(),
+                                    object : Callback<FicheDemontageResponse> {
+                                        override fun onResponse(
+                                            call: Call<FicheDemontageResponse>,
+                                            response: Response<FicheDemontageResponse>
+                                        ) {
+                                            if (response.code() == 200) {
+                                                if (fiche.statut == 3L) {
+                                                    launch(Dispatchers.IO) {
+                                                        repository.demontageRepository!!.deleteDemontageLocalDatabse(fiche)
+                                                    }
+                                                }
+                                            } else {
+                                                Log.i(
+                                                    "INFO",
+                                                    "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                                        response.errorBody()!!.charStream().readText()
+                                                    }"
+                                                )
+                                            }
                                         }
-                                    }
 
-                                    override fun onFailure(
-                                        call: Call<FicheDemontageResponse>,
-                                        t: Throwable
-                                    ) {
-                                        Log.e("Error", "${t.stackTraceToString()}")
-                                        Log.e("Error", "erreur ${t.message}")
-                                    }
-                                })
+                                        override fun onFailure(
+                                            call: Call<FicheDemontageResponse>,
+                                            t: Throwable
+                                        ) {
+                                            Log.e("Error", "${t.stackTraceToString()}")
+                                            Log.e("Error", "erreur ${t.message}")
+                                        }
+                                    })
+                            } else {
+                                repository.demontageRepository!!.deleteDemontageLocalDatabse(fiche)
+                            }
                         }
                     }
                     var listR = repository.remontageRepository!!.getAllRemontageLocalDatabase()
@@ -1026,6 +1044,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                     }
                                 }
                             }
+                            var ficheDist = async { repository.remontageRepository!!.getRemontage(token,fiche._id) }
+                            ficheDist.await()
+                            if (ficheDist.await().body()?.data?.status!! < 4L ) {
                             repository.remontageRepository!!.patchRemontage(
                                 token!!,
                                 fiche._id,
@@ -1036,6 +1057,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         response: Response<RemontageResponse>
                                     ) {
                                         if (response.code() == 200) {
+                                            launch(Dispatchers.IO) {
+                                                repository.remontageRepository!!.deleteRemontageLocalDatabse(fiche)
+                                            }
                                         } else {
                                             Log.i(
                                                 "INFO",
@@ -1054,6 +1078,9 @@ class AccueilViewModel(application: Application) : AndroidViewModel(application)
                                         Log.e("Error", "erreur ${t.message}")
                                     }
                                 })
+                            }  else {
+                                repository.remontageRepository!!.deleteRemontageLocalDatabse(fiche)
+                            }
                         }
                     }
                     /*var listRT: List<RemontageTriphaseEntity> =

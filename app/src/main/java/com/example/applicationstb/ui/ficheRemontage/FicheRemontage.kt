@@ -56,17 +56,30 @@ class FicheRemontage : Fragment() {
         viewModel.username = arguments?.get("username") as String
         var layout = inflater.inflate(R.layout.fiche_remontage_fragment, container, false)
         val spinner = layout.findViewById<Spinner>(R.id.numDevis)
-        viewModel.listeRemontages.observe(viewLifecycleOwner) {
-            spinner.adapter = ArrayAdapter(
-                requireActivity(),
-                R.layout.support_simple_spinner_dropdown_item,
-                viewModel.listeRemontages.value!!.map { it.numFiche })
-        }
         var btnRemontage = layout.findViewById<Button>(R.id.btnDemarrer)
         val fragmentManager = childFragmentManager
         //infos moteur
         var titre = layout.findViewById<TextView>(R.id.titreRemontage)
         var btnDemo = layout.findViewById<Button>(R.id.btnFDemo)
+        var infosMoteur = layout.findViewById<CardView>(R.id.infoMoteur)
+        var essaisStats = layout.findViewById<CardView>(R.id.essaisStatiques)
+        var essaisDyn = layout.findViewById<ConstraintLayout>(R.id.essaisDynamiques)
+        var essaisVi = layout.findViewById<CardView>(R.id.essaisVibratoires)
+        var obs = layout.findViewById<EditText>(R.id.observations)
+        var btn = layout.findViewById<CardView>(R.id.btns)
+        viewModel.listeRemontages.observe(viewLifecycleOwner) {
+            infosMoteur.visibility = View.GONE
+            essaisStats.visibility = View.GONE
+            essaisDyn.visibility = View.GONE
+            essaisVi.visibility = View.GONE
+            obs.visibility = View.GONE
+            btn.visibility = View.GONE
+            spinner.adapter = ArrayAdapter(
+                requireActivity(),
+                R.layout.support_simple_spinner_dropdown_item,
+                viewModel.listeRemontages.value!!.map { it.numFiche })
+
+        }
         var spinnerMnt = layout.findViewById<Spinner>(R.id.spinnerMntRll)
         spinnerMnt.adapter = ArrayAdapter<String>(
             requireContext(),
@@ -157,7 +170,6 @@ class FicheRemontage : Fragment() {
         var intensiteInduit = layout.findViewById<EditText>(R.id.iI)
         var tensionECC = layout.findViewById<EditText>(R.id.tE)
         var intensiteECC = layout.findViewById<EditText>(R.id.iE)
-        var obs = layout.findViewById<EditText>(R.id.observations)
         var term = layout.findViewById<Button>(R.id.termRemo)
         var btnFichesD = layout.findViewById<Button>(R.id.btnFichesD)
         var btnquitter = layout.findViewById<Button>(R.id.quit)
@@ -188,7 +200,7 @@ class FicheRemontage : Fragment() {
                             this!!.status = 2L
                         }
                 viewModel.selection.value = demo
-                layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
+                infosMoteur.visibility = View.VISIBLE
                 if (demo != null) {
                     spinnerType.visibility = View.GONE
                     tmono.visibility = View.GONE
@@ -1048,10 +1060,8 @@ class FicheRemontage : Fragment() {
                             viewModel.quickSave()
                         }
                     }
-                    layout.findViewById<CardView>(R.id.infoMoteur).visibility = View.VISIBLE
-
-                    layout.findViewById<EditText>(R.id.observations).visibility = View.VISIBLE
-                    layout.findViewById<CardView>(R.id.btns).visibility = View.VISIBLE
+                    obs.visibility = View.VISIBLE
+                    btn.visibility = View.VISIBLE
 
                     var photos = layout.findViewById<RecyclerView>(R.id.recyclerPhoto)
                     photos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

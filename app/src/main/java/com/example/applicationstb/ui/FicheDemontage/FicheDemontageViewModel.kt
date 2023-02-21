@@ -31,6 +31,8 @@ import retrofit2.Response
 import java.util.*
 import android.graphics.Bitmap.CompressFormat
 import android.os.SystemClock
+import android.widget.ArrayAdapter
+import com.example.applicationstb.R
 import com.example.applicationstb.model.FicheDemontage
 import id.zelory.compressor.Compressor
 import java.io.*
@@ -400,6 +402,9 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                         }
                     }
                 }
+                var ficheDist = async { repository.demontageRepository!!.getFicheDemontage(token!!,selection.value!!._id) }
+                ficheDist.await()
+                if (ficheDist.await().body()?.data?.status!! < 4L ) {
                 repository.demontageRepository!!.patchFicheDemontage(
                     token!!,
                     selection.value!!._id,
@@ -415,7 +420,14 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                                     val mySnackbar =
                                         Snackbar.make(view, "fiche enregistrée", 3600)
                                     mySnackbar.show()
-                                    Log.i("INFO", "enregistré")
+
+                                    if (selection.value!!.status == 3L){
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.demontageRepository!!.deleteDemontageLocalDatabse(selection.value!!.toEntity())
+                                        }
+                                       listeDemontages.value!!.remove(selection.value)
+                                        listeDemontages.postValue(listeDemontages.value)
+                                    }
 
                                 }
                             } else {
@@ -438,9 +450,23 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
                             Log.e("Error", "${t.stackTraceToString()}")
                             Log.e("Error", "erreur ${t.message}")
                         }
-                    })
+                    }) } else {
+                        listeDemontages.value!!.remove(selection.value)
+                        listeDemontages.postValue(listeDemontages.value)
+                        repository.demontageRepository?.deleteDemontageLocalDatabse(selection.value!!.toEntity())
+                        val mySnackbar =
+                            Snackbar.make(view, "fiche déjà terminée", 3600)
+                        mySnackbar.show()
+                    }
             } else {
                 repository.demontageRepository!!.updateDemontageLocalDatabse(selection.value!!.toEntity())
+                if (selection.value!!.status == 3L){
+                    listeDemontages.value!!.remove(selection.value)
+                    listeDemontages.postValue(listeDemontages.value)
+                }
+                val mySnackbar =
+                    Snackbar.make(view, "fiche enregistrée localement", 3600)
+                mySnackbar.show()
             }
 
         }
