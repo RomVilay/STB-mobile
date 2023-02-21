@@ -328,14 +328,7 @@ class AlternateurFragment : Fragment() {
                             fiche.status = 3L
                             viewModel.selection.value = fiche
                             viewModel.getTime()
-                            viewModel.localSave()
-                            if (viewModel.isOnline(requireContext())) {
-                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
-                            } else {
-                                val mySnackbar =
-                                    Snackbar.make(layout, "fiche enregistrée localement", 3600)
-                                mySnackbar.show()
-                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }

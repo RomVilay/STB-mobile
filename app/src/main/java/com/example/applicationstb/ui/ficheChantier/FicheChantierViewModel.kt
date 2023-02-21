@@ -515,6 +515,9 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                 }
                 ch?.toEntity()?.let { repository.updateChantierLocalDatabse(it) }
                 chantier.postValue(ch!!)
+                var ficheDist = async { repository.getChantier(token.value!!,chantier.value!!._id) }
+                ficheDist.await()
+                if (ficheDist.await().body()?.data?.status!! < 4L ) {
                 val resp = repository.patchChantier(
                     t,
                     chantier.value!!._id,
@@ -550,6 +553,14 @@ class FicheChantierViewModel(application: Application) : AndroidViewModel(applic
                             Log.e("Error", "erreur ${t.message}")
                         }
                     })
+                }  else {
+                    listeChantiers.value!!.remove(chantier.value)
+                    listeChantiers.postValue(listeChantiers.value)
+                    repository.deleteChantierLocalDatabse(chantier.value!!.toEntity())
+                    val mySnackbar =
+                        Snackbar.make(view, "fiche déjà terminée", 3600)
+                    mySnackbar.show()
+                }
             }
             } else {
                 localSave(view)

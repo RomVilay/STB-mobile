@@ -116,7 +116,7 @@ class MotopompeFragment : Fragment() {
             arrayOf<String>("Sélectionnez un type de motopompe", "Triphasé", "Monophasé")
         )
         var obs = layout.findViewById<EditText>(R.id.obs2)
-        var termP = layout.findViewById<Button>(R.id.termmp)
+        var terminer = layout.findViewById<Button>(R.id.termmp)
         var btnPhoto = layout.findViewById<Button>(R.id.photo)
         var switchGarniture = layout.findViewById<ToggleButton>(R.id.switchGarniture2)
 
@@ -771,7 +771,7 @@ class MotopompeFragment : Fragment() {
                 mySnackbar.show()
             }
         }
-        termP.setOnClickListener {
+        terminer.setOnClickListener {
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.setTitle("Terminer une fiche")
@@ -781,14 +781,7 @@ class MotopompeFragment : Fragment() {
                             viewModel.getTime()
                             fiche.status = 3L
                             viewModel.selection.value = fiche
-                            viewModel.localSave()
-                            if (viewModel.isOnline(requireContext())) {
-                                viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
-                            } else {
-                                val mySnackbar =
-                                    Snackbar.make(layout, "fiche enregistrée localement", 3600)
-                                mySnackbar.show()
-                            }
+                            viewModel.sendFiche(requireActivity().findViewById<CoordinatorLayout>(R.id.demoLayout))
                         })
                 builder.create()
             }

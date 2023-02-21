@@ -133,43 +133,70 @@ class FicheRemontageViewModel(application: Application) : AndroidViewModel(appli
             }
             delay(200)
             viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-                repository.remontageRepository!!.patchRemontage(token!!, selection.value!!._id, selection.value!!, object : Callback<RemontageResponse>{
-                    override fun onResponse(
-                        call: Call<RemontageResponse>,
-                        response: Response<RemontageResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            val resp = response.body()
-                            if (resp != null) {
-                                val mySnackbar =
-                                    Snackbar.make(view, "fiche enregistrée", 3600)
-                                mySnackbar.show()
-                                Log.i("INFO", "enregistré")
+                var ficheDist = async { repository.remontageRepository!!.getRemontage(token!!,selection.value!!._id) }
+                ficheDist.await()
+                if (ficheDist.await().body()?.data?.status!! < 4L ) {
+                    repository.remontageRepository!!.patchRemontage(
+                        token!!,
+                        selection.value!!._id,
+                        selection.value!!,
+                        object : Callback<RemontageResponse> {
+                            override fun onResponse(
+                                call: Call<RemontageResponse>,
+                                response: Response<RemontageResponse>
+                            ) {
+                                if (response.code() == 200) {
+                                    val resp = response.body()
+                                    if (resp != null) {
+                                        val mySnackbar =
+                                            Snackbar.make(view, "fiche enregistrée", 3600)
+                                        mySnackbar.show()
+                                        Log.i("INFO", "enregistré")
 
+                                    }
+                                    if (selection.value!!.status == 3L) {
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            repository.remontageRepository!!.deleteRemontageLocalDatabse(
+                                                selection.value!!.toEntity()
+                                            )
+                                        }
+                                        listeRemontages.value!!.remove(selection.value)
+                                        listeRemontages.postValue(listeRemontages.value)
+                                    }
+                                } else {
+                                    val mySnackbar =
+                                        Snackbar.make(view, "erreur d'enregistrement", 3600)
+                                    mySnackbar.show()
+                                    viewModelScope.launch(Dispatchers.IO) {
+                                        repository.remontageRepository!!.updateRemoLocalDatabse(
+                                            selection.value!!.toEntity()
+                                        )
+                                    }
+                                    Log.i(
+                                        "INFO",
+                                        "code : ${response.code()} - erreur : ${response.message()} - body request ${
+                                            response.errorBody()!!.charStream().readText()
+                                        }"
+                                    )
+                                }
                             }
-                        } else {
-                            val mySnackbar =
-                                Snackbar.make(view, "erreur d'enregistrement", 3600)
-                            mySnackbar.show()
-                            viewModelScope.launch(Dispatchers.IO){
-                                repository.remontageRepository!!.updateRemoLocalDatabse(selection.value!!.toEntity())
-                            }
-                            Log.i(
-                                "INFO",
-                                "code : ${response.code()} - erreur : ${response.message()} - body request ${
-                                    response.errorBody()!!.charStream().readText()
-                                }"
-                            )
-                        }
-                    }
 
-                    override fun onFailure(
-                        call: Call<RemontageResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Error", "${t.stackTraceToString()}")
-                        Log.e("Error", "erreur ${t.message}")
-                    }})
+                            override fun onFailure(
+                                call: Call<RemontageResponse>,
+                                t: Throwable
+                            ) {
+                                Log.e("Error", "${t.stackTraceToString()}")
+                                Log.e("Error", "erreur ${t.message}")
+                            }
+                        })
+                } else {
+                    listeRemontages.value!!.remove(selection.value)
+                    listeRemontages.postValue(listeRemontages.value)
+                    repository.remontageRepository?.deleteRemontageLocalDatabse(selection.value!!.toEntity())
+                    val mySnackbar =
+                        Snackbar.make(view, "fiche déjà terminée", 3600)
+                    mySnackbar.show()
+                }
             }
         } else {
             viewModelScope.launch(Dispatchers.IO){
