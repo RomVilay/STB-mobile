@@ -67,7 +67,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
     //gestion des roulements
     fun setRoulements (refsAr :Array<String>,typeAr :Array<String>, refsAv :Array<String>, typeAv :Array<String>){
         if ( refsAr.size > 0){
-            for (r in 0..refsAr.size-1){
+            for (r in 0 until refsAr.size-1){
                 if (refsAr[r].length > 0) {
                     if (typeRoulements.value == null) typeRoulements.value = mutableListOf(typeAr[r])  else typeRoulements.value!!.add(typeAr[r])
                     if (refRoulements.value == null) refRoulements.value = mutableListOf(refsAr[r]) else refRoulements.value!!.add(refsAr[r])
@@ -76,7 +76,7 @@ class FicheDemontageViewModel(application: Application) : AndroidViewModel(appli
             }
         }
         if ( refsAv.size > 0 ){
-            for (r in 0..refsAv.size-1){
+            for (r in 0 until  refsAv.size-1){
                 if (refsAv[r].length > 0) {
                     if (typeRoulements.value == null) typeRoulements.value = mutableListOf(typeAv[r])  else typeRoulements.value!!.add(typeAv[r])
                     if (refRoulements.value == null) refRoulements.value = mutableListOf(refsAv[r]) else refRoulements.value!!.add(refsAv[r])

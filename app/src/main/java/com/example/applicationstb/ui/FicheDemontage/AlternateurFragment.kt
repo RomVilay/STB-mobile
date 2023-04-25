@@ -386,9 +386,10 @@ class AlternateurFragment : Fragment() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        val name = viewModel.selection.value?.numFiche?.replace(" ","_")+viewModel.selection.value?.numFiche?.length+1
         if (storageDir.exists()) {
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                name, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -398,7 +399,7 @@ class AlternateurFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + SystemClock.uptimeMillis(), /* prefix */
+                name, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
