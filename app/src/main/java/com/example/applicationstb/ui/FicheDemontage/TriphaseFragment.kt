@@ -320,8 +320,8 @@ class TriphaseFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.i("info", "resultcode: ${resultCode}")
         if (requestCode == viewModel.CAMERA_CAPTURE){
+
             if (resultCode == Activity.RESULT_OK) {
                 viewModel.addPhoto(currentPhotoPath)
             }
@@ -362,9 +362,10 @@ class TriphaseFragment : Fragment() {
         // Create an image file name
         val storageDir: File =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/test_pictures")
+        val name = viewModel.selection.value?.numFiche?.replace(" ","_") + "_" + viewModel.selection.value?.photos!!.size
         if (storageDir.exists()) {
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + viewModel.selection.value?.photos!!.size, /* prefix */
+                name, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {
@@ -374,7 +375,7 @@ class TriphaseFragment : Fragment() {
         } else {
             makeFolder()
             return File.createTempFile(
-                viewModel.selection.value?.numFiche + "_" + viewModel.selection.value?.photos!!.size, /* prefix */
+                name, /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
             ).apply {

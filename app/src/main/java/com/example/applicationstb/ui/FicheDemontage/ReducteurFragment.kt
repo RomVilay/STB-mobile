@@ -3,12 +3,10 @@ package com.example.applicationstb.ui.FicheDemontage
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContentValues
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,16 +17,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
-import com.example.applicationstb.R
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -36,6 +31,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationstb.R
 import com.example.applicationstb.model.Joint
 import com.example.applicationstb.model.Roulement
 import com.example.applicationstb.ui.ficheBobinage.schemaAdapter
@@ -46,7 +42,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -181,14 +176,22 @@ class ReducteurFragment : Fragment() {
                 viewModel.localSave()
             }
             btnRoul.setOnClickListener {
-                var liste = roulements.value!!
-                liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${refRoulementAv.text.toString()}", "${typeRoulementAr.selectedItem} - ${refRoulementAr.text.toString()}"))
-                roulements.value = liste
-                viewModel.selection.value!!.roulements = liste
-                typeRoulementAv.setSelection(0)
-                typeRoulementAr.setSelection(0)
-                refRoulementAv.setText("")
-                refRoulementAr.setText("")
+                if ( typeRoulementAv.selectedItemPosition == 4){
+                    val mySnackbar =
+                        Snackbar.make(layout, "Veuillez sélectionner un type de roulement avant", 3600)
+                    mySnackbar.show()
+                    typeRoulementAv.setBackgroundResource(R.drawable.dropdown_background_red_accent)
+                } else {
+                    typeRoulementAv.setBackgroundResource(R.drawable.dropdown_background)
+                    var liste = roulements.value!!
+                    liste.add(Roulement("R${liste.size}","${typeRoulementAv.selectedItem} - ${if(refRoulementAv.text.isNotEmpty()) refRoulementAv.text.toString() else "n/a"}", "${if(typeRoulementAr.selectedItemPosition < 4) typeRoulementAr.selectedItem else "n/a"} - ${if(refRoulementAr.text.isNotEmpty()) refRoulementAr.text.toString() else "n/a"}"))
+                    roulements.value = liste
+                    viewModel.selection.value!!.roulements = liste
+                    typeRoulementAv.setSelection(4)
+                    typeRoulementAr.setSelection(4)
+                    refRoulementAv.setText("")
+                    refRoulementAr.setText("")
+                }
             }
             btnJoint.setOnClickListener {
                 var liste = joints.value!!
@@ -269,9 +272,42 @@ class ReducteurFragment : Fragment() {
                 }
             }
         }
+        val tab = arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre")
+        val tab2 = arrayOf<String>("2Z/ECJ","2RS/ECP","C3","M", "autre")
+        //typeRoulementAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, tab)
+        val adapter: ArrayAdapter<String?> = object :
+            ArrayAdapter<String?>(activity!!, android.R.layout.simple_spinner_dropdown_item) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getView(position, convertView, parent)
+                if (position == count) {
+                    (v.findViewById<View>(android.R.id.text1) as TextView).text = ""
+                    (v.findViewById<View>(android.R.id.text1) as TextView).hint = getItem(
+                        count
+                    ) //"Hint to be displayed"
+                }
+                return v
+            }
 
-        typeRoulementAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
-        typeRoulementAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("Sélectionnez un type","2Z/ECJ","2RS/ECP","C3","M", "autre"))
+            override fun getCount(): Int {
+                return super.getCount() - 1 // you dont display last item. It is used as hint.
+            }
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.add("2Z/ECJ")
+        adapter.add("C3")
+        adapter.add("M")
+        adapter.add("autre")
+        adapter.add("Sélectionnez un type") //Indice
+        typeRoulementAv.setAdapter(adapter)
+        typeRoulementAv.setSelection(adapter.count) //cache indice
+       /* typeRoulementAv.setOnItemClickListener { adapterView, view, i, l ->
+            if (typeRoulementAv.background == resources.getDrawable(R.drawable.dropdown_background_red_accent)) typeRoulementAv.setBackgroundResource(R.drawable.dropdown_background)
+        }*/
+
+        //typeRoulementAv.setOnItemSelectedListener(this)
+        //typeRoulementAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, tab)
+        typeRoulementAr.setAdapter(adapter)
+        typeRoulementAr.setSelection(adapter.count)
         //joints
         typeJointAr.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
         typeJointAv.adapter = ArrayAdapter<String>(requireContext(),R.layout.support_simple_spinner_dropdown_item, arrayOf<String>("","simple lèvre","double lèvre"))
